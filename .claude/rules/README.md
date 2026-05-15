@@ -2,11 +2,11 @@
 
 Rules for Claude Code when working in this **Vue 3.5 + Pinia + TypeScript** project.
 
-| File                                                 | Lines | Topic                                                                   |
-| ---------------------------------------------------- | ----- | ----------------------------------------------------------------------- |
-| [vue-architecture.md](vue-architecture.md)           | ~200  | Layers, store pattern, App.vue shell, CRUD completeness, CSS grid forms |
-| [vue-testing.md](vue-testing.md)                     | ~170  | Vitest unit / store / component / E2E patterns                          |
-| [node-colombia-payroll.md](node-colombia-payroll.md) | ~60   | Colombian payroll/tax constants (ARL, retención Art.383 ET, UVT 2025)   |
+| File                                       | Lines | Topic                                                                   |
+| ------------------------------------------ | ----- | ----------------------------------------------------------------------- |
+| [vue-architecture.md](vue-architecture.md) | 166   | Layers, store pattern, App.vue shell, CRUD completeness, CSS grid forms |
+| [vue-testing.md](vue-testing.md)           | 174   | Vitest unit / store / component / E2E patterns                          |
+| [colombia-payroll.md](colombia-payroll.md) | 85    | Colombian payroll/tax constants (ARL, retención Art.383 ET, UVT 2025)   |
 
 ## Critical conventions (always apply)
 
@@ -20,7 +20,7 @@ Rules for Claude Code when working in this **Vue 3.5 + Pinia + TypeScript** proj
 
 ## Colombian payroll (always apply when currency = COP)
 
-See `node-colombia-payroll.md`. Key: ARL is employer-only, retención base = gross − salud(4%) − pensión(4%), renta exenta cap = 240 UVT.
+See `colombia-payroll.md`. Key: ARL is employer-only, retención base = gross − salud(4%) − pensión(4%), renta exenta cap = 240 UVT.
 
 ## Recent changes
 
@@ -30,3 +30,4 @@ See `node-colombia-payroll.md`. Key: ARL is employer-only, retención base = gro
 | 2026-05-15 | Session signal: App.vue navigation shell missing → rule added to vue-architecture.md    |
 | 2026-05-15 | Session signal: CRUD completeness gap in DebtsView/GoalsView → rule added               |
 | 2026-05-15 | Memory signal: CSS grid alignment → invisible spacers rule added to vue-architecture.md |
+| 2026-05-15 | RENAME: node-colombia-payroll.md → colombia-payroll.md (node- prefix misleading)        |
