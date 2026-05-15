@@ -1,98 +1,68 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Running the app
 
 ```bash
-npm start          # starts Node.js server on http://localhost:3000
-node server.js     # equivalent — no npm packages required
+npm start          # dev server on http://localhost:5173 (alias for npm run dev)
+npm run dev        # Vite dev server
+npm run build      # TypeScript check + production build → dist/
+npm run preview    # serve dist/ at http://localhost:4173
 ```
 
-`server.js` is a zero-dependency static file server using Node built-ins (`http`, `fs`, `path`). It exists because the corporate npm registry (`npm.artifacts.furycloud.io`) blocks `npx serve`.
+## Testing
 
-There is no build step, no transpiler, no bundler, and no test runner.
+```bash
+npm test           # Vitest unit + component tests
+npm run test:coverage  # with lcov report
+npm run e2e        # Playwright E2E (builds + boots preview server)
+npm run lint       # ESLint (Vue + TypeScript rules)
+npm run typecheck  # vue-tsc --noEmit
+```
 
 ## Architecture
 
-Single-file vanilla JS SPA — no framework, no imports. All logic lives in `app.js` (~1850 lines), styles in `style.css`, markup in `index.html`.
+Single-state Vue 3 SPA. Feature-slice layout:
 
-### Single state object
-
-One global `state` object is the single source of truth. Never mutate it directly from render functions — only from event handlers. Shape:
-
-```js
-{
-  schemaVersion: 1,
-  lang: 'es' | 'en',
-  currency: 'COP',           // drives Intl.NumberFormat locale + decimal places
-  income: {
-    grossSalary: Number,
-    deductions: [{ id, label, amount, type: 'fixed'|'percent' }],
-    otherStreams: [{ id, label, amount }]
-  },
-  expenses:        [{ id, name, amount, category, notes }],
-  cards:           [{ id, name, limit, balance, minPayment, apr, dueDate, installments[] }],
-  goals:           [{ id, name, target, saved, monthlyContrib, targetDate, priority }],
-  assets:          [{ id, name, value, type }],       // for net worth
-  variableExpenses:[{ id, name, budget, spent, categoryId }],
-  budgetAllocation:{ needs, wants, savings },          // pct, must sum to 100
-  payoffMethod:    'avalanche'|'snowball'
-}
+```
+views/ → components/ → composables/ → stores/ → lib/
 ```
 
-### Render cycle
+- **`lib/`** — pure functions; zero Vue/Pinia imports. `lib/calculations/`, `lib/tax/`, `lib/currency/`, `lib/storage/`.
+- **`stores/`** — Pinia setup stores (one per domain). Inputs validated at action boundary.
+- **`composables/`** — `useTheme`, `useLocale`, `useCurrencyFormat`, `useForm` (Zod-backed), `useChartTheme`.
+- **`router/index.ts`** — 11 lazy-loaded routes + onboarding guard (ADR-9): redirects to `/onboarding` when `settingsStore.onboarding.done === false`.
+- **`main.ts`** — hydrates Pinia stores from localStorage before the router guard fires (`hydrateStores()`).
 
-Every state mutation follows this pattern:
-1. Update `state` field
-2. Call a targeted `render*()` or `update*Live()` for the affected component
-3. Call `updateDashboardPartial()` to keep summary cards, alerts, donut, and ratios in sync
-4. Call `saveState()` (debounced 300 ms → `localStorage`)
+### State hydration
 
-Full `render()` is called only on boot, language switch, currency switch, and import. Avoid calling it on individual field edits — use the `*Live` partial updaters instead.
+Storage key: `finance_app_data`. Schema: `AppStateSchemaV2` (Zod). Hydration runs **synchronously in main.ts** before `app.use(router)` so the onboarding guard sees the correct state on first load.
 
-### i18n
+### Colombian tax
 
-All user-visible strings go through `t('key')`. Translations live in the `TRANSLATIONS` object at the top of `app.js` with `es` and `en` keys. `currentLang` is a module-level variable. Static HTML uses `data-i18n="key"` attributes; `applyI18n()` patches them on language change.
+`calcRetencion(grossSalary)` → Art.383 ET marginal table, **UVT_2025 = 49,799** (Resolución DIAN 000187/2024).
 
-When adding a new string: add to both `TRANSLATIONS.es` and `TRANSLATIONS.en`, use `t('key')` in render functions.
+- Renta exenta cap: **240 UVT/month** (Art.206 num.10 ET, NOT 65.833).
+- **ARL is 100% employer cost** (Art.16 Ley 1562/2012) — never add to employee deductions.
+- Colombia preset button visible only when `settingsStore.currency === 'COP'`.
 
-### Persistence
+### Key calculation functions
 
-Single `localStorage` key: `finance_app_data`. The `migrate()` function handles schema evolution — add missing fields there whenever `state` shape changes. `SCHEMA_VERSION` is currently `1`.
+| Function                       | Location                           | What it computes                         |
+| ------------------------------ | ---------------------------------- | ---------------------------------------- |
+| `calcRetencion(gross)`         | `lib/tax/colombia/retencion.ts`    | Colombian withholding tax (Art.383 ET)   |
+| `calcDebtTimeline(debt)`       | `lib/calculations/amortization.ts` | Months to payoff + total interest        |
+| `calcExtraPaymentImpact`       | `lib/calculations/amortization.ts` | Months/interest saved with extra payment |
+| `calcDTI(debts, income)`       | `lib/calculations/dti.ts`          | Debt-to-income ratio                     |
+| `calcHealthScore(inputs)`      | `lib/calculations/health-score.ts` | 0-100 score, 4 weighted components       |
+| `calcProjection(inputs, n)`    | `lib/calculations/projection.ts`   | 12-month balance projection              |
+| `buildSnapshot(inputs, now)`   | `lib/calculations/snapshot.ts`     | Monthly snapshot record                  |
+| `formatCurrency(amount, code)` | `lib/currency/format.ts`           | Intl.NumberFormat + NBSP strip           |
 
-COP and CLP currencies use 0 decimal places (set in `getCurrencyConfig()`).
+### Adding a new section
 
-### Charts
-
-All charts use the native Canvas API — no chart library. `drawDonut()` renders the budget breakdown donut; `drawDTIGauge()` renders the debt-to-income semicircle gauge. Both are called from `renderDashboard()` / `renderDebtSummary()`.
-
-## Colombian tax specifics
-
-`calcRetencionFuente(grossSalary)` implements the Art. 383 ET marginal table using **UVT 2025 = $49,799** (Resolución DIAN 000187/2024). It deducts:
-1. Pensión employee contribution (4%)
-2. Renta exenta 25%, capped at 65.833 UVT/month
-
-The "🇨🇴 Cargar deducciones Colombia" button appears only when `state.currency === 'COP'`. It inserts Salud (4%), Pensión (4%), ARL (0.522%) as percent-type deductions without duplicating existing ones.
-
-## Adding a new section
-
-1. Add a `<li class="nav-item" data-section="x">` in `index.html`
-2. Add a `<section id="section-x" class="section">` in `index.html`
-3. Add translation keys to both `TRANSLATIONS.es` and `TRANSLATIONS.en`
-4. Write `renderX()` in `app.js` and call it from `render()`
-5. Write `bindXEvents()` and call it from the `DOMContentLoaded` boot block
-6. Add new state fields to `buildDefaultState()` **and** to `migrate()` so existing saved data doesn't break
-
-## Key calculation functions
-
-| Function | What it computes |
-|---|---|
-| `calcNetSalary()` | Gross − all deductions (handles `fixed` and `percent` types) |
-| `calcTotalIncome()` | Net salary + other income streams |
-| `calcCardObligation(card)` | Min payment + sum of active installment monthly amounts |
-| `calcDTI()` | Total debt obligations / total income × 100 |
-| `calcFreeAlloc()` | Income − fixed expenses − debt obligations |
-| `calcExtraPaymentImpact(card, extra)` | Amortization delta: months saved + interest saved when paying extra |
-| `calcNetWorth()` | Total assets − total card balances |
-| `calcRetencionFuente(gross)` | Colombian withholding tax via Art. 383 ET marginal table |
+1. Add route to `src/router/index.ts`
+2. Add view to `src/views/`
+3. Add translation keys to both `src/i18n/es.json` and `src/i18n/en.json`
+4. Create components in `src/components/<section>/`
+5. Create store in `src/stores/<section>Store.ts`
+6. Add `<section>Store.hydrateFromState(state)` call in `main.ts`'s `hydrateStores()`

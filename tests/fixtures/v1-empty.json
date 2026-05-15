@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "lang": "es",
+  "currency": "COP",
+  "income": {
+    "grossSalary": 0,
+    "deductions": [],
+    "otherStreams": []
+  },
+  "expenses": [],
+  "cards": [],
+  "goals": [],
+  "assets": [],
+  "variableExpenses": [],
+  "budgetAllocation": { "needs": 50, "wants": 30, "savings": 20 },
+  "payoffMethod": "avalanche"
+}

@@ -1,0 +1,103 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+
+export interface HealthBreakdown {
+  dti?: number | null
+  emergency?: number | null
+  housing?: number | null
+  savings?: number | null
+}
+
+type Status = 'ok' | 'warn' | 'danger'
+
+const props = withDefaults(
+  defineProps<{
+    score?: number
+    label?: string
+    breakdown?: HealthBreakdown
+  }>(),
+  { score: 0, label: '', breakdown: () => ({}) }
+)
+
+const open = ref(false)
+
+function statusFor(component: keyof HealthBreakdown, value: number | null | undefined): Status {
+  if (value === null || value === undefined) return 'warn'
+  switch (component) {
+    case 'dti':
+      if (value <= 30) return 'ok'
+      if (value <= 45) return 'warn'
+      return 'danger'
+    case 'emergency':
+      if (value >= 75) return 'ok'
+      if (value >= 40) return 'warn'
+      return 'danger'
+    case 'housing':
+      if (value <= 30) return 'ok'
+      if (value <= 40) return 'warn'
+      return 'danger'
+    case 'savings':
+      if (value >= 15) return 'ok'
+      if (value >= 5) return 'warn'
+      return 'danger'
+  }
+}
+
+const rows = computed(() => [
+  { key: 'dti' as const, label: 'DTI', value: props.breakdown.dti ?? null, ideal: '≤ 30%' },
+  {
+    key: 'emergency' as const,
+    label: 'Emergencia',
+    value: props.breakdown.emergency ?? null,
+    ideal: '≥ 75%',
+  },
+  {
+    key: 'housing' as const,
+    label: 'Vivienda',
+    value: props.breakdown.housing ?? null,
+    ideal: '≤ 30%',
+  },
+  {
+    key: 'savings' as const,
+    label: 'Ahorros',
+    value: props.breakdown.savings ?? null,
+    ideal: '≥ 15%',
+  },
+])
+</script>
+
+<template>
+  <article class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700">
+    <button
+      type="button"
+      class="flex items-center justify-between gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      @click="open = !open"
+    >
+      <div class="flex flex-col items-start">
+        <span class="text-xs uppercase tracking-wide text-slate-500">Puntaje de salud</span>
+        <span class="text-3xl font-bold">{{ score }}</span>
+      </div>
+      <span class="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
+        {{ label }}
+      </span>
+    </button>
+
+    <ul
+      v-if="open"
+      class="flex flex-col gap-2 border-t border-slate-200 pt-3 dark:border-slate-700"
+      role="list"
+    >
+      <li
+        v-for="row in rows"
+        :key="row.key"
+        :data-component-status="statusFor(row.key, row.value)"
+        class="flex items-center justify-between text-sm"
+      >
+        <span class="font-medium">{{ row.label }}</span>
+        <span class="text-xs text-slate-500">
+          {{ row.value ?? 'sin datos' }} · meta {{ row.ideal }}
+        </span>
+      </li>
+    </ul>
+  </article>
+</template>
