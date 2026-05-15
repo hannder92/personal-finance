@@ -1,0 +1,42 @@
+.gitignore
+  s_c105760fe3d472::t_1c585f6f8a7848 1-10
+package.json
+  s_c105760fe3d472::t_e379c85375d5ef 3-37,39-62
+  s_c105760fe3d472::t_b46e47f3a57e0c 38
+playwright.config.ts
+  s_c105760fe3d472::t_7701a2cb6593ff 1-26
+tsconfig.json
+  s_c105760fe3d472::t_ea4c0d1597ce70 1-4
+.prettierrc
+  s_c105760fe3d472::t_09b78265abc3e7 1-10
+tsconfig.app.json
+  s_c105760fe3d472::t_b96e825aeb7951 1-31
+vite.config.ts
+  s_c105760fe3d472::t_5df16bfe40e6ce 1-27
+tsconfig.node.json
+  s_c105760fe3d472::t_12277e49d593f5 1-15
+eslint.config.ts
+  s_c105760fe3d472::t_4e47c476918826 1-11,13-21,26-29
+  s_c105760fe3d472::t_db30321d930c8e 22-25
+.husky/pre-commit
+  s_c105760fe3d472::t_de70f02e4f35af 1
+vitest.config.ts
+  s_c105760fe3d472::t_96876a5a7944e8 1-11,13-16,18-41
+  s_c105760fe3d472::t_41dc2749605214 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "7f5fca7edc26c6ad4fa02b75bc4af5746b2b38a2",
+  "prompts": {},
+  "sessions": {
+    "s_c105760fe3d472": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef612208-7367-4003-8c6e-13e84226964c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
