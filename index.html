@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">◈</div>
+      <span class="logo-text">FinanceDash</span>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item active" data-section="dashboard">
+        <span class="nav-icon">◉</span>
+        <span class="nav-label" data-i18n="nav.dashboard">Panel</span>
+      </li>
+      <li class="nav-item" data-section="income">
+        <span class="nav-icon">↗</span>
+        <span class="nav-label" data-i18n="nav.income">Ingresos</span>
+      </li>
+      <li class="nav-item" data-section="expenses">
+        <span class="nav-icon">↙</span>
+        <span class="nav-label" data-i18n="nav.expenses">Gastos</span>
+      </li>
+      <li class="nav-item" data-section="debt">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label" data-i18n="nav.debt">Deudas</span>
+      </li>
+      <li class="nav-item" data-section="goals">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label" data-i18n="nav.goals">Metas</span>
+      </li>
+      <li class="nav-item" data-section="networth">
+        <span class="nav-icon">▲</span>
+        <span class="nav-label" data-i18n="nav.networth">Patrimonio</span>
+      </li>
+      <li class="nav-item" data-section="variable">
+        <span class="nav-icon">🛒</span>
+        <span class="nav-label" data-i18n="nav.variable">Gastos Variables</span>
+      </li>
+      <li class="nav-item" data-section="ratios">
+        <span class="nav-icon">≋</span>
+        <span class="nav-label" data-i18n="nav.ratios">Ratios</span>
+      </li>
+    </ul>
+
+    <!-- Currency selector -->
+    <div class="currency-select-wrap">
+      <select id="currency-select" class="currency-select"></select>
+    </div>
+
+    <!-- Language toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="lang-es">ES</button>
+      <span class="lang-divider">/</span>
+      <button class="lang-btn" id="lang-en">EN</button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button id="btn-dark-mode" class="btn-sidebar">🌙 Modo oscuro</button>
+      <button id="btn-export" class="btn-sidebar">
+        <span>↓</span> <span data-i18n="action.export">Exportar</span>
+      </button>
+      <button id="btn-import" class="btn-sidebar">
+        <span>↑</span> <span data-i18n="action.import">Importar</span>
+      </button>
+      <button id="btn-reset" class="btn-sidebar btn-danger">
+        <span>✕</span> <span data-i18n="action.reset">Reiniciar</span>
+      </button>
+      <input type="file" id="import-file" accept=".json" style="display:none" />
+    </div>
+  </nav>
+
+  <!-- ── Mobile topbar ────────────────────────────────────── -->
+  <div id="mobile-topbar">
+    <button id="mobile-menu-toggle">☰</button>
+    <span class="logo-text">FinanceDash</span>
+    <span id="last-saved-indicator" class="save-indicator" style="margin-left:auto"></span>
+  </div>
+
+  <!-- ── Main content ─────────────────────────────────────── -->
+  <main id="main-content">
+
+    <!-- DASHBOARD -->
+    <section id="section-dashboard" class="section active">
+      <div class="section-header">
+        <h1 data-i18n="nav.dashboard">Panel</h1>
+        <span id="last-saved-indicator-desktop" class="save-indicator"></span>
+      </div>
+
+      <div id="summary-cards" class="summary-cards"></div>
+      <div id="alerts-container"></div>
+
+      <div class="charts-row">
+        <div class="card chart-card">
+          <div class="card-title" data-i18n="dash.breakdown">Distribución del presupuesto</div>
+          <canvas id="donut-chart" width="240" height="240"></canvas>
+          <div id="donut-legend" class="donut-legend"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" data-i18n="dash.projection">Proyección 12 meses</div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th data-i18n="dash.month">Mes</th>
+                  <th data-i18n="dash.balance">Balance</th>
+                  <th data-i18n="dash.goals">Metas</th>
+                  <th data-i18n="dash.debt">Deuda</th>
+                </tr>
+              </thead>
+              <tbody id="projection-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget allocation panel -->
+      <div id="budget-panel" class="card budget-panel">
+        <div class="card-title" data-i18n="dash.allocation">Asignación de presupuesto (50/30/20)</div>
+        <div id="allocation-sliders"></div>
+        <div id="allocation-totals"></div>
+      </div>
+    </section>
+
+    <!-- INCOME -->
+    <section id="section-income" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.income">Ingresos</h1>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title" data-i18n="income.salary">Salario mensual bruto</div>
+          <div class="form-group">
+            <label data-i18n="income.grossLabel">Salario bruto</label>
+            <input type="number" id="gross-salary" min="0" step="0.01" placeholder="0.00" />
+          </div>
+
+          <div class="section-sub" data-i18n="income.deductions">Deducciones</div>
+          <div id="deductions-list"></div>
+          <button class="btn-add" id="btn-add-deduction" data-i18n="income.addDeduction">+ Agregar deducción</button>
+          <div id="deduction-base-row" class="deduction-base-row" style="display:none"></div>
+
+          <div class="section-sub" style="margin-top:1rem" data-i18n="income.nonSalary">Beneficios extrasalariales</div>
+          <div id="nonsalary-list"></div>
+          <button class="btn-add" id="btn-add-nonsalary" data-i18n="income.addNonSalary">+ Agregar beneficio</button>
+
+          <div class="result-row" style="margin-top:.75rem">
+            <span data-i18n="income.netSalary">Salario neto</span>
+            <strong id="net-salary-display" class="amount-lg text-green">$0.00</strong>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" data-i18n="income.otherTitle">Otros ingresos</div>
+          <div id="other-income-list"></div>
+          <button class="btn-add" id="btn-add-income" data-i18n="income.addStream">+ Agregar ingreso</button>
+
+          <div class="result-row" style="margin-top:.875rem">
+            <span data-i18n="income.otherTotal">Total otros ingresos</span>
+            <strong id="other-income-display" class="amount-lg text-green">$0.00</strong>
+          </div>
+          <div id="nonmonthly-row" class="result-row" style="display:none">
+            <span id="nonmonthly-label" style="font-size:.82rem;color:var(--amber-600)"></span>
+            <strong id="nonmonthly-income-display" class="amount-lg text-amber">$0.00</strong>
+          </div>
+          <div class="result-row highlight">
+            <span data-i18n="income.totalDisposable">Total disponible</span>
+            <strong id="total-income-display" class="amount-lg text-green">$0.00</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPENSES -->
+    <section id="section-expenses" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.expenses">Gastos fijos</h1>
+      </div>
+      <div class="card">
+        <div id="expenses-list"></div>
+        <button class="btn-add" id="btn-add-expense" data-i18n="expense.add">+ Agregar gasto</button>
+        <div class="result-row" style="margin-top:.5rem">
+          <span data-i18n="expense.total">Total gastos fijos</span>
+          <strong id="total-expenses-display" class="amount-lg">$0.00</strong>
+        </div>
+        <div class="result-row highlight" id="remaining-income-row">
+          <span data-i18n="expense.remaining">Restante tras gastos</span>
+          <strong id="remaining-income-display" class="amount-lg">$0.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEBT -->
+    <section id="section-debt" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.debt">Tarjetas y deudas</h1>
+        <div class="payoff-method-toggle">
+          <label data-i18n="debt.method">Método:</label>
+          <span class="tip-icon" data-tip-key="card.method">?</span>
+          <select id="payoff-method">
+            <option value="avalanche" data-i18n="debt.avalanche">Avalancha (mayor APR)</option>
+            <option value="snowball" data-i18n="debt.snowball">Bola de nieve (menor saldo)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="cards-list"></div>
+      <button class="btn-add" id="btn-add-card" data-i18n="debt.addCard">+ Agregar tarjeta / préstamo</button>
+
+      <div class="card" style="margin-top:1.25rem">
+        <div class="card-title" data-i18n="debt.summary">Resumen de deudas</div>
+        <div class="debt-summary-grid" id="debt-summary"></div>
+      </div>
+    </section>
+
+    <!-- GOALS -->
+    <section id="section-goals" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.goals">Metas de ahorro</h1>
+      </div>
+      <div id="goals-list"></div>
+      <button class="btn-add" id="btn-add-goal" data-i18n="goals.add">+ Agregar meta</button>
+      <div class="card" style="margin-top:1.25rem">
+        <div class="card-title" data-i18n="goals.summary">Resumen de metas</div>
+        <div id="goals-summary"></div>
+      </div>
+    </section>
+
+    <!-- NET WORTH -->
+    <section id="section-networth" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.networth">Patrimonio neto</h1>
+      </div>
+      <div id="networth-summary-bar" class="networth-banner card"></div>
+      <div class="two-col" style="margin-top:1.25rem">
+        <div class="card">
+          <div class="card-title" data-i18n="nw.assets">Activos</div>
+          <div id="assets-list"></div>
+          <button class="btn-add" id="btn-add-asset" data-i18n="nw.addAsset">+ Agregar activo</button>
+          <div class="result-row">
+            <span data-i18n="nw.totalAssets">Total activos</span>
+            <strong id="total-assets-display" class="amount-lg text-green">$0</strong>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" data-i18n="nw.liabilities">Pasivos</div>
+          <div id="liabilities-list"></div>
+          <div class="result-row">
+            <span data-i18n="nw.totalLiabilities">Total pasivos</span>
+            <strong id="total-liabilities-display" class="amount-lg text-red">$0</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VARIABLE EXPENSES -->
+    <section id="section-variable" class="section">
+      <div class="section-header">
+        <h1 data-i18n="nav.variable">Gastos Variables</h1>
+        <div style="font-size:.82rem;color:var(--gray-500)" id="variable-month-label"></div>
+      </div>
+      <div id="variable-list"></div>
+      <button class="btn-add" id="btn-add-variable" data-i18n="variable.add">+ Agregar categoría</button>
+      <div class="card" style="margin-top:1.25rem">
+        <div class="card-title" data-i18n="variable.summary">Resumen del mes</div>
+        <div id="variable-summary"></div>
+      </div>
+    </section>
+
+    <!-- RATIOS -->
+    <section id="section-ratios" class="section">
+      <div class="section-header">
+        <h1 data-i18n="ratios.title">Salud financiera</h1>
+      </div>
+      <div id="ratios-grid" class="ratios-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<div id="corruption-banner" class="corruption-banner" style="display:none">
+  <span id="corruption-msg">Los datos anteriores no pudieron cargarse. Iniciando desde cero.</span>
+  <button onclick="document.getElementById('corruption-banner').style.display='none'">✕</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
