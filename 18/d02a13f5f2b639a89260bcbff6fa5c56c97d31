@@ -1,0 +1,27 @@
+src/views/DebtsView.vue
+  s_4f4b4155ec2ff5::t_76821c88b21e65 2,4-5,12-36,38-86,91,95-101,104-236,239-266,269-277
+src/components/goals/GoalList.vue
+  s_4f4b4155ec2ff5::t_51a9d2e3b55f2e 2,29-49,54-131,141-147,175-181
+src/App.vue
+  s_4f4b4155ec2ff5::t_d011b2437b2818 2-34,39-120
+.gitignore
+  s_4f4b4155ec2ff5::t_d56df211f71c69 11-14
+src/views/IncomeView.vue
+  s_4f4b4155ec2ff5::t_2a1ea840827390 2,8,26-36,38-52,54-69,94-162,165-183,186-255,258-275,278-335,338-354
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "18d02a13f5f2b639a89260bcbff6fa5c56c97d31",
+  "prompts": {},
+  "sessions": {
+    "s_4f4b4155ec2ff5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76e5d72e-799f-4147-b18f-cb773cb0d2db",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
