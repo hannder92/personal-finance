@@ -1,16 +1,18 @@
 # .claude/rules — Finance Dashboard
 
-Rules for Claude Code when working in this vanilla JS SPA project.
+Rules for Claude Code when working in this **Vue 3.5 + Pinia + TypeScript** project.
 
-| File | Lines | Topic |
-|------|-------|-------|
-| [node-vanilla-spa-state.md](node-vanilla-spa-state.md) | ~60 | State mutation contract, render cycle, schema evolution |
-| [node-vanilla-spa-i18n.md](node-vanilla-spa-i18n.md) | ~54 | i18n: translation keys, `t()`, `data-i18n` attributes |
-| [node-vanilla-spa-constraints.md](node-vanilla-spa-constraints.md) | ~57 | Zero dependencies, Canvas API, Intl currency formatting |
-| [node-colombia-payroll.md](node-colombia-payroll.md) | ~65 | Colombian payroll/tax constants (ARL, retención, UVT 2025) |
+| File                                                 | Topic                                                                 |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| [node-colombia-payroll.md](node-colombia-payroll.md) | Colombian payroll/tax constants (ARL, retención Art.383 ET, UVT 2025) |
 
-**Context budget:** ~236 lines total (well under 3000-line limit)
+## Key conventions (Vue 3 stack)
 
-**Recent changes (2026-05-11):** Added `node-colombia-payroll.md` — 3 session corrections on ARL employer-only cost, retención base (salud+pensión), and renta exenta 240 UVT cap.
+- **State lives in Pinia stores** (`src/stores/`). Never in component `ref`/`reactive` beyond local UI state.
+- **`lib/` is pure** — zero Vue or Pinia imports. Testable with plain Vitest.
+- **Currency formatting** via `formatCurrency(amount, code)` in `lib/currency/format.ts`.
+- **i18n**: all user-visible strings via `$t('key')` in templates or `useI18n().t('key')` in `<script setup>`.
+- **Stores validate inputs** at action boundaries; formal Zod validation runs at storage load (`loadAppState()`).
+- **Hydration** runs synchronously in `main.ts` before `app.use(router)` so the onboarding guard sees correct state on first load.
 
-See `CLAUDE.md` in the project root for architecture overview and key calculation functions.
+See `CLAUDE.md` in the project root for full architecture and key function reference.
