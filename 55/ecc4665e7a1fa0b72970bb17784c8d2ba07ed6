@@ -1,0 +1,523 @@
+tests/unit/stores/incomeStore.test.ts
+  s_c105760fe3d472::t_22fe301e47c336 1-100
+src/components/onboarding/StepIndicator.vue
+  s_c105760fe3d472::t_86178fbdb260de 1,13-15,34
+  s_c105760fe3d472::t_b6e579c06ff963 2-8,10-12,16-33
+src/lib/storage/useAppStorage.ts
+  s_c105760fe3d472::t_a58cb3ae9eafec 1-66
+src/lib/storage/migrate.ts
+  s_c105760fe3d472::t_bdf1f00b820b28 1-2,4-22,27-179,182-202
+  s_c105760fe3d472::t_86d9ce0ed1208e 3,203
+src/views/DashboardView.vue
+  s_c105760fe3d472::t_e683631cba1420 1,51-53,121
+  s_c105760fe3d472::t_6a958caa926e43 2-24,26-27,29-30,32-38,40-50,54-120
+tests/unit/calculations/amortization.test.ts
+  s_c105760fe3d472::t_5c8f8515acf967 1-78
+src/composables/useForm.ts
+  s_c105760fe3d472::t_32cb2bb34e3db6 4,6-7,9,13-39,41-42
+  s_c105760fe3d472::t_a51d1faf9e1ace 1-3,8,10,12,40,43
+src/stores/assetsStore.ts
+  s_c105760fe3d472::t_22e081b7f09313 3-6,8-17,22-23,31-35,40-43,52-55
+  s_c105760fe3d472::t_fd3b6e5fc98550 1-2,7,18-21,24-30,36-39,44-51
+tests/component/OnboardingWizard.test.ts
+  s_c105760fe3d472::t_d061adc4392565 1-77,79-117
+e2e/onboarding-new-user.spec.ts
+  s_c105760fe3d472::t_bc50ea21b27f13 1-10,12-24
+tests/unit/calculations/housing-ratio.test.ts
+  s_c105760fe3d472::t_0db67df2e27f5d 1-47
+src/style.css
+  s_c105760fe3d472::t_b7b17c96ee5346 1-9
+src/lib/calculations/snapshot.ts
+  s_c105760fe3d472::t_2c288d1a0f8e86 1,3-17,24-25,27,30,34
+  s_c105760fe3d472::t_25c421e9fcf55e 2,18-23,26,28-29,31-33
+tests/unit/currency/format.test.ts
+  s_c105760fe3d472::t_df882b72d646e2 1-22
+src/components/allocation/AllocationPanel.vue
+  s_c105760fe3d472::t_b811fe4d1559f8 1,49-51,123
+  s_c105760fe3d472::t_c998c05ce8bdf7 2-10,12-22,24-48,52-68,73-88,93-122
+tests/unit/stores/cardsStore.test.ts
+  s_c105760fe3d472::t_1083765b9e0462 1-65,67-82,84-101,103-127,129-149,151-161
+src/components/income/DeductionRow.vue
+  s_c105760fe3d472::t_08e46f3349f5c2 2-18,20-27,31-42
+  s_c105760fe3d472::t_731697ad0c10f2 1,28-30,43
+src/views/AllocationView.vue
+  s_c105760fe3d472::t_0b9d3019dab33a 2-10,14-24
+  s_c105760fe3d472::t_e97206835e99ec 1,11-13,25
+tests/component/SnapshotList.test.ts
+  s_c105760fe3d472::t_0673f9c7418fdd 1-47
+src/lib/date/month.ts
+  s_c105760fe3d472::t_bad9704701d5b2 1-2,5-8
+  s_c105760fe3d472::t_4bb3bbbc3ed987 3-4,9
+tests/component/QuickAddFAB.test.ts
+  s_c105760fe3d472::t_2f52b47febf495 1-26
+src/components/dashboard/ComparisonBadge.vue
+  s_c105760fe3d472::t_153d6b2648c621 2-9,11-42,46-59
+  s_c105760fe3d472::t_03be4316f8b5ad 1,43-45,60
+src/components/common/ThemeToggle.vue
+  s_c105760fe3d472::t_1bdabe2ad0edd9 2-9,11-14,16-43,45-61,65-76
+  s_c105760fe3d472::t_632f3bbc69cffc 1,15,62-64,77
+src/components/income/PresetButtons.vue
+  s_c105760fe3d472::t_c781054bde491d 2-17,21-38
+  s_c105760fe3d472::t_fa5e8b6384105b 1,18-20,39
+src/components/common/ConfirmDialog.vue
+  s_c105760fe3d472::t_65182503806218 2-15,17-19,24-33,37-67
+  s_c105760fe3d472::t_6392e966c51e83 1,20-23,34-36,68
+e2e/quick-add-fab.spec.ts
+  s_c105760fe3d472::t_8594d3403fbf82 1-4,6-20,22-31
+tests/component/FixedExpenseList.test.ts
+  s_c105760fe3d472::t_4e3730d512f622 1-7,9-31,34-103
+tests/unit/composables/useTheme.test.ts
+  s_c105760fe3d472::t_54f4ecde0c8067 1-54
+tests/component/ThemeToggle.test.ts
+  s_c105760fe3d472::t_c8ee5ca268d352 1-50,52-53,56-57
+  s_c105760fe3d472::t_04370f44b04c3f 51,54-55
+tests/component/DueDateAlerts.test.ts
+  s_c105760fe3d472::t_2a69e650345b6c 1-27,29-51,53-60
+src/lib/tax/colombia/prima.ts
+  s_c105760fe3d472::t_a7395c3261eacf 13-21,25-26,28-31
+  s_c105760fe3d472::t_faec627e352196 1-12,22-24,27,32
+tests/unit/stores/expensesStore.test.ts
+  s_c105760fe3d472::t_7c6a5d4287ff26 1-88
+tests/component/IncomeView.test.ts
+  s_c105760fe3d472::t_ff10413953a44b 1-47,49-55
+src/components/common/AppToast.vue
+  s_c105760fe3d472::t_aa0271b6079b29 2-13,15-17,20-38,42-43,48-52
+  s_c105760fe3d472::t_54fe11742b6fc6 1,18-19,39-41,53
+e2e/payoff-simulator.spec.ts
+  s_c105760fe3d472::t_2270596e24bea6 27-35,37,39
+  s_c105760fe3d472::t_e30153edf0bbde 13,17-22,24,36
+  s_c105760fe3d472::t_07db61dcb194b5 1-10,12,14-16,25-26,40-45,47-50
+  s_c105760fe3d472::t_5b327d9001aee0 46
+e2e/snapshot-rollover.spec.ts
+  s_c105760fe3d472::t_e32fbcfd3765f9 45
+  s_c105760fe3d472::t_79cc7457bca57d 1-6,8,11-13,23-28,42-44,46-49
+  s_c105760fe3d472::t_f84d858a1db6d5 9,29-32,38,40-41
+  s_c105760fe3d472::t_a3a5e33dd7bb3b 10,14-19,21-22,33-37,39
+src/i18n/en.json
+  s_c105760fe3d472::t_9d193866f3ead3 1
+src/components/goals/GoalCard.vue
+  s_c105760fe3d472::t_b0aad7622a9686 1,4,27-29,65
+  s_c105760fe3d472::t_d8c9ce0f2a98af 2-3,5-10,12-26,30-64
+src/views/GoalsView.vue
+  s_c105760fe3d472::t_83599c43a8906e 2-11,15-25
+  s_c105760fe3d472::t_0e485cec0b4165 1,12-14,26
+src/lib/storage/schema.ts
+  s_c105760fe3d472::t_e3a5758fa7b6ab 1,178
+  s_c105760fe3d472::t_a58c34458a7f80 2-177,179-189
+e2e/fixtures.ts
+  s_c105760fe3d472::t_952202bdcc53a7 1-3,5-44,51-55,60-64
+  s_c105760fe3d472::t_d96ef6ab06fb0b 4,45,47-50,56-59
+e2e/language-switch.spec.ts
+  s_c105760fe3d472::t_d86b27280e0534 1-20
+src/views/DebtsView.vue
+  s_c105760fe3d472::t_2028c95121de7c 1,9-11,44
+  s_c105760fe3d472::t_594cd8fd63b796 2-8,12-43
+CLAUDE.md
+  s_c105760fe3d472::t_686e1c35c43b2b 6-9,12,14-19,22,24,26-28,30-34,36,38,40,42,44-46,48,50,52-59,61,63-68
+src/lib/calculations/net-worth.ts
+  s_c105760fe3d472::t_8562af8c0ea0cd 10-11,13-15
+  s_c105760fe3d472::t_42f89bfecf0c87 1-9,12,16
+src/components/debts/InstallmentList.vue
+  s_c105760fe3d472::t_11df9c1500b066 1,3,12-14,34
+  s_c105760fe3d472::t_449e0e447dae1d 2,4-9,11,15-33
+src/lib/tax/colombia/constants.ts
+  s_c105760fe3d472::t_ef51d269b7bb02 4
+  s_c105760fe3d472::t_2cdc7d52f53cf1 1-3,5-36
+src/stores/variableExpensesStore.ts
+  s_c105760fe3d472::t_8dbefd957f76d9 3-15,20-21,29-33,38-43,45,48-56
+  s_c105760fe3d472::t_92af86386452e2 1-2,16-19,22-28,34-37,44,46-47
+src/views/VariableExpensesView.vue
+  s_c105760fe3d472::t_5bfde6435b0dd4 1,18-20,51
+  s_c105760fe3d472::t_b2773d13b782c1 2-11,14,16-17,21-50
+src/views/HistoryView.vue
+  s_c105760fe3d472::t_4f7ac5c8a97d17 1,8-10,22
+  s_c105760fe3d472::t_460ef855d1ef1f 2-7,11-21
+tests/unit/stores/settingsStore.test.ts
+  s_c105760fe3d472::t_3019034ab47e59 1-62
+tests/component/CardCard.test.ts
+  s_c105760fe3d472::t_2cbc17df152b4b 1-54
+tests/unit/calculations/allocation.test.ts
+  s_c105760fe3d472::t_7adf80eede9bea 1-14,16-43
+tests/unit/calculations/payoff-strategy.test.ts
+  s_c105760fe3d472::t_62802a4c9ac7ad 1-42
+tests/component/VariableSummary.test.ts
+  s_c105760fe3d472::t_4e6662b16c9a7e 1-9,12-24
+  s_c105760fe3d472::t_411dc31b939236 10-11
+src/views/SettingsView.vue
+  s_c105760fe3d472::t_aaac3e8e1aee69 39-60
+  s_c105760fe3d472::t_c47f01777715b4 2-38,61-68,72-100
+  s_c105760fe3d472::t_45f81655ea5ac0 1,69-71,101
+src/composables/useChartTheme.ts
+  s_c105760fe3d472::t_4a171ffd265a52 2,4-9,11-28
+  s_c105760fe3d472::t_d84dbda3bd31c0 1,3,10,29
+src/vite-env.d.ts
+  s_c105760fe3d472::t_d3b56961aeb99e 1-7
+src/composables/useImportExport.ts
+  s_c105760fe3d472::t_39c3b7b0413bf9 10-16,98,101
+  s_c105760fe3d472::t_aa7740a474abdd 1-9,17-89,95-97,99-100
+src/components/networth/AssetList.vue
+  s_c105760fe3d472::t_c3839cf1c9962e 2-9,11-27,31-95
+  s_c105760fe3d472::t_07cca3735631b3 1,28-30,96
+src/lib/storage/keys.ts
+  s_c105760fe3d472::t_d76a825132fd3f 1-2
+src/components/dashboard/KpiCard.vue
+  s_c105760fe3d472::t_a4b6e80d01e4e9 1,62-64,87
+  s_c105760fe3d472::t_a7863a64f0b2e8 2-22,24-61,65-86
+src/lib/calculations/amortization.ts
+  s_c105760fe3d472::t_24d747662706f8 1-27,46-47,56-57,66
+  s_c105760fe3d472::t_b353b869a837db 28-45,48-55,58-65
+src/i18n/es.json
+  s_c105760fe3d472::t_599b2079d0586c 1
+src/components/dashboard/BudgetDonut.vue
+  s_c105760fe3d472::t_82a461127d7e74 1,46-48,55
+  s_c105760fe3d472::t_6b97c7ca257ed7 13-14,16-21,31,42
+  s_c105760fe3d472::t_45575080b6a9cb 3-12,15,23-30,32-41,43-45,49-54
+src/composables/useCurrencyFormat.ts
+  s_c105760fe3d472::t_04c18525fa6d6b 4,8,10
+  s_c105760fe3d472::t_bd3e858f9edac6 1-3,5-7,9
+src/lib/calculations/variable-expenses.ts
+  s_c105760fe3d472::t_f389198c70a02a 8-14
+  s_c105760fe3d472::t_ac793f54ffcaed 1-7,15
+tests/component/OnboardingRelaunch.test.ts
+  s_c105760fe3d472::t_5e42bbbef33d24 1-66,68-71
+tests/component/HealthScore.test.ts
+  s_c105760fe3d472::t_7788b62eeba1de 1-47,49-54
+tests/unit/calculations/projection.test.ts
+  s_c105760fe3d472::t_48620fe2953b36 1-64
+src/components/common/SemanticBadge.vue
+  s_c105760fe3d472::t_b34f7b16af2047 1,23-25,40
+  s_c105760fe3d472::t_767679c7aa69ac 2-6,8-22,26-27,32-39
+tests/component/EmptyState.test.ts
+  s_c105760fe3d472::t_17a157f5fb59f5 1-30
+tests/unit/composables/useChartTheme.test.ts
+  s_c105760fe3d472::t_1f872ecc4510a0 1-38
+src/stores/expensesStore.ts
+  s_c105760fe3d472::t_1534065b35493e 1-2,16-19,22-23,26-29,34-37,42-48
+  s_c105760fe3d472::t_0d7cf19ae504ce 3-15,20-21,24-25,30-33,38-41,49-52
+src/components/common/CurrencyInput.vue
+  s_c105760fe3d472::t_fc774a55c525e6 1,19-20,61-63,74
+  s_c105760fe3d472::t_d0246df97ae71b 2-14,16-18,21-60,64-73
+src/components/settings/SettingsPanel.vue
+  s_c105760fe3d472::t_ee3edfef9117e2 1,7-11,40-42,120
+  s_c105760fe3d472::t_512ed7d8b8d170 2-6,12-39,43-119
+tests/component/SemanticBadge.test.ts
+  s_c105760fe3d472::t_a5a48fc6df812c 1-32
+src/components/common/LanguageToggle.vue
+  s_c105760fe3d472::t_c1d9e4b5098887 1,13,24-26,35
+  s_c105760fe3d472::t_55bbeaca9d9c42 2-7,9-12,14-23,27-34
+tests/unit/storage/migrate.test.ts
+  s_c105760fe3d472::t_7960ce53570a34 1-14,26-100
+  s_c105760fe3d472::t_fc953d514ac6e3 15-25
+src/composables/useLocale.ts
+  s_c105760fe3d472::t_9b190750f3cba2 4,7,15,23
+  s_c105760fe3d472::t_bd64f7fb72baf8 1-3,5-6,8-14,16-22
+src/components/variable/VariableSummary.vue
+  s_c105760fe3d472::t_8cc99fa86b2451 1,16-18,32
+  s_c105760fe3d472::t_a9b2c2c49a3956 2-10,12-15,19-20,27-31
+e2e/dark-mode-responsive.spec.ts
+  s_c105760fe3d472::t_fc30cbe083da1a 1-18,20-40
+src/components/dashboard/HealthScore.vue
+  s_c105760fe3d472::t_bdf2545505def7 1,4-8,44,67-69,103
+  s_c105760fe3d472::t_8fa7c78350e00b 2-3,9-18,20-43,45-51,53-57,59-63,65-66,70-102
+src/lib/calculations/payoff-strategy.ts
+  s_c105760fe3d472::t_bd74e2e4633aa3 7-8,11-12
+  s_c105760fe3d472::t_54324dfbb0142e 1-6,9-10,13
+scripts/i18n-check.ts
+  s_c105760fe3d472::t_71d9cf126a3aaa 1-28
+tests/component/ProjectionChart.test.ts
+  s_c105760fe3d472::t_ebb3d313003491 1-15
+src/stores/settingsStore.ts
+  s_c105760fe3d472::t_b00de2a7f392c5 1-2,7-12,21,38-68
+  s_c105760fe3d472::t_32c6fb611fee89 3-6,13-20,22-37,69-81
+tests/component/GoalCard.test.ts
+  s_c105760fe3d472::t_b81d34915744f0 1-45
+tests/component/AssetList.test.ts
+  s_c105760fe3d472::t_712eef268792dc 1-22,25-49
+tests/unit/calculations/health-score.test.ts
+  s_c105760fe3d472::t_28705c86cf7027 1-74
+src/components/variable/VariableCategoryCard.vue
+  s_c105760fe3d472::t_8d7988eb4a3609 2-11,13-28,32-54
+  s_c105760fe3d472::t_b3d58fc3ab925c 1,29-31,55
+src/i18n/index.ts
+  s_c105760fe3d472::t_159134fc850217 1-18
+src/App.vue
+  s_c105760fe3d472::t_aa12dc09844bfc 2
+  s_c105760fe3d472::t_c5126a9c7db38f 8-11
+  s_c105760fe3d472::t_6dd2d2d4f81da8 1,3-5,16
+  s_c105760fe3d472::t_6a4acfff2cad79 6-7,12-15,17-27
+src/lib/tax/colombia/retencion.ts
+  s_c105760fe3d472::t_5d60320845d768 8-14,53
+  s_c105760fe3d472::t_b9cf8477122e4c 1-7,15-52
+src/lib/calculations/allocation.ts
+  s_c105760fe3d472::t_360837f650575f 1-12,22-23,26-27,31-32,35-37,40,42
+  s_c105760fe3d472::t_9524ba35edacb5 13-21,24-25,28-30,33-34,38-39,41
+src/lib/tax/colombia/presets.ts
+  s_c105760fe3d472::t_028f740d99dc80 1-6,14-15,17-18,24
+  s_c105760fe3d472::t_c502a52b62da29 7-13,16,19-23
+tests/component/CurrencyInput.test.ts
+  s_c105760fe3d472::t_8f3df73f9c074d 1-13,15,17-18,22-60
+  s_c105760fe3d472::t_13716fcf867674 14,16,19-21
+tests/unit/composables/useForm.test.ts
+  s_c105760fe3d472::t_5a62a54a3d9fcd 1-48
+src/components/common/EmptyState.vue
+  s_c105760fe3d472::t_bc18cacb624a52 1-10,32
+  s_c105760fe3d472::t_bb7d4e75e918b1 11-31
+tests/component/IncomeStreamRow.test.ts
+  s_c105760fe3d472::t_c4860cb1e5db23 1-43
+src/views/ExpensesView.vue
+  s_c105760fe3d472::t_e28a41c553f3fb 1,3-5,14
+  s_c105760fe3d472::t_283a5f24fb2df1 2,6-13
+src/components/networth/NetWorthBanner.vue
+  s_c105760fe3d472::t_2e3951508eca7d 2-10,12-30,34-58
+  s_c105760fe3d472::t_37ffba01a3d906 1,31-33,59
+tests/unit/calculations/net-worth.test.ts
+  s_c105760fe3d472::t_a6e3b354711d75 1-29
+src/components/dashboard/ProjectionChart.vue
+  s_c105760fe3d472::t_23537170c791cc 2-17,21,27-45,47-49,52-53,56-58,62-67
+  s_c105760fe3d472::t_a4affb6756a227 1,59-61,68
+  s_c105760fe3d472::t_ca039a8d5d6530 19-20,22-25,46,50-51,54-55
+src/lib/calculations/goals.ts
+  s_c105760fe3d472::t_3a3c1c60124a5f 1-4,6-12,17,28-30,38
+  s_c105760fe3d472::t_0bd4b7b092633c 5,13-16,18-27,31-37
+tests/unit/stores/allocationSnapshotsStore.test.ts
+  s_c105760fe3d472::t_e70d8d09830454 1-83
+src/lib/calculations/net-income.ts
+  s_c105760fe3d472::t_27e1cb12ad6510 1-14,28,30
+  s_c105760fe3d472::t_6e1f49bb8c06bb 15-27,29
+src/views/OnboardingView.vue
+  s_c105760fe3d472::t_f505eb0d2fa765 1,3-5,9
+  s_c105760fe3d472::t_a647baf6696fd0 2,6-8
+src/lib/calculations/installments.ts
+  s_c105760fe3d472::t_2844802d06a226 12-14,17-22
+  s_c105760fe3d472::t_a2ad1221f56009 1-11,15-16,23
+src/lib/calculations/frequency.ts
+  s_c105760fe3d472::t_ea7247b1f2b660 1-5,14-15,18-19,23,27,36
+  s_c105760fe3d472::t_610f017f9ac2d7 6-13,16-17,20-22,24-26,28-35
+tests/component/StepIndicator.test.ts
+  s_c105760fe3d472::t_c3950d6dac069e 1-25
+tests/fixtures/v1-typical.json
+  s_c105760fe3d472::t_96c1f3ff866a41 8-19,22,26-32,35-44,47-55,58-63,66-72
+  s_c105760fe3d472::t_973543971db3b8 1-7,20-21,23-25,33-34,45-46,56-57,64-65,73-76
+tests/component/AllocationPanel.test.ts
+  s_c105760fe3d472::t_87e6368b96681e 1-22,25-86
+tests/unit/calculations/frequency.test.ts
+  s_c105760fe3d472::t_3926591570e4ba 1-30,32-45
+tests/unit/tax/colombia/prima.test.ts
+  s_c105760fe3d472::t_c7491e142ba087 1-4,6-41
+tests/unit/calculations/installments.test.ts
+  s_c105760fe3d472::t_d2d1adf7e5e023 1-44
+tests/setup.ts
+  s_c105760fe3d472::t_1db8c3ef7ba2fd 1-8
+tests/component/KpiCard.test.ts
+  s_c105760fe3d472::t_3216ba40685360 1-40
+src/lib/calculations/projection.ts
+  s_c105760fe3d472::t_1f30bb4f01cf1a 1,19-43,45
+  s_c105760fe3d472::t_6c5234e335039c 2-18,44,46
+tests/component/IncomePresets.test.ts
+  s_c105760fe3d472::t_156d4457c89d74 1-79
+src/views/PlaceholderView.vue
+  s_c105760fe3d472::t_085718de7085d2 1-14
+tests/unit/calculations/goals.test.ts
+  s_c105760fe3d472::t_87189971417bd3 1-66
+tests/component/NetWorthBanner.test.ts
+  s_c105760fe3d472::t_4361e36f9ac71d 1-32
+src/main.ts
+  s_c105760fe3d472::t_879be806094479 2,4-5
+  s_c105760fe3d472::t_a2c091df9cbfa4 6-15,18-71
+  s_c105760fe3d472::t_0356e3ec5ce2e0 1,3,16-17
+tests/component/SettingsPanel.test.ts
+  s_c105760fe3d472::t_66131a3f07caf6 1-20,23-28,31-108
+src/lib/currency/format.ts
+  s_c105760fe3d472::t_b49413ace67e2b 1-4,11-12,17-18,31
+  s_c105760fe3d472::t_665d7016abb477 5-10,13-16,19-30
+src/views/IncomeView.vue
+  s_c105760fe3d472::t_32509e796bff53 2-24,28-105
+  s_c105760fe3d472::t_4046733e2ed997 1,25-27,106
+src/router/index.ts
+  s_c105760fe3d472::t_fbdf4795cf16ec 2
+  s_c105760fe3d472::t_a4f796be03cf02 1,3-8,10-23,25-34
+  s_c105760fe3d472::t_cd8bceb7ce8a49 35-42
+index.html
+  s_c105760fe3d472::t_be682f85593ba4 1,3-12
+src/components/debts/CardCard.vue
+  s_c105760fe3d472::t_be23a9f1ba1fc7 2-4,6-11,13-33,37-74
+  s_c105760fe3d472::t_d4229824cfdad8 1,5,34-36,75
+tests/component/InstallmentList.test.ts
+  s_c105760fe3d472::t_72ad3f4d124e76 1-29
+tests/component/ComparisonBadge.test.ts
+  s_c105760fe3d472::t_1926826e71d05e 1-27
+tests/unit/calculations/dti.test.ts
+  s_c105760fe3d472::t_afeb57d0fd22bd 1,3-50
+src/components/onboarding/OnboardingWizard.vue
+  s_c105760fe3d472::t_a51a129d751799 3,8
+  s_c105760fe3d472::t_b04b53126a5cfa 32,37
+  s_c105760fe3d472::t_5a3df5a3a24104 78,81-90,97,100-109
+  s_c105760fe3d472::t_1c3d5604067c8b 1,48-50,140
+  s_c105760fe3d472::t_4b75fed1a71741 2,4-7,9-31,33-36,38-47,51-77,79-80,91-96,98-99,110-139
+src/components/income/RetentionEstimator.vue
+  s_c105760fe3d472::t_a53e4480968fe4 1,16-18,39
+  s_c105760fe3d472::t_87cb0f4ab25c2f 2-10,12-15,19-38
+e2e/returning-user.spec.ts
+  s_c105760fe3d472::t_c245bef3488dbc 1-4,6-14,16-28
+e2e/keyboard-nav.spec.ts
+  s_c105760fe3d472::t_06173c46c8f7bd 1-4,6-16,18-37
+src/components/income/NonSalaryBenefitRow.vue
+  s_c105760fe3d472::t_70bbc268f169a2 1-10,12-26
+src/components/debts/DueDateAlerts.vue
+  s_c105760fe3d472::t_1ff11bd00631a0 2-3,5-11,13-23,27-39
+  s_c105760fe3d472::t_5fcd5a799e2ab1 1,4,24-26,40
+constitution.md
+  s_0c749503636097::t_63c3520ef19ad0 7-20,24-33,37-43,47-56,60-65,69-79,83-84,98-99
+  s_0c749503636097::t_a5a7a3ff4d2b13 90
+tests/fixtures/v1-empty.json
+  s_c105760fe3d472::t_7769f80438bee3 1-17
+tests/component/DeductionRow.test.ts
+  s_c105760fe3d472::t_075ddd375f7562 1-46
+src/lib/storage/backup.ts
+  s_c105760fe3d472::t_e60c95ba380159 2-23,25-42
+  s_c105760fe3d472::t_6cf2ec82d34d7a 1,24
+tests/unit/check-e2e-fixture.test.ts
+  s_c105760fe3d472::t_c974638eac8642 41,68
+  s_c105760fe3d472::t_47bd7c998b9c81 31
+  s_c105760fe3d472::t_c8a8216648b529 1-13,15-30,32-34,36-40,42-54,56-67,69-72
+src/components/goals/GoalList.vue
+  s_c105760fe3d472::t_d8b065680fe071 2-11,13-16,18-28,32-71
+  s_c105760fe3d472::t_6d5ae3b08223e4 1,29-31,72
+src/lib/calculations/health-score.ts
+  s_c105760fe3d472::t_b13804a8b556c7 111-118
+  s_c105760fe3d472::t_21bfe87a8728b0 1-7,30-110,119-120
+  s_c105760fe3d472::t_164530f036139a 8-29,121
+tests/component/BottomNav.test.ts
+  s_c105760fe3d472::t_d10a0fa93c6d49 37
+  s_c105760fe3d472::t_ea61273a5cdee9 1-36,38-76
+tests/unit/date/month.test.ts
+  s_c105760fe3d472::t_86826779a009a1 1-28
+tests/unit/calculations/net-income.test.ts
+  s_c105760fe3d472::t_76436f223405fd 1-65
+tests/component/LanguageToggle.test.ts
+  s_c105760fe3d472::t_425026000018a5 1-36
+tests/unit/calculations/variable-expenses.test.ts
+  s_c105760fe3d472::t_86b6e88eaf2e11 1-32
+src/components/common/Tooltip.vue
+  s_c105760fe3d472::t_053e75280c753a 19,21-23
+  s_c105760fe3d472::t_4f0d9e648c03c0 1,61-63,71,83
+  s_c105760fe3d472::t_698c41f843a575 2-8,10-18,20,24-60,64-70,72-82
+src/components/expenses/FixedExpenseList.vue
+  s_c105760fe3d472::t_819679e24ff28f 1,40-42,91
+  s_c105760fe3d472::t_e0f744127c8e9f 2-13,15-20,22-39,43-90
+tests/component/BudgetDonut.test.ts
+  s_c105760fe3d472::t_0eaff0876cd30d 1-11
+src/composables/onboarding/useOnboarding.ts
+  s_c105760fe3d472::t_5a1fad20884f3e 2,15-18,20-25
+  s_c105760fe3d472::t_9dbc3dc8c3abd9 1,5-6
+  s_c105760fe3d472::t_4846f12821010d 26-29
+  s_c105760fe3d472::t_548c44a52a54e1 3-4,7-14,19,30-31
+src/components/common/AlertList.vue
+  s_c105760fe3d472::t_b76525398c03d7 1-6,20-22,39
+  s_c105760fe3d472::t_04ef18e0578d2d 7-11,13-19,23-38
+src/lib/calculations/dti.ts
+  s_c105760fe3d472::t_b6076d025dede3 6-7,16-18,22,24
+  s_c105760fe3d472::t_0f4f182801fd67 1-5,8-15,19-21,23
+tests/component/ConfirmDialog.test.ts
+  s_c105760fe3d472::t_4c8a7627cf5803 1-15,17-18,20-27,29,40-80
+  s_c105760fe3d472::t_46cc5020ca7752 19,28,30-39
+src/views/NetWorthView.vue
+  s_c105760fe3d472::t_122de9cefefe07 1,15-17,33
+  s_c105760fe3d472::t_242b688bad7892 2-12,18-32
+tests/component/AppToast.test.ts
+  s_c105760fe3d472::t_e8f9a6780b2187 1-40
+src/components/history/SnapshotList.vue
+  s_c105760fe3d472::t_a527ebbca12de1 1,4,15-17,44
+  s_c105760fe3d472::t_ebe095aca241c7 2-3,5-10,12-13,18-43
+src/components/expenses/ExpenseForm.vue
+  s_c105760fe3d472::t_8f07cbed14b662 1,6,20-22,67
+  s_c105760fe3d472::t_dcd96cea282576 2-4,7-19,23-66
+tests/component/RetentionEstimator.test.ts
+  s_c105760fe3d472::t_ce8fcb5683679b 1-37
+src/lib/health/thresholds.ts
+  s_c105760fe3d472::t_9194f9fef41cf5 1-40
+tests/unit/tax/colombia/retencion.test.ts
+  s_c105760fe3d472::t_2302de3feddce1 1-54
+tests/unit/composables/useLocale.test.ts
+  s_c105760fe3d472::t_202fef31beacca 1-35
+src/components/variable/QuickAddFAB.vue
+  s_c105760fe3d472::t_6a6090762df4ca 12,14,28,53
+  s_c105760fe3d472::t_5ae0f24ab7bb12 1,33-35,88
+  s_c105760fe3d472::t_e47e54a8513a38 2-6,8,10-11,15-27,29-32,36-52,54-87
+src/stores/incomeStore.ts
+  s_c105760fe3d472::t_ed7a6a8486402c 1-2,37-51,61,63-119,121-126
+  s_c105760fe3d472::t_014139af74dcbc 60,62,127
+  s_c105760fe3d472::t_b73d0cb21c6c37 3-7,9-36,52-59,128-142
+  s_c105760fe3d472::t_f1b663e67deb52 8
+tests/unit/storage/schema.test.ts
+  s_c105760fe3d472::t_50fcc57d46822e 28,31-33,36,46,51-53
+  s_c105760fe3d472::t_59ea2ffb0fb994 1-27,29-30,34-35,37-45,47-50,54-57,59-64,70-71,73-78,84-85,87-91,97-99
+  s_c105760fe3d472::t_e443fd17dbcd9a 58,65-69,86,92-96
+  s_c105760fe3d472::t_730107a1fbb330 72,79-83
+tests/unit/composables/useCurrencyFormat.test.ts
+  s_c105760fe3d472::t_83f54962eb30f6 1-21
+tests/component/VariableCategoryCard.test.ts
+  s_c105760fe3d472::t_ae660e8bf6f854 1-12,14-19,21-26,28-33,35-39
+tests/component/GoalList.test.ts
+  s_c105760fe3d472::t_4cb0418a38f7e3 1-8,15-33,36-55,57-64,66-67,69-84,87,89-101,103-110,112,114-123
+src/components/common/BottomNav.vue
+  s_c105760fe3d472::t_2241c6c3762171 8-13,15-18,20-25,29-57
+  s_c105760fe3d472::t_007b2dc8db2b4b 1-7,19,26-28,58
+tests/component/AlertList.test.ts
+  s_c105760fe3d472::t_c36ca8ac2bcda9 1-35
+src/lib/calculations/housing-ratio.ts
+  s_c105760fe3d472::t_9ef44f912b49b8 6-16
+  s_c105760fe3d472::t_c5c9523aa3e8be 1-5,17
+src/stores/cardsStore.ts
+  s_c105760fe3d472::t_1776a62f2bb83e 3-41,50-51,55-59,66,68,81,83-85,128-141
+  s_c105760fe3d472::t_8170aae6f113b8 1-2,42-49,52-54,60-65,67,69-80,82,86-127
+src/stores/snapshotsStore.ts
+  s_c105760fe3d472::t_37845af5eadb0d 1,21-22,27-29
+  s_c105760fe3d472::t_3191042b295830 2-20,23-26,31,33-38
+  s_c105760fe3d472::t_4cb391993a4c38 30,32
+tests/unit/tax/colombia/presets.test.ts
+  s_c105760fe3d472::t_b9e64b210bbdfb 1-45
+tests/component/Tooltip.test.ts
+  s_c105760fe3d472::t_04ae983cc1b950 1-78
+src/composables/useTheme.ts
+  s_c105760fe3d472::t_243cbb4e251297 3,26,50,58
+  s_c105760fe3d472::t_844aa58024ece4 6-9,23,30-36,38-46,49,57
+  s_c105760fe3d472::t_11b651e31e63e5 1-2,4-5,10-22,24-25,27-29,37,47-48,51-56
+src/stores/goalsStore.ts
+  s_c105760fe3d472::t_0eb2409c5de898 1-2,18-21,24-30,36-40,45-53,57-62
+  s_c105760fe3d472::t_101a3ffbd6345e 3-17,22-23,31-35,41-44,54-56,63-66
+e2e/export-import.spec.ts
+  s_c105760fe3d472::t_bf83c4094ab4e5 2-5,7-15,18-22
+  s_c105760fe3d472::t_0d3c7af49db446 1,16-17
+src/components/income/IncomeStreamRow.vue
+  s_c105760fe3d472::t_a514c51b01da57 2-18,20-27,31-36
+  s_c105760fe3d472::t_bb4c8bc6b1422c 1,28-30,37
+src/stores/allocationStore.ts
+  s_c105760fe3d472::t_06cddc12b42fd7 1-23
+tests/unit/stores/goalsAssetsStore.test.ts
+  s_c105760fe3d472::t_81d80a41b0a980 1-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "55ecc4665e7a1fa0b72970bb17784c8d2ba07ed6",
+  "prompts": {},
+  "sessions": {
+    "s_0c749503636097": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f57fb644-4b46-4a00-8058-a8e6005bc07e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    },
+    "s_c105760fe3d472": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef612208-7367-4003-8c6e-13e84226964c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
