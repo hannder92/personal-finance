@@ -1,5 +1,5 @@
 ---
-description: Vue 3.5 + Pinia architecture rules — layers, store pattern, App.vue shell, CRUD completeness
+description: Vue 3.5 + Pinia layers, store pattern, App.vue shell, CRUD completeness
 ---
 
 # Vue Architecture Rules
@@ -7,21 +7,18 @@ description: Vue 3.5 + Pinia architecture rules — layers, store pattern, App.v
 ## Principles
 
 1. Dependency direction is **strictly inward**: `views → components → composables → stores → lib`. No reverse imports.
-2. `lib/` is framework-free: zero Vue or Pinia imports. Functions there are testable with plain Node.
+2. `lib/` is framework-free: zero Vue or Pinia imports. Testable with plain Node/Vitest.
 3. State lives in Pinia stores. Components hold only ephemeral UI state (`showForm`, `pendingId`).
-4. `App.vue` is the persistent layout shell — navigation, theme, and locale toggles are wired there, not in individual views.
-5. Every domain view that exposes a list **MUST** also expose a create flow; read-only views must be documented as such.
-
----
+4. `App.vue` is the persistent layout shell — navigation, theme, and locale toggles live there.
+5. Every domain view with a store `add()` action **MUST** expose a CTA + form; read-only views must document it.
 
 ## Layer Rules
 
 ### `lib/` — Pure Functions
 
-✅ Zero side effects, zero framework imports:
+✅ Pure, no framework:
 
 ```ts
-// lib/calculations/amortization.ts
 export function calcDebtTimeline(debt: Debt): DebtTimeline {
   const months = monthsToPayoff(debt.balance, debt.apr, debt.minPayment)
   return {
@@ -32,75 +29,42 @@ export function calcDebtTimeline(debt: Debt): DebtTimeline {
 }
 ```
 
-❌ Vue/Pinia import inside lib/:
-
-```ts
-// lib/calculations/amortization.ts — FORBIDDEN
-import { useCardsStore } from '@/stores/cardsStore' // breaks lib/ purity
-```
+❌ Vue/Pinia import inside `lib/` — breaks testability (FORBIDDEN).
 
 ### `stores/` — Pinia Setup Stores
 
-Pattern: `state = reactive({})`, boundary guards before mutations, `globalThis.crypto.randomUUID()` for IDs.
+Pattern: `state = reactive({})` + boundary guards before mutations + `globalThis.crypto.randomUUID()` for IDs.
 
-✅ Setup store with boundary validation:
+✅ Correct setup store:
 
 ```ts
 export const useCardsStore = defineStore('cards', () => {
   const state = reactive<CardsState>({ items: [] })
-
   function addCard(input: Omit<CardDebt, 'id'>): void {
-    if (!isValidName(input.name)) return // guard — silently discard invalid input
+    if (!isValidName(input.name)) return // guard — discard invalid silently
     if (!isValidAmount(input.balance)) return
     state.items.push({ ...input, id: globalThis.crypto.randomUUID() })
   }
-
   return { state, addCard }
 })
 ```
 
-❌ Sequential IDs or Math.random():
+❌ `state.items.push({ id: state.items.length + 1 })` — sequential IDs collide on JSON import (FORBIDDEN).
+❌ `cardsStore.state.items.push(...)` from a component — bypasses validation (FORBIDDEN).
+
+### Accessing Store State
+
+Access via `store.state.field` directly — `storeToRefs()` is NOT needed for the nested `state = reactive({})` object.
+Use `storeToRefs()` only when destructuring top-level reactive `ref`s from a store.
+
+### `composables/` — Store + Lib Bridge
+
+Use module-level singleton `ref` for composables shared across multiple instances:
+
+✅ Shared theme state:
 
 ```ts
-state.items.push({ ...input, id: state.items.length + 1 }) // FORBIDDEN — predictable, collides on import
-```
-
-❌ Direct mutation from component:
-
-```ts
-// In a component — FORBIDDEN
-cardsStore.state.items.push({ id: 'x', ... })  // bypasses validation and devtools
-```
-
-### Accessing Store State in Components
-
-Setup stores expose `store.state.field` directly — `storeToRefs()` is NOT required for the nested `state` reactive object:
-
-✅ Correct:
-
-```ts
-const cards = useCardsStore()
-// In template: cards.state.items, cards.state.items.length
-```
-
-❌ Unnecessary (and potentially incorrect):
-
-```ts
-const { state } = storeToRefs(cardsStore) // storeToRefs on nested reactive doesn't add value
-```
-
-Use `storeToRefs()` only when destructuring **top-level** reactive refs directly from a store.
-
-### `composables/` — Domain + Store Bridge
-
-Composables connect stores to calculations and manage shared reactive state.
-Use module-level singleton `ref` when the composable is meant to be shared across multiple component instances:
-
-✅ Singleton pattern for global state (e.g., theme):
-
-```ts
-const sharedIsDark = ref(false) // module-level — one instance across all callers
-
+const sharedIsDark = ref(false) // module-level singleton
 export function useTheme() {
   const settings = useSettingsStore()
   watch(() => settings.state.theme, applyHtmlClass, { immediate: true })
@@ -108,15 +72,7 @@ export function useTheme() {
 }
 ```
 
-❌ Calling lib/ directly from a view:
-
-```ts
-// In DashboardView.vue — FORBIDDEN
-import { calcHealthScore } from '@/lib/calculations/health-score'
-const score = calcHealthScore(...)  // lib/ must be called from composables or stores, not views
-```
-
----
+❌ Calling `lib/calculations/*` directly from a `views/` file — must go through composable/store (FORBIDDEN).
 
 ## App.vue — Persistent Layout Shell
 
@@ -127,149 +83,84 @@ const score = calcHealthScore(...)  // lib/ must be called from composables or s
 ```vue
 <template>
   <div class="min-h-screen bg-white dark:bg-slate-950">
-    <!-- 1. Sticky top bar with logo + desktop nav + ThemeToggle + LanguageToggle -->
-    <header v-if="!isOnboarding" class="sticky top-0 z-50 ...">
+    <header v-if="!isOnboarding" class="sticky top-0 z-50">
       <RouterLink to="/">MisFinanzas</RouterLink>
       <nav class="hidden md:block">
-        <RouterLink v-for="item in ALL_NAV" :to="item.to" ...>{{ item.label }}</RouterLink>
+        <RouterLink v-for="item in ALL_NAV" :to="item.to">{{ item.label }}</RouterLink>
       </nav>
       <ThemeToggle :model-value="theme" @update:model-value="setTheme" />
       <LanguageToggle :model-value="locale" @update:model-value="setLocale" />
     </header>
-
-    <!-- 2. Main content with bottom padding for mobile nav -->
-    <main :class="{ 'pb-16 md:pb-0': !isOnboarding }">
-      <RouterView />
-    </main>
-
-    <!-- 3. Mobile bottom nav using RouterLink (SPA-correct) -->
-    <nav v-if="!isOnboarding" class="fixed inset-x-0 bottom-0 md:hidden ...">
-      <RouterLink v-for="item in MOBILE_NAV" :to="item.to" ...>{{ item.label }}</RouterLink>
+    <main :class="{ 'pb-16 md:pb-0': !isOnboarding }"><RouterView /></main>
+    <nav v-if="!isOnboarding" class="fixed inset-x-0 bottom-0 md:hidden">
+      <RouterLink v-for="item in MOBILE_NAV" :to="item.to">{{ item.label }}</RouterLink>
     </nav>
   </div>
 </template>
 ```
 
-❌ Bare RouterView (no navigation, no toggles):
+❌ `<div><RouterView /></div>` as the complete App.vue — no navigation means no view is reachable (FORBIDDEN).
 
-```vue
-<template>
-  <div>
-    <RouterView />
-    <!-- FORBIDDEN as the complete App.vue — users have no way to navigate -->
-  </div>
-</template>
-```
-
-**When adding a new route**: always add it to `ALL_NAV` in `App.vue` on the same task/PR. A route unreachable from the UI is incomplete.
-
-**Use `RouterLink`, not `<a href>`**: `<a href="/income">` causes a full-page reload in SPA mode. `RouterLink` uses the History API.
-
----
+**New route rule**: add it to `ALL_NAV` / `MOBILE_NAV` on the same PR. Use `RouterLink :to`, never `<a href>` (causes full-page reload).
 
 ## CRUD Completeness in Domain Views
 
-Every view whose domain store exposes an `add()` / `addCard()` / `addLoan()` action **MUST** have a visible CTA and an add form before the task can be marked done.
+Every view whose domain store has `add()` / `addCard()` / `addLoan()` **MUST** include CTA + form + empty state.
 
-✅ Complete domain view:
-
-```vue
-<template>
-  <section>
-    <header class="flex items-center justify-between">
-      <h1>Deudas</h1>
-      <button @click="showForm = !showForm">+ Agregar</button>
-      <!-- CTA required -->
-    </header>
-
-    <form v-if="showForm" @submit.prevent="onSubmit">...</form>
-    <!-- form required -->
-
-    <div v-if="cards.state.items.length === 0 && !showForm" class="...">
-      Sin deudas registradas.
-      <!-- empty state required -->
-    </div>
-
-    <CardCard v-for="item in cards.state.items" ... />
-  </section>
-</template>
-```
-
-❌ Incomplete domain view (list only, no add flow):
+✅ Complete view:
 
 ```vue
-<template>
-  <section>
-    <h1>Deudas</h1>
-    <!-- no CTA, no form — INCOMPLETE -->
-    <CardCard v-for="item in cards.state.items" ... />
-  </section>
-</template>
+<header class="flex items-center justify-between">
+  <h1>Deudas</h1>
+  <button @click="showForm = !showForm">+ Agregar</button>        <!-- CTA required -->
+</header>
+<form v-if="showForm" @submit.prevent="onSubmit">...</form>
+<!-- form required -->
+<div v-if="!items.length && !showForm">Sin deudas registradas.</div>
+<!-- empty state -->
 ```
 
-**Exempt views** (read-only by design, must be documented as such in task DoD):
+❌ `<h1>Deudas</h1><CardCard v-for="..." />` with no CTA — list-only view is INCOMPLETE.
 
-- `DashboardView` — aggregate display
-- `HistoryView` — snapshot archive (auto-generated)
-- `AllocationView` — derived from income/expenses ratios
-
----
+**Exempt (read-only, must be documented in DoD):** `DashboardView`, `HistoryView`, `AllocationView`.
 
 ## CSS Grid Alignment in Inline Forms
 
-When a form grid has a button or control column alongside labeled inputs, use an **invisible label spacer** to align controls with the input fields — not `align-self: end`.
+When a button/control column sits next to labeled inputs in a grid, use an **invisible label spacer** — not `align-self: end`.
 
-✅ Invisible spacer for alignment:
+✅ Spacer approach (works even when sibling has hint text):
 
 ```vue
 <div class="grid grid-cols-2 gap-2 items-start">
   <label class="flex flex-col gap-1">
-    <span class="text-xs">Nombre</span>
-    <input ... />
-    <span class="text-xs text-slate-400">Hint text below</span>  <!-- extra height here -->
+    <span class="text-xs">Nombre</span><input /><span class="text-xs text-slate-400">Hint</span>
   </label>
-
   <div class="flex flex-col gap-1">
-    <span class="text-xs invisible">_</span>   <!-- invisible spacer matches label height -->
-    <button type="button">✕</button>
+    <span class="invisible text-xs">_</span>  <!-- matches label height -->
+    <button>✕</button>
   </div>
 </div>
 ```
 
-❌ `align-self: end` (breaks when sibling has hint text):
-
-```vue
-<div class="grid grid-cols-2 gap-2 items-start">
-  <label class="flex flex-col gap-1">
-    <span class="text-xs">Nombre</span>
-    <input ... />
-    <span class="text-xs text-slate-400">Hint text</span>
-  </label>
-  <button class="self-end">✕</button>  <!-- pushes to bottom, misaligns with input -->
-</div>
-```
-
----
+❌ `<button class="self-end">✕</button>` — pushes below inputs when sibling has hint text.
 
 ## Anti-patterns
 
-| Anti-pattern                                | Why it's wrong                             | Fix                                                     |
-| ------------------------------------------- | ------------------------------------------ | ------------------------------------------------------- |
-| Bare `<RouterView>` in App.vue              | No navigation = users can't reach any view | Add layout shell with RouterLink nav                    |
-| `<a :href>` instead of `RouterLink`         | Causes full-page reload, breaks SPA        | Use `RouterLink :to`                                    |
-| View with list but no add CTA               | Store has `add()` but it's inaccessible    | Add button + inline form                                |
-| `lib/` importing from `@/stores/`           | Breaks testability, couples domain logic   | Move logic to composable or store                       |
-| Sequential IDs                              | Predictable, collides on JSON import       | Use `globalThis.crypto.randomUUID()`                    |
-| Calling store action without boundary guard | Silent data corruption                     | Add `isValidName()` / `isValidAmount()` at action entry |
-
----
+| Anti-pattern                        | Fix                                     |
+| ----------------------------------- | --------------------------------------- |
+| Bare `<RouterView>` in App.vue      | Add full layout shell                   |
+| `<a href>` for internal links       | Use `RouterLink :to`                    |
+| List view with no add CTA           | Add button + form + empty state         |
+| `lib/` importing Vue/Pinia          | Move to composable                      |
+| Sequential or `Math.random()` IDs   | Use `crypto.randomUUID()`               |
+| Store action without boundary guard | Add `isValidName()` / `isValidAmount()` |
 
 ## Quality Checklist
 
-- [ ] `lib/` files have zero Vue/Pinia imports (verifiable with `grep`)
-- [ ] Each new store action has at least one boundary guard before `state.items.push()`
+- [ ] `lib/` files: `grep -r "from 'vue'\|from 'pinia'" src/lib/` returns empty
+- [ ] Every new store action has at least one boundary guard before `state.items.push()`
 - [ ] All new entity IDs use `globalThis.crypto.randomUUID()`
-- [ ] New route is added to `ALL_NAV` / `MOBILE_NAV` in `App.vue`
-- [ ] View with `add()` store action has visible CTA + form + empty state
-- [ ] `RouterLink` used for all in-app navigation (no `<a href>` for internal routes)
-- [ ] CSS grid button columns use invisible label spacers when sibling has hint text
+- [ ] New route added to `ALL_NAV` / `MOBILE_NAV` in `App.vue`
+- [ ] View with `add()` store action has CTA + inline form + empty state message
+- [ ] `RouterLink` used for all in-app navigation
+- [ ] Grid button columns use invisible spacer when sibling label has hint text

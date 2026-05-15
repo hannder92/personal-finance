@@ -1,5 +1,12 @@
 ---
-description: Colombian payroll and tax constants — verified legal rules, not guesses
+description: Colombian payroll/tax — legal rules, not guesses (UVT 2025)
+paths:
+  [
+    'src/lib/tax/colombia/**',
+    'src/stores/incomeStore.ts',
+    'src/components/income/**',
+    'src/views/IncomeView.vue',
+  ]
 ---
 
 # Colombian Payroll & Tax Rules
@@ -17,7 +24,7 @@ Source: session corrections 2026-05-11 (ARL employer-only, retención base, rent
 ## Constants (2025)
 
 ```js
-const UVT_2025 = 49799;             // Resolución DIAN 000187/2024
+const UVT_2025 = 49799 // Resolución DIAN 000187/2024
 // SMMLV 2025 = $1,423,500 — solidarity fund threshold = 4 × $1,423,500 = $5,694,000
 // Renta exenta monthly cap = 240 × UVT_2025 = $11,951,760
 ```
@@ -25,23 +32,26 @@ const UVT_2025 = 49799;             // Resolución DIAN 000187/2024
 ## Examples
 
 ✅ Correct retención base:
+
 ```js
-const aporteSocial  = grossSalary * 0.08;   // salud 4% + pensión 4%
-const ingresoNominal = grossSalary - aporteSocial;
-const topeExenta    = 240 * UVT_2025;       // Art. 206 num. 10 ET
-const rentaExenta   = Math.min(ingresoNominal * 0.25, topeExenta);
+const aporteSocial = grossSalary * 0.08 // salud 4% + pensión 4%
+const ingresoNominal = grossSalary - aporteSocial
+const topeExenta = 240 * UVT_2025 // Art. 206 num. 10 ET
+const rentaExenta = Math.min(ingresoNominal * 0.25, topeExenta)
 ```
 
 ✅ Correct Colombia employee deduction presets:
+
 ```js
 const COLOMBIA_PRESETS = [
-  { label: 'Salud',   amount: 4, type: 'percent' },
+  { label: 'Salud', amount: 4, type: 'percent' },
   { label: 'Pensión', amount: 4, type: 'percent' },
   // ARL excluded — employer cost only
-];
+]
 ```
 
 ✅ Non-salary benefit: added to income AFTER deductions — never enters the contribution base:
+
 ```js
 function calcNetSalary() {
   const deductions = state.income.deductions.reduce(...);           // on grossSalary only
@@ -51,19 +61,22 @@ function calcNetSalary() {
 ```
 
 ❌ Including ARL in employee deductions:
+
 ```js
 { label: 'ARL', amount: 0.522, type: 'percent' }   // WRONG — employer cost, not employee
 ```
 
 ❌ Deducting only pension from retención base:
+
 ```js
-const pension = grossSalary * 0.04;           // WRONG — misses salud 4%
-const ingresoNominal = grossSalary - pension;
+const pension = grossSalary * 0.04 // WRONG — misses salud 4%
+const ingresoNominal = grossSalary - pension
 ```
 
 ❌ Wrong renta exenta cap:
+
 ```js
-const topeExenta = 65.833 * UVT_2025;   // WRONG — 790 UVT/year, not 2,880
+const topeExenta = 65.833 * UVT_2025 // WRONG — 790 UVT/year, not 2,880
 ```
 
 ## Anti-patterns

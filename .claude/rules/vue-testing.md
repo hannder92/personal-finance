@@ -1,5 +1,5 @@
 ---
-description: Vitest + @testing-library/vue + @pinia/testing patterns for Vue 3.5 + TypeScript
+description: Vitest + @testing-library/vue + @pinia/testing patterns for Vue 3.5
 ---
 
 # Vue Testing Rules
@@ -133,36 +133,7 @@ createTestingPinia({ stubActions: true }) // actions become no-ops — mutations
 
 ### Level 4 — E2E with Playwright
 
-Use `fixtures.ts` helpers `freshPage` (new user) and `returningPage` (pre-seeded state via `localStorage`).
-
-✅ E2E fixture pattern:
-
-```ts
-// e2e/fixtures.ts
-import { test as base } from '@playwright/test'
-
-export const freshPage = base.extend({
-  page: async ({ page }, use) => {
-    await page.goto('/')
-    // no localStorage — triggers onboarding guard
-    await use(page)
-  },
-})
-
-export const returningPage = base.extend({
-  page: async ({ page }, use) => {
-    await page.goto('/')
-    await page.evaluate(
-      (data) => localStorage.setItem('finance_app_data', JSON.stringify(data)),
-      seededState
-    )
-    await page.reload()
-    await use(page)
-  },
-})
-```
-
----
+Use `fixtures.ts` helpers: `freshPage` (no localStorage → triggers onboarding guard) and `returningPage` (pre-seeds `finance_app_data` in localStorage then reloads). Never use raw `page.goto('/')` without a fixture.
 
 ## Anti-patterns
 
@@ -173,8 +144,6 @@ export const returningPage = base.extend({
 | Testing lib/ functions with Pinia setup | Adds setup noise; pure functions have no store dependency             | Plain `describe` + `expect`, no Pinia            |
 | Test IDs without AC reference           | Can't trace failures back to specs                                    | Prefix every it-string with `TC-U-NNN (AC-X.Y):` |
 | Mocking `globalThis.crypto.randomUUID`  | Makes ID-equality assertions brittle                                  | Test ID shape with regex `/^[0-9a-f]{8}-/`       |
-
----
 
 ## initialState Shape for createTestingPinia
 
@@ -193,8 +162,6 @@ settings: {
   },
 },
 ```
-
----
 
 ## Quality Checklist
 
