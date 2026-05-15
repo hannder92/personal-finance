@@ -1,0 +1,21 @@
+.claude/rules/README.md
+  s_c105760fe3d472::t_05de411d48aab7 3,5,7,9,11-16,18
+AGENTS.md
+  s_c105760fe3d472::t_77f8c5c95bb725 8-11,14,16-21,24,26,28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "20357b133b4d8ed22d3e6a720111aa9a25fdf69b",
+  "prompts": {},
+  "sessions": {
+    "s_c105760fe3d472": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef612208-7367-4003-8c6e-13e84226964c",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
