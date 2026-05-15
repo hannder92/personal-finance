@@ -1,12 +1,10 @@
 ---
 description: Colombian payroll/tax — legal rules, not guesses (UVT 2025)
 paths:
-  [
-    'src/lib/tax/colombia/**',
-    'src/stores/incomeStore.ts',
-    'src/components/income/**',
-    'src/views/IncomeView.vue',
-  ]
+  - 'src/lib/tax/colombia/**'
+  - 'src/stores/incomeStore.ts'
+  - 'src/components/income/**'
+  - 'src/views/IncomeView.vue'
 ---
 
 # Colombian Payroll & Tax Rules
