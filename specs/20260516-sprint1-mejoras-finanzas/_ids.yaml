@@ -1,0 +1,115 @@
+ac:
+  - {id: "AC-1.1", desc: "Load error shows visible notification — no silent empty start"}
+  - {id: "AC-1.2", desc: "Load-error notification persists until user dismisses it"}
+  - {id: "AC-1.3", desc: "Save failure shows notification with retry option"}
+  - {id: "AC-1.4", desc: "Dismissing error notification leaves app fully usable"}
+  - {id: "AC-2.1", desc: "DTI tooltip: definition + ≤20% healthy, >36% risky"}
+  - {id: "AC-2.2", desc: "Housing ratio tooltip: definition + ≤30% recommended"}
+  - {id: "AC-2.3", desc: "Emergency fund tooltip: months covered + 3–6 month range"}
+  - {id: "AC-2.4", desc: "Savings rate tooltip: share of net income toward goals"}
+  - {id: "AC-2.5", desc: "Health score tooltip: 0–100 scale + four components named"}
+  - {id: "AC-2.6", desc: "Tooltips fully visible on 375px viewport — no clipping"}
+  - {id: "AC-2.7", desc: "Tooltip appears on keyboard focus (same content as hover)"}
+  - {id: "AC-3.1", desc: "No income registered → dashboard shows income CTA"}
+  - {id: "AC-3.2", desc: "Income registered, no expenses → dashboard shows expenses CTA"}
+  - {id: "AC-3.3", desc: "Empty-state CTA disappears after missing data is added"}
+  - {id: "AC-3.4", desc: "Partial data: calculable metrics shown + only missing-data prompt"}
+  - {id: "AC-4.1", desc: "Salary > $5,694,000 → Colombia presets include 1% solidarity fund"}
+  - {id: "AC-4.2", desc: "Salary ≤ $5,694,000 → Colombia presets do NOT include solidarity fund"}
+  - {id: "AC-4.3", desc: "Applying Colombia presets twice does not duplicate solidarity fund"}
+  - {id: "AC-4.4", desc: "Solidarity fund not auto-removed when salary drops below threshold"}
+  - {id: "AC-5.1", desc: "Salary ≤ $2,847,000 + no transport benefit → suggestion banner shown"}
+  - {id: "AC-5.2", desc: "Accepting suggestion adds Auxilio de transporte $200,000 and hides banner"}
+  - {id: "AC-5.3", desc: "Transport benefit already present → suggestion banner not shown"}
+  - {id: "AC-5.4", desc: "Dismissing suggestion → banner gone for rest of session"}
+  - {id: "AC-5.5", desc: "Salary changes above $2,847,000 after transport added → one-time notice shown"}
+
+tc:
+  - {id: "TC-U-001", covers: ["AC-1.1"],                kind: unit}
+  - {id: "TC-U-002", covers: ["AC-1.4"],                kind: unit}
+  - {id: "TC-U-003", covers: ["AC-3.1"],                kind: unit}
+  - {id: "TC-U-004", covers: ["AC-3.2"],                kind: unit}
+  - {id: "TC-U-005", covers: ["AC-3.3"],                kind: unit}
+  - {id: "TC-U-006", covers: ["AC-3.4"],                kind: unit}
+  - {id: "TC-U-007", covers: ["AC-4.1"],                kind: unit}
+  - {id: "TC-U-008", covers: ["AC-4.2"],                kind: unit}
+  - {id: "TC-U-009", covers: ["AC-4.3"],                kind: unit}
+  - {id: "TC-U-010", covers: ["AC-4.1","AC-4.2"],       kind: unit}
+  - {id: "TC-U-011", covers: ["AC-5.1"],                kind: unit}
+  - {id: "TC-U-012", covers: ["AC-5.3"],                kind: unit}
+  - {id: "TC-U-013", covers: ["AC-5.1"],                kind: unit}
+  - {id: "TC-U-014", covers: ["AC-5.1"],                kind: unit}
+  - {id: "TC-U-015", covers: ["AC-5.4"],                kind: unit}
+  - {id: "TC-U-016", covers: ["AC-5.5"],                kind: unit}
+  - {id: "TC-U-017", covers: ["AC-2.1"],                kind: unit}
+  - {id: "TC-U-018", covers: ["AC-2.2"],                kind: unit}
+  - {id: "TC-U-019", covers: ["AC-2.3"],                kind: unit}
+  - {id: "TC-U-020", covers: ["AC-2.4"],                kind: unit}
+  - {id: "TC-U-021", covers: ["AC-2.5"],                kind: unit}
+  - {id: "TC-U-022", covers: ["AC-4.1"],                kind: unit}
+  - {id: "TC-U-023", covers: ["AC-5.1"],                kind: unit}
+  - {id: "TC-U-024", covers: ["AC-4.1"],                kind: unit}
+  - {id: "TC-U-025", covers: ["AC-4.4"],                kind: unit}
+  - {id: "TC-U-026", covers: ["AC-1.1"],                kind: unit}
+  - {id: "TC-C-001", covers: ["AC-1.1"],                kind: component}
+  - {id: "TC-C-002", covers: ["AC-1.2"],                kind: component}
+  - {id: "TC-C-003", covers: ["AC-1.3"],                kind: component}
+  - {id: "TC-C-004", covers: ["AC-1.4"],                kind: component}
+  - {id: "TC-C-005", covers: ["AC-2.1"],                kind: component}
+  - {id: "TC-C-006", covers: ["AC-2.2"],                kind: component}
+  - {id: "TC-C-007", covers: ["AC-2.3"],                kind: component}
+  - {id: "TC-C-008", covers: ["AC-2.4"],                kind: component}
+  - {id: "TC-C-009", covers: ["AC-2.5"],                kind: component}
+  - {id: "TC-C-010", covers: ["AC-2.6"],                kind: component}
+  - {id: "TC-C-011", covers: ["AC-2.7"],                kind: component}
+  - {id: "TC-C-012", covers: ["AC-3.1"],                kind: component}
+  - {id: "TC-C-013", covers: ["AC-3.2"],                kind: component}
+  - {id: "TC-C-014", covers: ["AC-3.3"],                kind: component}
+  - {id: "TC-C-015", covers: ["AC-3.4"],                kind: component}
+  - {id: "TC-C-016", covers: ["AC-5.1"],                kind: component}
+  - {id: "TC-C-017", covers: ["AC-5.2"],                kind: component}
+  - {id: "TC-C-018", covers: ["AC-5.4"],                kind: component}
+  - {id: "TC-C-019", covers: ["AC-5.5"],                kind: component}
+  - {id: "TC-E-001", covers: ["AC-1.1","AC-1.2","AC-1.4"],  kind: e2e}
+  - {id: "TC-E-002", covers: ["AC-4.1","AC-4.3"],           kind: e2e}
+  - {id: "TC-E-003", covers: ["AC-5.1","AC-5.2"],           kind: e2e}
+
+tasks:
+  - {id: "T-001",  status: done,    type: setup, size: S, covers: [],                                                deps: []}
+  - {id: "T-002",  status: done,    type: test,  size: S, covers: ["AC-1.1","AC-1.4"],                              deps: ["T-001"]}
+  - {id: "T-003",  status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4"],            deps: ["T-001"]}
+  - {id: "T-004",  status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.4"],                     deps: ["T-001"]}
+  - {id: "T-005",  status: pending, type: impl,  size: S, covers: ["AC-1.1","AC-1.4"],                              deps: ["T-002"]}
+  - {id: "T-006",  status: pending, type: impl,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3"],                     deps: ["T-003","T-005"]}
+  - {id: "T-007",  status: pending, type: test,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-001"]}
+  - {id: "T-008",  status: pending, type: test,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-001"]}
+  - {id: "T-009",  status: pending, type: test,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5"],            deps: ["T-001"]}
+  - {id: "T-010",  status: pending, type: impl,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-007"]}
+  - {id: "T-011",  status: pending, type: impl,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-008","T-010"]}
+  - {id: "T-012",  status: pending, type: impl,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7"], deps: ["T-009","T-010"]}
+  - {id: "T-013",  status: pending, type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
+  - {id: "T-014",  status: pending, type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
+  - {id: "T-015",  status: pending, type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-013"]}
+  - {id: "T-016",  status: pending, type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-014","T-015"]}
+  - {id: "T-017",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-001"]}
+  - {id: "T-018",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-001"]}
+  - {id: "T-019",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.3"],                              deps: ["T-001"]}
+  - {id: "T-020",  status: pending, type: impl,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-017"]}
+  - {id: "T-021",  status: pending, type: impl,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-018","T-020"]}
+  - {id: "T-022",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-001"]}
+  - {id: "T-023",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4"],                     deps: ["T-001"]}
+  - {id: "T-024",  status: pending, type: test,  size: S, covers: ["AC-5.5"],                                       deps: ["T-001"]}
+  - {id: "T-025",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.2"],                              deps: ["T-001"]}
+  - {id: "T-026",  status: pending, type: impl,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-022"]}
+  - {id: "T-027",  status: pending, type: impl,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4","AC-5.5"],            deps: ["T-023","T-024","T-026"]}
+  - {id: "T-028",  status: pending, type: docs,  size: S, covers: [],                                                deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
+  - {id: "T-LAST", status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4","AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7","AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-4.1","AC-4.2","AC-4.3","AC-4.4","AC-5.1","AC-5.2","AC-5.3","AC-5.4","AC-5.5"], deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
+
+adr:
+  - {id: "ADR-1", decision: "Tooltip via radix-vue (TooltipRoot/Trigger/Content)",                            covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7"]}
+  - {id: "ADR-2", decision: "Solidaridad as deduction with reserved id __solidarity__",                       covers: ["AC-4.1","AC-4.3"]}
+  - {id: "ADR-3", decision: "Empty-state inline banner (not full-screen overlay)",                            covers: ["AC-3.1","AC-3.2","AC-3.4"]}
+  - {id: "ADR-4", decision: "Banner dismissals in module-level ref (not sessionStorage)",                     covers: ["AC-5.4"]}
+  - {id: "ADR-5", decision: "CO payroll constants centralized in lib/tax/colombia/constants.ts with legal citations", covers: ["AC-4.1","AC-5.1"]}
+
+open_questions: []

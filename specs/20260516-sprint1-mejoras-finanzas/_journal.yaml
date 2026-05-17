@@ -1,0 +1,14 @@
+entries:
+  - {at: "2026-05-16T18:00:00", event: feature_initialized,  by: "Johann Medina"}
+  - {at: "2026-05-16T18:05:00", event: spec_generated}
+  - {at: "2026-05-16T18:10:00", event: phase_signed_off,     phase: spec,      by: "Johann Medina"}
+  - {at: "2026-05-16T18:25:00", event: plan_generated}
+  - {at: "2026-05-16T18:30:00", event: phase_signed_off,     phase: plan,      by: "Johann Medina"}
+  - {at: "2026-05-16T18:45:00", event: test_plan_generated}
+  - {at: "2026-05-16T18:50:00", event: phase_signed_off,     phase: test_plan, by: "Johann Medina"}
+  - {at: "2026-05-16T19:00:00", event: tasks_generated,      task_count: 29}
+  - {at: "2026-05-16T19:05:00", event: phase_signed_off,     phase: tasks,     by: "Johann Medina"}
+  - {at: "2026-05-16T19:10:00", event: task_started,         task: "T-001",    type: setup}
+  - {at: "2026-05-16T19:15:00", event: task_finished,        task: "T-001"}
+  - {at: "2026-05-16T19:18:00", event: task_started,         task: "T-002",    type: test}
+  - {at: "2026-05-16T19:20:00", event: task_finished,        task: "T-002"}

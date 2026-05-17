@@ -1,0 +1,35 @@
+feature:
+  slug: "20260516-sprint1-mejoras-finanzas"
+  name: "Sprint 1 mejoras finanzas personales"
+  branch: "feature/20260516-sprint1-mejoras-finanzas"
+  created: "2026-05-16"
+  mode: solo
+
+phase:
+  current: 5
+  name: impl
+  blocked: false
+
+sign_offs:
+  constitution: {approved: true,  by: "Johann Medina", at: "2026-05-14"}
+  spec:         {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  plan:         {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  test_plan:    {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  tasks:        {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  review:       {approved: false}
+
+artifacts:
+  constitution: "constitution.md"
+  spec:         "specs/20260516-sprint1-mejoras-finanzas/1-spec.md"
+  plan:         "specs/20260516-sprint1-mejoras-finanzas/2-plan.md"
+  test_plan:    "specs/20260516-sprint1-mejoras-finanzas/3-test-plan.md"
+  tasks:        "specs/20260516-sprint1-mejoras-finanzas/4-tasks.md"
+  review:       null
+
+progress:
+  tasks_done:   2
+  tasks_total:  29
+  next_pending: "T-003"
+  last_update:  "2026-05-16T19:20:00"
+
+drift: []

@@ -32,5 +32,12 @@
       "label": "Effective Annual Rate (EAR)",
       "tooltip": "APR here means Effective Annual Rate, the Colombian Superfinanciera standard. Monthly rate uses (1 + EAR)^(1/12) − 1."
     }
+  },
+  "glossary": {},
+  "dashboard": {
+    "guide": {}
+  },
+  "income": {
+    "transport": {}
   }
 }

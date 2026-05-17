@@ -34,3 +34,11 @@ export const ART_383_BRACKETS: readonly MarginalBracket[] = [
   { upperUVT: 2300, rate: 0.37, constantUVT: 268.75 },
   { upperUVT: Infinity, rate: 0.39, constantUVT: 770.1 },
 ]
+
+// Placeholders for T-001 setup. Real values land in T-020 (SMMLV / SOLIDARITY)
+// and T-026 (TRANSPORT). Unit tests in T-017 and T-022 will fail against these
+// until those impl tasks replace them with values cited from Decreto 1572/2024.
+export const SMMLV_2025 = 0
+export const SOLIDARITY_THRESHOLD = 0
+export const TRANSPORT_THRESHOLD = 0
+export const AUXILIO_TRANSPORTE_2025 = 0

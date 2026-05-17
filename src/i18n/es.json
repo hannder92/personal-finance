@@ -32,5 +32,12 @@
       "label": "Tasa Efectiva Anual (E.A.)",
       "tooltip": "APR aquí significa Tasa Efectiva Anual (E.A.), el estándar Superfinanciera de Colombia. El cálculo mensual usa (1 + E.A.)^(1/12) − 1."
     }
+  },
+  "glossary": {},
+  "dashboard": {
+    "guide": {}
+  },
+  "income": {
+    "transport": {}
   }
 }
