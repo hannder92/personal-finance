@@ -8,21 +8,22 @@ export interface HealthBreakdown {
   savings?: number | null
 }
 
-type Status = 'ok' | 'warn' | 'danger'
+type Status = 'ok' | 'warn' | 'danger' | 'missing'
 
 const props = withDefaults(
   defineProps<{
     score?: number
     label?: string
     breakdown?: HealthBreakdown
+    defaultOpen?: boolean
   }>(),
-  { score: 0, label: '', breakdown: () => ({}) }
+  { score: 0, label: '', breakdown: () => ({}), defaultOpen: false }
 )
 
-const open = ref(false)
+const open = ref(props.defaultOpen)
 
 function statusFor(component: keyof HealthBreakdown, value: number | null | undefined): Status {
-  if (value === null || value === undefined) return 'warn'
+  if (value === null || value === undefined) return 'missing'
   switch (component) {
     case 'dti':
       if (value <= 30) return 'ok'
@@ -90,7 +91,9 @@ const rows = computed(() => [
       <li
         v-for="row in rows"
         :key="row.key"
-        :data-component-status="statusFor(row.key, row.value)"
+        :data-component="row.key"
+        :data-status="statusFor(row.key, row.value)"
+        :data-component-status="statusFor(row.key, row.value) === 'missing' ? 'warn' : statusFor(row.key, row.value)"
         class="flex items-center justify-between text-sm"
       >
         <span class="font-medium">{{ row.label }}</span>

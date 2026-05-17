@@ -42,3 +42,27 @@ describe('lib/calculations/installments', () => {
     expect(Number.isFinite(result)).toBe(true)
   })
 })
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// Lib functions are already correct; the real bug (DTI ignores installments)
+// lives at the composable/view layer (T-023 useDTI + T-028 DashboardView).
+// These tests capture the spec's exact scenario for regression coverage.
+describe('lib/calculations/installments — fix-calculos-financieros', () => {
+  it('TC-U-009 (AC-4.2): card with one installment plan — min 200K + (600K/3) = 400K', () => {
+    expect(
+      calcCardObligation({
+        minPayment: 200_000,
+        installmentsList: [{ total: 600_000, installments: 3, paid: 0 }],
+      })
+    ).toBe(400_000)
+  })
+
+  it('TC-U-009 (AC-4.2): card with empty installmentsList → result === minPayment', () => {
+    expect(
+      calcCardObligation({
+        minPayment: 350_000,
+        installmentsList: [],
+      })
+    ).toBe(350_000)
+  })
+})

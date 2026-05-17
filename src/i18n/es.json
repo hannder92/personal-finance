@@ -1,1 +1,36 @@
-{}
+{
+  "storage": {
+    "error": {
+      "title": "Error al guardar",
+      "quotaExceeded": "Almacenamiento del navegador lleno. Tus datos siguen disponibles en esta sesión pero no se guardarán hasta liberar espacio.",
+      "invalidState": "Los datos en memoria no son válidos. Reintenta o revisa el formulario.",
+      "unknownReason": "No se pudieron guardar los datos.",
+      "retry": "Reintentar",
+      "dismiss": "Descartar"
+    }
+  },
+  "savings": {
+    "noRateConfigured": "Configura una tasa de rendimiento en un activo de tipo ahorro o inversión para ver la proyección de interés compuesto.",
+    "projection": {
+      "sectionTitle": "Proyección de ahorro (12 meses)",
+      "hypothetical": {
+        "label": "Ahorro hipotético"
+      },
+      "compound": {
+        "label": "Interés compuesto"
+      }
+    }
+  },
+  "assets": {
+    "annualRatePercent": {
+      "label": "Tasa anual (E.A. %)",
+      "hint": "Tasa Efectiva Anual entre 0% y 100%. Aplica a activos de ahorro o inversión."
+    }
+  },
+  "debts": {
+    "apr": {
+      "label": "Tasa Efectiva Anual (E.A.)",
+      "tooltip": "APR aquí significa Tasa Efectiva Anual (E.A.), el estándar Superfinanciera de Colombia. El cálculo mensual usa (1 + E.A.)^(1/12) − 1."
+    }
+  }
+}

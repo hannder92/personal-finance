@@ -1,0 +1,43 @@
+feature:
+  slug: "20260515-fix-calculos-financieros"
+  name: "Fix cálculos financieros"
+  branch: "feature/20260515-fix-calculos-financieros"
+  created: "2026-05-15"
+  mode: solo
+
+phase:
+  current: 6
+  name: review
+  blocked: false
+
+sign_offs:
+  constitution: {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  spec:         {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  plan:         {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  test_plan:    {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  tasks:        {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+  review:       {approved: true,  by: "Johann Medina", at: "2026-05-16"}
+
+artifacts:
+  constitution: "constitution.md"
+  spec:         "specs/20260515-fix-calculos-financieros/1-spec.md"
+  plan:         "specs/20260515-fix-calculos-financieros/2-plan.md"
+  data_model:   "specs/20260515-fix-calculos-financieros/2-data-model.md"
+  test_plan:    "specs/20260515-fix-calculos-financieros/3-test-plan.md"
+  tasks:        "specs/20260515-fix-calculos-financieros/4-tasks.md"
+  review:       "specs/20260515-fix-calculos-financieros/6-review.md"
+
+progress:
+  tasks_done:   34
+  tasks_total:  34
+  next_pending: null
+  last_update:  "2026-05-16T17:28:00"
+
+drift:
+  - {check: "ID-INTEGRITY",            status: pass, detail: "33/33 ACs, 44/44 TCs, 34/34 Tasks present. No duplicates."}
+  - {check: "COVERAGE-CHAIN",          status: pass, detail: "All 33 ACs covered by ≥1 TC and ≥1 impl task."}
+  - {check: "TEST-FIRST",              status: pass, detail: "All 17 impl tasks have ≥1 test dep."}
+  - {check: "TASK-STRUCTURE",          status: pass, detail: "No L-size tasks. No in-progress. 34/34 done. T-034 regression present."}
+  - {check: "SPEC-CODE-DRIFT",         status: pass, detail: "All 9 modules from 2-plan.md exist in codebase."}
+  - {check: "SIGN-OFF-FRESHNESS",      status: pass, detail: "All 5 signed-off artifacts unmodified since sign-off date."}
+  - {check: "CONSTITUTION-COMPLIANCE", status: pass, detail: "No violations. ARL mention was a documentation comment (correct exclusion per Art. 16 Ley 1562/2012)."}

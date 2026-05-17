@@ -1,1 +1,36 @@
-{}
+{
+  "storage": {
+    "error": {
+      "title": "Save failed",
+      "quotaExceeded": "Browser storage is full. Your data is still in memory but won't be saved until space is freed.",
+      "invalidState": "In-memory data is invalid. Retry or review the form.",
+      "unknownReason": "Could not save data.",
+      "retry": "Retry",
+      "dismiss": "Dismiss"
+    }
+  },
+  "savings": {
+    "noRateConfigured": "Set an annual rate on a savings or investment asset to see the compound growth projection.",
+    "projection": {
+      "sectionTitle": "Savings projection (12 months)",
+      "hypothetical": {
+        "label": "Hypothetical savings"
+      },
+      "compound": {
+        "label": "Compound growth"
+      }
+    }
+  },
+  "assets": {
+    "annualRatePercent": {
+      "label": "Annual rate (EAR %)",
+      "hint": "Effective Annual Rate between 0% and 100%. Applies to savings and investment assets."
+    }
+  },
+  "debts": {
+    "apr": {
+      "label": "Effective Annual Rate (EAR)",
+      "tooltip": "APR here means Effective Annual Rate, the Colombian Superfinanciera standard. Monthly rate uses (1 + EAR)^(1/12) − 1."
+    }
+  }
+}

@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import GoalList from '@/components/goals/GoalList.vue'
-import { useIncomeStore } from '@/stores/incomeStore'
+import { useGoalsBudget } from '@/composables/useGoalsBudget'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const settings = useSettingsStore()
-const income = useIncomeStore()
-
-// Approximate savings bucket as 15% of gross income; allocationStore will refine this in T-070.
-const savingsBucket = computed(() => Math.max(0, income.state.grossSalary * 0.15))
+const { goalCap } = useGoalsBudget()
 </script>
 
 <template>
@@ -19,7 +15,7 @@ const savingsBucket = computed(() => Math.max(0, income.state.grossSalary * 0.15
       </h1>
     </header>
     <GoalList
-      :savings-bucket="savingsBucket"
+      :savings-bucket="goalCap"
       :currency="settings.state.currency"
     />
   </section>

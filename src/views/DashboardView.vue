@@ -5,44 +5,40 @@ import ComparisonBadge from '@/components/dashboard/ComparisonBadge.vue'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
 import KpiCard from '@/components/dashboard/KpiCard.vue'
 import ProjectionChart from '@/components/dashboard/ProjectionChart.vue'
+import SavingsProjectionChart from '@/components/dashboard/SavingsProjectionChart.vue'
 import { useChartTheme } from '@/composables/useChartTheme'
+import { useDTI } from '@/composables/useDTI'
+import { useHealthScore } from '@/composables/useHealthScore'
+import { useNetIncome } from '@/composables/useNetIncome'
 import { useAllocationStore } from '@/stores/allocationStore'
-import { useCardsStore } from '@/stores/cardsStore'
 import { useExpensesStore } from '@/stores/expensesStore'
-import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
 
 const settings = useSettingsStore()
-const income = useIncomeStore()
 const expenses = useExpensesStore()
-const cards = useCardsStore()
 const allocation = useAllocationStore()
 const snapshots = useSnapshotsStore()
 const { options: chartTheme } = useChartTheme()
+const { netIncome, freeForAllocation } = useNetIncome()
+const { dti: dtiPct, totalDebtObligation } = useDTI()
+const { result: healthScoreResult } = useHealthScore()
 
 const fixedExpensesTotal = computed(() =>
   expenses.state.items.reduce((acc, e) => acc + e.amount, 0)
 )
-const debtPaymentsTotal = computed(() =>
-  cards.state.items.reduce((acc, c) => acc + c.minPayment, 0)
-)
-const freeToAllocate = computed(() =>
-  Math.max(0, income.state.grossSalary - fixedExpensesTotal.value - debtPaymentsTotal.value)
-)
-const dtiPct = computed(() => {
-  if (income.state.grossSalary <= 0) return 0
-  return Math.round((debtPaymentsTotal.value / income.state.grossSalary) * 100)
-})
 
 const sortedSnapshots = computed(() =>
   [...snapshots.state.items].sort((a, b) => b.month.localeCompare(a.month))
 )
-const latestScore = computed(() => sortedSnapshots.value[0]?.healthScore ?? 0)
-const previousScore = computed(() => sortedSnapshots.value[1]?.healthScore ?? null)
+const latestScore = computed(() => healthScoreResult.value.score)
+const previousScore = computed(() => sortedSnapshots.value[0]?.healthScore ?? null)
 
+// Project net income forward over 12 months. Periodic income streams are not yet
+// folded into this view (out of scope for T-028; calendar-aware projection is a
+// future enhancement noted in T-006).
 const projectionMonths = computed(() => {
-  const base = income.state.grossSalary - fixedExpensesTotal.value - debtPaymentsTotal.value
+  const base = freeForAllocation.value
   return Array.from({ length: 12 }, (_, i) => ({
     label: `M${i + 1}`,
     balance: base * (i + 1),
@@ -66,13 +62,14 @@ const projectionMonths = computed(() => {
     <HealthScore
       :score="latestScore"
       label="Saludable"
-      :breakdown="{ dti: dtiPct, emergency: 70, housing: 25, savings: allocation.state.savings }"
+      :breakdown="healthScoreResult.components"
+      :default-open="true"
     />
 
     <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
       <KpiCard
-        label="Ingreso bruto"
-        :value="income.state.grossSalary"
+        label="Ingreso neto"
+        :value="netIncome"
         type="income"
         :currency="settings.state.currency"
       />
@@ -84,7 +81,7 @@ const projectionMonths = computed(() => {
       />
       <KpiCard
         label="Pagos deuda"
-        :value="debtPaymentsTotal"
+        :value="totalDebtObligation"
         type="expenses"
         :currency="settings.state.currency"
       />
@@ -97,7 +94,7 @@ const projectionMonths = computed(() => {
       />
       <KpiCard
         label="Disponible"
-        :value="freeToAllocate"
+        :value="freeForAllocation"
         type="free"
         :currency="settings.state.currency"
       />
@@ -117,5 +114,7 @@ const projectionMonths = computed(() => {
         :grid-color="chartTheme.gridColor"
       />
     </div>
+
+    <SavingsProjectionChart />
   </section>
 </template>

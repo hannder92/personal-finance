@@ -47,4 +47,29 @@ describe('lib/calculations/dti', () => {
       expect(calcFreeForAllocation(1_000_000, 800_000, 500_000)).toBe(-300_000)
     })
   })
+
+  // New tests for feature spec 20260515-fix-calculos-financieros.
+  describe('lib/calculations/dti — fix-calculos-financieros', () => {
+    it('TC-U-002 (AC-2.3): netIncome 11.132M − fixed 3M − debt 1.5M = 6.632M', () => {
+      expect(calcFreeForAllocation(11_132_000, 3_000_000, 1_500_000)).toBe(6_632_000)
+    })
+
+    it('TC-U-002 (AC-2.3): debt > income → negative, no error thrown', () => {
+      const result = calcFreeForAllocation(2_000_000, 0, 5_000_000)
+      expect(result).toBeLessThan(0)
+      expect(Number.isFinite(result)).toBe(true)
+    })
+
+    it('TC-U-021 (EC-2): netIncome = 0 → DTI = 0 (no NaN)', () => {
+      const result = calcDTI(500_000, 0)
+      expect(result).toBe(0)
+      expect(Number.isFinite(result)).toBe(true)
+    })
+
+    it('TC-U-010 (AC-4.3): DTI = totalDebtObligation (min + installments) / netIncome', () => {
+      // Per TC-U-009: card obligation = 200K min + 200K installment = 400K
+      // DTI = 400K / 10M × 100 = 4%
+      expect(calcDTI(400_000, 10_000_000)).toBe(4)
+    })
+  })
 })

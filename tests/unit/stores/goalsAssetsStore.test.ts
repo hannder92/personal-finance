@@ -84,3 +84,67 @@ describe('assetsStore (T-046)', () => {
     expect(s.state.items.length).toBe(0)
   })
 })
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// AC-8.2: Asset gains `annualRatePercent: number` (default 0, range [0, 100]).
+// These tests RED today: assetsStore.add does NOT accept or persist annualRatePercent.
+// After T-015 (schema bump) + T-020 (store update), all pass.
+describe('assetsStore — fix-calculos-financieros (annualRatePercent)', () => {
+  beforeEach(() => setActivePinia(createPinia()))
+
+  it('TC-U-A01 (AC-8.2): add accepts annualRatePercent and persists it', () => {
+    const s = useAssetsStore()
+    s.add({
+      name: 'CDT',
+      value: 5_000_000,
+      type: 'savings',
+      // @ts-expect-error — annualRatePercent added to Asset in T-015
+      annualRatePercent: 12,
+    })
+    expect(s.state.items.length).toBe(1)
+    // @ts-expect-error — annualRatePercent added in T-015
+    expect(s.state.items[0]!.annualRatePercent).toBe(12)
+  })
+
+  it('TC-U-A02 (AC-8.2): add defaults annualRatePercent to 0 when omitted', () => {
+    const s = useAssetsStore()
+    s.add({ name: 'Cash', value: 1_000_000, type: 'savings' })
+    expect(s.state.items.length).toBe(1)
+    // @ts-expect-error — annualRatePercent added in T-015
+    expect(s.state.items[0]!.annualRatePercent).toBe(0)
+  })
+
+  it('TC-U-A03 (AC-8.2): add rejects negative annualRatePercent (silent boundary guard)', () => {
+    const s = useAssetsStore()
+    s.add({
+      name: 'Bad',
+      value: 1_000_000,
+      type: 'savings',
+      // @ts-expect-error — testing runtime guard
+      annualRatePercent: -5,
+    })
+    expect(s.state.items.length).toBe(0)
+  })
+
+  it('TC-U-A04 (AC-8.2): add rejects annualRatePercent > 100 (silent boundary guard)', () => {
+    const s = useAssetsStore()
+    s.add({
+      name: 'Outlier',
+      value: 1_000_000,
+      type: 'savings',
+      // @ts-expect-error — testing runtime guard
+      annualRatePercent: 9999,
+    })
+    expect(s.state.items.length).toBe(0)
+  })
+
+  it('TC-U-A05 (AC-8.2): update can patch annualRatePercent on existing asset', () => {
+    const s = useAssetsStore()
+    s.add({ name: 'CDT', value: 5_000_000, type: 'savings' })
+    const id = s.state.items[0]!.id
+    // @ts-expect-error — update will accept annualRatePercent after T-015
+    s.update(id, { annualRatePercent: 8 })
+    // @ts-expect-error — annualRatePercent added in T-015
+    expect(s.state.items[0]!.annualRatePercent).toBe(8)
+  })
+})

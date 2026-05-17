@@ -1,0 +1,323 @@
+ac:
+  - {id: "AC-1.1",  desc: "Dado primera vez (sin datos), veo pantalla de bienvenida con paso a paso: salario → gastos → deudas"}
+  - {id: "AC-1.2",  desc: "Dado onboarding, cuando completo paso y avanzo, la barra de progreso avanza y muestra pasos restantes"}
+  - {id: "AC-1.3",  desc: "Dado datos ya guardados, cuando abro la app, el onboarding no aparece y voy directo al dashboard"}
+  - {id: "AC-1.4",  desc: "Dado onboarding activo, cuando presiono 'Saltar configuración', el wizard desaparece"}
+  - {id: "AC-1.5",  desc: "Dado onboarding completado (3 pasos), cuando completo el último, veo dashboard con datos y mensaje de confirmación"}
+  - {id: "AC-1.6",  desc: "Dado datos existentes, cuando presiono 'Relanzar guía', onboarding se abre con datos actuales precargados sin borrar nada"}
+  - {id: "AC-2.1",  desc: "Dado salario bruto, cuando agrego deducción porcentual, el campo muestra el monto equivalente calculado en tiempo real"}
+  - {id: "AC-2.2",  desc: "Dado moneda COP, cuando presiono 'Cargar deducciones Colombia', se agregan Salud 4% y Pensión 4% sin duplicar existentes"}
+  - {id: "AC-2.3",  desc: "Dado bruto y deducciones, cuando presiono 'Calcular retención', se agrega/actualiza retención Art. 383 ET UVT 2025 con etiqueta estimado"}
+  - {id: "AC-2.4",  desc: "Dado beneficio extrasalarial, cuando lo agrego, su monto se suma al neto sin alterar base de deducciones ni retención"}
+  - {id: "AC-2.5",  desc: "Dado cambio de salario bruto, cuando modifico el campo, neto, deducciones porcentuales y retención se recalculan automáticamente"}
+  - {id: "AC-3.1",  desc: "Dado ingreso adicional, cuando selecciono frecuencia (mensual/trimestral/semestral/anual), el dashboard muestra su equivalente mensual promedio"}
+  - {id: "AC-3.2",  desc: "Dado ingreso semestral registrado, cuando veo proyección 12 meses, ese ingreso aparece solo en meses 6 y 12, no distribuido"}
+  - {id: "AC-3.3",  desc: "Dado moneda COP y salario, cuando presiono 'Cargar prima de servicios', se agrega ingreso semestral = medio salario bruto, idempotente"}
+  - {id: "AC-4.1",  desc: "Dado gasto fijo agregado (nombre, monto, categoría), aparece en la lista y el total de gastos fijos se actualiza inmediatamente"}
+  - {id: "AC-4.2",  desc: "Dado gastos fijos registrados, cuando veo la sección, veo el total y el disponible después de aplicarlos al ingreso neto"}
+  - {id: "AC-4.3",  desc: "Dado gasto categoría 'Vivienda', cuando veo salud financiera, ese monto se usa para calcular el ratio de vivienda"}
+  - {id: "AC-4.4",  desc: "Dado eliminar gasto fijo y confirmar, desaparece de la lista y los totales se recalculan"}
+  - {id: "AC-5.1",  desc: "Dado tarjeta con saldo, tasa EA, pago mínimo y fecha de corte, la tarjeta muestra línea de tiempo de pago y barra de utilización"}
+  - {id: "AC-5.2",  desc: "Dado préstamo (no tarjeta), el formulario muestra campo de plazo en cuotas y la línea de tiempo muestra 'cuotas restantes'"}
+  - {id: "AC-5.3",  desc: "Dado monto extra en simulador, veo inmediatamente cuántos meses y cuánto interés ahorraría pagando ese extra cada mes"}
+  - {id: "AC-5.4",  desc: "Dado método 'Avalancha', las tarjetas aparecen ordenadas de mayor a menor tasa EA"}
+  - {id: "AC-5.5",  desc: "Dado método 'Bola de nieve', las tarjetas se ordenan de menor a mayor saldo"}
+  - {id: "AC-5.6",  desc: "Dado deudas registradas, veo: obligación mensual total, saldo total, utilización global, DTI en medidor visual y fecha libre de deudas"}
+  - {id: "AC-5.7",  desc: "Dado tarjeta con fecha de corte en los próximos 7 días, aparece alerta de pago próximo en dashboard con monto mínimo"}
+  - {id: "AC-6.1",  desc: "Dado tarjeta registrada, cuando agrego cuota activa (nombre, total, cuotas), el sistema calcula el monto mensual automáticamente"}
+  - {id: "AC-6.2",  desc: "Dado cuotas activas en tarjeta, la obligación mensual mostrada incluye pago mínimo más suma de todas las cuotas activas"}
+  - {id: "AC-6.3",  desc: "Dado cuota con cuotas pagadas, el progreso es visible (pagadas / total)"}
+  - {id: "AC-7.1",  desc: "Dado meta con nombre/objetivo/ahorrado/aporte, veo: porcentaje de progreso, monto ahorrado vs objetivo y fecha estimada de llegada"}
+  - {id: "AC-7.2",  desc: "Dado fecha límite en meta, el aporte mensual necesario se recalcula para llegar a esa fecha"}
+  - {id: "AC-7.3",  desc: "Dado total aportes mensuales de metas supera presupuesto de ahorro, aparece advertencia con monto de exceso"}
+  - {id: "AC-7.4",  desc: "Dado monto ahorrado alcanza el objetivo, la meta aparece como completada con indicador visual celebratorio"}
+  - {id: "AC-7.5",  desc: "Dado varias metas, puedo reordenarlas para indicar prioridad"}
+  - {id: "AC-8.1",  desc: "Dado categoría de gasto variable, la barra cambia de verde a ámbar al 80% y a rojo al superar el 100%"}
+  - {id: "AC-8.2",  desc: "Dado categoría supera su presupuesto, en el dashboard aparece alerta con nombre, monto gastado y monto excedido"}
+  - {id: "AC-8.3",  desc: "Dado estar en dashboard o sección de gastos variables, el botón flotante de registro rápido abre panel sin navegar. En demás secciones no aparece"}
+  - {id: "AC-8.4",  desc: "Dado que el mes cambia, cuando abro la app, el sistema pregunta si quiero reiniciar montos gastados conservando presupuestos"}
+  - {id: "AC-8.5",  desc: "Dado total gastado en variables supera total presupuestado, el exceso se muestra en rojo con porcentaje de sobrecosto"}
+  - {id: "AC-9.1",  desc: "Dado activo registrado (nombre, tipo, valor), aparece en la lista y el total de activos se actualiza"}
+  - {id: "AC-9.2",  desc: "Dado deudas registradas, en sección de patrimonio los saldos aparecen automáticamente como pasivos sin ingresarlos nuevamente"}
+  - {id: "AC-9.3",  desc: "Dado activos y pasivos, el banner de patrimonio muestra patrimonio neto (activos − pasivos) en verde positivo o rojo negativo"}
+  - {id: "AC-9.4",  desc: "Dado patrimonio neto negativo, el indicador de salud financiera refleja este dato en su puntuación compuesta"}
+  - {id: "AC-10.1", desc: "Dado apertura de app, en dashboard veo: ingreso bruto, neto, gastos fijos, pagos deuda, libre para asignar, total metas/mes, puntaje salud"}
+  - {id: "AC-10.2", desc: "Dado datos en múltiples secciones, los gráficos de distribución (donut) y proyección 12 meses están visibles sin scroll excesivo"}
+  - {id: "AC-10.3", desc: "Dado indicador en zona de riesgo (DTI>36%, ahorro<20%, vivienda>30%), ese indicador tiene color de alerta y mensaje de contexto breve"}
+  - {id: "AC-10.4", desc: "Dado todos los datos en verde, el estado visual general transmite claramente que la situación es saludable"}
+  - {id: "AC-11.1", desc: "Dado al menos ingreso y gastos registrados, el dashboard muestra puntaje de salud 0-100 con etiqueta descriptiva"}
+  - {id: "AC-11.2", desc: "Dado clic en el puntaje, aparece desglose de los 4 componentes: DTI 35%, emergencia 30%, vivienda 20%, ahorro 15%, con valor actual, umbral ideal y semáforo"}
+  - {id: "AC-11.3", desc: "Dado puntaje cambia entre mes actual y mes anterior guardado, se muestra flecha y diferencia numérica de mejora/empeoramiento"}
+  - {id: "AC-11.4", desc: "Dado insuficientes datos para algún componente, ese componente aparece como 'sin datos' y el puntaje se calcula con los disponibles"}
+  - {id: "AC-12.1", desc: "Dado ingreso, gastos y deudas registrados, la proyección muestra gráfico con 12 meses mostrando balance acumulado positivo/negativo"}
+  - {id: "AC-12.2", desc: "Dado ingresos no mensuales, en la proyección esos ingresos aparecen como picos visibles en los meses que se reciben"}
+  - {id: "AC-12.3", desc: "Dado balance proyectado negativo en algún mes futuro, ese mes aparece destacado visualmente como punto de riesgo"}
+  - {id: "AC-12.4", desc: "Dado cambio en cualquier dato (ingreso, gasto, meta), al regresar al dashboard la proyección se recalcula automáticamente"}
+  - {id: "AC-13.1", desc: "Dado primer día de nuevo mes, cuando abro la app, el sistema guarda el snapshot del mes anterior automáticamente con notificación breve no bloqueante"}
+  - {id: "AC-13.2", desc: "Dado guardar resumen mensual, el sistema almacena: fecha, ingreso neto, total gastos, total deudas, DTI, tasa de ahorro, patrimonio neto y puntaje de salud"}
+  - {id: "AC-13.3", desc: "Dado al menos dos snapshots mensuales guardados, el dashboard muestra comparación (+/−) respecto al mes anterior"}
+  - {id: "AC-13.4", desc: "Dado navegación a sección historial, veo lista de snapshots con sus métricas clave, ordenados del más reciente al más antiguo"}
+  - {id: "AC-14.1", desc: "Dado ajuste de porcentaje Necesidades y Deseos, Ahorro se calcula automáticamente como complemento (100 − necesidades − deseos)"}
+  - {id: "AC-14.2", desc: "Dado intento de asignar necesidades + deseos > 100%, el campo en conflicto se pone en rojo y no permite ese valor"}
+  - {id: "AC-14.3", desc: "Dado asignación configurada, cada bucket muestra porcentaje y monto equivalente en moneda basado en ingreso neto total"}
+  - {id: "AC-14.4", desc: "Dado pagos de deuda superan bucket de ahorro asignado, aparece aviso de que las deudas consumen el presupuesto de ahorro"}
+  - {id: "AC-15.1", desc: "Dado clic en 'Exportar', obtengo un archivo con todos mis datos financieros que puedo abrir y leer"}
+  - {id: "AC-15.2", desc: "Dado archivo exportado previamente, cuando lo importo, todos los datos (ingresos, gastos, deudas, metas, activos, historial) se restauran exactamente"}
+  - {id: "AC-15.3", desc: "Dado intento de importar archivo inválido o corrupto, aparece mensaje de error claro y los datos actuales no se modifican"}
+  - {id: "AC-15.4", desc: "Dado clic en 'Reiniciar' y confirmación, todos los datos se eliminan y la app vuelve al estado inicial de onboarding"}
+  - {id: "AC-16.1", desc: "Dado acceso desde teléfono, la navegación es accesible con el pulgar (menú inferior o hamburguesa) sin scroll para llegar a controles principales"}
+  - {id: "AC-16.2", desc: "Dado uso con teclado (Tab, Enter), todos los controles interactivos son alcanzables y el foco visual es visible en todo momento"}
+  - {id: "AC-16.3", desc: "Dado cambio entre modo claro y oscuro, toda la interfaz (incluyendo gráficos y formularios) cambia correctamente sin texto ilegible"}
+  - {id: "AC-16.4", desc: "Dado cambio de idioma a inglés, todo el texto visible (etiquetas, placeholders, errores, alertas) aparece en inglés. El cambio inverso funciona igual"}
+  - {id: "AC-17.1", desc: "Dado modo oscuro activo, todo el texto tiene contraste suficiente — ningún texto claro sobre fondo claro ni oscuro sobre oscuro"}
+  - {id: "AC-17.2", desc: "Dado modo oscuro activo, los colores de los gráficos son visibles — no aparecen fondos blancos ni bordes sin estilo"}
+  - {id: "AC-17.3", desc: "Dado pantalla de 375px, ningún elemento se superpone con otro — formularios, botones, etiquetas y valores tienen espacio suficiente"}
+  - {id: "AC-17.4", desc: "Dado pantalla de 768px o 1280px, el layout aprovecha el espacio disponible sin áreas vacías excesivas ni elementos desbordados"}
+  - {id: "AC-17.5", desc: "Dado múltiples tipos de información en dashboard, la jerarquía visual es clara: puntaje de salud e indicadores clave son más prominentes"}
+  - {id: "AC-17.6", desc: "Dado indicadores con colores semáforo, el estado también se comunica con ícono o etiqueta de texto — el color no es el único diferenciador"}
+  - {id: "AC-17.7", desc: "Dado interacción con botón, input o elemento clickeable, el elemento da retroalimentación visual clara: color, elevación o borde de enfoque"}
+  - {id: "AC-17.8", desc: "Dado sección con datos vacíos, se muestra mensaje amigable con ícono ilustrativo y acción sugerida, no solo espacio en blanco"}
+  - {id: "AC-17.9", desc: "Dado navegación entre secciones, la transición es suave y no hay saltos bruscos de layout ni flashes de contenido sin estilo"}
+  - {id: "AC-17.10", desc: "Dado tooltips en móvil, el tooltip aparece dentro del viewport sin quedar cortado por los bordes de la pantalla"}
+
+tc:
+  # Unit tests — lib/calculations/net-income.ts
+  - {id: "TC-U-001", covers: ["AC-2.5"],      kind: unit}
+  - {id: "TC-U-002", covers: ["AC-2.1", "AC-2.5"], kind: unit}
+  - {id: "TC-U-003", covers: ["AC-2.4"],      kind: unit}
+  - {id: "TC-U-004", covers: ["EC-1"],         kind: unit}
+  # Unit tests — lib/calculations/frequency.ts
+  - {id: "TC-U-005", covers: ["AC-3.1"],      kind: unit}
+  - {id: "TC-U-006", covers: ["AC-3.1"],      kind: unit}
+  - {id: "TC-U-007", covers: ["AC-3.2"],      kind: unit}
+  # Unit tests — lib/calculations/housing-ratio.ts
+  - {id: "TC-U-008", covers: ["AC-4.3"],      kind: unit}
+  # Unit tests — lib/calculations/amortization.ts
+  - {id: "TC-U-009", covers: ["AC-5.1"],      kind: unit}
+  - {id: "TC-U-010", covers: ["AC-5.2"],      kind: unit}
+  - {id: "TC-U-011", covers: ["AC-5.3"],      kind: unit}
+  - {id: "TC-U-012", covers: ["EC-10"],        kind: unit}
+  # Unit tests — lib/calculations/payoff-strategy.ts
+  - {id: "TC-U-013", covers: ["AC-5.4"],      kind: unit}
+  - {id: "TC-U-014", covers: ["AC-5.5"],      kind: unit}
+  # Unit tests — lib/calculations/dti.ts
+  - {id: "TC-U-015", covers: ["AC-5.6"],      kind: unit}
+  - {id: "TC-U-016", covers: ["EC-2"],         kind: unit}
+  # Unit tests — lib/calculations/installments.ts
+  - {id: "TC-U-017", covers: ["AC-6.1"],      kind: unit}
+  - {id: "TC-U-018", covers: ["AC-6.2"],      kind: unit}
+  # Unit tests — lib/calculations/goals.ts
+  - {id: "TC-U-019", covers: ["AC-7.1"],      kind: unit}
+  - {id: "TC-U-020", covers: ["AC-7.2"],      kind: unit}
+  - {id: "TC-U-021", covers: ["EC-3"],         kind: unit}
+  # Unit tests — lib/calculations/net-worth.ts
+  - {id: "TC-U-022", covers: ["AC-9.3"],      kind: unit}
+  - {id: "TC-U-023", covers: ["AC-9.4"],      kind: unit}
+  # Unit tests — lib/calculations/health-score.ts
+  - {id: "TC-U-024", covers: ["AC-11.1", "AC-11.2"], kind: unit}
+  - {id: "TC-U-025", covers: ["AC-11.4"],     kind: unit}
+  - {id: "TC-U-026", covers: ["EC-2"],         kind: unit}
+  - {id: "TC-U-027", covers: ["AC-11.1"],     kind: unit}
+  # Unit tests — lib/calculations/projection.ts
+  - {id: "TC-U-028", covers: ["AC-12.1"],     kind: unit}
+  - {id: "TC-U-029", covers: ["AC-3.2", "AC-12.2"], kind: unit}
+  - {id: "TC-U-030", covers: ["AC-12.3"],     kind: unit}
+  - {id: "TC-U-031", covers: ["EC-8"],         kind: unit}
+  # Unit tests — lib/calculations/allocation.ts
+  - {id: "TC-U-032", covers: ["AC-14.3"],     kind: unit}
+  - {id: "TC-U-033", covers: ["AC-14.1"],     kind: unit}
+  # Unit tests — lib/tax/colombia/retencion.ts
+  - {id: "TC-U-034", covers: ["AC-2.3"],      kind: unit}
+  - {id: "TC-U-035", covers: ["EC-7", "AC-2.3"], kind: unit}
+  - {id: "TC-U-036", covers: ["AC-2.3"],      kind: unit}
+  - {id: "TC-U-037", covers: ["AC-2.3"],      kind: unit}
+  # Unit tests — lib/tax/colombia/presets.ts
+  - {id: "TC-U-038", covers: ["AC-2.2"],      kind: unit}
+  - {id: "TC-U-039", covers: ["AC-2.2"],      kind: unit}
+  # Unit tests — lib/tax/colombia/prima.ts
+  - {id: "TC-U-040", covers: ["AC-3.3"],      kind: unit}
+  - {id: "TC-U-041", covers: ["AC-3.3"],      kind: unit}
+  # Unit tests — lib/storage/migrate.ts
+  - {id: "TC-U-042", covers: ["EC-5"],         kind: unit}
+  - {id: "TC-U-043", covers: ["EC-5"],         kind: unit}
+  - {id: "TC-U-044", covers: ["AC-1.3"],      kind: unit}
+  - {id: "TC-U-045", covers: ["AC-3.1"],      kind: unit}
+  # Unit tests — lib/storage/schema.ts (Zod validation)
+  - {id: "TC-U-046", covers: ["EC-1"],         kind: unit}
+  - {id: "TC-U-047", covers: ["AC-14.2"],     kind: unit}
+  - {id: "TC-U-048", covers: ["AC-15.3"],     kind: unit}
+  - {id: "TC-U-049", covers: ["AC-15.3"],     kind: unit}
+  # Unit tests — lib/calculations/dti.ts (debt-free date)
+  - {id: "TC-U-050", covers: ["AC-5.6"],      kind: unit}
+  # Unit tests — variable expense threshold
+  - {id: "TC-U-051", covers: ["AC-8.1"],      kind: unit}
+  # Unit tests — lib/calculations/allocation.ts (savings rate)
+  - {id: "TC-U-052", covers: ["AC-14.1"],     kind: unit}
+  # Unit tests — lib/date/month.ts
+  - {id: "TC-U-053", covers: ["AC-8.4", "AC-13.1"], kind: unit}
+  - {id: "TC-U-054", covers: ["AC-13.1"],     kind: unit}
+  # Unit tests — snapshot shape
+  - {id: "TC-U-055", covers: ["AC-13.2"],     kind: unit}
+  # Unit tests — snapshot cap
+  - {id: "TC-U-056", covers: ["EC-6"],         kind: unit}
+  # Unit tests — lib/calculations/dti.ts (secondary)
+  - {id: "TC-U-057", covers: ["AC-10.1"],     kind: unit}
+  # Unit tests — lib/calculations/housing-ratio.ts (secondary)
+  - {id: "TC-U-058", covers: ["AC-4.3"],      kind: unit}
+  # Unit tests — lib/calculations/allocation.ts (excess goals + debt exceeds savings)
+  - {id: "TC-U-059", covers: ["AC-7.3", "AC-14.4"], kind: unit}
+  - {id: "TC-U-060", covers: ["AC-14.4"],     kind: unit}
+  # Component tests
+  - {id: "TC-C-001", covers: ["AC-1.1", "AC-1.2"], kind: component}
+  - {id: "TC-C-002", covers: ["AC-1.3", "EC-9"],    kind: component}
+  - {id: "TC-C-003", covers: ["AC-1.4"],      kind: component}
+  - {id: "TC-C-004", covers: ["AC-1.5"],      kind: component}
+  - {id: "TC-C-005", covers: ["AC-1.6", "EC-9"],    kind: component}
+  - {id: "TC-C-006", covers: ["AC-2.1"],      kind: component}
+  - {id: "TC-C-007", covers: ["AC-2.2"],      kind: component}
+  - {id: "TC-C-008", covers: ["AC-2.3"],      kind: component}
+  - {id: "TC-C-009", covers: ["AC-2.5"],      kind: component}
+  - {id: "TC-C-010", covers: ["AC-3.1"],      kind: component}
+  - {id: "TC-C-011", covers: ["AC-3.3"],      kind: component}
+  - {id: "TC-C-012", covers: ["AC-4.1", "AC-4.2"], kind: component}
+  - {id: "TC-C-013", covers: ["AC-4.4"],      kind: component}
+  - {id: "TC-C-014", covers: ["AC-5.1"],      kind: component}
+  - {id: "TC-C-015", covers: ["AC-5.2"],      kind: component}
+  - {id: "TC-C-016", covers: ["AC-5.7"],      kind: component}
+  - {id: "TC-C-017", covers: ["AC-6.3"],      kind: component}
+  - {id: "TC-C-018", covers: ["AC-7.1", "AC-7.4"], kind: component}
+  - {id: "TC-C-019", covers: ["AC-7.3", "AC-7.5"], kind: component}
+  - {id: "TC-C-020", covers: ["AC-8.1", "AC-8.2", "EC-4"], kind: component}
+  - {id: "TC-C-021", covers: ["AC-8.3"],      kind: component}
+  - {id: "TC-C-022", covers: ["AC-8.5"],      kind: component}
+  - {id: "TC-C-023", covers: ["AC-9.1", "AC-9.2", "AC-9.3"], kind: component}
+  - {id: "TC-C-024", covers: ["AC-10.1", "AC-10.2", "AC-10.4", "AC-12.4", "AC-17.5"], kind: component}
+  - {id: "TC-C-025", covers: ["AC-10.3", "AC-17.6"], kind: component}
+  - {id: "TC-C-026", covers: ["AC-14.1", "AC-14.2"], kind: component}
+  - {id: "TC-C-027", covers: ["AC-11.2"],     kind: component}
+  - {id: "TC-C-028", covers: ["AC-11.3", "AC-13.3"], kind: component}
+  - {id: "TC-C-029", covers: ["AC-13.4"],     kind: component}
+  - {id: "TC-C-030", covers: ["AC-15.1", "AC-15.2", "AC-15.3"], kind: component}
+  - {id: "TC-C-031", covers: ["AC-15.4"],     kind: component}
+  - {id: "TC-C-032", covers: ["AC-16.1", "AC-17.3", "AC-17.7"], kind: component}
+  - {id: "TC-C-033", covers: ["AC-16.3", "AC-17.2"], kind: component}
+  - {id: "TC-C-034", covers: ["AC-17.8", "AC-17.10"], kind: component}
+  # E2E tests
+  - {id: "TC-E-001", covers: ["AC-1.1", "AC-1.5", "AC-10.1"], kind: e2e}
+  - {id: "TC-E-002", covers: ["AC-1.3", "AC-17.9"], kind: e2e}
+  - {id: "TC-E-003", covers: ["AC-8.3"],      kind: e2e}
+  - {id: "TC-E-004", covers: ["AC-15.1", "AC-15.2"], kind: e2e}
+  - {id: "TC-E-005", covers: ["AC-5.1", "AC-5.3"], kind: e2e}
+  - {id: "TC-E-006", covers: ["AC-16.4"],     kind: e2e}
+  - {id: "TC-E-007", covers: ["AC-13.1"],     kind: e2e}
+  - {id: "TC-E-008", covers: ["AC-16.3", "AC-17.1", "AC-17.2", "AC-17.4"], kind: e2e}
+  - {id: "TC-E-009", covers: ["AC-16.2"],     kind: e2e}
+
+tasks:
+  - {id: "T-001",  status: done, type: setup,   size: M, covers: [],                                                                         deps: []}
+  - {id: "T-002",  status: done, type: test,    size: S, covers: [],                                                                         deps: ["T-001"]}
+  - {id: "T-003",  status: done, type: impl,    size: S, covers: ["AC-2.1"],                                                                  deps: ["T-002"]}
+  - {id: "T-004",  status: done, type: test,    size: S, covers: ["AC-8.4", "AC-13.1"],                                                       deps: ["T-001"]}
+  - {id: "T-005",  status: done, type: impl,    size: S, covers: ["AC-8.4", "AC-13.1"],                                                       deps: ["T-004"]}
+  - {id: "T-006",  status: done, type: test,    size: S, covers: ["AC-2.3", "EC-7"],                                                          deps: ["T-001"]}
+  - {id: "T-007",  status: done, type: impl,    size: M, covers: ["AC-2.3", "EC-7"],                                                          deps: ["T-006"]}
+  - {id: "T-008",  status: done, type: test,    size: S, covers: ["AC-2.2", "AC-3.3"],                                                        deps: ["T-001"]}
+  - {id: "T-009",  status: done, type: impl,    size: S, covers: ["AC-2.2", "AC-3.3"],                                                        deps: ["T-008"]}
+  - {id: "T-010",  status: done, type: test,    size: S, covers: ["AC-2.1", "AC-2.4", "AC-2.5", "EC-1"],                                     deps: ["T-001"]}
+  - {id: "T-011",  status: done, type: impl,    size: S, covers: ["AC-2.1", "AC-2.4", "AC-2.5", "EC-1"],                                     deps: ["T-010"]}
+  - {id: "T-012",  status: done, type: test,    size: S, covers: ["AC-3.1", "AC-3.2"],                                                        deps: ["T-001"]}
+  - {id: "T-013",  status: done, type: impl,    size: S, covers: ["AC-3.1", "AC-3.2"],                                                        deps: ["T-012"]}
+  - {id: "T-014",  status: done, type: test,    size: S, covers: ["AC-4.3"],                                                                  deps: ["T-001"]}
+  - {id: "T-015",  status: done, type: impl,    size: S, covers: ["AC-4.3"],                                                                  deps: ["T-014"]}
+  - {id: "T-016",  status: done, type: test,    size: S, covers: ["AC-5.1", "AC-5.2", "AC-5.3", "EC-10"],                                    deps: ["T-001"]}
+  - {id: "T-017",  status: done, type: impl,    size: M, covers: ["AC-5.1", "AC-5.2", "AC-5.3", "EC-10"],                                    deps: ["T-016"]}
+  - {id: "T-018",  status: done, type: test,    size: S, covers: ["AC-5.4", "AC-5.5"],                                                        deps: ["T-001"]}
+  - {id: "T-019",  status: done, type: impl,    size: S, covers: ["AC-5.4", "AC-5.5"],                                                        deps: ["T-018"]}
+  - {id: "T-020",  status: done, type: test,    size: S, covers: ["AC-5.6", "AC-10.1", "EC-2"],                                              deps: ["T-001"]}
+  - {id: "T-021",  status: done, type: impl,    size: S, covers: ["AC-5.6", "AC-10.1", "EC-2"],                                              deps: ["T-017", "T-020"]}
+  - {id: "T-022",  status: done, type: test,    size: S, covers: ["AC-6.1", "AC-6.2"],                                                        deps: ["T-001"]}
+  - {id: "T-023",  status: done, type: impl,    size: S, covers: ["AC-6.1", "AC-6.2"],                                                        deps: ["T-022"]}
+  - {id: "T-024",  status: done, type: test,    size: S, covers: ["AC-7.1", "AC-7.2", "EC-3"],                                               deps: ["T-001"]}
+  - {id: "T-025",  status: done, type: impl,    size: S, covers: ["AC-7.1", "AC-7.2", "EC-3"],                                               deps: ["T-024"]}
+  - {id: "T-026",  status: done, type: test,    size: S, covers: ["AC-9.3", "AC-9.4"],                                                        deps: ["T-001"]}
+  - {id: "T-027",  status: done, type: impl,    size: S, covers: ["AC-9.3", "AC-9.4"],                                                        deps: ["T-026"]}
+  - {id: "T-028",  status: done, type: test,    size: S, covers: ["AC-12.1", "AC-12.2", "AC-12.3", "EC-8"],                                  deps: ["T-001"]}
+  - {id: "T-029",  status: done, type: impl,    size: M, covers: ["AC-12.1", "AC-12.2", "AC-12.3", "EC-8"],                                  deps: ["T-013", "T-028"]}
+  - {id: "T-030",  status: done, type: test,    size: S, covers: ["AC-14.1", "AC-14.3", "AC-14.4"],                                          deps: ["T-001"]}
+  - {id: "T-031",  status: done, type: impl,    size: S, covers: ["AC-14.1", "AC-14.3", "AC-14.4"],                                          deps: ["T-030"]}
+  - {id: "T-032",  status: done, type: test,    size: S, covers: ["AC-11.1", "AC-11.2", "AC-11.4", "EC-2"],                                  deps: ["T-001"]}
+  - {id: "T-033",  status: done, type: impl,    size: M, covers: ["AC-11.1", "AC-11.2", "AC-11.4", "EC-2"],                                  deps: ["T-032"]}
+  - {id: "T-034",  status: done, type: test,    size: S, covers: ["AC-8.1"],                                                                  deps: ["T-001"]}
+  - {id: "T-035",  status: done, type: impl,    size: S, covers: ["AC-8.1"],                                                                  deps: ["T-034"]}
+  - {id: "T-036",  status: done, type: test,    size: S, covers: ["AC-14.2", "AC-15.3", "EC-1"],                                             deps: ["T-001"]}
+  - {id: "T-037",  status: done, type: impl,    size: M, covers: ["AC-14.2", "AC-15.3", "EC-1"],                                             deps: ["T-036"]}
+  - {id: "T-038",  status: done, type: test,    size: S, covers: ["AC-1.3", "AC-3.1", "AC-13.2", "EC-5"],                                    deps: ["T-037"]}
+  - {id: "T-039",  status: done, type: impl,    size: M, covers: ["AC-1.3", "AC-3.1", "AC-13.2", "EC-5"],                                    deps: ["T-038"]}
+  - {id: "T-040",  status: done, type: impl,    size: S, covers: ["EC-6"],                                                                    deps: ["T-036", "T-038", "T-039"]}
+  - {id: "T-041",  status: done, type: setup,   size: S, covers: ["AC-16.4"],                                                                 deps: ["T-001"]}
+  - {id: "T-042",  status: done, type: setup,   size: S, covers: ["AC-1.3", "AC-17.9"],                                                       deps: ["T-001"]}
+  - {id: "T-043",  status: done, type: impl,    size: S, covers: ["AC-1.4", "AC-1.5", "AC-1.6", "AC-2.1", "AC-3.1", "AC-16.3", "AC-16.4"],  deps: ["T-009", "T-011", "T-040", "T-055", "T-057"]}
+  - {id: "T-044",  status: done, type: impl,    size: S, covers: ["AC-4.1", "AC-4.4", "AC-8.1", "AC-8.3", "AC-8.4"],                        deps: ["T-040", "T-059", "T-065"]}
+  - {id: "T-045",  status: done, type: impl,    size: M, covers: ["AC-5.1", "AC-5.2", "AC-6.1", "AC-6.3"],                                   deps: ["T-040", "T-061"]}
+  - {id: "T-046",  status: done, type: impl,    size: S, covers: ["AC-7.5", "AC-9.1"],                                                        deps: ["T-040", "T-063", "T-067"]}
+  - {id: "T-047",  status: done, type: impl,    size: S, covers: ["AC-14.1", "AC-13.2"],                                                      deps: ["T-031", "T-040", "T-069", "T-071", "T-074"]}
+  - {id: "T-048",  status: done, type: impl,    size: M, covers: ["AC-16.3", "AC-16.4"],                                                      deps: ["T-003", "T-043", "T-053"]}
+  - {id: "T-049",  status: done, type: test,    size: S, covers: ["AC-17.8"],                                                                  deps: ["T-001"]}
+  - {id: "T-050",  status: done, type: impl,    size: M, covers: ["AC-17.8"],                                                                  deps: ["T-049"]}
+  - {id: "T-051",  status: done, type: test,    size: S, covers: ["AC-17.6", "AC-17.10"],                                                     deps: ["T-001"]}
+  - {id: "T-052",  status: done, type: impl,    size: M, covers: ["AC-17.6", "AC-17.10"],                                                     deps: ["T-051"]}
+  - {id: "T-053",  status: done, type: test,    size: S, covers: ["AC-16.1", "AC-16.3", "AC-17.2", "AC-17.3", "AC-17.7"],                    deps: ["T-001"]}
+  - {id: "T-054",  status: done, type: impl,    size: M, covers: ["AC-16.1", "AC-16.2", "AC-16.3", "AC-17.2", "AC-17.3", "AC-17.7"],         deps: ["T-053"]}
+  - {id: "T-055",  status: done, type: test,    size: S, covers: ["AC-1.1", "AC-1.2", "AC-1.3", "AC-1.4", "AC-1.5", "AC-1.6", "EC-9"],      deps: ["T-001"]}
+  - {id: "T-056",  status: done, type: impl,    size: M, covers: ["AC-1.1", "AC-1.2", "AC-1.3", "AC-1.4", "AC-1.5", "AC-1.6", "EC-9"],      deps: ["T-055"]}
+  - {id: "T-057",  status: done, type: test,    size: S, covers: ["AC-2.1", "AC-2.2", "AC-2.3", "AC-2.5", "AC-3.1", "AC-3.3"],              deps: ["T-001"]}
+  - {id: "T-058",  status: done, type: impl,    size: M, covers: ["AC-2.1", "AC-2.2", "AC-2.3", "AC-2.4", "AC-2.5", "AC-3.1", "AC-3.3"],    deps: ["T-057"]}
+  - {id: "T-059",  status: done, type: test,    size: S, covers: ["AC-4.1", "AC-4.2", "AC-4.4"],                                             deps: ["T-001"]}
+  - {id: "T-060",  status: done, type: impl,    size: S, covers: ["AC-4.1", "AC-4.2", "AC-4.4"],                                             deps: ["T-059"]}
+  - {id: "T-061",  status: done, type: test,    size: S, covers: ["AC-5.1", "AC-5.2", "AC-5.7", "AC-6.3"],                                   deps: ["T-001"]}
+  - {id: "T-062",  status: done, type: impl,    size: M, covers: ["AC-5.1", "AC-5.2", "AC-5.3", "AC-5.4", "AC-5.5", "AC-5.6", "AC-5.7", "AC-6.1", "AC-6.2", "AC-6.3"], deps: ["T-061"]}
+  - {id: "T-063",  status: done, type: test,    size: S, covers: ["AC-7.1", "AC-7.3", "AC-7.4", "AC-7.5"],                                   deps: ["T-001"]}
+  - {id: "T-064",  status: done, type: impl,    size: M, covers: ["AC-7.1", "AC-7.2", "AC-7.3", "AC-7.4", "AC-7.5"],                        deps: ["T-063"]}
+  - {id: "T-065",  status: done, type: test,    size: S, covers: ["AC-8.1", "AC-8.2", "AC-8.3", "AC-8.5", "EC-4"],                          deps: ["T-001"]}
+  - {id: "T-066",  status: done, type: impl,    size: M, covers: ["AC-8.1", "AC-8.2", "AC-8.3", "AC-8.5", "EC-4"],                          deps: ["T-065"]}
+  - {id: "T-067",  status: done, type: test,    size: S, covers: ["AC-9.1", "AC-9.2", "AC-9.3"],                                             deps: ["T-001"]}
+  - {id: "T-068",  status: done, type: impl,    size: S, covers: ["AC-9.1", "AC-9.2", "AC-9.3", "AC-9.4"],                                   deps: ["T-067"]}
+  - {id: "T-069",  status: done, type: test,    size: S, covers: ["AC-14.1", "AC-14.2"],                                                      deps: ["T-001"]}
+  - {id: "T-070",  status: done, type: impl,    size: S, covers: ["AC-14.1", "AC-14.2", "AC-14.3", "AC-14.4"],                               deps: ["T-069"]}
+  - {id: "T-071",  status: done, type: test,    size: S, covers: ["AC-10.1", "AC-10.2", "AC-10.3", "AC-10.4", "AC-11.2", "AC-11.3", "AC-12.4", "AC-13.3", "AC-17.5", "AC-17.6"], deps: ["T-001"]}
+  - {id: "T-072",  status: done, type: impl,    size: M, covers: ["AC-10.2", "AC-12.4", "AC-17.2"],                                          deps: ["T-029", "T-033", "T-071"]}
+  - {id: "T-073",  status: done, type: impl,    size: M, covers: ["AC-10.1", "AC-10.3", "AC-10.4", "AC-11.1", "AC-11.2", "AC-11.3", "AC-13.3", "AC-17.4", "AC-17.5", "AC-17.6", "AC-17.9"], deps: ["T-071", "T-072"]}
+  - {id: "T-074",  status: done, type: test,    size: S, covers: ["AC-13.4"],                                                                  deps: ["T-001"]}
+  - {id: "T-075",  status: done, type: impl,    size: S, covers: ["AC-13.4"],                                                                  deps: ["T-074"]}
+  - {id: "T-076",  status: done, type: test,    size: S, covers: ["AC-15.1", "AC-15.2", "AC-15.3", "AC-15.4"],                               deps: ["T-001"]}
+  - {id: "T-077",  status: done, type: impl,    size: M, covers: ["AC-1.6", "AC-15.1", "AC-15.2", "AC-15.3", "AC-15.4"],                     deps: ["T-076"]}
+  - {id: "T-078",  status: done, type: setup,   size: S, covers: [],                                                                         deps: ["T-001"]}
+  - {id: "T-079",  status: done, type: test,    size: S, covers: ["AC-1.1", "AC-1.5", "AC-10.1"],                                            deps: ["T-056", "T-058", "T-073", "T-078"]}
+  - {id: "T-080",  status: done, type: test,    size: S, covers: ["AC-1.3", "AC-17.9"],                                                       deps: ["T-056", "T-073", "T-078"]}
+  - {id: "T-081",  status: done, type: test,    size: S, covers: ["AC-8.3"],                                                                  deps: ["T-066", "T-073", "T-078"]}
+  - {id: "T-082",  status: done, type: test,    size: S, covers: ["AC-15.1", "AC-15.2"],                                                      deps: ["T-077", "T-078"]}
+  - {id: "T-083",  status: done, type: test,    size: S, covers: ["AC-5.1", "AC-5.3"],                                                        deps: ["T-062", "T-078"]}
+  - {id: "T-084",  status: done, type: test,    size: S, covers: ["AC-16.4"],                                                                  deps: ["T-054", "T-073", "T-078"]}
+  - {id: "T-085",  status: done, type: test,    size: S, covers: ["AC-13.1"],                                                                  deps: ["T-072", "T-073", "T-078"]}
+  - {id: "T-086",  status: done, type: test,    size: S, covers: ["AC-16.3", "AC-17.1", "AC-17.2", "AC-17.4"],                               deps: ["T-054", "T-072", "T-073", "T-078"]}
+  - {id: "T-087",  status: done, type: test,    size: S, covers: ["AC-16.2"],                                                                  deps: ["T-058", "T-078"]}
+  - {id: "T-088",  status: done, type: refactor, size: S, covers: [],                                                                        deps: ["T-079", "T-080", "T-081", "T-082", "T-083", "T-084", "T-085", "T-086", "T-087"]}
+  - {id: "T-089",  status: done, type: docs,    size: S, covers: [],                                                                         deps: ["T-077"]}
+  - {id: "T-LAST", status: done, type: test,    size: S, covers: [],                                                                         deps: ["T-003", "T-005", "T-007", "T-009", "T-011", "T-013", "T-015", "T-017", "T-019", "T-021", "T-023", "T-025", "T-027", "T-029", "T-031", "T-033", "T-035", "T-037", "T-039", "T-040", "T-041", "T-042", "T-043", "T-044", "T-045", "T-046", "T-047", "T-048", "T-050", "T-052", "T-054", "T-056", "T-058", "T-060", "T-062", "T-064", "T-066", "T-068", "T-070", "T-072", "T-073", "T-075", "T-077", "T-079", "T-080", "T-081", "T-082", "T-083", "T-084", "T-085", "T-086", "T-087", "T-088", "T-089"]}
+
+adr:
+  - {id: "ADR-1", decision: "Pinia setup-style stores (Composition API)", covers: "AC-2.x, AC-4.x, AC-5.x, AC-7.x, AC-8.x, AC-9.x, AC-13.x, AC-14.x"}
+  - {id: "ADR-2", decision: "Chart.js via vue-chartjs@5.x wrapper", covers: "AC-5.6, AC-10.2, AC-12.1, AC-12.2, AC-12.3, AC-17.2"}
+  - {id: "ADR-3", decision: "Persistence via central useAppStorage() composable en lib/storage (single key, Zod validation, migrate on boot)", covers: "EC-5, EC-6, AC-15.1, AC-15.2"}
+  - {id: "ADR-4", decision: "Versioned migration chain: migrations: Record<number, (s) => s> aplicadas secuencialmente", covers: "EC-5"}
+  - {id: "ADR-5", decision: "Form validation con Zod + custom useForm<T>(schema) composable (sin vee-validate)", covers: "AC-15.3, AC-14.2"}
+  - {id: "ADR-6", decision: "Health score: re-normalizar pesos cuando hay componentes faltantes (Option 1)", covers: "AC-11.1, AC-11.4"}
+  - {id: "ADR-7", decision: "Snapshot auto-save via useMonthRollover composable en App.vue mount (comparar YYYY-MM con lastMonthSeen)", covers: "AC-8.4, AC-13.1, AC-13.2"}
+  - {id: "ADR-8", decision: "Tema: Tailwind class strategy + tri-state setting (light/dark/system)", covers: "AC-16.3, AC-17.1, AC-17.2"}
+  - {id: "ADR-9", decision: "Onboarding: flag done + step index en settingsStore + beforeEach router guard para redirect", covers: "AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-1.6, EC-9"}
+
+open_questions:
+  - {id: "Q-1", text: "¿El snapshot mensual se guarda automáticamente o con confirmación del usuario?", resolved: true, resolution: "Automático silencioso con notificación breve no bloqueante (→ AC-13.1)"}
+  - {id: "Q-2", text: "¿Cuáles son los pesos de cada componente del health score?", resolved: true, resolution: "DTI 35%, Emergencia 30%, Vivienda 20%, Ahorro 15% — basado en literatura CFPB y contexto latinoamericano (→ AC-11.2)"}
+  - {id: "Q-3", text: "¿En qué secciones aparece el botón flotante de registro rápido?", resolved: true, resolution: "Solo en Dashboard y Gastos Variables (→ AC-8.3)"}
+  - {id: "Q-4", text: "¿El onboarding relanzable borra los datos existentes?", resolved: true, resolution: "No — onboarding se abre con datos actuales precargados, sin borrar nada (→ AC-1.6)"}

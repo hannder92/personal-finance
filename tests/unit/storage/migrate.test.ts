@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { migrate } from '@/lib/storage/migrate'
-import { AppStateSchemaV2 } from '@/lib/storage/schema'
+import { AppStateSchemaV3 } from '@/lib/storage/schema'
 import { applySnapshotCap, buildSnapshot } from '@/lib/calculations/snapshot'
 import v1Typical from '../../fixtures/v1-typical.json'
 import v1Empty from '../../fixtures/v1-empty.json'
 
 describe('lib/storage/migrate', () => {
-  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid v2 state', () => {
+  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid latest-schema state (v3)', () => {
     const result = migrate(v1Typical)
-    const parse = AppStateSchemaV2.safeParse(result)
+    const parse = AppStateSchemaV3.safeParse(result)
     expect(parse.success).toBe(true)
   })
 
@@ -40,9 +40,9 @@ describe('lib/storage/migrate', () => {
     expect(result.income.otherStreams[0]?.frequency).toBe('monthly')
   })
 
-  it('EC-5: schemaVersion is set to 2 on migrated output', () => {
+  it('EC-5: schemaVersion is set to the latest (3) on migrated output', () => {
     const result = migrate(v1Typical) as { schemaVersion: number }
-    expect(result.schemaVersion).toBe(2)
+    expect(result.schemaVersion).toBe(3)
   })
 })
 

@@ -10,8 +10,9 @@ export function calcHousingRatio(
   totalIncome: number
 ): number {
   if (totalIncome <= 0) return 0
+  // Accept both 'housing' (legacy English) and 'vivienda' (current UI default).
   const housingTotal = expenses
-    .filter((e) => e.category === 'housing')
+    .filter((e) => e.category === 'housing' || e.category === 'vivienda')
     .reduce((acc, e) => acc + e.amount, 0)
   return (housingTotal / totalIncome) * 100
 }

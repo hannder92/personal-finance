@@ -58,8 +58,9 @@ export function calcExtraPaymentImpact(card: CardDebt, extra: number): ExtraPaym
 function monthsToPayoff(balance: number, aprPercent: number, payment: number): number {
   if (balance <= 0 || payment <= 0) return 0
   if (aprPercent === 0) return Math.ceil(balance / payment)
-  const monthlyRate = aprPercent / 100 / 12
-  // If payment doesn't cover monthly interest the debt grows forever; clamp to a sentinel.
+  // APR is interpreted as TEA (Tasa Efectiva Anual) per Superfinanciera convention,
+  // so the equivalent monthly rate is (1 + TEA)^(1/12) − 1, NOT TEA/12. See ADR-1.
+  const monthlyRate = Math.pow(1 + aprPercent / 100, 1 / 12) - 1
   if (payment <= balance * monthlyRate) return Number.POSITIVE_INFINITY
   const n = -Math.log(1 - (balance * monthlyRate) / payment) / Math.log(1 + monthlyRate)
   return Math.ceil(n)

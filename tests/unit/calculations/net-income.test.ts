@@ -63,3 +63,60 @@ describe('lib/calculations/net-income', () => {
     ).toBe(0)
   })
 })
+
+// New tests for feature spec 20260515-fix-calculos-financieros.
+// Each test cites the AC from 1-spec.md and the TC from 3-test-plan.md of that feature.
+describe('lib/calculations/net-income — fix-calculos-financieros', () => {
+  it('TC-U-001 (AC-2.1): colombian case — gross 12.1M with 4% salud + 4% pensión → 11.132M', () => {
+    expect(
+      calcNetSalary({
+        grossSalary: 12_100_000,
+        deductions: [
+          { amount: 4, type: 'percent' },
+          { amount: 4, type: 'percent' },
+        ],
+      })
+    ).toBe(11_132_000)
+  })
+
+  it('TC-U-001 (AC-2.1): fixed-amount equivalent of 4%+4% on 12.1M also yields 11.132M', () => {
+    expect(
+      calcNetSalary({
+        grossSalary: 12_100_000,
+        deductions: [
+          { amount: 484_000, type: 'fixed' },
+          { amount: 484_000, type: 'fixed' },
+        ],
+      })
+    ).toBe(11_132_000)
+  })
+
+  it('TC-U-003 (AC-2.4): benefit added AFTER deductions — 10M − 10% + 500K = 9.5M', () => {
+    expect(
+      calcNetSalary({
+        grossSalary: 10_000_000,
+        deductions: [{ amount: 10, type: 'percent' }],
+        nonSalaryBenefits: [{ amount: 500_000 }],
+      })
+    ).toBe(9_500_000)
+  })
+
+  it('TC-U-020 (AC-2.5, EC-1): no deductions → netIncome equals grossSalary exactly', () => {
+    expect(
+      calcNetSalary({
+        grossSalary: 8_000_000,
+        deductions: [],
+        nonSalaryBenefits: [],
+      })
+    ).toBe(8_000_000)
+  })
+
+  it('TC-U-021 (EC-2): grossSalary=0 with percent deduction → 0, finite (no NaN)', () => {
+    const result = calcNetSalary({
+      grossSalary: 0,
+      deductions: [{ amount: 4, type: 'percent' }],
+    })
+    expect(result).toBe(0)
+    expect(Number.isFinite(result)).toBe(true)
+  })
+})

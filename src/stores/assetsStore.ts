@@ -11,6 +11,8 @@ export interface Asset {
   name: string
   value: number
   type: AssetType
+  /** Annual rate (TEA, %) for compound growth projection. Range [0, 100]. Default 0. */
+  annualRatePercent: number
 }
 
 export interface AssetsState {
@@ -29,14 +31,23 @@ function isValidAmount(n: number): boolean {
   return Number.isFinite(n) && n >= 0
 }
 
+function isValidRate(n: number): boolean {
+  return Number.isFinite(n) && n >= 0 && n <= 100
+}
+
 export const useAssetsStore = defineStore('assets', () => {
   const state = reactive<AssetsState>({ items: [] })
 
-  function add(input: Omit<Asset, 'id'>): void {
+  function add(input: Omit<Asset, 'id' | 'annualRatePercent'> & { annualRatePercent?: number }): void {
     if (!isValidName(input.name)) return
     if (!isValidAmount(input.value)) return
     if (!ALLOWED_TYPES.includes(input.type)) return
-    state.items.push({ ...input, id: newId() })
+    if (input.annualRatePercent !== undefined && !isValidRate(input.annualRatePercent)) return
+    state.items.push({
+      ...input,
+      annualRatePercent: input.annualRatePercent ?? 0,
+      id: newId(),
+    })
   }
   function remove(id: string): void {
     const idx = state.items.findIndex((x) => x.id === id)
@@ -48,6 +59,7 @@ export const useAssetsStore = defineStore('assets', () => {
     if (patch.name !== undefined && !isValidName(patch.name)) return
     if (patch.value !== undefined && !isValidAmount(patch.value)) return
     if (patch.type !== undefined && !ALLOWED_TYPES.includes(patch.type)) return
+    if (patch.annualRatePercent !== undefined && !isValidRate(patch.annualRatePercent)) return
     Object.assign(item, patch)
   }
 

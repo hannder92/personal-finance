@@ -1,9 +1,11 @@
-import { createApp } from 'vue'
+import { createApp, nextTick, watch } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import { router } from './router'
 import { i18n } from './i18n'
-import { loadAppState } from './lib/storage/useAppStorage'
+import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
+import { useStorageError } from './composables/useStorageError'
+import type { AppStateV3 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -16,6 +18,10 @@ import { useVariableExpensesStore } from './stores/variableExpensesStore'
 import './style.css'
 
 const pinia = createPinia()
+
+// Set to true during hydrateStores so the persist watcher does not fire while
+// store state is being repopulated from localStorage. Cleared on nextTick after mount.
+let isHydrating = true
 
 // Hydrate stores from localStorage before the router guard runs.
 function hydrateStores() {
@@ -64,8 +70,85 @@ function hydrateStores() {
   allocation.setAllocation(state.allocation.needs, state.allocation.wants)
 }
 
+// Watches all store states and persists to localStorage on any change.
+function persistStores(): void {
+  const settings = useSettingsStore()
+  const income = useIncomeStore()
+  const expenses = useExpensesStore()
+  const cards = useCardsStore()
+  const goals = useGoalsStore()
+  const assets = useAssetsStore()
+  const variable = useVariableExpensesStore()
+  const snapshots = useSnapshotsStore()
+  const allocation = useAllocationStore()
+
+  const { setError, registerRetrySource } = useStorageError()
+
+  function buildPayload(): AppStateV3 {
+    return {
+      schemaVersion: 3,
+      settings: {
+        lang: settings.state.lang,
+        currency: settings.state.currency,
+        theme: settings.state.theme,
+        payoffMethod: settings.state.payoffMethod,
+        lastMonthSeen: settings.state.lastMonthSeen,
+        onboarding: {
+          done: settings.state.onboarding.done,
+          currentStep: settings.state.onboarding.currentStep,
+        },
+      },
+      income: {
+        grossSalary: income.state.grossSalary,
+        deductions: income.state.deductions,
+        otherStreams: income.state.otherStreams,
+        nonSalaryBenefits: income.state.nonSalaryBenefits,
+      },
+      expenses: expenses.state.items,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      cards: cards.state.items as any,
+      goals: goals.state.items,
+      assets: assets.state.items,
+      variableExpenses: variable.state.items,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      snapshots: snapshots.state.items as any,
+      allocation: {
+        needs: allocation.state.needs,
+        wants: allocation.state.wants,
+        savings: allocation.state.savings,
+      },
+    }
+  }
+  // Register the payload provider so the retry button can re-attempt the save.
+  registerRetrySource(buildPayload)
+
+  watch(
+    () => [
+      settings.state,
+      income.state,
+      expenses.state,
+      cards.state,
+      goals.state,
+      assets.state,
+      variable.state,
+      snapshots.state,
+      allocation.state,
+    ],
+    () => {
+      if (isHydrating) return
+      const result = saveAppState(buildPayload())
+      if (!result.ok) setError(result.reason)
+    },
+    { deep: true },
+  )
+}
+
 // Pinia must be active before stores are accessed.
 const app = createApp(App)
 app.use(pinia)
 hydrateStores()
+persistStores()
 app.use(router).use(i18n).mount('#app')
+nextTick(() => {
+  isHydrating = false
+})

@@ -45,3 +45,24 @@ describe('lib/calculations/housing-ratio', () => {
     expect(Number.isFinite(result)).toBe(true)
   })
 })
+
+// New describe block for feature 20260515-fix-calculos-financieros.
+// Spec AC-3.1 says: gastos fijos con categoría "vivienda" alimentan el housing ratio.
+// Bug detected: lib filters by 'housing' (English) but UI default in ExpenseForm.vue:10 is 'vivienda' (Spanish).
+// In practice this means housing ratio is always 0 for expenses created via the UI. RED until T-022 lands.
+describe('lib/calculations/housing-ratio — fix-calculos-financieros', () => {
+  it("TC-U-005 (AC-3.1): category 'vivienda' contributes to housing ratio", () => {
+    expect(
+      calcHousingRatio(
+        [{ category: 'vivienda', amount: 2_000_000 }],
+        10_000_000
+      )
+    ).toBe(20)
+  })
+
+  it('TC-U-005 (AC-3.1, EC-2): netIncome = 0 → 0 (no division error)', () => {
+    expect(
+      calcHousingRatio([{ category: 'vivienda', amount: 2_000_000 }], 0)
+    ).toBe(0)
+  })
+})

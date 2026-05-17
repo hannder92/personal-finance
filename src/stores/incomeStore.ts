@@ -19,7 +19,12 @@ export interface IncomeStream {
   label: string
   amount: number
   frequency: IncomeFrequency
+  /** Marker for the auto-managed prima de servicios entry. Always paired with id === PRIMA_ID. */
+  isPrima?: boolean
 }
+
+/** Reserved id for the auto-managed prima de servicios stream. ADR-6 in 2-plan.md. */
+export const PRIMA_ID = '__prima__'
 
 export interface NonSalaryBenefit {
   id: string
@@ -81,15 +86,33 @@ export const useIncomeStore = defineStore('income', () => {
     Object.assign(item, patch)
   }
 
-  function addStream(input: Omit<IncomeStream, 'id'>): void {
+  function addStream(input: Omit<IncomeStream, 'id'> | IncomeStream): void {
     if (!isValidLabel(input.label)) return
     if (!isValidAmount(input.amount)) return
     if (!ALLOWED_FREQS.includes(input.frequency)) return
-    state.otherStreams.push({ ...input, id: newId() })
+
+    // ADR-6 guards: isPrima ⇔ id === PRIMA_ID; at most one isPrima stream.
+    const inputId = (input as IncomeStream).id
+    const inputIsPrima = (input as IncomeStream).isPrima === true
+    if (inputId === PRIMA_ID && !inputIsPrima) return
+    if (inputIsPrima && inputId !== PRIMA_ID && inputId !== undefined) return
+    if (inputIsPrima && state.otherStreams.some((s) => s.isPrima === true)) return
+
+    const id = inputId === PRIMA_ID ? PRIMA_ID : newId()
+    state.otherStreams.push({ ...input, id })
   }
   function removeStream(id: string): void {
     const idx = state.otherStreams.findIndex((x) => x.id === id)
     if (idx >= 0) state.otherStreams.splice(idx, 1)
+  }
+
+  function updateStream(id: string, patch: Partial<Omit<IncomeStream, 'id'>>): void {
+    const item = state.otherStreams.find((x) => x.id === id)
+    if (!item) return
+    if (patch.label !== undefined && !isValidLabel(patch.label)) return
+    if (patch.amount !== undefined && !isValidAmount(patch.amount)) return
+    if (patch.frequency !== undefined && !ALLOWED_FREQS.includes(patch.frequency)) return
+    Object.assign(item, patch)
   }
 
   function addBenefit(input: Omit<NonSalaryBenefit, 'id'>): void {
@@ -116,12 +139,23 @@ export const useIncomeStore = defineStore('income', () => {
   }
 
   function addPrimaPreset(): void {
-    // Prima de servicios: half of gross salary, paid semiannually.
-    const already = state.otherStreams.some((s) => s.label.toLowerCase().startsWith('prima'))
-    if (already) return
-    addStream({
+    // Prima de servicios: half of gross salary, paid semiannually (Art. 306 CST,
+    // 6 months completos). Upsert by reserved id PRIMA_ID (ADR-6).
+    const amount = state.grossSalary / 2
+    const existing = state.otherStreams.find((s) => s.id === PRIMA_ID || s.isPrima === true)
+    if (existing) {
+      existing.amount = amount
+      existing.id = PRIMA_ID
+      existing.isPrima = true
+      existing.frequency = 'semiannual'
+      existing.label = 'Prima de servicios'
+      return
+    }
+    state.otherStreams.push({
+      id: PRIMA_ID,
+      isPrima: true,
       label: 'Prima de servicios',
-      amount: state.grossSalary / 2,
+      amount,
       frequency: 'semiannual',
     })
   }
@@ -134,6 +168,7 @@ export const useIncomeStore = defineStore('income', () => {
     updateDeduction,
     addStream,
     removeStream,
+    updateStream,
     addBenefit,
     removeBenefit,
     applyColombiaPresets,

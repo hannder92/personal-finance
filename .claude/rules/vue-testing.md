@@ -147,10 +147,13 @@ Use `fixtures.ts` helpers: `freshPage` (no localStorage → triggers onboarding 
 
 ## initialState Shape for createTestingPinia
 
-Always seed the `settings` store when rendering any component that reads currency or locale:
+Always seed the `settings` store when rendering any component that reads currency or locale.
+The **full minimum seed** includes ALL settings fields — partial seeds cause TypeScript or
+runtime errors in components that destructure the full state.
+
+✅ Full minimum seed (use this verbatim):
 
 ```ts
-// Minimum settings seed — avoids "undefined is not a string" in formatCurrency
 settings: {
   state: {
     lang: 'es',
@@ -162,6 +165,27 @@ settings: {
   },
 },
 ```
+
+❌ Partial seed (omitting fields causes silent errors):
+
+```ts
+settings: { state: { currency: 'COP', lang: 'es', theme: 'system', ... } }
+// "..." is NOT valid — every field must be present
+```
+
+## Test ID Naming — AC Traceability
+
+Every `it()` string MUST start with `TC-U-NNN (AC-X.Y):` or `EC-N:`.
+
+✅ `it('TC-U-001 (AC-2.1): calcNetSalary returns 11.132M for 12.1M gross', () => { ... })`
+✅ `it('EC-2: grossSalary=0 → no NaN in any calculation', () => { ... })`
+❌ `it('should calculate net salary', () => { ... })` — untraceable to spec
+
+## Test Locations & Coverage Gates
+
+`tests/unit/` (lib + stores) · `tests/component/` (Vue components) · `tests/integration/` (persistence cycle) · `e2e/` (Playwright)
+
+Coverage gates: `lib/calculations/**` ≥80% · `lib/tax/**` ≥80% · global ≥60%
 
 ## Quality Checklist
 

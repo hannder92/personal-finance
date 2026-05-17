@@ -76,3 +76,65 @@ describe('lib/calculations/amortization', () => {
     })
   })
 })
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// AC-4.1: APR field is TEA (Tasa Efectiva Anual, Colombian standard).
+// Correct monthly rate = (1 + TEA)^(1/12) − 1, NOT TEA/12.
+// The current implementation uses TEA/12, so the TC-U-008 cases RED until T-017 lands.
+describe('lib/calculations/amortization — fix-calculos-financieros', () => {
+  it('TC-U-008 (AC-4.1): TEA 30% case 1 — fewer months than TNA/12 baseline', () => {
+    // balance 2M, TEA 30%, minPayment 100K:
+    //   correct TEM = (1.30)^(1/12) − 1 ≈ 0.022104 → ~26.7 → ceil 27 months
+    //   wrong TNA   = 0.30/12 = 0.025            → ~28.1 → ceil 29 months
+    const card: CardDebt = {
+      type: 'card',
+      balance: 2_000_000,
+      apr: 30,
+      minPayment: 100_000,
+    }
+    const result = calcDebtTimeline(card)
+    expect(result.months).toBe(27)
+    // totalInterest = months × payment − balance = 27 × 100K − 2M = 700K under TEA.
+    expect(result.totalInterest).toBe(700_000)
+  })
+
+  it('TC-U-008 (AC-4.1): TEA 30% case 2 — bigger balance, still fewer months than TNA', () => {
+    // balance 5M, TEA 30%, minPayment 400K:
+    //   correct TEM ≈ 0.022104 → ~14.8 → ceil 15
+    //   wrong TNA   = 0.025    → ~15.2 → ceil 16
+    const card: CardDebt = {
+      type: 'card',
+      balance: 5_000_000,
+      apr: 30,
+      minPayment: 400_000,
+    }
+    const result = calcDebtTimeline(card)
+    expect(result.months).toBe(15)
+  })
+
+  it('TC-U-011 (AC-4.4): payment < monthly interest → indefinite (Infinity)', () => {
+    // balance 5M, TEA 36%, minPayment 100K:
+    //   TEM = (1.36)^(1/12) − 1 ≈ 0.02596 → monthly interest = 5M × 0.02596 = 129,800
+    //   minPayment 100K < 129,800 → POSITIVE_INFINITY
+    const card: CardDebt = {
+      type: 'card',
+      balance: 5_000_000,
+      apr: 36,
+      minPayment: 100_000,
+    }
+    const result = calcDebtTimeline(card)
+    expect(result.months).toBe(Number.POSITIVE_INFINITY)
+  })
+
+  it('TC-U-023 (EC-6): APR=0 falls back to simple division (finite, no NaN)', () => {
+    const card: CardDebt = {
+      type: 'card',
+      balance: 1_200_000,
+      apr: 0,
+      minPayment: 100_000,
+    }
+    const result = calcDebtTimeline(card)
+    expect(result.months).toBe(12)
+    expect(result.totalInterest).toBe(0)
+  })
+})

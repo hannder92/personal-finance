@@ -59,6 +59,42 @@ Use `storeToRefs()` only when destructuring top-level reactive `ref`s from a sto
 
 ### `composables/` — Store + Lib Bridge
 
+Composables are the ONLY layer that may call both stores AND lib/calculations.
+Views call composables. Views MUST NOT import from lib/calculations directly.
+
+✅ Correct bridge pattern — domain logic goes through composable:
+
+```ts
+// src/composables/useNetIncome.ts
+import { computed } from 'vue'
+import { calcNetSalary } from '@/lib/calculations/net-income'
+import { useIncomeStore } from '@/stores/incomeStore'
+
+export function useNetIncome() {
+  const income = useIncomeStore()
+  const netIncome = computed(() =>
+    calcNetSalary({
+      grossSalary: income.state.grossSalary,
+      deductions: income.state.deductions,
+      nonSalaryBenefits: income.state.nonSalaryBenefits,
+    })
+  )
+  return { netIncome }
+}
+```
+
+❌ Calling lib directly from views — breaks architecture + untestable in isolation:
+
+```ts
+// src/views/DashboardView.vue — FORBIDDEN
+import { calcNetSalary } from '@/lib/calculations/net-income'
+import { useIncomeStore } from '@/stores/incomeStore'
+
+const income = useIncomeStore()
+const netIncome = computed(() => calcNetSalary({ grossSalary: income.state.grossSalary, ... }))
+// Move this to a composable, not a view.
+```
+
 Use module-level singleton `ref` for composables shared across multiple instances:
 
 ✅ Shared theme state:
@@ -71,8 +107,6 @@ export function useTheme() {
   return { isDark: sharedIsDark, setTheme }
 }
 ```
-
-❌ Calling `lib/calculations/*` directly from a `views/` file — must go through composable/store (FORBIDDEN).
 
 ## App.vue — Persistent Layout Shell
 

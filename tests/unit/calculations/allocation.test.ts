@@ -41,3 +41,24 @@ describe('lib/calculations/allocation', () => {
     expect(debtExceedsSavings(500_000, 800_000)).toBe(false)
   })
 })
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// AC-6.1: goal cap = savings% × netIncome. Implemented as calcAllocationAmounts(...).savings.
+// Lib correct; tests are regression coverage. Real bug (GoalsView ignores this) fixed in T-024 + T-030.
+describe('lib/calculations/allocation — fix-calculos-financieros (goal cap)', () => {
+  it('TC-U-014 (AC-6.1): goal cap = (20%) × 11.132M = 2.226_400', () => {
+    const amounts = calcAllocationAmounts(
+      { needs: 50, wants: 30, savings: 20 },
+      11_132_000
+    )
+    expect(amounts.savings).toBe(2_226_400)
+  })
+
+  it('TC-U-022 (AC-6.1, EC-5): savings = 0% → goal cap = 0', () => {
+    const amounts = calcAllocationAmounts(
+      { needs: 70, wants: 30, savings: 0 },
+      10_000_000
+    )
+    expect(amounts.savings).toBe(0)
+  })
+})

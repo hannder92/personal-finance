@@ -98,3 +98,77 @@ describe('incomeStore (T-043)', () => {
     expect(s.state.otherStreams.length).toBe(1)
   })
 })
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// AC-7.1: prima entry created with reserved id '__prima__' and isPrima: true.
+// AC-7.2: upsert behavior — second call updates amount when salary changes (no duplicate).
+// ADR-6: addStream MUST reject mismatched id/isPrima combinations.
+// These tests RED today: current store uses random UUID, no isPrima flag, returns early on second call.
+describe('incomeStore — fix-calculos-financieros (prima upsert + guards)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('TC-U-015 (AC-7.1): addPrimaPreset creates entry with id "__prima__" and isPrima: true', () => {
+    const s = useIncomeStore()
+    s.setGrossSalary(12_000_000)
+    s.addPrimaPreset()
+    expect(s.state.otherStreams.length).toBe(1)
+    const prima = s.state.otherStreams[0]!
+    expect(prima.id).toBe('__prima__')
+    // @ts-expect-error — isPrima will be added to IncomeStream in T-015
+    expect(prima.isPrima).toBe(true)
+    expect(prima.frequency).toBe('semiannual')
+    expect(prima.amount).toBe(6_000_000) // gross / 2
+  })
+
+  it('TC-U-016 (AC-7.2): second addPrimaPreset with updated salary upserts (no duplicate, new amount)', () => {
+    const s = useIncomeStore()
+    s.setGrossSalary(10_000_000)
+    s.addPrimaPreset()
+    expect(s.state.otherStreams[0]!.amount).toBe(5_000_000)
+
+    s.setGrossSalary(12_000_000)
+    s.addPrimaPreset()
+    expect(s.state.otherStreams.length).toBe(1) // still ONE entry
+    expect(s.state.otherStreams[0]!.amount).toBe(6_000_000) // updated
+    expect(s.state.otherStreams[0]!.id).toBe('__prima__')
+  })
+
+  it('ADR-6: addStream rejects id "__prima__" when isPrima is not true', () => {
+    const s = useIncomeStore()
+    s.addStream({
+      // @ts-expect-error — id is intentionally provided to test the guard
+      id: '__prima__',
+      label: 'Fake prima',
+      amount: 1_000_000,
+      frequency: 'monthly',
+    })
+    expect(s.state.otherStreams.length).toBe(0)
+  })
+
+  it('ADR-6: addStream rejects isPrima: true when id is not "__prima__"', () => {
+    const s = useIncomeStore()
+    s.addStream({
+      // @ts-expect-error — isPrima will be supported after T-015
+      isPrima: true,
+      id: 'random-uuid-here',
+      label: 'Stream pretending to be prima',
+      amount: 1_000_000,
+      frequency: 'semiannual',
+    })
+    expect(s.state.otherStreams.length).toBe(0)
+  })
+
+  it('ADR-6: at most one stream with isPrima === true exists at any time', () => {
+    const s = useIncomeStore()
+    s.setGrossSalary(10_000_000)
+    s.addPrimaPreset()
+    s.addPrimaPreset() // calling again should not add a second prima
+    const primaCount = s.state.otherStreams.filter(
+      // @ts-expect-error — isPrima will be added to IncomeStream in T-015
+      (stream) => stream.isPrima === true
+    ).length
+    expect(primaCount).toBe(1)
+  })
+})

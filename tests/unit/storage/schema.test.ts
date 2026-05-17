@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { AppStateSchemaV2 } from '@/lib/storage/schema'
+import { AppStateSchemaV2, AppStateSchemaV3 } from '@/lib/storage/schema'
 import { BackupEnvelopeSchema } from '@/lib/storage/backup'
 
 function validBaseState() {
@@ -23,6 +23,52 @@ function validBaseState() {
     snapshots: [],
   }
 }
+
+// Tests for feature spec 20260515-fix-calculos-financieros.
+// AC-8.2 schema bump v2 → v3: Asset gains annualRatePercent: number [0, 100], default 0.
+// AppStateSchemaV3 will reject schemaVersion: 2 and accept schemaVersion: 3.
+// These tests RED today: AppStateSchemaV3 doesn't exist yet, but we exercise the V2
+// schema's behavior with v3-shaped payloads to capture the future contract.
+// TODO(T-015): once AppStateSchemaV3 is exported, rename imports and flip the assertions.
+describe('lib/storage/schema — fix-calculos-financieros (v3 contract)', () => {
+  it('TC-U-S01 (AC-8.2): asset with annualRatePercent > 100 must be rejected', () => {
+    const state = { ...validBaseState(), schemaVersion: 3 }
+    state.assets = [
+      {
+        id: '11111111-1111-4111-8111-111111111111',
+        name: 'Outlier',
+        value: 5_000_000,
+        type: 'savings',
+        annualRatePercent: 9999,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+    ]
+    const result = AppStateSchemaV3.safeParse(state)
+    expect(result.success).toBe(false)
+  })
+
+  it('TC-U-S02 (AC-8.2): asset with negative annualRatePercent must be rejected', () => {
+    const state = { ...validBaseState(), schemaVersion: 3 }
+    state.assets = [
+      {
+        id: '22222222-2222-4222-8222-222222222222',
+        name: 'Negative',
+        value: 1_000_000,
+        type: 'savings',
+        annualRatePercent: -5,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any,
+    ]
+    const result = AppStateSchemaV3.safeParse(state)
+    expect(result.success).toBe(false)
+  })
+
+  it('TC-U-S03 (AC-8.2): schemaVersion 3 is accepted by the active app schema', () => {
+    const state = { ...validBaseState(), schemaVersion: 3 }
+    const result = AppStateSchemaV3.safeParse(state)
+    expect(result.success).toBe(true)
+  })
+})
 
 describe('lib/storage/schema', () => {
   it('AC-2.5: valid base state passes safeParse and preserves savings=20', () => {

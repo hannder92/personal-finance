@@ -42,4 +42,21 @@ describe('lib/calculations/frequency', () => {
       expect(getProjectionMonthsForStream({ amount: 1, frequency: 'annual' }, 0, 12)).toEqual([0])
     })
   })
+
+  // Tests for feature spec 20260515-fix-calculos-financieros.
+  // AC-5.2: non-monthly income must appear ONLY in its corresponding months, not all months.
+  // Lib is correct; regression coverage.
+  describe('getProjectionMonthsForStream — fix-calculos-financieros', () => {
+    it('TC-U-013 (AC-5.2): quarterly stream hits exactly 4 months in a 12-month window', () => {
+      const result = getProjectionMonthsForStream({ amount: 1, frequency: 'quarterly' }, 0, 12)
+      expect(result).toEqual([0, 3, 6, 9])
+      expect(result.length).toBe(4)
+    })
+
+    it('TC-U-013 (AC-5.2): annual stream hits exactly 1 month in a 12-month window', () => {
+      const result = getProjectionMonthsForStream({ amount: 1, frequency: 'annual' }, 0, 12)
+      expect(result).toEqual([0])
+      expect(result.length).toBe(1)
+    })
+  })
 })

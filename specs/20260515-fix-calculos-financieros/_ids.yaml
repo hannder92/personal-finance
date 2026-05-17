@@ -1,0 +1,129 @@
+ac:
+  - {id: "AC-1.1", desc: "Datos persisten al recargar (cualquier tipo)"}
+  - {id: "AC-1.2", desc: "Deuda persiste con todos sus campos al recargar"}
+  - {id: "AC-1.3", desc: "Deuda + deducción coexisten correctamente al recargar"}
+  - {id: "AC-1.4", desc: "Error de guardado muestra aviso visible"}
+  - {id: "AC-2.1", desc: "Ingreso neto $11.132.000 para bruto $12.100.000 con 8% deducciones"}
+  - {id: "AC-2.2", desc: "Panel distribución usa ingreso neto"}
+  - {id: "AC-2.3", desc: "Disponible dashboard = ingreso neto − gastos − deudas"}
+  - {id: "AC-2.4", desc: "Beneficios extrasalariales se suman post-deducciones"}
+  - {id: "AC-2.5", desc: "Sin deducciones → ingreso neto = bruto, sin error"}
+  - {id: "AC-3.1", desc: "Componente vivienda = gastos vivienda / ingreso neto"}
+  - {id: "AC-3.2", desc: "Componente emergencia = activos líquidos / (gastos fijos + obligaciones deuda mínimas)"}
+  - {id: "AC-3.3", desc: "Componente ahorro = contrib. mensuales metas / ingreso neto (tasa real)"}
+  - {id: "AC-3.4", desc: "Sin activos → emergencia muestra sin datos; puntaje se recalcula"}
+  - {id: "AC-3.5", desc: "Agregar activo líquido recalcula componente emergencia"}
+  - {id: "AC-3.6", desc: "Agregar gasto vivienda recalcula componente vivienda"}
+  - {id: "AC-4.1", desc: "TEM derivada de TEA 30% ≈ 2.21% < 2.5% nominal/12 → menos meses de pago"}
+  - {id: "AC-4.2", desc: "Total pagos deuda incluye cuotas de compras activas"}
+  - {id: "AC-4.3", desc: "DTI = (mínimo + cuotas) / ingreso neto"}
+  - {id: "AC-4.4", desc: "Pago < intereses → tiempo liquidación indefinido"}
+  - {id: "AC-5.1", desc: "Meses de prima tienen saldo mayor en proyección"}
+  - {id: "AC-5.2", desc: "Ingresos no mensuales solo aparecen en sus meses"}
+  - {id: "AC-5.3", desc: "Proyección flujo de caja usa ingreso neto como base"}
+  - {id: "AC-6.1", desc: "Cupo metas = % ahorro distribución × ingreso neto"}
+  - {id: "AC-6.2", desc: "Cambio % ahorro actualiza cupo metas automáticamente"}
+  - {id: "AC-7.1", desc: "Botón prima sin prima existente: crea entrada semestral = bruto/2"}
+  - {id: "AC-7.2", desc: "Botón prima con prima existente: actualiza monto = bruto/2 (sin duplicar)"}
+  - {id: "AC-7.3", desc: "Prima se puede editar/eliminar y cambio persiste al recargar"}
+  - {id: "AC-8.1", desc: "Proyección hipotética: acumulación mensual 12m si ahorra X% ingreso neto"}
+  - {id: "AC-8.2", desc: "Proyección compuesta: crecimiento activos reales con tasa configurada"}
+  - {id: "AC-8.3", desc: "Ambas curvas simultáneas visualmente distinguibles"}
+  - {id: "AC-8.4", desc: "Cambio % ahorro actualiza proyección hipotética automáticamente"}
+  - {id: "AC-8.5", desc: "Sin tasa rendimiento → mensaje indicando configurar tasa"}
+  - {id: "AC-8.6", desc: "Valor mes 12 curva compuesta > saldo inicial cuando tasa > 0"}
+
+tc:
+  - {id: "TC-U-001", covers: ["AC-2.1"], kind: unit}
+  - {id: "TC-U-002", covers: ["AC-2.3"], kind: unit}
+  - {id: "TC-U-003", covers: ["AC-2.4"], kind: unit}
+  - {id: "TC-U-005", covers: ["AC-3.1"], kind: unit}
+  - {id: "TC-U-006", covers: ["AC-3.2"], kind: unit}
+  - {id: "TC-U-007", covers: ["AC-3.3"], kind: unit}
+  - {id: "TC-U-008", covers: ["AC-4.1"], kind: unit}
+  - {id: "TC-U-009", covers: ["AC-4.2"], kind: unit}
+  - {id: "TC-U-010", covers: ["AC-4.3"], kind: unit}
+  - {id: "TC-U-011", covers: ["AC-4.4"], kind: unit}
+  - {id: "TC-U-012", covers: ["AC-5.1"], kind: unit}
+  - {id: "TC-U-013", covers: ["AC-5.2"], kind: unit}
+  - {id: "TC-U-014", covers: ["AC-6.1"], kind: unit}
+  - {id: "TC-U-015", covers: ["AC-7.1"], kind: unit}
+  - {id: "TC-U-016", covers: ["AC-7.2"], kind: unit}
+  - {id: "TC-U-017", covers: ["AC-8.1"], kind: unit}
+  - {id: "TC-U-018", covers: ["AC-8.2"], kind: unit}
+  - {id: "TC-U-019", covers: ["AC-8.6"], kind: unit}
+  - {id: "TC-U-020", covers: ["AC-2.5"], kind: unit}
+  - {id: "TC-U-021", covers: ["AC-2.5"], kind: unit}
+  - {id: "TC-U-022", covers: ["AC-6.1"], kind: unit}
+  - {id: "TC-U-023", covers: ["AC-4.1"], kind: unit}
+  - {id: "TC-U-024", covers: ["AC-8.2"], kind: unit}
+  - {id: "TC-U-025", covers: ["AC-3.3"], kind: unit}
+  - {id: "TC-C-001", covers: ["AC-1.4"], kind: component}
+  - {id: "TC-C-002", covers: ["AC-2.2"], kind: component}
+  - {id: "TC-C-003", covers: ["AC-3.4"], kind: component}
+  - {id: "TC-C-004", covers: ["AC-3.5"], kind: component}
+  - {id: "TC-C-005", covers: ["AC-3.6"], kind: component}
+  - {id: "TC-C-006", covers: ["AC-5.3"], kind: component}
+  - {id: "TC-C-007", covers: ["AC-6.2"], kind: component}
+  - {id: "TC-C-008", covers: ["AC-8.1", "AC-8.3"], kind: component}
+  - {id: "TC-C-009", covers: ["AC-8.4"], kind: component}
+  - {id: "TC-C-010", covers: ["AC-8.5"], kind: component}
+  - {id: "TC-C-011", covers: ["AC-8.5"], kind: component}
+  - {id: "TC-I-001", covers: ["AC-1.1"], kind: integration}
+  - {id: "TC-I-002", covers: ["AC-1.2"], kind: integration}
+  - {id: "TC-I-003", covers: ["AC-1.3"], kind: integration}
+  - {id: "TC-I-004", covers: ["AC-7.3"], kind: integration}
+  - {id: "TC-E-001", covers: ["AC-1.1", "AC-1.2", "AC-1.3"], kind: e2e}
+  - {id: "TC-E-002", covers: ["AC-2.2"], kind: e2e}
+  - {id: "TC-E-003", covers: ["AC-3.5", "AC-3.6"], kind: e2e}
+  - {id: "TC-E-004", covers: ["AC-7.1", "AC-7.2", "AC-7.3"], kind: e2e}
+  - {id: "TC-E-005", covers: ["AC-8.1", "AC-8.2", "AC-8.3"], kind: e2e}
+
+tasks:
+  - {id: "T-001", status: done, type: setup,    size: S, covers: [],                                                    deps: []}
+  - {id: "T-002", status: done, type: test,     size: S, covers: ["AC-2.1","AC-2.3","AC-2.4","AC-2.5"],                deps: ["T-001"]}
+  - {id: "T-003", status: done, type: test,     size: S, covers: ["AC-3.1","AC-3.2","AC-3.3"],                         deps: ["T-001"]}
+  - {id: "T-004", status: done, type: test,     size: S, covers: ["AC-4.1","AC-4.4"],                                  deps: ["T-001"]}
+  - {id: "T-005", status: done, type: test,     size: S, covers: ["AC-4.2","AC-4.3"],                                  deps: ["T-001"]}
+  - {id: "T-006", status: done, type: test,     size: S, covers: ["AC-5.1","AC-5.2"],                                  deps: ["T-001"]}
+  - {id: "T-007", status: done, type: test,     size: M, covers: ["AC-6.1","AC-8.1","AC-8.2","AC-8.6"],                deps: ["T-001"]}
+  - {id: "T-008", status: done, type: test,     size: S, covers: ["AC-7.1","AC-7.2"],                                  deps: ["T-001"]}
+  - {id: "T-009", status: done, type: test,     size: S, covers: ["AC-8.2"],                                           deps: ["T-001"]}
+  - {id: "T-010", status: done, type: test,     size: S, covers: ["AC-1.4"],                                           deps: ["T-001"]}
+  - {id: "T-011", status: done, type: test,     size: M, covers: ["AC-2.2","AC-3.4","AC-3.5","AC-3.6","AC-5.3"],       deps: ["T-001"]}
+  - {id: "T-012", status: done, type: test,     size: M, covers: ["AC-6.2","AC-8.1","AC-8.3","AC-8.4","AC-8.5"],       deps: ["T-001"]}
+  - {id: "T-013", status: done, type: test,     size: M, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-7.3"],                deps: ["T-001"]}
+  - {id: "T-014", status: done, type: test,     size: M, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-2.2","AC-3.5","AC-3.6","AC-7.1","AC-7.2","AC-7.3","AC-8.1","AC-8.2","AC-8.3"], deps: ["T-001"]}
+  - {id: "T-015", status: done, type: impl,     size: S, covers: ["AC-7.1","AC-7.2","AC-8.2"],                         deps: ["T-008","T-009"]}
+  - {id: "T-016", status: done, type: impl,     size: S, covers: ["AC-1.1","AC-8.2"],                                  deps: ["T-013"]}
+  - {id: "T-017", status: done, type: impl,     size: S, covers: ["AC-4.1","AC-4.4"],                                  deps: ["T-004"]}
+  - {id: "T-018", status: done, type: impl,     size: M, covers: ["AC-8.1","AC-8.2","AC-8.6"],                         deps: ["T-007","T-009"]}
+  - {id: "T-019", status: done, type: impl,     size: S, covers: ["AC-7.1","AC-7.2"],                                  deps: ["T-008","T-015"]}
+  - {id: "T-020", status: done, type: impl,     size: S, covers: ["AC-8.2"],                                           deps: ["T-009","T-015"]}
+  - {id: "T-021", status: done, type: impl,     size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],       deps: ["T-002","T-011"]}
+  - {id: "T-022", status: done, type: impl,     size: M, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-3.5","AC-3.6"], deps: ["T-003","T-011"]}
+  - {id: "T-023", status: done, type: impl,     size: S, covers: ["AC-4.2","AC-4.3"],                                  deps: ["T-005"]}
+  - {id: "T-024", status: done, type: impl,     size: S, covers: ["AC-6.1","AC-6.2"],                                  deps: ["T-007","T-012"]}
+  - {id: "T-025", status: done, type: impl,     size: S, covers: ["AC-8.1","AC-8.2","AC-8.3","AC-8.4","AC-8.5"],       deps: ["T-012","T-018"]}
+  - {id: "T-026", status: done, type: impl,     size: M, covers: ["AC-1.4"],                                           deps: ["T-010"]}
+  - {id: "T-027", status: done, type: impl,     size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4"],                deps: ["T-013","T-016","T-026"]}
+  - {id: "T-028", status: done, type: impl,     size: M, covers: ["AC-2.2","AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-3.5","AC-3.6","AC-5.1","AC-5.2","AC-5.3"], deps: ["T-006","T-011","T-021","T-022","T-023"]}
+  - {id: "T-029", status: done, type: impl,     size: M, covers: ["AC-8.1","AC-8.3","AC-8.4","AC-8.5","AC-8.6"],       deps: ["T-012","T-025"]}
+  - {id: "T-030", status: done, type: impl,     size: M, covers: ["AC-6.1","AC-6.2","AC-7.1","AC-7.2","AC-7.3","AC-8.2"], deps: ["T-007","T-008","T-024","T-015"]}
+  - {id: "T-031", status: done, type: impl,     size: S, covers: ["AC-1.4","AC-4.1","AC-8.2","AC-8.5"],                deps: ["T-010","T-017","T-020"]}
+  - {id: "T-032", status: done, type: refactor, size: S, covers: [],                                                    deps: ["T-031"]}
+  - {id: "T-033", status: done, type: docs,     size: S, covers: [],                                                    deps: ["T-031"]}
+  - {id: "T-034", status: done, type: test,     size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4","AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-3.5","AC-3.6","AC-4.1","AC-4.2","AC-4.3","AC-4.4","AC-5.1","AC-5.2","AC-5.3","AC-6.1","AC-6.2","AC-7.1","AC-7.2","AC-7.3","AC-8.1","AC-8.2","AC-8.3","AC-8.4","AC-8.5","AC-8.6"], deps: ["T-021","T-022","T-023","T-024","T-025","T-026","T-027","T-028","T-029","T-030","T-031"]}
+
+adr:
+  - {id: "ADR-1", decision: "APR field = TEA; formula (1+TEA)^(1/12)-1",              covers: ["AC-4.1", "AC-4.4"]}
+  - {id: "ADR-2", decision: "New module lib/calculations/savings-projection.ts",       covers: ["AC-8.1", "AC-8.2", "AC-8.6"]}
+  - {id: "ADR-3", decision: "Migration v2→v3: Asset.annualRatePercent default 0",      covers: ["AC-8.2", "AC-8.5"]}
+  - {id: "ADR-4", decision: "Storage error UX = sticky toast + retry CTA",             covers: ["AC-1.4"]}
+  - {id: "ADR-5", decision: "Single chart with two series (hypothetical + compound)",  covers: ["AC-8.3"]}
+  - {id: "ADR-6", decision: "Prima upsert by reserved id __prima__ + isPrima flag",   covers: ["AC-7.1", "AC-7.2", "AC-7.3"]}
+
+open_questions:
+  - {id: "OQ-1", text: "Prima: auto-update or manual?", resolved: true, resolution: "Button always adds or updates with current salary."}
+  - {id: "OQ-2", text: "Savings health score: allocation % or real contributions?", resolved: true, resolution: "Both: health uses real rate; US-8 adds hypothetical curve."}
+  - {id: "OQ-3", text: "Compound rate: per-asset or single global rate?", resolved: true, resolution: "Per asset — each savings/investment asset has its own EA field."}

@@ -187,15 +187,91 @@ function clampAllocation(alloc: V1State['budgetAllocation']): {
   return { needs: 50, wants: 30, savings: 20 }
 }
 
+// migrations[3]: v2 → v3 transformation.
+// (a) Asset gets annualRatePercent: 0 default if missing (clamped to [0,100] when present).
+// (b) Card.installmentsList → installments rename; Card.dueDate number 1-31 → null (UI
+//     enters ISO dates going forward; numeric day-of-month is lossy and not user-shown).
+// (c) Legacy "Prima de servicios" stream auto-tagged with isPrima: true and re-ided to
+//     reserved slug __prima__ (best-effort: matches label + semiannual + amount within
+//     ±5% of grossSalary/2).
+// Idempotent: running on v3 input is a no-op.
+type V2Like = {
+  schemaVersion?: number
+  income?: {
+    grossSalary?: number
+    otherStreams?: Array<{
+      id?: string
+      label?: string
+      amount?: number
+      frequency?: string
+      isPrima?: boolean
+    }>
+    [k: string]: unknown
+  }
+  assets?: Array<{ annualRatePercent?: unknown; [k: string]: unknown }>
+  cards?: Array<{
+    installmentsList?: unknown
+    installments?: unknown
+    dueDate?: unknown
+    [k: string]: unknown
+  }>
+  [k: string]: unknown
+}
+
+function migrateV2toV3(v2: V2Like): unknown {
+  if ((v2.schemaVersion ?? 0) >= 3) return v2
+
+  const grossSalary = v2.income?.grossSalary ?? 0
+  const primaTarget = grossSalary / 2
+
+  return {
+    ...v2,
+    schemaVersion: 3,
+    income: {
+      ...v2.income,
+      otherStreams: (v2.income?.otherStreams ?? []).map((s) => {
+        const looksLikePrima =
+          s.label === 'Prima de servicios' &&
+          s.frequency === 'semiannual' &&
+          typeof s.amount === 'number' &&
+          primaTarget > 0 &&
+          Math.abs(s.amount - primaTarget) / primaTarget < 0.05
+        if (looksLikePrima) {
+          return { ...s, id: '__prima__', isPrima: true }
+        }
+        return s
+      }),
+    },
+    assets: (v2.assets ?? []).map((a) => {
+      const raw = a.annualRatePercent
+      const rate =
+        typeof raw === 'number' && Number.isFinite(raw)
+          ? Math.min(100, Math.max(0, raw))
+          : 0
+      return { ...a, annualRatePercent: rate }
+    }),
+    cards: (v2.cards ?? []).map((c) => {
+      const installments = c.installmentsList ?? c.installments ?? []
+      // dueDate: legacy number day-of-month is dropped (lossy without calendar context); set to null.
+      // Pre-existing string ISO is preserved.
+      const dueDate = typeof c.dueDate === 'string' ? c.dueDate : null
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { installmentsList: _drop, ...rest } = c
+      return { ...rest, installments, dueDate }
+    }),
+  }
+}
+
 export const migrations: Record<number, (state: unknown) => unknown> = {
   2: (state: unknown) => migrateV1toV2(state as V1State),
+  3: (state: unknown) => migrateV2toV3(state as V2Like),
 }
 
 export function migrate(state: unknown): unknown {
   if (typeof state !== 'object' || state === null) return state
   const current = (state as { schemaVersion?: number }).schemaVersion ?? 1
   let s = state
-  for (let v = current + 1; v <= 2; v++) {
+  for (let v = current + 1; v <= 3; v++) {
     const migrator = migrations[v]
     if (migrator) s = migrator(s)
   }

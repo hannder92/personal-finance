@@ -16,14 +16,24 @@ const total = computed(() => assets.state.items.reduce((acc, a) => acc + a.value
 const name = ref('')
 const valueRaw = ref('')
 const type = ref<AssetType>('savings')
+const rateRaw = ref('')
+
+// annualRatePercent is only meaningful for savings/investment per OQ-P2 (2-plan.md).
+const showRateInput = computed(
+  () => type.value === 'savings' || type.value === 'investment'
+)
 
 function onSubmit(event: Event) {
   event.preventDefault()
   const value = Number.parseInt(valueRaw.value.replace(/\D/g, ''), 10) || 0
   if (!name.value || value <= 0) return
-  assets.add({ name: name.value, value, type: type.value })
+  const rate = showRateInput.value
+    ? Math.min(100, Math.max(0, Number.parseFloat(rateRaw.value) || 0))
+    : 0
+  assets.add({ name: name.value, value, type: type.value, annualRatePercent: rate })
   name.value = ''
   valueRaw.value = ''
+  rateRaw.value = ''
 }
 </script>
 
@@ -65,6 +75,19 @@ function onSubmit(event: Event) {
           <option value="vehicle">Vehículo</option>
           <option value="other">Otro</option>
         </select>
+      </label>
+      <label v-if="showRateInput" class="flex flex-1 flex-col gap-1">
+        <span class="text-xs">Tasa anual (E.A. %)</span>
+        <input
+          v-model="rateRaw"
+          type="number"
+          min="0"
+          max="100"
+          step="0.01"
+          aria-label="Tasa anual"
+          placeholder="0"
+          class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
+        >
       </label>
       <button
         type="submit"
