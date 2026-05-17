@@ -1,0 +1,260 @@
+tests/unit/calculations/housing-ratio.test.ts
+  s_0f83eee24ab7fd::t_be640e87d57481 48-68
+tests/unit/calculations/net-income.test.ts
+  s_0f83eee24ab7fd::t_befa2c2ed72c85 66-122
+src/lib/calculations/savings-projection.ts
+  s_0f83eee24ab7fd::t_5f5234e34d82a0 3-24,39-40,45,48,63
+  s_0f83eee24ab7fd::t_c403d6a5c46251 1-2,25-38,41-44,46-47,49-62
+specs/20260515-fix-calculos-financieros/_state.yaml
+  s_3dd850755b64af::t_f0daa41dcdb422 1-8,11-13,20-22,29,35
+  s_0f83eee24ab7fd::t_d4557affc63da0 9
+  s_c10db8fa1237e0::t_ffcd68e35073ee 10,14-19,23-28,30-34,37-43
+  s_0f83eee24ab7fd::t_b3ba9cc1a0b50f 36
+vitest.config.ts
+  s_0f83eee24ab7fd::t_73a364ede3c64e 11-15
+src/lib/storage/schema.ts
+  s_0f83eee24ab7fd::t_d1304cbac3f760 179-244,247,251-255
+  s_0f83eee24ab7fd::t_64428edba9bb96 133-134,140
+  s_0f83eee24ab7fd::t_f95a81a75c33e5 65-66,68
+  s_0f83eee24ab7fd::t_14e35e17f48baf 88-89,105,111
+  s_0f83eee24ab7fd::t_e4c503b6c3a2cd 38-42,44,48
+  s_0f83eee24ab7fd::t_8964d473cfeedd 246,261-266,278
+tests/unit/stores/goalsAssetsStore.test.ts
+  s_0f83eee24ab7fd::t_1d93becc20633b 87-150
+src/stores/assetsStore.ts
+  s_0f83eee24ab7fd::t_c999c1aa18e74e 14-15
+  s_0f83eee24ab7fd::t_6c71fed44ae49a 34-37
+  s_0f83eee24ab7fd::t_2b8f2fe331ea70 41,45-50,62
+tests/setup.ts
+  s_0f83eee24ab7fd::t_7336c893905272 9-41
+src/views/DashboardView.vue
+  s_0f83eee24ab7fd::t_8b585827c5b68d 117-118
+  s_0f83eee24ab7fd::t_ccbdc02798a6ff 65-66,71-72,84,97
+  s_0f83eee24ab7fd::t_f31f475e72dbe0 10-12,23-25,34-35,37-39,41
+  s_0f83eee24ab7fd::t_02ce6861fbc4c7 8
+e2e/savings-projection.spec.ts
+  s_0f83eee24ab7fd::t_7e2b425de17b40 1-56
+src/components/dashboard/SavingsProjectionChart.vue
+  s_0f83eee24ab7fd::t_135ddd57f62ebd 1,59-61,82
+  s_0f83eee24ab7fd::t_01c9c86eb4e163 2-58,62-81
+src/composables/useHealthScore.ts
+  s_0f83eee24ab7fd::t_60de2574ce569d 1-2,5-14,16-17,23-62,65-91
+  s_0f83eee24ab7fd::t_f70a7882ac7825 3-4,15,18-22,92
+  s_0f83eee24ab7fd::t_6447336ffa3d04 63-64
+tests/unit/calculations/dti.test.ts
+  s_0f83eee24ab7fd::t_8284f12d288542 68-73
+  s_0f83eee24ab7fd::t_3d9111c0f04aff 50-67,74
+src/composables/useNetIncome.ts
+  s_0f83eee24ab7fd::t_f00b780aa75cdc 1-3,6-11,19-48
+  s_0f83eee24ab7fd::t_09c1f2ab44551d 4-5,12-18,49
+tests/unit/calculations/installments.test.ts
+  s_0f83eee24ab7fd::t_175e77551f4fd9 45-68
+src/lib/calculations/housing-ratio.ts
+  s_0f83eee24ab7fd::t_307d7a726d7d83 13,15
+e2e/net-income-dashboard.spec.ts
+  s_0f83eee24ab7fd::t_1d042d181989aa 1-39
+src/composables/useDTI.ts
+  s_0f83eee24ab7fd::t_1f23ff69ace934 1-2,5-8,16-30
+  s_0f83eee24ab7fd::t_302098fca269fd 3-4,9-15,31
+tests/unit/calculations/projection.test.ts
+  s_0f83eee24ab7fd::t_d35f2f4643175f 65-109
+tests/unit/calculations/savings-projection.test.ts
+  s_0f83eee24ab7fd::t_ac86426e4b1dae 1-116
+specs/20260515-fix-calculos-financieros/6-review.md
+  s_0f83eee24ab7fd::t_d4057898241ca6 76
+  s_0f83eee24ab7fd::t_d9dab4f44b4fea 1-75
+.claude/rules/vue-architecture.md
+  s_0f83eee24ab7fd::t_432fa6f27245c0 62-97
+src/composables/useGoalsBudget.ts
+  s_0f83eee24ab7fd::t_65f68ab4e12902 1,4-5,12-17
+  s_0f83eee24ab7fd::t_ce6609752ff677 2-3,6-11,18
+e2e/prima-upsert.spec.ts
+  s_0f83eee24ab7fd::t_a9f32cf132d32f 1-46
+specs/20260514-project-refactor/_state.yaml
+  s_c10db8fa1237e0::t_6f141630b95887 3,10,14-19,23-28,30-34,37-43
+src/stores/incomeStore.ts
+  s_0f83eee24ab7fd::t_9d2d0f600627e0 22-23,26-27
+  s_0f83eee24ab7fd::t_f053c28f8c0c0b 142-156,158
+  s_0f83eee24ab7fd::t_e0529c05a36a76 171
+  s_0f83eee24ab7fd::t_72b2d03940b13a 89,93-102,109-115
+src/composables/useSavingsProjection.ts
+  s_0f83eee24ab7fd::t_560b23fd91010e 1-4,7-11,13-15,17-19,27-57
+  s_0f83eee24ab7fd::t_38ab4f096c46b5 5-6,12,16,20-26,58
+src/i18n/es.json
+  s_0f83eee24ab7fd::t_347aa95401b8e2 1-36
+src/lib/storage/migrate.ts
+  s_0f83eee24ab7fd::t_3fc1afbc6c02fa 190-264,267,274
+src/lib/storage/keys.ts
+  s_0f83eee24ab7fd::t_3ef09803ab04e5 3
+specs/20260515-fix-calculos-financieros/2-data-model.md
+  s_0f83eee24ab7fd::t_878da2eb6c2193 1-202
+src/lib/tax/colombia/prima.ts
+  s_0f83eee24ab7fd::t_c8a39ffe75f56f 15-25
+tests/unit/storage/migrate.test.ts
+  s_0f83eee24ab7fd::t_c03b9cb62f6b10 3
+  s_0f83eee24ab7fd::t_432cf0c13ae1db 43,45
+  s_0f83eee24ab7fd::t_1092e19699dcac 9,11
+specs/20260514-project-refactor/_journal.yaml
+  s_c10db8fa1237e0::t_806c12abe70288 1-175
+specs/20260515-fix-calculos-financieros/1-spec.md
+  s_0f83eee24ab7fd::t_a3c655aae66f2e 226
+  s_6c1612e672aa48::t_12fc8865835d65 127,129,133,135-137
+  s_0f83eee24ab7fd::t_3398017598a8dc 199
+  s_0f83eee24ab7fd::t_e8921d5f0a3f71 149-150
+  s_0f83eee24ab7fd::t_9b47340f138687 139-140
+  s_6c1612e672aa48::t_a2d65de6a99cd0 205
+  s_0f83eee24ab7fd::t_fa72892df73095 73
+  s_6c1612e672aa48::t_9c68540b98fa63 14,17,20
+  s_6c1612e672aa48::t_17c66ee4630484 197-198,203-204,209-216
+  s_6c1612e672aa48::t_6199c7b76fd7cc 188-189
+  s_6c1612e672aa48::t_7d5b43ad70b4ca 1-13,15-16,18-19,21-72,74,76-90,92-126,128,130-132,134,138,141-142,165-173,177-187,190-196,200-202,206-208,217,221-225
+  s_6c1612e672aa48::t_545e854299beb9 174-176
+  s_6c1612e672aa48::t_0fd9a2632f86fd 143-148,151-164
+  s_0f83eee24ab7fd::t_2b702807ad3fdd 91
+  s_6c1612e672aa48::t_188206f402cf66 75
+  s_6c1612e672aa48::t_4eb61e6526c14c 218-220
+tests/component/GoalsAndSavingsProjection.test.ts
+  s_0f83eee24ab7fd::t_d18340afcda177 6
+  s_0f83eee24ab7fd::t_221049f5415fa1 1-5,7-195
+tests/integration/persistence.test.ts
+  s_0f83eee24ab7fd::t_25e315fdc59d14 20,22-23
+  s_0f83eee24ab7fd::t_270ae3dda6442e 1-19,21,24-33,35-152,156-177
+  s_0f83eee24ab7fd::t_74b3847de829c1 34
+  s_0f83eee24ab7fd::t_8b266d73951789 153-155
+specs/20260515-fix-calculos-financieros/_ids.yaml
+  s_c10db8fa1237e0::t_e36cccaf05e035 1-129
+src/i18n/en.json
+  s_0f83eee24ab7fd::t_f9b3e27751c67f 1-36
+specs/.active
+  s_3dd850755b64af::t_b260d0e2836608 1
+CLAUDE.md
+  s_0f83eee24ab7fd::t_407e3ad531fb79 1,3-4,6,8,11-13,15-17,21-35,37-39,42-57,64,66,68,70-81,83,85-87,90-91,93-102,105-121,123-125,127-129,131-153,155,157,160,164-175,177-180,183,185,187-191,193-204,207,209-214,217-218,221,223-228,230-242,244
+  s_0f83eee24ab7fd::t_929bd3a7c026e3 14,36,40-41,58-63,65,67,69,82,84,88-89,92,103-104,122,126,130,154,156,158-159,161-163,176,181-182,184,186,192,205-206,208,215-216,219-220,222,229,246,248-254
+src/components/networth/AssetList.vue
+  s_0f83eee24ab7fd::t_8d7fd689616b4a 19-24,30-33,36
+  s_0f83eee24ab7fd::t_eb469cd77a51f9 79-91
+tests/unit/storage/schema.test.ts
+  s_0f83eee24ab7fd::t_76955120cd84a2 35,46,51,62,66,68
+  s_0f83eee24ab7fd::t_28d9d60be0ba31 2
+  s_0f83eee24ab7fd::t_0f7a2fe862863a 27-34,36-45,47-50,52-61,63-65,67,69-72
+tests/unit/calculations/frequency.test.ts
+  s_0f83eee24ab7fd::t_b6921de986e9cc 45-61
+tests/unit/stores/incomeStore.test.ts
+  s_0f83eee24ab7fd::t_dce749136bbad6 101-174
+.claude/rules/README.md
+  s_0f83eee24ab7fd::t_6f11bc00ae2a8a 5-9,13-20,22,24,28-32
+.claude/rules/vue-testing.md
+  s_0f83eee24ab7fd::t_42900f9d2d9d1a 150-154,169-177,183-185,187
+  s_0f83eee24ab7fd::t_b4f6077bfc4ed2 178-182
+  s_0f83eee24ab7fd::t_37c80895842588 186,188
+specs/20260515-fix-calculos-financieros/2-plan.md
+  s_0f83eee24ab7fd::t_cfc5f824cc4a9a 1-212
+  s_0f83eee24ab7fd::t_f94ce2e2a46065 213
+tests/unit/composables/useHealthScore.test.ts
+  s_0f83eee24ab7fd::t_dc3764d8ab72b1 1-92
+specs/20260515-fix-calculos-financieros/4-tasks.md
+  s_0f83eee24ab7fd::t_0c3d87a90de505 1-298,300-356,358-368,370-477
+  s_0f83eee24ab7fd::t_788b52a9ef6a28 478
+  s_0f83eee24ab7fd::t_c46a86d12a69e7 299
+  s_0f83eee24ab7fd::t_09749bdbc22b2d 369
+  s_0f83eee24ab7fd::t_b81558ba88bd2e 357
+src/views/GoalsView.vue
+  s_0f83eee24ab7fd::t_5ba62e70dd982c 3,7
+  s_0f83eee24ab7fd::t_3ebd196bf63801 18
+specs/20260514-project-refactor/_ids.yaml
+  s_c10db8fa1237e0::t_bbd3cf14491a87 1-323
+src/components/dashboard/HealthScore.vue
+  s_0f83eee24ab7fd::t_6a8f41bfc9cb2a 11,18,20,23,26
+  s_0f83eee24ab7fd::t_ee19cbf13bc8f9 94-96
+e2e/health-score-reactive.spec.ts
+  s_0f83eee24ab7fd::t_f489066567d16d 1-47
+src/components/common/StorageErrorToast.vue
+  s_0f83eee24ab7fd::t_9740330f58270a 1,20-22,50
+  s_0f83eee24ab7fd::t_c93a27339415cf 2-19,23-49
+e2e/persistence.spec.ts
+  s_0f83eee24ab7fd::t_44a33fbea6b7c7 1-39
+src/main.ts
+  s_0f83eee24ab7fd::t_7edd43eef8fba6 152-154
+  s_0f83eee24ab7fd::t_165e70ccad1a37 22-25
+  s_0f83eee24ab7fd::t_88d2438753d538 85-140
+  s_0f83eee24ab7fd::t_293147cb7438bb 1,7-8
+  s_5ef20fdf11414e::t_c3f48ec6609216 6
+tests/unit/calculations/allocation.test.ts
+  s_0f83eee24ab7fd::t_b6559f148ee713 44-64
+src/lib/storage/useAppStorage.ts
+  s_0f83eee24ab7fd::t_56e639bc69935a 70-78
+  s_0f83eee24ab7fd::t_730e9dd6b253a2 3
+  s_0f83eee24ab7fd::t_7c8864e0efb98c 2,6-7,9,13-15,28,35,42-44,46,49
+  s_0f83eee24ab7fd::t_9b9508c31f22a4 30-31
+src/lib/calculations/amortization.ts
+  s_0f83eee24ab7fd::t_3e93e9a41f0f19 61-63
+CHANGELOG.md
+  s_0f83eee24ab7fd::t_2ae7b63b3f9ffd 7-24
+specs/20260515-fix-calculos-financieros/_journal.yaml
+  s_c10db8fa1237e0::t_cbde24bb742514 1-50
+src/composables/useStorageError.ts
+  s_0f83eee24ab7fd::t_cd8e63ce1a92c5 3-4,7,9-15,18-23,25-27,30,49
+  s_0f83eee24ab7fd::t_1901e36976a709 1-2,5-6,8,16-17,24,28-29,31-48
+specs/20260515-fix-calculos-financieros/3-test-plan.md
+  s_0f83eee24ab7fd::t_5b49417bbcb213 1-743
+  s_0f83eee24ab7fd::t_d2ad902c9368cc 744
+tests/unit/calculations/amortization.test.ts
+  s_0f83eee24ab7fd::t_c6eb3ff924a63f 79-140
+tests/component/StorageErrorToast.test.ts
+  s_0f83eee24ab7fd::t_3d84348379b3a4 1-91
+tests/component/DashboardViewReactive.test.ts
+  s_0f83eee24ab7fd::t_2abc9f376edd76 1-149
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "f5b5111c01955a8ac23bfb7252bfbb9e5a9959a9",
+  "prompts": {},
+  "humans": {
+    "h_13356df7504afe": {
+      "author": "Johann Medina <hannder92@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0f83eee24ab7fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aefe4617-639a-464a-bda6-85786cbe898b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    },
+    "s_3dd850755b64af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "156ae258-3eba-4c2e-b0cd-fedc24747bfd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    },
+    "s_5ef20fdf11414e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62b3d578-5750-4da1-9c1e-3361eb793596",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    },
+    "s_6c1612e672aa48": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b26715cb-7e4e-406d-9692-aca5722f295d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    },
+    "s_c10db8fa1237e0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eca9edd3-59f1-4e4d-9471-bf21ca8c6bbb",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
