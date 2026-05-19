@@ -1,0 +1,32 @@
+src/lib/tax/colombia/presets.ts
+  s_afea25d1e411e5::t_9fd7adf0b83232 1-2,10-13,21-28,31,33-37,39-44
+tests/unit/tax/colombia/presets.test.ts
+  s_afea25d1e411e5::t_d1abdfbe746070 45-80
+src/lib/tax/colombia/constants.ts
+  s_afea25d1e411e5::t_ed464c88e34d91 38-50
+e2e/colombia-presets-solidarity.spec.ts
+  s_afea25d1e411e5::t_96bacfbc8fb7d5 1-41
+src/stores/incomeStore.ts
+  s_afea25d1e411e5::t_97f89607276797 130-134
+  s_afea25d1e411e5::t_ef7db26b309e96 6
+tests/unit/tax/colombia/constants.test.ts
+  s_afea25d1e411e5::t_4d97042564cd48 1-21
+tests/unit/stores/incomeStore.test.ts
+  s_afea25d1e411e5::t_1bb3dcddf11e9e 89-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "da228b90e35c42f2ece0bd9cc789adade2c4c1de",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
