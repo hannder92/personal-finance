@@ -1,0 +1,26 @@
+src/i18n/en.json
+  s_afea25d1e411e5::t_4295929ded6891 2-23
+  s_afea25d1e411e5::t_56952dc5bd0957 32-39
+  s_afea25d1e411e5::t_25272ef7db4e22 81-92
+  s_afea25d1e411e5::t_440db47efbe77b 67-78
+src/i18n/es.json
+  s_afea25d1e411e5::t_7f7ade9acef671 32-39
+  s_afea25d1e411e5::t_cdfbd3d146fa86 67-78
+  s_afea25d1e411e5::t_957ef15ea24478 81-92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b90a1c8934041f6f9f0aca2a01fdee03c2febb18",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
