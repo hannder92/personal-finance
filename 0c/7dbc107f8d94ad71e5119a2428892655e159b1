@@ -1,0 +1,46 @@
+tests/component/KpiCard.test.ts
+  s_afea25d1e411e5::t_3d7a7c79d4723c 2-4,8-16,18-19,23-24
+  s_afea25d1e411e5::t_94500d5de67385 73-75
+  s_afea25d1e411e5::t_7284c66a7007b3 77-80
+  s_afea25d1e411e5::t_4454924850384b 1,6,17,20-22,28,34,42,48,53-72,76,81-91,99-112
+  s_afea25d1e411e5::t_c9b825e497a7b8 92-98
+  s_afea25d1e411e5::t_05cc06b110c3f9 113-114
+tests/component/HealthScore.test.ts
+  s_afea25d1e411e5::t_6fe9b1ab165ecf 89-136
+  s_afea25d1e411e5::t_54248e5445839c 3-4,6-37
+tests/unit/composables/useFinancialGlossary.test.ts
+  s_afea25d1e411e5::t_0f759e72a260f5 13,16
+  s_afea25d1e411e5::t_7e8722073fcefc 8
+  s_afea25d1e411e5::t_dae3b219b65b5a 1-7,9-12,14-15,17-76
+src/composables/useFinancialGlossary.ts
+  s_afea25d1e411e5::t_a8137257bcde5a 5
+  s_afea25d1e411e5::t_4bbc3dddd0a4bb 39
+  s_afea25d1e411e5::t_2f824ae1b13c74 2-3,19-34,36-38,40-44
+src/components/dashboard/HealthScore.vue
+  s_afea25d1e411e5::t_5f4d3c1033aaf9 3-10,55-63,85-100,104-106,108-145,148-151,153-194
+src/App.vue
+  s_afea25d1e411e5::t_2233eeae3301fd 4
+  s_afea25d1e411e5::t_3d0911453225e8 39
+  s_afea25d1e411e5::t_60406d9f8987e1 124
+  s_afea25d1e411e5::t_c599c17f89696b 40-51,53-60,62-74,76-85,87,89-98,100-109,111-123
+src/components/dashboard/KpiCard.vue
+  s_afea25d1e411e5::t_bbc427f876029d 108-119,121-136
+  s_afea25d1e411e5::t_5e691ccfdcc0a0 3-9
+  s_afea25d1e411e5::t_506c3bdd4693f5 11,70-97,106-107,120,137
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "0c7dbc107f8d94ad71e5119a2428892655e159b1",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
