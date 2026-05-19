@@ -60,7 +60,10 @@ src/
 │   ├── useDTI.ts            # bridge: cards → calcCardObligation + calcDTI
 │   ├── useGoalsBudget.ts    # goalCap = allocation.savings% × netIncome
 │   ├── useSavingsProjection.ts # bridge: assets + allocation → savings-projection.ts
-│   ├── useStorageError.ts   # module-level singleton for save failure toast
+│   ├── useStorageError.ts   # module-level singleton: load + save error toast (kind discriminator)
+│   ├── useFinancialGlossary.ts # i18n-backed glossary terms (DTI/housing/emergency/savings/healthScore)
+│   ├── useDashboardGuide.ts # reactive CTA target for empty-state on DashboardView
+│   ├── useTransportAllowance.ts # suggestion banner + threshold notice for CO auxilio transporte
 │   ├── useForm.ts           # Zod-powered form validation
 │   └── useImportExport.ts   # JSON backup import/export
 └── lib/                     # pure, 0 Vue/Pinia (see Lib Catalog below)
@@ -251,4 +254,8 @@ Fondo emergencia denominador: `gastos fijos + obligaciones de deuda mínimas` (n
 - **No-salary benefits**: se suman AL FINAL, nunca entran en base de aportes (Art. 128 CST)
 - **Prima de servicios**: `bruto / 2` semestral (Art. 306 CST, 6 meses completos)
 - **UVT 2025**: `$49.799` (Resolución DIAN 000187/2024)
+- **SMMLV 2025**: `$1.423.500` (Decreto 1572 de 2024). Actualizar anualmente cuando se publique el decreto del nuevo SMMLV.
+- **SOLIDARITY_THRESHOLD** = `SMMLV × 4 = $5.694.000`. Salarios `>` umbral pagan 1% al Fondo de Solidaridad Pensional (Ley 100/1993 Art. 20, modificado por Ley 797/2003). Exclusivo en el borde.
+- **TRANSPORT_THRESHOLD** = `SMMLV × 2 = $2.847.000`. Salarios `≤` umbral reciben auxilio de transporte (Ley 15/1959 Art. 2 + Decreto 1572/2024). Inclusivo en el borde.
+- **AUXILIO_TRANSPORTE_2025**: `$200.000/mes`. Es no-salarial — se suma después de deducciones, nunca entra en bases de aportes.
 - **APR field = TEA**: `(1+TEA)^(1/12)−1` para obtener tasa mensual equivalente

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added (feature `20260516-sprint1-mejoras-finanzas`)
+
+- **Load-error notification (US-1)** — `useStorageError` now distinguishes load vs save errors with a `kind` discriminator; `main.ts` surfaces `loadAppState().parseError` (covers AC-1.1–1.4). Adds i18n keys `storage.errorToast.load.*` for load-context messages.
+- **Financial-term tooltips (US-2)** — radix-vue tooltips on KpiCard (DTI) and HealthScore breakdown rows (housing, emergency, savings, score title). Backed by `useFinancialGlossary` composable returning glossary entries with thresholds/ranges. Single `TooltipProvider` at App shell (AC-2.1–2.7).
+- **Dashboard empty-state guide (US-3)** — `EmptyStateGuide` component + `useDashboardGuide` composable show a contextual CTA when income or fixed expenses are missing. Reactive: CTA disappears as soon as data is registered (AC-3.1–3.4).
+- **Fondo de solidaridad pensional (US-4)** — `applyColombiaPresets` adds `{ id: '__solidarity__', amount: 1, type: 'percent' }` when `gross > 4 × SMMLV` (Ley 100/1993 Art. 20); idempotent by reserved id. Persists if salary later drops below threshold (AC-4.1–4.4).
+- **Transport allowance suggestion (US-5)** — `TransportAllowanceSuggestion` banner on `IncomeView` proposes `$200.000/mes` when gross ≤ 2 × SMMLV. `useTransportAllowance` returns `shouldShow`, `showThresholdNotice`, `dismiss()`, `accept()`. Threshold notice surfaces when salary later rises above 2 SMMLV with the benefit still attached (AC-5.1–5.5).
+- **Colombian payroll constants** — `SMMLV_2025 = 1_423_500` (Decreto 1572 de 2024), `SOLIDARITY_THRESHOLD = SMMLV_2025 × 4`, `TRANSPORT_THRESHOLD = SMMLV_2025 × 2`, `AUXILIO_TRANSPORTE_2025 = 200_000`.
+- **E2E coverage** — `e2e/persistence-error.spec.ts`, `e2e/colombia-presets-solidarity.spec.ts`, `e2e/transport-allowance.spec.ts`.
+
 ### Fixed (feature `20260515-fix-calculos-financieros`)
 
 - **Amortization TEA** — `monthsToPayoff` now uses `(1+TEA)^(1/12)−1` instead of `apr/12` (covers AC-4.1, AC-4.4). Matches Superfinanciera Colombia.
