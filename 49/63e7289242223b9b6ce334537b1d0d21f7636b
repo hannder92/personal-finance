@@ -1,0 +1,35 @@
+tests/unit/composables/useTransportAllowance.test.ts
+  s_afea25d1e411e5::t_b17c7a9824314b 1-66
+tests/component/TransportAllowanceSuggestion.test.ts
+  s_afea25d1e411e5::t_db2911233e742a 1-102
+e2e/transport-allowance.spec.ts
+  s_afea25d1e411e5::t_44e7293ef3d8f8 1-40
+src/composables/useTransportAllowance.ts
+  s_afea25d1e411e5::t_06545b43eaec5f 3,5-10,13-14,19-26,28-64,66-73
+tests/component/IncomeView.test.ts
+  s_afea25d1e411e5::t_02022f384dc6e6 60-81,83-87,91-92
+  s_afea25d1e411e5::t_edc7b29a797f08 82,88-90
+  s_afea25d1e411e5::t_29a1feb112b73c 4,6-7
+  s_afea25d1e411e5::t_5fc5a81dfdd259 13
+src/components/income/TransportAllowanceSuggestion.vue
+  s_afea25d1e411e5::t_9987504a510520 2-14,18-45
+src/views/IncomeView.vue
+  s_afea25d1e411e5::t_ff3a6207367e46 3,9,13,17-18
+  s_afea25d1e411e5::t_9512eec68dfb97 285-292
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "4963e7289242223b9b6ce334537b1d0d21f7636b",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
