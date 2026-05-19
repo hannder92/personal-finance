@@ -1,0 +1,31 @@
+src/views/DashboardView.vue
+  s_afea25d1e411e5::t_583a00e0855b37 5
+  s_afea25d1e411e5::t_66771142f6bf3f 63-64
+src/components/dashboard/EmptyStateGuide.vue
+  s_afea25d1e411e5::t_791f7dafdf1eb9 2-29,33-50
+tests/component/DashboardViewEmptyState.test.ts
+  s_afea25d1e411e5::t_ee06610fa59f57 1-78,86-88,92,94-98,102,104-108,113-115,120-125,129-130
+  s_afea25d1e411e5::t_1f644cca9a832d 79-85,89-91,93,99-101,103,109-112,116-119,126-128
+src/composables/useDashboardGuide.ts
+  s_afea25d1e411e5::t_7720b16d83e55f 2-3,5-7,12-21,25-40
+tests/unit/composables/useDashboardGuide.test.ts
+  s_afea25d1e411e5::t_53e8db6163486e 1-48
+tests/component/DashboardViewReactive.test.ts
+  s_afea25d1e411e5::t_034e5e7e37903e 63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "08cd31b9039b4309a48cbe242a0376069aff4e8c",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
