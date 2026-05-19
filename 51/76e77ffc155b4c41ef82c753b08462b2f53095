@@ -1,0 +1,28 @@
+tests/component/StorageErrorToast.test.ts
+  s_afea25d1e411e5::t_6f16e2270f46ff 2-11,16,19,48,57,60,63-67,70,72,75,78-80,83,88,91-103
+src/components/common/StorageErrorToast.vue
+  s_afea25d1e411e5::t_c599c17f89696b 46-48,67-71
+  s_afea25d1e411e5::t_323df5a51199d3 3,6,9-15,18-23,25,27,29,33,45,51,56,63
+src/composables/useStorageError.ts
+  s_afea25d1e411e5::t_a3021a01aed687 1-3,9-17,22-28,44
+e2e/persistence-error.spec.ts
+  s_afea25d1e411e5::t_86d577804a72e2 1-37
+src/main.ts
+  s_afea25d1e411e5::t_86cd0947cd1e34 28-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "5176e77ffc155b4c41ef82c753b08462b2f53095",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
