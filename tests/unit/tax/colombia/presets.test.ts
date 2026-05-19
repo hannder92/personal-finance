@@ -42,4 +42,40 @@ describe('lib/tax/colombia/presets', () => {
     expect(input).toHaveLength(0)
     expect(result).not.toBe(input)
   })
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // sprint1-mejoras-finanzas (AC-4.1..4.3) — Solidarity fund preset
+  // SMMLV 2025 = 1_423_500; threshold = 4 × SMMLV = 5_694_000 (Ley 100/1993 Art. 20).
+  // ───────────────────────────────────────────────────────────────────────────
+
+  it('TC-U-007 (AC-4.1): adds solidarity 1% when gross > 4 SMMLV (5_694_000)', () => {
+    const base: DeductionPreset[] = [
+      { id: 's', label: 'Salud', amount: 4, type: 'percent' },
+      { id: 'p', label: 'Pensión', amount: 4, type: 'percent' },
+    ]
+    const result = applyColombiaPresets(base, 6_000_000)
+    const solidarity = result.find((d) => d.id === '__solidarity__')
+    expect(solidarity).toBeTruthy()
+    expect(solidarity?.type).toBe('percent')
+    expect(solidarity?.amount).toBe(1)
+  })
+
+  it('TC-U-008 (AC-4.2): no solidarity at boundary salary = 4 SMMLV exactly (5_694_000)', () => {
+    const result = applyColombiaPresets([], 5_694_000)
+    expect(result.find((d) => d.id === '__solidarity__')).toBeFalsy()
+  })
+
+  it('TC-U-009 (AC-4.3): solidarity not duplicated on second apply', () => {
+    const base: DeductionPreset[] = [
+      { id: '__solidarity__', label: 'Fondo solidaridad', amount: 1, type: 'percent' },
+    ]
+    const result = applyColombiaPresets(base, 6_000_000)
+    const matches = result.filter((d) => d.id === '__solidarity__')
+    expect(matches).toHaveLength(1)
+  })
+
+  it('TC-U-010 (AC-4.1/4.2): below-threshold salary (4_000_000) yields no solidarity', () => {
+    const result = applyColombiaPresets([], 4_000_000)
+    expect(result.find((d) => d.id === '__solidarity__')).toBeFalsy()
+  })
 })

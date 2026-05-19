@@ -86,6 +86,26 @@ describe('incomeStore (T-043)', () => {
     expect(s.state.deductions.length).toBe(2)
   })
 
+  // ── sprint1-mejoras-finanzas (US-4 solidaridad) — TC-U-024, TC-U-025
+  it('TC-U-024 (AC-4.1): applyColombiaPresets at gross=8M adds solidarity (id=__solidarity__, amount=1)', () => {
+    const s = useIncomeStore()
+    s.setGrossSalary(8_000_000)
+    s.applyColombiaPresets()
+    const solidarity = s.state.deductions.find((d) => d.id === '__solidarity__')
+    expect(solidarity).toBeTruthy()
+    expect(solidarity?.type).toBe('percent')
+    expect(solidarity?.amount).toBe(1)
+  })
+
+  it('TC-U-025 (AC-4.4): solidarity persists after gross drops below 4 SMMLV (no auto-remove)', () => {
+    const s = useIncomeStore()
+    s.setGrossSalary(8_000_000)
+    s.applyColombiaPresets()
+    expect(s.state.deductions.find((d) => d.id === '__solidarity__')).toBeTruthy()
+    s.setGrossSalary(3_000_000)
+    expect(s.state.deductions.find((d) => d.id === '__solidarity__')).toBeTruthy()
+  })
+
   it('addPrimaPreset adds semiannual stream at half grossSalary; idempotent', () => {
     const s = useIncomeStore()
     s.setGrossSalary(4_000_000)

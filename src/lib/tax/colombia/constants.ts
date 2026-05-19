@@ -35,10 +35,16 @@ export const ART_383_BRACKETS: readonly MarginalBracket[] = [
   { upperUVT: Infinity, rate: 0.39, constantUVT: 770.1 },
 ]
 
-// Placeholders for T-001 setup. Real values land in T-020 (SMMLV / SOLIDARITY)
-// and T-026 (TRANSPORT). Unit tests in T-017 and T-022 will fail against these
-// until those impl tasks replace them with values cited from Decreto 1572/2024.
-export const SMMLV_2025 = 0
-export const SOLIDARITY_THRESHOLD = 0
-export const TRANSPORT_THRESHOLD = 0
-export const AUXILIO_TRANSPORTE_2025 = 0
+// Salario Mínimo Mensual Legal Vigente 2025 — Decreto 1572 de 2024 ($1.423.500/mes).
+export const SMMLV_2025 = 1_423_500
+
+// Solidarity-fund threshold: salaries > 4 SMMLV pay 1% to Fondo de Solidaridad Pensional
+// (Ley 100/1993 Art. 20 modified by Ley 797/2003). Exclusive: at exactly 4 SMMLV, no contribution.
+export const SOLIDARITY_THRESHOLD = SMMLV_2025 * 4
+
+// Transport-allowance threshold: salaries ≤ 2 SMMLV are entitled to auxilio de transporte
+// (Ley 15/1959 Art. 2 + Decreto 1572/2024). Inclusive: at exactly 2 SMMLV, allowance applies.
+export const TRANSPORT_THRESHOLD = SMMLV_2025 * 2
+
+// Auxilio de transporte 2025 (Decreto 1572 de 2024). Non-salary; added after deductions.
+export const AUXILIO_TRANSPORTE_2025 = 200_000
