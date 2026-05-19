@@ -77,33 +77,33 @@ tc:
 tasks:
   - {id: "T-001",  status: done,    type: setup, size: S, covers: [],                                                deps: []}
   - {id: "T-002",  status: done,    type: test,  size: S, covers: ["AC-1.1","AC-1.4"],                              deps: ["T-001"]}
-  - {id: "T-003",  status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4"],            deps: ["T-001"]}
-  - {id: "T-004",  status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.4"],                     deps: ["T-001"]}
-  - {id: "T-005",  status: pending, type: impl,  size: S, covers: ["AC-1.1","AC-1.4"],                              deps: ["T-002"]}
-  - {id: "T-006",  status: pending, type: impl,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3"],                     deps: ["T-003","T-005"]}
-  - {id: "T-007",  status: pending, type: test,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-001"]}
-  - {id: "T-008",  status: pending, type: test,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-001"]}
-  - {id: "T-009",  status: pending, type: test,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5"],            deps: ["T-001"]}
-  - {id: "T-010",  status: pending, type: impl,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-007"]}
-  - {id: "T-011",  status: pending, type: impl,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-008","T-010"]}
-  - {id: "T-012",  status: pending, type: impl,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7"], deps: ["T-009","T-010"]}
-  - {id: "T-013",  status: pending, type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
-  - {id: "T-014",  status: pending, type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
-  - {id: "T-015",  status: pending, type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-013"]}
-  - {id: "T-016",  status: pending, type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-014","T-015"]}
-  - {id: "T-017",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-001"]}
-  - {id: "T-018",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-001"]}
-  - {id: "T-019",  status: pending, type: test,  size: S, covers: ["AC-4.1","AC-4.3"],                              deps: ["T-001"]}
-  - {id: "T-020",  status: pending, type: impl,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-017"]}
-  - {id: "T-021",  status: pending, type: impl,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-018","T-020"]}
-  - {id: "T-022",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-001"]}
-  - {id: "T-023",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4"],                     deps: ["T-001"]}
-  - {id: "T-024",  status: pending, type: test,  size: S, covers: ["AC-5.5"],                                       deps: ["T-001"]}
-  - {id: "T-025",  status: pending, type: test,  size: S, covers: ["AC-5.1","AC-5.2"],                              deps: ["T-001"]}
-  - {id: "T-026",  status: pending, type: impl,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-022"]}
-  - {id: "T-027",  status: pending, type: impl,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4","AC-5.5"],            deps: ["T-023","T-024","T-026"]}
-  - {id: "T-028",  status: pending, type: docs,  size: S, covers: [],                                                deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
-  - {id: "T-LAST", status: pending, type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4","AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7","AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-4.1","AC-4.2","AC-4.3","AC-4.4","AC-5.1","AC-5.2","AC-5.3","AC-5.4","AC-5.5"], deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
+  - {id: "T-003",  status: done,    type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4"],            deps: ["T-001"]}
+  - {id: "T-004",  status: done,    type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.4"],                     deps: ["T-001"]}
+  - {id: "T-005",  status: done,    type: impl,  size: S, covers: ["AC-1.1","AC-1.4"],                              deps: ["T-002"]}
+  - {id: "T-006",  status: done,    type: impl,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3"],                     deps: ["T-003","T-005"]}
+  - {id: "T-007",  status: done,    type: test,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-001"]}
+  - {id: "T-008",  status: done,    type: test,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-001"]}
+  - {id: "T-009",  status: done,    type: test,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5"],            deps: ["T-001"]}
+  - {id: "T-010",  status: done,    type: impl,  size: S, covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5"],   deps: ["T-007"]}
+  - {id: "T-011",  status: done,    type: impl,  size: S, covers: ["AC-2.1","AC-2.6","AC-2.7"],                     deps: ["T-008","T-010"]}
+  - {id: "T-012",  status: done,    type: impl,  size: S, covers: ["AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7"], deps: ["T-009","T-010"]}
+  - {id: "T-013",  status: done,    type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
+  - {id: "T-014",  status: done,    type: test,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-001"]}
+  - {id: "T-015",  status: done,    type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-013"]}
+  - {id: "T-016",  status: done,    type: impl,  size: S, covers: ["AC-3.1","AC-3.2","AC-3.3","AC-3.4"],            deps: ["T-014","T-015"]}
+  - {id: "T-017",  status: done,    type: test,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-001"]}
+  - {id: "T-018",  status: done,    type: test,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-001"]}
+  - {id: "T-019",  status: done,    type: test,  size: S, covers: ["AC-4.1","AC-4.3"],                              deps: ["T-001"]}
+  - {id: "T-020",  status: done,    type: impl,  size: S, covers: ["AC-4.1","AC-4.2","AC-4.3"],                     deps: ["T-017"]}
+  - {id: "T-021",  status: done,    type: impl,  size: S, covers: ["AC-4.1","AC-4.4"],                              deps: ["T-018","T-020"]}
+  - {id: "T-022",  status: done,    type: test,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-001"]}
+  - {id: "T-023",  status: done,    type: test,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4"],                     deps: ["T-001"]}
+  - {id: "T-024",  status: done,    type: test,  size: S, covers: ["AC-5.5"],                                       deps: ["T-001"]}
+  - {id: "T-025",  status: done,    type: test,  size: S, covers: ["AC-5.1","AC-5.2"],                              deps: ["T-001"]}
+  - {id: "T-026",  status: done,    type: impl,  size: S, covers: ["AC-5.1","AC-5.3","AC-5.4","AC-5.5"],            deps: ["T-022"]}
+  - {id: "T-027",  status: done,    type: impl,  size: S, covers: ["AC-5.1","AC-5.2","AC-5.4","AC-5.5"],            deps: ["T-023","T-024","T-026"]}
+  - {id: "T-028",  status: done,    type: docs,  size: S, covers: [],                                                deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
+  - {id: "T-LAST", status: done,    type: test,  size: S, covers: ["AC-1.1","AC-1.2","AC-1.3","AC-1.4","AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7","AC-3.1","AC-3.2","AC-3.3","AC-3.4","AC-4.1","AC-4.2","AC-4.3","AC-4.4","AC-5.1","AC-5.2","AC-5.3","AC-5.4","AC-5.5"], deps: ["T-005","T-006","T-010","T-011","T-012","T-015","T-016","T-020","T-021","T-026","T-027"]}
 
 adr:
   - {id: "ADR-1", decision: "Tooltip via radix-vue (TooltipRoot/Trigger/Content)",                            covers: ["AC-2.1","AC-2.2","AC-2.3","AC-2.4","AC-2.5","AC-2.6","AC-2.7"]}

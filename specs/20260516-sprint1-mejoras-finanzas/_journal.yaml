@@ -12,3 +12,14 @@ entries:
   - {at: "2026-05-16T19:15:00", event: task_finished,        task: "T-001"}
   - {at: "2026-05-16T19:18:00", event: task_started,         task: "T-002",    type: test}
   - {at: "2026-05-16T19:20:00", event: task_finished,        task: "T-002"}
+  - {at: "2026-05-18T11:12:00", event: task_started,         task: "T-003",    type: test}
+  - {at: "2026-05-18T11:12:30", event: task_finished,        task: "T-003"}
+  - {at: "2026-05-18T11:13:00", event: task_started,         task: "T-005",    type: impl}
+  - {at: "2026-05-18T11:15:00", event: task_finished,        task: "T-005"}
+  - {at: "2026-05-18T11:15:30", event: task_started,         task: "T-006",    type: impl}
+  - {at: "2026-05-18T11:16:30", event: task_finished,        task: "T-006"}
+  - {at: "2026-05-18T11:17:00", event: batch_started,        tasks: ["T-007","T-010","T-008","T-011","T-009","T-012","T-013","T-015","T-014","T-016","T-017","T-020","T-018","T-021","T-022","T-026","T-023","T-024","T-027","T-004","T-019","T-025","T-028","T-LAST"], mode: "deps-priority"}
+  - {at: "2026-05-18T11:52:00", event: batch_finished,       tasks_done: 29,  tasks_total: 29}
+  - {at: "2026-05-18T11:55:00", event: check_run,            summary: {pass: 6, warn: 0, fail: 0}}
+  - {at: "2026-05-18T12:00:00", event: review_generated,     summary: {green: 18, yellow: 2, red: 0}}
+  - {at: "2026-05-18T12:02:00", event: phase_signed_off,     phase: "review", by: "Johann Medina"}

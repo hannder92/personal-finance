@@ -6,8 +6,8 @@ feature:
   mode: solo
 
 phase:
-  current: 5
-  name: impl
+  current: 6
+  name: review
   blocked: false
 
 sign_offs:
@@ -16,7 +16,7 @@ sign_offs:
   plan:         {approved: true,  by: "Johann Medina", at: "2026-05-16"}
   test_plan:    {approved: true,  by: "Johann Medina", at: "2026-05-16"}
   tasks:        {approved: true,  by: "Johann Medina", at: "2026-05-16"}
-  review:       {approved: false}
+  review:       {approved: true,  by: "Johann Medina", at: "2026-05-18"}
 
 artifacts:
   constitution: "constitution.md"
@@ -24,12 +24,19 @@ artifacts:
   plan:         "specs/20260516-sprint1-mejoras-finanzas/2-plan.md"
   test_plan:    "specs/20260516-sprint1-mejoras-finanzas/3-test-plan.md"
   tasks:        "specs/20260516-sprint1-mejoras-finanzas/4-tasks.md"
-  review:       null
+  review:       "specs/20260516-sprint1-mejoras-finanzas/6-review.md"
 
 progress:
-  tasks_done:   2
+  tasks_done:   29
   tasks_total:  29
-  next_pending: "T-003"
-  last_update:  "2026-05-16T19:20:00"
+  next_pending: null
+  last_update:  "2026-05-18T12:02:00"
 
-drift: []
+drift:
+  - {check: "ID-INTEGRITY",     status: pass, detail: "All 25 ACs / 48 TCs / 30 tasks present in artifacts."}
+  - {check: "COVERAGE-CHAIN",   status: pass, detail: "Every AC has ≥1 TC and ≥1 impl task."}
+  - {check: "TEST-FIRST",       status: pass, detail: "All 11 impl tasks have ≥1 test task in deps."}
+  - {check: "TASK-STRUCTURE",   status: pass, detail: "No L-size; T-LAST present; all covers valid."}
+  - {check: "SIGNOFF-FRESHNESS",status: pass, detail: "No artifact modified after sign-off date 2026-05-16."}
+  - {check: "CONSTITUTION",     status: pass, detail: "No Vue/Pinia imports in src/lib/."}
+  - {check_run_at: "2026-05-18T11:55:00", summary: {pass: 6, warn: 0, fail: 0}}
