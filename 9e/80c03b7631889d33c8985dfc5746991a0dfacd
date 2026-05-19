@@ -1,0 +1,23 @@
+src/components/dashboard/SavingsProjectionChart.vue
+  s_afea25d1e411e5::t_c599c17f89696b 70-72,75-79,85-88
+src/lib/storage/migrate.ts
+  s_afea25d1e411e5::t_c599c17f89696b 258
+src/components/networth/AssetList.vue
+  s_afea25d1e411e5::t_c599c17f89696b 79-82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "9e80c03b7631889d33c8985dfc5746991a0dfacd",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
