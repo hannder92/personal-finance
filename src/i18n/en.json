@@ -1,4 +1,26 @@
 {
+  "glossary": {
+    "dti": {
+      "title": "DTI (debt-to-income)",
+      "body": "Percentage of monthly net income spent on debt payments. Healthy ≤ 20%; risky > 36%."
+    },
+    "housing": {
+      "title": "Housing ratio",
+      "body": "Percentage of net income spent on housing (rent or mortgage + basic utilities). Recommended ≤ 30%."
+    },
+    "emergency": {
+      "title": "Emergency fund",
+      "body": "Months of fixed expenses and minimum debt payments covered by liquid assets. Healthy range: 3 to 6 months."
+    },
+    "savings": {
+      "title": "Savings rate",
+      "body": "Percentage of net income directed to savings goals and recurring contributions."
+    },
+    "healthScore": {
+      "title": "Financial health score",
+      "body": "A 0–100 score combining four components: DTI, emergency fund, housing ratio, and savings rate."
+    }
+  },
   "storage": {
     "error": {
       "title": "Save failed",
@@ -7,6 +29,14 @@
       "unknownReason": "Could not save data.",
       "retry": "Retry",
       "dismiss": "Dismiss"
+    },
+    "errorToast": {
+      "load": {
+        "title": "Couldn't load your saved data",
+        "invalidJson": "We couldn't read the data saved in this browser: the file is corrupted or incomplete. Your on-screen values are the defaults — save any change to overwrite the damaged file.",
+        "invalidState": "The saved data is invalid for the current version. Your on-screen values are the defaults.",
+        "dismissedNote": "You can keep using the app with default values."
+      }
     }
   },
   "savings": {
@@ -33,11 +63,32 @@
       "tooltip": "APR here means Effective Annual Rate, the Colombian Superfinanciera standard. Monthly rate uses (1 + EAR)^(1/12) − 1."
     }
   },
-  "glossary": {},
   "dashboard": {
-    "guide": {}
+    "guide": {
+      "income": {
+        "title": "Start by registering your income",
+        "body": "Without income configured the dashboard cannot compute your financial health.",
+        "cta": "Register income"
+      },
+      "expenses": {
+        "title": "Add your fixed expenses",
+        "body": "With your fixed expenses we can compute your DTI and monthly projection.",
+        "cta": "Register fixed expense"
+      }
+    }
   },
   "income": {
-    "transport": {}
+    "transport": {
+      "label": "Transport allowance",
+      "suggestion": {
+        "title": "Does the transport allowance apply?",
+        "body": "By law in Colombia, employees earning ≤ 2 SMMLV receive a transport allowance ($200,000/month in 2025).",
+        "accept": "Add $200,000",
+        "dismiss": "No thanks"
+      },
+      "notice": {
+        "aboveThreshold": "Your salary is above 2 SMMLV — the transport allowance no longer applies."
+      }
+    }
   }
 }

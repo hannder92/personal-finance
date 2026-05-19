@@ -1,4 +1,26 @@
 {
+  "glossary": {
+    "dti": {
+      "title": "DTI (relación deuda/ingreso)",
+      "body": "Porcentaje del ingreso mensual neto destinado a pagos de deuda. Saludable ≤ 20%; riesgoso > 36%."
+    },
+    "housing": {
+      "title": "Ratio de vivienda",
+      "body": "Porcentaje del ingreso neto destinado a vivienda (arriendo o hipoteca + servicios básicos). Se recomienda ≤ 30%."
+    },
+    "emergency": {
+      "title": "Fondo de emergencia",
+      "body": "Meses de gastos fijos y deudas mínimas cubiertos por activos líquidos. Rango saludable: 3 a 6 meses."
+    },
+    "savings": {
+      "title": "Tasa de ahorro",
+      "body": "Porcentaje del ingreso neto destinado a metas de ahorro y aportes recurrentes."
+    },
+    "healthScore": {
+      "title": "Health score financiero",
+      "body": "Puntaje de 0–100 que combina cuatro componentes: DTI, fondo de emergencia, ratio de vivienda y tasa de ahorro."
+    }
+  },
   "storage": {
     "error": {
       "title": "Error al guardar",
@@ -7,6 +29,14 @@
       "unknownReason": "No se pudieron guardar los datos.",
       "retry": "Reintentar",
       "dismiss": "Descartar"
+    },
+    "errorToast": {
+      "load": {
+        "title": "No se pudieron cargar tus datos",
+        "invalidJson": "No pudimos leer los datos guardados en este navegador: el archivo está corrupto o incompleto. Tus datos en pantalla son los predeterminados — guarda cambios para sobreescribir el archivo dañado.",
+        "invalidState": "Los datos guardados no son válidos para la versión actual. Tus datos en pantalla son los predeterminados.",
+        "dismissedNote": "Puedes seguir usando la aplicación con valores predeterminados."
+      }
     }
   },
   "savings": {
@@ -33,11 +63,32 @@
       "tooltip": "APR aquí significa Tasa Efectiva Anual (E.A.), el estándar Superfinanciera de Colombia. El cálculo mensual usa (1 + E.A.)^(1/12) − 1."
     }
   },
-  "glossary": {},
   "dashboard": {
-    "guide": {}
+    "guide": {
+      "income": {
+        "title": "Empieza registrando tu ingreso",
+        "body": "Sin ingreso configurado el dashboard no puede calcular tu salud financiera.",
+        "cta": "Registrar ingreso"
+      },
+      "expenses": {
+        "title": "Agrega tus gastos fijos",
+        "body": "Con tus gastos fijos podemos calcular tu DTI y proyección mensual.",
+        "cta": "Registrar gasto fijo"
+      }
+    }
   },
   "income": {
-    "transport": {}
+    "transport": {
+      "label": "Auxilio de transporte",
+      "suggestion": {
+        "title": "¿Aplica el auxilio de transporte?",
+        "body": "Por ley en Colombia los empleados con salario ≤ 2 SMMLV reciben auxilio de transporte ($200.000/mes en 2025).",
+        "accept": "Agregar $200.000",
+        "dismiss": "No gracias"
+      },
+      "notice": {
+        "aboveThreshold": "Tu salario supera 2 SMMLV — el auxilio de transporte ya no aplica."
+      }
+    }
   }
 }
