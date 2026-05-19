@@ -1,0 +1,22 @@
+CLAUDE.md
+  s_afea25d1e411e5::t_62e53893c33583 63-66
+  s_afea25d1e411e5::t_84c50e0ca23a55 257-260
+CHANGELOG.md
+  s_afea25d1e411e5::t_8f8b3600e593cb 7-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "99fe1fa1680269f069b150f3e5dda6eef4c45053",
+  "prompts": {},
+  "sessions": {
+    "s_afea25d1e411e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "024aaecd-f7a3-4d8b-a066-1ac8b0828126",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Johann Medina <hannder92@gmail.com>"
+    }
+  }
+}
