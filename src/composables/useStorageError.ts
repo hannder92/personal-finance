@@ -1,19 +1,34 @@
-// Module-level singleton ref for storage write failures.
-// Consumed by StorageErrorToast.vue and pushed to by main.ts's persistStores watcher.
+// Module-level singleton ref for storage failures.
+// Consumed by StorageErrorToast.vue; pushed to by main.ts's hydrateStores (load errors)
+// and persistStores watcher (save errors).
 
 import { ref, type Ref } from 'vue'
 import { saveAppState } from '@/lib/storage/useAppStorage'
 import type { AppStateV3 } from '@/lib/storage/schema'
 
-export type StorageErrorReason = 'quota_exceeded' | 'invalid_state' | 'unknown'
+export type StorageErrorReason =
+  | 'invalid_json'
+  | 'quota_exceeded'
+  | 'invalid_state'
+  | 'unknown'
+  // Zod validation messages from loadAppState arrive as arbitrary strings.
+  | (string & {})
+
+export type StorageErrorKind = 'load' | 'save'
 
 export interface StorageError {
   visible: boolean
   reason: StorageErrorReason
+  kind: StorageErrorKind
+}
+
+const SAVE_REASONS = new Set<string>(['quota_exceeded', 'invalid_state', 'unknown'])
+
+function classifyKind(reason: StorageErrorReason): StorageErrorKind {
+  return SAVE_REASONS.has(reason) ? 'save' : 'load'
 }
 
 const sharedError: Ref<StorageError | null> = ref(null)
-// Callback queue so the toast's retry button can ask main.ts to attempt another save.
 const retryQueue: Array<() => AppStateV3> = []
 
 export interface UseStorageError {
@@ -26,7 +41,7 @@ export interface UseStorageError {
 
 export function useStorageError(): UseStorageError {
   function setError(reason: StorageErrorReason): void {
-    sharedError.value = { visible: true, reason }
+    sharedError.value = { visible: true, reason, kind: classifyKind(reason) }
   }
   function clearError(): void {
     sharedError.value = null

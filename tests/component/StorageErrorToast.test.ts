@@ -1,13 +1,22 @@
 // Tests for components/common/StorageErrorToast.vue.
-// Feature: 20260515-fix-calculos-financieros · Covers AC-1.4 · TC-C-001.
-// Today the component is a stub (renders an empty hidden div). Tests RED until T-026 lands.
+// Feature: 20260516-sprint1-mejoras-finanzas · Covers AC-1.1..1.4 · TC-C-001..004.
+//
+// RED expectations (assertion-level):
+//  - TC-C-001 (AC-1.1) load error 'invalid_json' is not yet in the StorageErrorReason union,
+//    so the component falls through the switch default and renders the save-error wording.
+//    Asserting the toast text mentions a LOAD context (cargar/load/leer/datos guardados) fails.
+//  - TC-C-002 (AC-1.2) currently passes because the component already has no auto-dismiss.
+//  - TC-C-003 (AC-1.3) currently passes because the component always renders a retry button.
+//  - TC-C-004 (AC-1.4) is asserted for both load and save reasons; the load case requires the
+//    component to accept the 'invalid_json' reason and render the alert at all — RED today.
 
 import { render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent } from '@testing-library/vue'
 import { nextTick } from 'vue'
 import StorageErrorToast from '@/components/common/StorageErrorToast.vue'
-import { useStorageError } from '@/composables/useStorageError'
+import { useStorageError, type StorageErrorReason } from '@/composables/useStorageError'
 import { i18n } from '@/i18n'
 
 function mount() {
@@ -36,56 +45,61 @@ function mount() {
   })
 }
 
-describe('StorageErrorToast — fix-calculos-financieros (AC-1.4)', () => {
+describe('StorageErrorToast — sprint1-mejoras-finanzas (AC-1.1..1.4)', () => {
   beforeEach(() => {
     vi.useFakeTimers()
-    // Reset the module-level singleton between tests (clearError is no-op in stub today;
-    // after T-026 it will null out the error ref).
     useStorageError().clearError()
   })
   afterEach(() => {
     vi.useRealTimers()
   })
 
-  it('TC-C-001: toast is NOT rendered when no storage error has occurred', () => {
-    mount()
-    const toast = screen.queryByTestId('storage-error-toast')
-    // The element exists in the DOM (as stub) but should be hidden when no error.
-    expect(toast?.getAttribute('hidden')).not.toBeNull()
-  })
-
-  it('TC-C-001: toast renders within one frame when saveAppState fails with quota_exceeded', async () => {
+  it("TC-C-001 (AC-1.1): renders visible alert when error is 'invalid_json' (load)", async () => {
     mount()
     const storageError = useStorageError()
-    storageError.setError('quota_exceeded')
+    storageError.setError('invalid_json' as StorageErrorReason)
     await nextTick()
 
-    const toast = screen.queryByTestId('storage-error-toast')
-    expect(toast).toBeTruthy()
-    expect(toast?.getAttribute('hidden')).toBeNull()
-    // Toast must contain at least the human-readable error label (i18n key result or its Spanish text).
-    expect(toast?.textContent ?? '').toMatch(/error|guardar|almacenamiento/i)
+    const alert = screen.queryByRole('alert')
+    expect(alert).toBeTruthy()
+    expect(alert?.getAttribute('hidden')).toBeNull()
+    // Load context: message must reference load/read, not just save.
+    expect(alert?.textContent ?? '').toMatch(/cargar|carga|leer|load|datos guardados/i)
   })
 
-  it('TC-C-001: toast does NOT auto-dismiss after 6 seconds (sticky per ADR-4)', async () => {
+  it('TC-C-002 (AC-1.2): notification does not auto-dismiss after 10s', async () => {
+    mount()
+    useStorageError().setError('invalid_json' as StorageErrorReason)
+    await nextTick()
+
+    vi.advanceTimersByTime(10_000)
+    await nextTick()
+
+    const alert = screen.queryByRole('alert')
+    expect(alert).toBeTruthy()
+    expect(alert?.getAttribute('hidden')).toBeNull()
+  })
+
+  it("TC-C-003 (AC-1.3): retry button visible for save error 'quota_exceeded'", async () => {
     mount()
     useStorageError().setError('quota_exceeded')
     await nextTick()
 
-    vi.advanceTimersByTime(6000)
-    await nextTick()
-
-    const toast = screen.queryByTestId('storage-error-toast')
-    expect(toast).toBeTruthy()
-    expect(toast?.getAttribute('hidden')).toBeNull()
-  })
-
-  it('TC-C-001: toast exposes a retry button labeled per i18n key storage.error.retry', async () => {
-    mount()
-    useStorageError().setError('quota_exceeded')
-    await nextTick()
-
-    const retryBtn = screen.queryByRole('button', { name: /reintentar|retry/i })
+    const retryBtn = screen.queryByRole('button', { name: /reint|retry/i })
     expect(retryBtn).toBeTruthy()
+  })
+
+  it('TC-C-004 (AC-1.4): clicking dismiss removes the alert from the DOM (load error)', async () => {
+    mount()
+    useStorageError().setError('invalid_json' as StorageErrorReason)
+    await nextTick()
+
+    expect(screen.queryByRole('alert')).toBeTruthy()
+
+    const dismissBtn = screen.getByRole('button', { name: /descart|dismiss/i })
+    await fireEvent.click(dismissBtn)
+    await nextTick()
+
+    expect(screen.queryByRole('alert')).toBeNull()
   })
 })

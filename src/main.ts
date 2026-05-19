@@ -25,7 +25,10 @@ let isHydrating = true
 
 // Hydrate stores from localStorage before the router guard runs.
 function hydrateStores() {
-  const { state } = loadAppState()
+  const { state, parseError } = loadAppState()
+  if (parseError) {
+    useStorageError().setError(parseError)
+  }
   if (!state) return
 
   const settings = useSettingsStore()
