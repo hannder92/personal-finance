@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DeductionRow from '@/components/income/DeductionRow.vue'
 import IncomeStreamRow from '@/components/income/IncomeStreamRow.vue'
 import NonSalaryBenefitRow from '@/components/income/NonSalaryBenefitRow.vue'
 import PresetButtons from '@/components/income/PresetButtons.vue'
 import RetentionEstimator from '@/components/income/RetentionEstimator.vue'
+import TransportAllowanceSuggestion from '@/components/income/TransportAllowanceSuggestion.vue'
 import type { DeductionType, IncomeFrequency } from '@/stores/incomeStore'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
+import { useTransportAllowance } from '@/composables/useTransportAllowance'
 
 const settings = useSettingsStore()
 const income = useIncomeStore()
+const transport = useTransportAllowance()
+const { t } = useI18n()
 
 const grossInputValue = computed(() => {
   return income.state.grossSalary === 0
@@ -277,6 +282,14 @@ function addBenefit() {
 
     <!-- Beneficios extrasalariales -->
     <section class="flex flex-col gap-2">
+      <TransportAllowanceSuggestion />
+      <div
+        v-if="transport.showThresholdNotice.value"
+        data-testid="transport-threshold-notice"
+        class="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100"
+      >
+        {{ t('income.transport.notice.aboveThreshold') }}
+      </div>
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
           Beneficios extrasalariales
