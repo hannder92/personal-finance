@@ -60,6 +60,7 @@ function mount(
         }),
       ],
       stubs: {
+        EmptyStateGuide: { template: '<div data-testid="empty-state-stub"></div>' },
         BudgetDonut: {
           props: ['needs', 'wants', 'savings'],
           template:

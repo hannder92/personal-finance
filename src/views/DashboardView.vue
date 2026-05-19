@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import BudgetDonut from '@/components/dashboard/BudgetDonut.vue'
 import ComparisonBadge from '@/components/dashboard/ComparisonBadge.vue'
+import EmptyStateGuide from '@/components/dashboard/EmptyStateGuide.vue'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
 import KpiCard from '@/components/dashboard/KpiCard.vue'
 import ProjectionChart from '@/components/dashboard/ProjectionChart.vue'
@@ -58,6 +59,8 @@ const projectionMonths = computed(() => {
         label="vs mes anterior"
       />
     </header>
+
+    <EmptyStateGuide />
 
     <HealthScore
       :score="latestScore"
