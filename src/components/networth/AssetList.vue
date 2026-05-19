@@ -76,7 +76,10 @@ function onSubmit(event: Event) {
           <option value="other">Otro</option>
         </select>
       </label>
-      <label v-if="showRateInput" class="flex flex-1 flex-col gap-1">
+      <label
+        v-if="showRateInput"
+        class="flex flex-1 flex-col gap-1"
+      >
         <span class="text-xs">Tasa anual (E.A. %)</span>
         <input
           v-model="rateRaw"

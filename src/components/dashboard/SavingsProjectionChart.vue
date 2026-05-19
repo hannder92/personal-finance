@@ -67,16 +67,25 @@ const compoundFinal = computed(() => {
     class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700"
   >
     <header>
-      <h2 class="text-base font-semibold">Proyección de ahorro (12 meses)</h2>
+      <h2 class="text-base font-semibold">
+        Proyección de ahorro (12 meses)
+      </h2>
     </header>
 
-    <div v-if="!hasConfiguredRate" data-testid="savings-no-rate-empty" class="text-sm text-slate-500">
+    <div
+      v-if="!hasConfiguredRate"
+      data-testid="savings-no-rate-empty"
+      class="text-sm text-slate-500"
+    >
       Configura una tasa de rendimiento en un activo de tipo ahorro o inversión para ver la
       proyección de interés compuesto.
     </div>
 
     <div class="relative h-64">
-      <Line :data="chartData" :options="chartOptions" />
+      <Line
+        :data="chartData"
+        :options="chartOptions"
+      />
     </div>
   </article>
 </template>

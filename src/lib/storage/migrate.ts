@@ -255,7 +255,7 @@ function migrateV2toV3(v2: V2Like): unknown {
       // dueDate: legacy number day-of-month is dropped (lossy without calendar context); set to null.
       // Pre-existing string ISO is preserved.
       const dueDate = typeof c.dueDate === 'string' ? c.dueDate : null
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const { installmentsList: _drop, ...rest } = c
       return { ...rest, installments, dueDate }
     }),
