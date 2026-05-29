@@ -1,6 +1,20 @@
 # Personal Finances Dashboard
 
-A single-page application for managing personal finances: income, fixed expenses, debts, goals, variable spending, net worth, and a financial health score.
+![Vue 3](https://img.shields.io/badge/Vue_3-4FC08D?style=flat&logo=vuedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![SDD](https://img.shields.io/badge/SDD-Spec--Driven_Development-6366F1?style=flat)
+![Playwright](https://img.shields.io/badge/E2E-Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)
+
+A full-stack personal finance SPA built with **Spec-Driven Development (SDD)** — from constitution and specs to production code with AI-assisted workflows. Manages income, fixed expenses, debts, goals, variable spending, net worth, and a financial health score.
+
+## SDD Workflow
+
+This project follows a constitution-driven development process:
+
+- **`constitution.md`** — immutable architectural rules (stack, layers, invariants)
+- **`specs/`** — feature specifications with acceptance criteria and task breakdown
+- **`AGENTS.md` / `CLAUDE.md`** — AI agent context for consistent code generation
+- **Test-first delivery** — Vitest unit tests + Playwright E2E before feature completion
 
 ## Stack (v2)
 
