@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import CardCard from '@/components/debts/CardCard.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import DebtPayoffSummary from '@/components/debts/DebtPayoffSummary.vue'
+import DebtPayoffSimulator from '@/components/debts/DebtPayoffSimulator.vue'
+import DebtPriorityList from '@/components/debts/DebtPriorityList.vue'
 import DueDateAlerts from '@/components/debts/DueDateAlerts.vue'
 import InstallmentList from '@/components/debts/InstallmentList.vue'
 import { useCardsStore } from '@/stores/cardsStore'
@@ -100,6 +103,10 @@ function cancelDelete() {
         {{ showForm ? 'Cancelar' : '+ Agregar' }}
       </button>
     </header>
+
+    <DebtPayoffSummary />
+
+    <DebtPriorityList />
 
     <DueDateAlerts
       :items="cards.state.items"
@@ -253,6 +260,11 @@ function cancelDelete() {
             Eliminar
           </button>
         </div>
+
+        <DebtPayoffSimulator
+          v-if="item.type === 'card'"
+          :debt-id="item.id"
+        />
 
         <div v-if="item.type === 'card' && item.installments && item.installments.length > 0">
           <h2 class="mb-2 text-sm font-semibold">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export interface HealthBreakdown {
   dti?: number | null
@@ -16,11 +17,21 @@ const props = withDefaults(
     label?: string
     breakdown?: HealthBreakdown
     defaultOpen?: boolean
+    variant?: 'default' | 'compact'
   }>(),
-  { score: 0, label: '', breakdown: () => ({}), defaultOpen: false }
+  {
+    score: 0,
+    label: '',
+    breakdown: () => ({}),
+    defaultOpen: false,
+    variant: 'default',
+  }
 )
 
+const { t } = useI18n()
 const open = ref(props.defaultOpen)
+
+const isCompact = computed(() => props.variant === 'compact')
 
 function statusFor(component: keyof HealthBreakdown, value: number | null | undefined): Status {
   if (value === null || value === undefined) return 'missing'
@@ -45,22 +56,27 @@ function statusFor(component: keyof HealthBreakdown, value: number | null | unde
 }
 
 const rows = computed(() => [
-  { key: 'dti' as const, label: 'DTI', value: props.breakdown.dti ?? null, ideal: '≤ 30%' },
+  {
+    key: 'dti' as const,
+    label: t('dashboard.health.breakdown.dti'),
+    value: props.breakdown.dti ?? null,
+    ideal: '≤ 30%',
+  },
   {
     key: 'emergency' as const,
-    label: 'Emergencia',
+    label: t('dashboard.health.breakdown.emergency'),
     value: props.breakdown.emergency ?? null,
     ideal: '≥ 75%',
   },
   {
     key: 'housing' as const,
-    label: 'Vivienda',
+    label: t('dashboard.health.breakdown.housing'),
     value: props.breakdown.housing ?? null,
     ideal: '≤ 30%',
   },
   {
     key: 'savings' as const,
-    label: 'Ahorros',
+    label: t('dashboard.health.breakdown.savings'),
     value: props.breakdown.savings ?? null,
     ideal: '≥ 15%',
   },
@@ -68,14 +84,19 @@ const rows = computed(() => [
 </script>
 
 <template>
-  <article class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700">
+  <article
+    v-if="!isCompact"
+    class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700"
+  >
     <button
       type="button"
       class="flex items-center justify-between gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       @click="open = !open"
     >
       <div class="flex flex-col items-start">
-        <span class="text-xs uppercase tracking-wide text-slate-500">Puntaje de salud</span>
+        <span class="text-xs uppercase tracking-wide text-slate-500">
+          {{ t('dashboard.health.scoreTitle') }}
+        </span>
         <span class="text-3xl font-bold">{{ score }}</span>
       </div>
       <span class="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
@@ -93,14 +114,26 @@ const rows = computed(() => [
         :key="row.key"
         :data-component="row.key"
         :data-status="statusFor(row.key, row.value)"
-        :data-component-status="statusFor(row.key, row.value) === 'missing' ? 'warn' : statusFor(row.key, row.value)"
+        :data-component-status="
+          statusFor(row.key, row.value) === 'missing' ? 'warn' : statusFor(row.key, row.value)
+        "
         class="flex items-center justify-between text-sm"
       >
         <span class="font-medium">{{ row.label }}</span>
         <span class="text-xs text-slate-500">
-          {{ row.value ?? 'sin datos' }} · meta {{ row.ideal }}
+          {{ row.value ?? t('dashboard.health.breakdown.noData') }} · meta {{ row.ideal }}
         </span>
       </li>
     </ul>
   </article>
+
+  <div
+    v-else
+    class="flex items-center gap-2"
+  >
+    <span class="text-xl font-bold tabular-nums">{{ score }}</span>
+    <span class="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
+      {{ label }}
+    </span>
+  </div>
 </template>

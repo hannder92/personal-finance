@@ -18,11 +18,15 @@ const props = withDefaults(
     months?: Array<{ label: string; balance: number }>
     textColor?: string
     gridColor?: string
+    insight?: string | null
+    emptyMessage?: string
   }>(),
   {
     months: () => [],
     textColor: '#1e293b',
     gridColor: '#cbd5e1',
+    insight: null,
+    emptyMessage: '',
   }
 )
 
@@ -56,13 +60,40 @@ const chartOptions = computed(() => ({
     },
   },
 }))
+
+const showChart = computed(() => !props.emptyMessage)
 </script>
 
 <template>
-  <div class="relative h-72 w-full">
-    <Line
-      :data="chartData"
-      :options="chartOptions"
-    />
+  <div
+    class="flex flex-col gap-2"
+    data-testid="projection-chart"
+    :data-month-5-balance="months[4]?.balance ?? 0"
+    :data-month-6-balance="months[5]?.balance ?? 0"
+    :data-month-7-balance="months[6]?.balance ?? 0"
+  >
+    <div
+      v-if="showChart"
+      class="relative h-72 w-full"
+    >
+      <Line
+        :data="chartData"
+        :options="chartOptions"
+      />
+    </div>
+    <p
+      v-else
+      data-testid="projection-empty"
+      class="rounded border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500 dark:border-slate-600"
+    >
+      {{ emptyMessage }}
+    </p>
+    <p
+      v-if="insight"
+      data-testid="projection-insight"
+      class="text-sm text-slate-600 dark:text-slate-300"
+    >
+      {{ insight }}
+    </p>
   </div>
 </template>
