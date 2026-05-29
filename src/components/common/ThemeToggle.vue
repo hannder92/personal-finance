@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import LucideIcon from '@/components/common/LucideIcon.vue'
 
 type Theme = 'system' | 'light' | 'dark'
 
@@ -13,6 +15,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Theme): void
 }>()
+
+const { t } = useI18n()
 
 const ORDER: Theme[] = ['system', 'light', 'dark']
 
@@ -28,7 +32,6 @@ function applyHtmlClass(theme: Theme) {
   } else if (theme === 'light') {
     root.classList.remove('dark')
   } else {
-    // system: follow prefers-color-scheme
     const prefersDark =
       typeof window !== 'undefined' &&
       typeof window.matchMedia === 'function' &&
@@ -54,24 +57,19 @@ const ICONS: Record<Theme, string> = {
   dark: 'moon',
 }
 
-const LABELS: Record<Theme, string> = {
-  system: 'Tema: sistema',
-  light: 'Tema: claro',
-  dark: 'Tema: oscuro',
-}
+const ariaLabel = computed(() => t(`theme.${props.modelValue}`))
 </script>
 
 <template>
   <button
     type="button"
-    :aria-label="LABELS[modelValue]"
+    :aria-label="ariaLabel"
     class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-300 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-slate-700 dark:hover:bg-slate-800"
     @click="onClick"
   >
-    <span
-      :data-icon="ICONS[modelValue]"
-      class="inline-block h-4 w-4"
-      aria-hidden="true"
+    <LucideIcon
+      :name="ICONS[modelValue]"
+      icon-class="h-4 w-4"
     />
   </button>
 </template>
