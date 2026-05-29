@@ -98,11 +98,3 @@ describe('SettingsPanel — Reset (AC-15.4 TC-C-031)', () => {
     expect(emitted('reset')).toBeUndefined()
   })
 })
-
-describe('SettingsPanel — Relaunch onboarding (AC-1.6)', () => {
-  it('AC-1.6: clicking "Relanzar guía" emits relaunch event', async () => {
-    const { emitted } = mount()
-    await fireEvent.click(screen.getByRole('button', { name: /relanzar|relaunch|guía|guia/i }))
-    expect(emitted()).toHaveProperty('relaunch')
-  })
-})

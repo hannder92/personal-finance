@@ -1,7 +1,15 @@
 // Vitest setup file. Registered via vitest.config.ts.
 // Runs once before each test file.
 
-import { afterEach } from 'vitest'
+import { afterEach, vi } from 'vitest'
+
+// Stub vue-chartjs globally so Chart.js never mounts in jsdom (no canvas API).
+// Component tests assert wrapper data-* attrs or <canvas> presence, not Chart internals.
+vi.mock('vue-chartjs', () => ({
+  Line: { template: '<canvas data-chart-stub="line" />' },
+  Bar: { template: '<canvas data-chart-stub="bar" />' },
+  Doughnut: { template: '<canvas data-chart-stub="doughnut" />' },
+}))
 
 afterEach(() => {
   localStorage.clear()

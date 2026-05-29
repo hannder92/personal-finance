@@ -25,14 +25,11 @@ describe('lib/storage/migrate', () => {
     expect(result.goals.find((g) => g.id === '66666666-6666-4666-8666-666666666666')).toBeTruthy()
   })
 
-  it('TC-U-044 (AC-1.3): v1 with data sets onboarding.done=true', () => {
-    const result = migrate(v1Typical) as { settings: { onboarding: { done: boolean } } }
-    expect(result.settings.onboarding.done).toBe(true)
-  })
-
-  it('TC-U-044 (AC-1.3): empty v1 sets onboarding.done=false', () => {
-    const result = migrate(v1Empty) as { settings: { onboarding: { done: boolean } } }
-    expect(result.settings.onboarding.done).toBe(false)
+  it('TC-U-044: migrated v1 always sets onboarding.done=true (legacy field)', () => {
+    const typical = migrate(v1Typical) as { settings: { onboarding: { done: boolean } } }
+    const empty = migrate(v1Empty) as { settings: { onboarding: { done: boolean } } }
+    expect(typical.settings.onboarding.done).toBe(true)
+    expect(empty.settings.onboarding.done).toBe(true)
   })
 
   it('TC-U-045 (AC-3.1): existing otherStreams default to frequency="monthly"', () => {

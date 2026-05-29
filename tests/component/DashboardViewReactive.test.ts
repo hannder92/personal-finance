@@ -20,7 +20,6 @@ function defaultSettingsState() {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
-    onboarding: { done: true, currentStep: 0, totalSteps: 3 },
   }
 }
 
@@ -69,6 +68,9 @@ function mount(
           props: ['months'],
           template:
             '<div data-testid="projection-chart" :data-base="months && months.length ? months[0].balance : 0"></div>',
+        },
+        SavingsProjectionChart: {
+          template: '<div data-testid="savings-projection-chart"></div>',
         },
       },
     },

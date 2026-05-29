@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
+import { i18n } from '@/i18n'
 
 describe('ThemeToggle (AC-16.3 AC-17.2 TC-C-033)', () => {
   beforeEach(() => {
@@ -11,7 +12,10 @@ describe('ThemeToggle (AC-16.3 AC-17.2 TC-C-033)', () => {
   })
 
   it('AC-16.3 TC-C-033: clicking from light emits update with new value', async () => {
-    const { emitted } = render(ThemeToggle, { props: { modelValue: 'light' } })
+    const { emitted } = render(ThemeToggle, {
+      props: { modelValue: 'light' },
+      global: { plugins: [i18n] },
+    })
 
     const btn = screen.getByRole('button')
     await fireEvent.click(btn)
@@ -24,7 +28,10 @@ describe('ThemeToggle (AC-16.3 AC-17.2 TC-C-033)', () => {
 
   it('AC-16.3 TC-C-033: cycles through system → light → dark → system', async () => {
     const sequence: Array<'system' | 'light' | 'dark'> = []
-    const { emitted, rerender } = render(ThemeToggle, { props: { modelValue: 'system' } })
+    const { emitted, rerender } = render(ThemeToggle, {
+      props: { modelValue: 'system' },
+      global: { plugins: [i18n] },
+    })
 
     for (let i = 0; i < 3; i++) {
       await fireEvent.click(screen.getByRole('button'))
@@ -38,7 +45,10 @@ describe('ThemeToggle (AC-16.3 AC-17.2 TC-C-033)', () => {
   })
 
   it('AC-17.2 TC-C-033: applies "dark" class to <html> when modelValue=dark', async () => {
-    const { rerender } = render(ThemeToggle, { props: { modelValue: 'light' } })
+    const { rerender } = render(ThemeToggle, {
+      props: { modelValue: 'light' },
+      global: { plugins: [i18n] },
+    })
     expect(document.documentElement.classList.contains('dark')).toBe(false)
 
     await rerender({ modelValue: 'dark' })
@@ -49,7 +59,10 @@ describe('ThemeToggle (AC-16.3 AC-17.2 TC-C-033)', () => {
   })
 
   it('AC-17.7 TC-C-033: button exposes aria-label describing current theme', () => {
-    render(ThemeToggle, { props: { modelValue: 'light' } })
+    render(ThemeToggle, {
+      props: { modelValue: 'light' },
+      global: { plugins: [i18n] },
+    })
     const btn = screen.getByRole('button')
     const label = btn.getAttribute('aria-label') ?? ''
     expect(label.toLowerCase()).toMatch(/theme|tema|claro|light/)

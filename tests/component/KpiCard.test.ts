@@ -16,7 +16,7 @@ describe('KpiCard (AC-10.3 AC-17.6 TC-C-025)', () => {
       props: { label: 'DTI', value: 45, type: 'dti', threshold: 36 },
     })
     // Either a data-icon child or contextual text.
-    const hasIcon = !!document.querySelector('[data-icon]')
+    const hasIcon = !!document.querySelector('svg.lucide')
     const text = document.body.textContent ?? ''
     const hasContext = /riesgo|risk|alto|deuda/i.test(text)
     expect(hasIcon || hasContext).toBe(true)

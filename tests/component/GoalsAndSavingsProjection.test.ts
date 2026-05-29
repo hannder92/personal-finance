@@ -19,7 +19,6 @@ function defaultSettingsState() {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
-    onboarding: { done: true, currentStep: 0, totalSteps: 3 },
   }
 }
 
@@ -27,8 +26,22 @@ function pinia(options: {
   grossSalary?: number
   deductions?: Array<{ id: string; label: string; amount: number; type: 'fixed' | 'percent' }>
   savings?: number
-  goals?: Array<{ id: string; name: string; target: number; saved: number; monthlyContrib: number; targetDate: string | null; priority: number }>
-  assets?: Array<{ id: string; name: string; value: number; type: string; annualRatePercent?: number }>
+  goals?: Array<{
+    id: string
+    name: string
+    target: number
+    saved: number
+    monthlyContrib: number
+    targetDate: string | null
+    priority: number
+  }>
+  assets?: Array<{
+    id: string
+    name: string
+    value: number
+    type: string
+    annualRatePercent?: number
+  }>
 }) {
   return createTestingPinia({
     createSpy: vi.fn,
@@ -62,10 +75,7 @@ describe('GoalsView — fix-calculos-financieros (AC-6.2 reactive cap)', () => {
     // Seed: gross 10M, no deductions → net 10M; savings 20% → cap = 2M.
     const { container } = render(GoalsView, {
       global: {
-        plugins: [
-          i18n,
-          pinia({ grossSalary: 10_000_000, savings: 20 }),
-        ],
+        plugins: [i18n, pinia({ grossSalary: 10_000_000, savings: 20 })],
         stubs: {
           GoalList: {
             props: ['savingsBucket', 'currency'],
@@ -88,6 +98,15 @@ describe('GoalsView — fix-calculos-financieros (AC-6.2 reactive cap)', () => {
   })
 })
 
+function chartStubs() {
+  return {
+    Line: {
+      props: ['data', 'options'],
+      template: '<div data-testid="line-chart-stub"></div>',
+    },
+  }
+}
+
 describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.5)', () => {
   it('TC-C-008 (AC-8.1, AC-8.3): renders 2 datasets when both hypothetical and compound data exist', () => {
     const { container } = render(SavingsProjectionChart, {
@@ -108,6 +127,7 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
             ],
           }),
         ],
+        stubs: chartStubs(),
       },
     })
 
@@ -130,6 +150,7 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
             ],
           }),
         ],
+        stubs: chartStubs(),
       },
     })
 
@@ -155,6 +176,7 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
             ],
           }),
         ],
+        stubs: chartStubs(),
       },
     })
 
@@ -175,9 +197,12 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
           pinia({
             grossSalary: 10_000_000,
             savings: 20,
-            assets: [{ id: 'a1', name: 'CDT', value: 5_000_000, type: 'savings', annualRatePercent: 0 }],
+            assets: [
+              { id: 'a1', name: 'CDT', value: 5_000_000, type: 'savings', annualRatePercent: 0 },
+            ],
           }),
         ],
+        stubs: chartStubs(),
       },
     })
 

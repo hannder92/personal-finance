@@ -31,29 +31,6 @@ describe('settingsStore (T-043)', () => {
     expect(s.state.payoffMethod).toBe('snowball')
   })
 
-  it('setOnboardingDone toggles flag', () => {
-    const s = useSettingsStore()
-    s.setOnboardingDone(true)
-    expect(s.state.onboarding.done).toBe(true)
-  })
-
-  it('bumpOnboardingStep clamps to [0, totalSteps-1]', () => {
-    const s = useSettingsStore()
-    s.bumpOnboardingStep(5) // out-of-range positive
-    expect(s.state.onboarding.currentStep).toBe(s.state.onboarding.totalSteps - 1)
-
-    s.bumpOnboardingStep(-99) // out-of-range negative
-    expect(s.state.onboarding.currentStep).toBe(0)
-  })
-
-  it('relaunchOnboarding resets to step 0 (done is set elsewhere)', () => {
-    const s = useSettingsStore()
-    s.bumpOnboardingStep(1)
-    expect(s.state.onboarding.currentStep).toBe(1)
-    s.relaunchOnboarding()
-    expect(s.state.onboarding.currentStep).toBe(0)
-  })
-
   it('setLastMonthSeen accepts YYYY-MM string', () => {
     const s = useSettingsStore()
     s.setLastMonthSeen('2026-05')

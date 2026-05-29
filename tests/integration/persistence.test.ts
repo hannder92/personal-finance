@@ -38,10 +38,7 @@ function snapshotState(): AppStateV3 {
       theme: settings.state.theme,
       payoffMethod: settings.state.payoffMethod,
       lastMonthSeen: settings.state.lastMonthSeen,
-      onboarding: {
-        done: settings.state.onboarding.done,
-        currentStep: settings.state.onboarding.currentStep,
-      },
+      onboarding: { done: true, currentStep: 0 },
     },
     income: {
       grossSalary: income.state.grossSalary,
