@@ -7,7 +7,6 @@ const emit = defineEmits<{
   (e: 'export'): void
   (e: 'import', file: File): void
   (e: 'reset'): void
-  (e: 'relaunch'): void
 }>()
 
 const settings = useSettingsStore()
@@ -33,9 +32,6 @@ function confirmReset() {
 }
 function cancelReset() {
   confirmOpen.value = false
-}
-function relaunch() {
-  emit('relaunch')
 }
 </script>
 
@@ -92,19 +88,6 @@ function relaunch() {
           Reiniciar
         </button>
       </div>
-    </fieldset>
-
-    <fieldset class="flex flex-col gap-2 rounded border border-slate-200 p-4 dark:border-slate-700">
-      <legend class="text-sm font-semibold">
-        Onboarding
-      </legend>
-      <button
-        type="button"
-        class="self-start rounded bg-amber-500 px-3 py-1.5 text-sm font-medium text-white"
-        @click="relaunch"
-      >
-        Relanzar guía de configuración
-      </button>
     </fieldset>
 
     <ConfirmDialog

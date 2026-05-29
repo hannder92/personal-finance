@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import SettingsPanel from '@/components/settings/SettingsPanel.vue'
 import { useImportExport } from '@/composables/useImportExport'
-import { useOnboarding } from '@/composables/onboarding/useOnboarding'
 import { useAssetsStore } from '@/stores/assetsStore'
 import { useCardsStore } from '@/stores/cardsStore'
 import { useExpensesStore } from '@/stores/expensesStore'
@@ -15,7 +14,6 @@ import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 
 const router = useRouter()
 const { exportToFile, importFromFile } = useImportExport()
-const onboarding = useOnboarding()
 
 const errorMsg = ref('')
 const successMsg = ref('')
@@ -36,14 +34,11 @@ async function onImport(file: File) {
 }
 
 function onReset() {
-  // Setup-style Pinia stores don't expose $reset(); clear arrays + reseed scalars manually.
   const settings = useSettingsStore()
   settings.setLang('es')
   settings.setCurrency('COP')
   settings.setTheme('system')
   settings.setPayoffMethod('avalanche')
-  settings.setOnboardingDone(false)
-  settings.relaunchOnboarding()
 
   const income = useIncomeStore()
   income.setGrossSalary(0)
@@ -59,12 +54,7 @@ function onReset() {
   useSnapshotsStore().state.items.splice(0)
 
   localStorage.removeItem('personal_finance_v2')
-  router.push('/onboarding')
-}
-
-function onRelaunch() {
-  onboarding.relaunch()
-  router.push('/onboarding')
+  router.push('/')
 }
 </script>
 
@@ -95,7 +85,6 @@ function onRelaunch() {
       @export="onExport"
       @import="onImport"
       @reset="onReset"
-      @relaunch="onRelaunch"
     />
   </section>
 </template>

@@ -10,19 +10,12 @@ const ALLOWED_THEMES = ['system', 'light', 'dark'] as const
 const ALLOWED_PAYOFFS = ['avalanche', 'snowball'] as const
 const YEAR_MONTH = /^\d{4}-\d{2}$/
 
-export interface OnboardingState {
-  done: boolean
-  currentStep: number
-  totalSteps: number
-}
-
 export interface SettingsState {
   lang: 'es' | 'en'
   currency: 'COP' | 'USD' | 'CLP' | 'MXN' | 'ARS' | 'BRL' | 'PEN'
   theme: 'system' | 'light' | 'dark'
   payoffMethod: 'avalanche' | 'snowball'
   lastMonthSeen: string | null
-  onboarding: OnboardingState
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -32,7 +25,6 @@ export const useSettingsStore = defineStore('settings', () => {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
-    onboarding: { done: false, currentStep: 0, totalSteps: 3 },
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -55,17 +47,6 @@ export const useSettingsStore = defineStore('settings', () => {
     if (!YEAR_MONTH.test(iso)) return
     state.lastMonthSeen = iso
   }
-  function setOnboardingDone(done: boolean): void {
-    state.onboarding.done = done
-  }
-  function bumpOnboardingStep(delta: number): void {
-    const next = state.onboarding.currentStep + delta
-    const clamped = Math.max(0, Math.min(state.onboarding.totalSteps - 1, next))
-    state.onboarding.currentStep = clamped
-  }
-  function relaunchOnboarding(): void {
-    state.onboarding.currentStep = 0
-  }
 
   return {
     state,
@@ -74,8 +55,5 @@ export const useSettingsStore = defineStore('settings', () => {
     setTheme,
     setPayoffMethod,
     setLastMonthSeen,
-    setOnboardingDone,
-    bumpOnboardingStep,
-    relaunchOnboarding,
   }
 })

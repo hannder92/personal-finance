@@ -34,8 +34,6 @@ function hydrateStores() {
   settings.setTheme(state.settings.theme)
   settings.setPayoffMethod(state.settings.payoffMethod)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
-  settings.setOnboardingDone(state.settings.onboarding.done)
-  settings.state.onboarding.currentStep = state.settings.onboarding.currentStep
 
   const income = useIncomeStore()
   income.setGrossSalary(state.income.grossSalary)
@@ -93,10 +91,7 @@ function persistStores(): void {
         theme: settings.state.theme,
         payoffMethod: settings.state.payoffMethod,
         lastMonthSeen: settings.state.lastMonthSeen,
-        onboarding: {
-          done: settings.state.onboarding.done,
-          currentStep: settings.state.onboarding.currentStep,
-        },
+        onboarding: { done: true, currentStep: 0 },
       },
       income: {
         grossSalary: income.state.grossSalary,
@@ -139,7 +134,7 @@ function persistStores(): void {
       const result = saveAppState(buildPayload())
       if (!result.ok) setError(result.reason)
     },
-    { deep: true },
+    { deep: true }
   )
 }
 

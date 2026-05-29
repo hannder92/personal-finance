@@ -31,7 +31,7 @@ export function useImportExport() {
         currency: settings.state.currency,
         theme: settings.state.theme,
         payoffMethod: settings.state.payoffMethod,
-        onboarding: settings.state.onboarding,
+        onboarding: { done: true, currentStep: 0 },
         lastMonthSeen: settings.state.lastMonthSeen,
       },
       income: income.state,
