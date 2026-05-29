@@ -1,6 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { describe, expect, it } from 'vitest'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
+import { i18n } from '@/i18n'
+
+const globalPlugins = { plugins: [i18n] }
 
 describe('HealthScore (AC-11.2 TC-C-027)', () => {
   it('AC-11.2 TC-C-027: clicking opens a breakdown panel with 4 components', async () => {
@@ -10,6 +13,7 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
         label: 'Saludable',
         breakdown: { dti: 25, emergency: 80, housing: 28, savings: 18 },
       },
+      global: globalPlugins,
     })
 
     expect(screen.queryByText(/dti/i)).toBeNull()
@@ -30,6 +34,7 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
         label: 'Regular',
         breakdown: { dti: 25, emergency: 80, housing: 28, savings: 18 },
       },
+      global: globalPlugins,
     })
     await fireEvent.click(screen.getByRole('button', { name: /60/ }))
 
@@ -47,6 +52,7 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
         label: 'Excelente',
         breakdown: { dti: 10, emergency: 100, housing: 20, savings: 25 },
       },
+      global: globalPlugins,
     })
     expect(screen.getByText('82')).toBeTruthy()
     expect(screen.getByText(/excelente/i)).toBeTruthy()

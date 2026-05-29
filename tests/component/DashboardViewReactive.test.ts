@@ -4,10 +4,11 @@
 // Today DashboardView uses income.state.grossSalary directly and hardcodes breakdown values
 // (emergency: 70, housing: 25). After T-028 it switches to useNetIncome / useHealthScore.
 
-import { render, screen } from '@testing-library/vue'
+import { fireEvent, render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { createRouter, createMemoryHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import { useAssetsStore } from '@/stores/assetsStore'
 import { useExpensesStore } from '@/stores/expensesStore'
@@ -23,6 +24,20 @@ function defaultSettingsState() {
   }
 }
 
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [
+    { path: '/', name: 'dashboard', component: { template: '<div />' } },
+    { path: '/allocation', name: 'allocation', component: { template: '<div />' } },
+  ],
+})
+
+async function expandHealthBreakdown() {
+  const toggle = screen.getByText(/puntaje de salud|health score/i).closest('button')
+  expect(toggle).toBeTruthy()
+  await fireEvent.click(toggle!)
+}
+
 function mount(
   options: {
     grossSalary?: number
@@ -35,6 +50,7 @@ function mount(
     global: {
       plugins: [
         i18n,
+        router,
         createTestingPinia({
           createSpy: vi.fn,
           stubActions: false,
@@ -59,11 +75,6 @@ function mount(
         }),
       ],
       stubs: {
-        BudgetDonut: {
-          props: ['needs', 'wants', 'savings'],
-          template:
-            '<div data-testid="budget-donut" :data-needs="needs" :data-wants="wants" :data-savings="savings"></div>',
-        },
         ProjectionChart: {
           props: ['months'],
           template:
@@ -92,16 +103,16 @@ describe('DashboardView — fix-calculos-financieros (reactive wiring)', () => {
     expect(candidates.length).toBeGreaterThan(0)
   })
 
-  it('TC-C-003 (AC-3.4): with empty assets store, emergency component shows a "sin datos" indicator', () => {
+  it('TC-C-003 (AC-3.4): with empty assets store, emergency component shows a "sin datos" indicator', async () => {
     mount({ grossSalary: 5_000_000 })
-    // After T-028, the emergency row of HealthScore should expose a state indicating missing data.
-    // Today the breakdown is hardcoded to emergency: 70, so this assertion fails.
+    await expandHealthBreakdown()
     const emergencyRow = screen.queryByText(/emergencia/i)?.closest('[data-status]')
     expect(emergencyRow?.getAttribute('data-status')).toBe('missing')
   })
 
   it('TC-C-004 (AC-3.5): adding a liquid savings asset re-renders the emergency component value', async () => {
     mount({ grossSalary: 5_000_000 })
+    await expandHealthBreakdown()
     const assets = useAssetsStore()
     const before = screen
       .queryByText(/emergencia/i)
@@ -119,6 +130,7 @@ describe('DashboardView — fix-calculos-financieros (reactive wiring)', () => {
 
   it('TC-C-005 (AC-3.6): adding a housing expense re-renders the housing component', async () => {
     mount({ grossSalary: 5_000_000 })
+    await expandHealthBreakdown()
     const expenses = useExpensesStore()
     const before = screen
       .queryByText(/vivienda|housing/i)

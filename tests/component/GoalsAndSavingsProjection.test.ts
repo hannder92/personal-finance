@@ -1,5 +1,6 @@
 // Tests for GoalsView reactive cap + SavingsProjectionChart datasets/empty state.
 // Feature: 20260515-fix-calculos-financieros
+// Planificación integrada — SavingsProjectionChart i18n labels: T-021 TC-C-045 (AC-3.1–AC-3.3)
 // Covers AC-6.2, AC-8.1, AC-8.3, AC-8.4, AC-8.5, EC-10
 // TCs: TC-C-007, TC-C-008, TC-C-009, TC-C-010, TC-C-011
 
