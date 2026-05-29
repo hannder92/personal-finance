@@ -1,7 +1,6 @@
 # CLAUDE.md — Personal Finances App
 
-> Project memory for Claude Code. Rules live in `.claude/rules/` — this file adds architecture
-> context, store catalog, lib catalog, data flow, and known gaps.
+> Project memory for AI agents. **Enforceable rules:** `.cursor/rules/*.mdc` (Cursor) · **Policy:** `constitution.md` · **This file:** store/lib catalogs, boot cycle, pipelines (reference only — do not duplicate rules here).
 
 ---
 
@@ -98,17 +97,17 @@ Storage key: `finance_app_data`. Backup keys: `finance_app_data_v1_backup`, `fin
 Access state via `store.state.field` — never `storeToRefs()` on the nested reactive object.
 Every action validates at boundary before mutating; invalid input is silently discarded.
 
-| Store | State shape (key fields) | Key actions |
-|---|---|---|
-| **settingsStore** | `lang`, `currency`, `theme`, `payoffMethod`, `lastMonthSeen`, `onboarding{done,currentStep}` | `setLang`, `setCurrency`, `setTheme`, `setPayoffMethod`, `setOnboardingDone`, `bumpOnboardingStep`, `relaunchOnboarding` |
-| **incomeStore** | `grossSalary`, `deductions[]`, `otherStreams[]`, `nonSalaryBenefits[]` | `setGrossSalary`, `addDeduction/remove/update`, `addStream/remove/update`, `addBenefit/remove`, `applyColombiaPresets`, `addPrimaPreset` |
-| **expensesStore** | `items: FixedExpense[]` | `add`, `remove`, `update` |
-| **cardsStore** | `items: (CardDebt\|LoanDebt)[]` — discriminated by `type` | `addCard`, `addLoan`, `update`, `remove`, `addInstallment`, `updateInstallment`, `removeInstallment`, `incrementPaid` |
-| **goalsStore** | `items: Goal[]` | `add`, `remove`, `update`, `reorder` |
-| **assetsStore** | `items: Asset[]` | `add`, `remove`, `update` |
-| **variableExpensesStore** | `items: VariableCategory[]` | `add`, `remove`, `recordSpending`, `resetAllSpent` |
-| **snapshotsStore** | `items: Snapshot[]` (FIFO 24, sorted desc by month) | `append`, `setAll` |
-| **allocationStore** | `needs%`, `wants%`, `savings%` (computed) | `setAllocation(needs, wants)` — validates sum ≤ 100 |
+| Store                     | State shape (key fields)                                                                     | Key actions                                                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **settingsStore**         | `lang`, `currency`, `theme`, `payoffMethod`, `lastMonthSeen`, `onboarding{done,currentStep}` | `setLang`, `setCurrency`, `setTheme`, `setPayoffMethod`, `setOnboardingDone`, `bumpOnboardingStep`, `relaunchOnboarding`                 |
+| **incomeStore**           | `grossSalary`, `deductions[]`, `otherStreams[]`, `nonSalaryBenefits[]`                       | `setGrossSalary`, `addDeduction/remove/update`, `addStream/remove/update`, `addBenefit/remove`, `applyColombiaPresets`, `addPrimaPreset` |
+| **expensesStore**         | `items: FixedExpense[]`                                                                      | `add`, `remove`, `update`                                                                                                                |
+| **cardsStore**            | `items: (CardDebt\|LoanDebt)[]` — discriminated by `type`                                    | `addCard`, `addLoan`, `update`, `remove`, `addInstallment`, `updateInstallment`, `removeInstallment`, `incrementPaid`                    |
+| **goalsStore**            | `items: Goal[]`                                                                              | `add`, `remove`, `update`, `reorder`                                                                                                     |
+| **assetsStore**           | `items: Asset[]`                                                                             | `add`, `remove`, `update`                                                                                                                |
+| **variableExpensesStore** | `items: VariableCategory[]`                                                                  | `add`, `remove`, `recordSpending`, `resetAllSpent`                                                                                       |
+| **snapshotsStore**        | `items: Snapshot[]` (FIFO 24, sorted desc by month)                                          | `append`, `setAll`                                                                                                                       |
+| **allocationStore**       | `needs%`, `wants%`, `savings%` (computed)                                                    | `setAllocation(needs, wants)` — validates sum ≤ 100                                                                                      |
 
 ---
 
@@ -116,32 +115,32 @@ Every action validates at boundary before mutating; invalid input is silently di
 
 All exports are pure functions. Input/output types live in the same file.
 
-| Module | Key export(s) |
-|---|---|
-| `net-income.ts` | `calcNetSalary({grossSalary, deductions[], nonSalaryBenefits[]})→number` |
-| `amortization.ts` | `calcDebtTimeline(debt)→{months,totalInterest}` · uses TEA: `(1+TEA)^(1/12)−1` |
-| `dti.ts` | `calcDTI(obligations, income)→%` · `calcDebtFreeDate(debts[])→Date\|null` · `calcFreeForAllocation(income,fixed,debt)→number` |
-| `health-score.ts` | `calcHealthScore({dti,emergencyMonths,housingRatio,savingsRate})→{score,label,components,missing[]}` |
-| `allocation.ts` | `calcAllocationAmounts(pct,income)→{needs,wants,savings}` · `calcSavingsRate` · `calcGoalExcess` |
+| Module                  | Key export(s)                                                                                                                                                           |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `net-income.ts`         | `calcNetSalary({grossSalary, deductions[], nonSalaryBenefits[]})→number`                                                                                                |
+| `amortization.ts`       | `calcDebtTimeline(debt)→{months,totalInterest}` · uses TEA: `(1+TEA)^(1/12)−1`                                                                                          |
+| `dti.ts`                | `calcDTI(obligations, income)→%` · `calcDebtFreeDate(debts[])→Date\|null` · `calcFreeForAllocation(income,fixed,debt)→number`                                           |
+| `health-score.ts`       | `calcHealthScore({dti,emergencyMonths,housingRatio,savingsRate})→{score,label,components,missing[]}`                                                                    |
+| `allocation.ts`         | `calcAllocationAmounts(pct,income)→{needs,wants,savings}` · `calcSavingsRate` · `calcGoalExcess`                                                                        |
 | `savings-projection.ts` | `calcHypotheticalSavings({netIncome,savingsRatePercent,months})→HypotheticalPoint[]` · `calcCompoundGrowth(assets[{balance,annualRatePercent}],months)→CompoundPoint[]` |
-| `projection.ts` | `calcProjection({monthlyIncome,streams[],fixedExpenses,debtObligation}, months)→{months[],negativeMonths[]}` |
-| `goals.ts` | `calcGoalETA(goal)→{months,estimatedDate,overdue}` · `calcRequiredMonthly(goal)→number` |
-| `installments.ts` | `calcInstallmentMonthly(inst)→number` · `calcCardObligation(card)→number` |
-| `housing-ratio.ts` | `calcHousingRatio(expenses[],income)→%` — accepts `'housing'` AND `'vivienda'` categories |
-| `payoff-strategy.ts` | `sortByAvalanche(debts[])` · `sortBySnowball(debts[])` |
-| `frequency.ts` | `calcMonthlyEquivalent(stream)→number` · `getProjectionMonthsForStream(stream,start,count)→number[]` |
-| `snapshot.ts` | `buildSnapshot(inputs,now)→Snapshot` · `applySnapshotCap(arr[],max=24)` |
-| `variable-expenses.ts` | `calcSpendingStatus(cat)→'green'\|'amber'\|'red'` |
-| `net-worth.ts` | `calcNetWorth(assets[],cards[])→number` |
+| `projection.ts`         | `calcProjection({monthlyIncome,streams[],fixedExpenses,debtObligation}, months)→{months[],negativeMonths[]}`                                                            |
+| `goals.ts`              | `calcGoalETA(goal)→{months,estimatedDate,overdue}` · `calcRequiredMonthly(goal)→number`                                                                                 |
+| `installments.ts`       | `calcInstallmentMonthly(inst)→number` · `calcCardObligation(card)→number`                                                                                               |
+| `housing-ratio.ts`      | `calcHousingRatio(expenses[],income)→%` — accepts `'housing'` AND `'vivienda'` categories                                                                               |
+| `payoff-strategy.ts`    | `sortByAvalanche(debts[])` · `sortBySnowball(debts[])`                                                                                                                  |
+| `frequency.ts`          | `calcMonthlyEquivalent(stream)→number` · `getProjectionMonthsForStream(stream,start,count)→number[]`                                                                    |
+| `snapshot.ts`           | `buildSnapshot(inputs,now)→Snapshot` · `applySnapshotCap(arr[],max=24)`                                                                                                 |
+| `variable-expenses.ts`  | `calcSpendingStatus(cat)→'green'\|'amber'\|'red'`                                                                                                                       |
+| `net-worth.ts`          | `calcNetWorth(assets[],cards[])→number`                                                                                                                                 |
 
 ### `src/lib/tax/colombia/`
 
-| Module | Key export(s) |
-|---|---|
+| Module         | Key export(s)                                                                      |
+| -------------- | ---------------------------------------------------------------------------------- |
 | `constants.ts` | `UVT_2025=49799`, `APORTE_SALUD=0.04`, `APORTE_PENSION=0.04`, `ART_383_BRACKETS[]` |
-| `retencion.ts` | `calcRetencion(grossSalary)→{amount,label,belowThreshold}` |
-| `prima.ts` | `calcPrimaServicios(grossSalary)→{amount,frequency:'semiannual'}` |
-| `presets.ts` | `applyColombiaPresets(deductions[],salary)→deductions[]` (idempotente) |
+| `retencion.ts` | `calcRetencion(grossSalary)→{amount,label,belowThreshold}`                         |
+| `prima.ts`     | `calcPrimaServicios(grossSalary)→{amount,frequency:'semiannual'}`                  |
+| `presets.ts`   | `applyColombiaPresets(deductions[],salary)→deductions[]` (idempotente)             |
 
 ---
 
@@ -232,12 +231,12 @@ Migration path: v1→v2→v3 (auto, en `loadAppState`). Backups: `finance_app_da
 
 ## Health Score Thresholds
 
-| Componente | Bueno | Warning | Malo | Peso |
-|---|---|---|---|---|
-| DTI | ≤20% | 36% | ≥50% | 35% |
-| Fondo emergencia | ≥6 meses | 3 meses | 0 | 30% |
-| Ratio vivienda | ≤30% | 40% | ≥60% | 20% |
-| Tasa ahorro | ≥20% | 10% | 0% | 15% |
+| Componente       | Bueno    | Warning | Malo | Peso |
+| ---------------- | -------- | ------- | ---- | ---- |
+| DTI              | ≤20%     | 36%     | ≥50% | 35%  |
+| Fondo emergencia | ≥6 meses | 3 meses | 0    | 30%  |
+| Ratio vivienda   | ≤30%     | 40%     | ≥60% | 20%  |
+| Tasa ahorro      | ≥20%     | 10%     | 0%   | 15%  |
 
 Fondo emergencia denominador: `gastos fijos + obligaciones de deuda mínimas` (no solo gastos fijos).
 

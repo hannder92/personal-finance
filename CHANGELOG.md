@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added (feature `20260529-planificacion-financiera-integrada`)
+
+- **Savings gap card** — objetivo (regla %), factible (libre tras gastos/deudas) y brecha con alerta cuando la regla no es viable (AC-1.1–1.3).
+- **Cashflow projection** — dashboard usa `calcProjection(12)` con ingresos no mensuales en meses correctos (AC-2.1–2.2).
+- **Separated insights** — frases distintas para donut (objetivo) vs proyección de flujo (AC-1.5, AC-2.3).
+- **Savings chart labels** — series hipotética vs crecimiento con tasa i18n (AC-3.1–3.3).
+- **Debt payoff tools** — fecha libre de deudas, simulador pago extra, orden avalancha/bola de nieve (AC-4.1–4.4).
+- **Financial freedom** — bloque compacto en resumen + vista `/financial-freedom` con meta 25× y horizonte (AC-5.1–5.6).
+- **Goals feasibility** — cupo regla/factible y alerta cuando aportes superan el mínimo (AC-6.1–6.2).
+
+### Added (feature `20260529-ux-clarity-phase1`)
+
+- **Responsive navigation** — DesktopNav, MobileBottomNav, NavBottomSheet y agrupación Plan/Resumen.
+- **Dashboard hero & KPI strip** — héroe con disponible y tira de KPIs scrollable en móvil.
+
+### Changed
+
+- **AllocationView** — montos de distribución calculados sobre ingreso neto (AC-1.4).
+- **Playwright** — usa `channel: 'chrome'` cuando el bundle Chromium no está disponible (ubuntu 26.04).
+
 ### Fixed (feature `20260515-fix-calculos-financieros`)
 
 - **Amortization TEA** — `monthsToPayoff` now uses `(1+TEA)^(1/12)−1` instead of `apr/12` (covers AC-4.1, AC-4.4). Matches Superfinanciera Colombia.
