@@ -5,7 +5,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 ## Running the app
 
 ```bash
-npm install        # install dependencies (Node 18+ required)
+npm install        # install dependencies (Node 20+ required)
 npm start          # dev server on http://localhost:5173 (alias for npm run dev)
 npm run build      # TypeScript check + production build → dist/
 npm run preview    # serve dist/ at http://localhost:4173
