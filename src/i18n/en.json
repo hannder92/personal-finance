@@ -1,4 +1,24 @@
 {
+  "nav": {
+    "appName": "MyFinances",
+    "ariaMain": "Main navigation",
+    "dashboard": "Home",
+    "income": "Income",
+    "expenses": "Fixed expenses",
+    "expensesMobile": "Expenses",
+    "debts": "Debts",
+    "goals": "Goals",
+    "variable": "Variable",
+    "networth": "Net worth",
+    "allocation": "Allocation",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "theme": {
+    "system": "Theme: system",
+    "light": "Theme: light",
+    "dark": "Theme: dark"
+  },
   "storage": {
     "error": {
       "title": "Save failed",

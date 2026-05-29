@@ -76,20 +76,6 @@ function ensureId(existing: string | undefined): string {
   return existing ?? crypto.randomUUID()
 }
 
-function hasAnyData(v1: V1State): boolean {
-  const grossSalary = v1.income?.grossSalary ?? 0
-  return (
-    grossSalary > 0 ||
-    (v1.income?.deductions?.length ?? 0) > 0 ||
-    (v1.income?.otherStreams?.length ?? 0) > 0 ||
-    (v1.expenses?.length ?? 0) > 0 ||
-    (v1.cards?.length ?? 0) > 0 ||
-    (v1.goals?.length ?? 0) > 0 ||
-    (v1.assets?.length ?? 0) > 0 ||
-    (v1.variableExpenses?.length ?? 0) > 0
-  )
-}
-
 function nowMonth(): string {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
@@ -107,7 +93,7 @@ function migrateV1toV2(v1: V1State): unknown {
       currency,
       theme: 'system',
       payoffMethod: v1.payoffMethod ?? 'avalanche',
-      onboarding: { done: hasAnyData(v1), currentStep: hasAnyData(v1) ? 3 : 0 },
+      onboarding: { done: true, currentStep: 0 },
       lastMonthSeen: nowMonth(),
     },
     income: {
@@ -245,9 +231,7 @@ function migrateV2toV3(v2: V2Like): unknown {
     assets: (v2.assets ?? []).map((a) => {
       const raw = a.annualRatePercent
       const rate =
-        typeof raw === 'number' && Number.isFinite(raw)
-          ? Math.min(100, Math.max(0, raw))
-          : 0
+        typeof raw === 'number' && Number.isFinite(raw) ? Math.min(100, Math.max(0, raw)) : 0
       return { ...a, annualRatePercent: rate }
     }),
     cards: (v2.cards ?? []).map((c) => {
@@ -255,7 +239,7 @@ function migrateV2toV3(v2: V2Like): unknown {
       // dueDate: legacy number day-of-month is dropped (lossy without calendar context); set to null.
       // Pre-existing string ISO is preserved.
       const dueDate = typeof c.dueDate === 'string' ? c.dueDate : null
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const { installmentsList: _drop, ...rest } = c
       return { ...rest, installments, dueDate }
     }),

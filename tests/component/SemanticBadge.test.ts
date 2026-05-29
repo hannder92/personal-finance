@@ -10,7 +10,7 @@ describe('SemanticBadge (AC-17.6 TC-C-025)', () => {
 
   it('AC-17.6 TC-C-025: renders an icon (not color-only) for status=warning', () => {
     render(SemanticBadge, { props: { status: 'warning', label: 'Atención' } })
-    const icon = document.querySelector('[data-icon]')
+    const icon = document.querySelector('svg.lucide')
     expect(icon).toBeTruthy()
   })
 

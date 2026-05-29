@@ -7,7 +7,7 @@
 - Language: `TypeScript 5.x`
 - Runtime: `Node.js 20+ LTS` — development server via Vite; no custom server.js
 - Framework: `Vue 3.5+` — Composition API + `<script setup>` exclusively
-- State: `Pinia 2.x` — one store per domain (income, cards, goals, assets, expenses)
+- State: `Pinia 2.x` — one store per domain (settings, income, expenses, cards, goals, assets, variableExpenses, allocation, snapshots)
 - Router: `Vue Router 4.x` — one route per section
 - Styling: `Tailwind CSS 4.x` — utility-first; no custom CSS except `src/style.css` global resets
 - UI primitives: `radix-vue 1.x` — headless accessible primitives (dialog, tooltip, etc.)
@@ -31,7 +31,7 @@
 - Schema evolution: **MUST** update the Zod schema in `lib/storage/schema.ts` AND the `migrate()` function whenever the persisted state shape changes
 - Composables: **MUST** encapsulate all domain logic that touches both store and calculations — views **MUST NOT** call `lib/calculations` directly
 - Pure functions: `lib/calculations/` and `lib/tax/` **MUST** have zero side effects and zero framework imports
-- **Navigation shell**: `App.vue` **MUST** contain a persistent layout shell with (a) a sticky top bar including a logo/title, ThemeToggle wired to `useTheme()`, and LanguageToggle wired to `useLocale()`; (b) a mobile bottom navigation using `RouterLink` for SPA-correct navigation; (c) responsive content padding so the bottom nav does not overlap content. This shell **MUST** be hidden during onboarding. Any feature that adds a route **MUST** also add it to the nav items in `App.vue`.
+- **Navigation shell**: `App.vue` **MUST** contain a persistent layout shell with (a) a sticky top bar including a logo/title, ThemeToggle wired to `useTheme()`, and LanguageToggle wired to `useLocale()`; (b) a mobile bottom navigation using `RouterLink` for SPA-correct navigation; (c) responsive content padding so the bottom nav does not overlap content. Any feature that adds a route **MUST** also add it to the nav items in `App.vue`.
 - **View CRUD completeness**: every domain view that owns a Pinia store with an `add()` / `addCard()` / `addLoan()` action **MUST** expose a visible CTA (button or link) that opens an add form within the same view. A view that only renders a list without a create flow is **incomplete** and **MUST NOT** be marked done in `_state.yaml` tasks until the CTA is present. Read-only views (e.g., HistoryView, DashboardView) are exempt and **MUST** be documented as read-only in their task DoD.
 
 ## Testing Policy
@@ -64,16 +64,16 @@
 - Data persistence: `localStorage` only — **MUST NOT** send financial data to any external API or analytics service
 - XSS: **MUST NOT** use `v-html` with any user-provided or store-derived string — use `{{ }}` interpolation or `textContent` bindings
 - ID generation: **MUST** use `crypto.randomUUID()` for new entity IDs — **MUST NOT** use sequential integers or `Math.random()` alone
-- PII: **MUST NOT** log store state with Pino in production; `pino.level` **MUST** be `'warn'` or above in production builds
+- PII: **MUST NOT** log store state or financial data to external services; no analytics SDKs
 
 ## Forbidden
 
 - **Options API** — `defineComponent({ data() {}, methods: {} })` is banned. Use `<script setup>` + Composition API exclusively. Reason: inconsistency with the rest of the codebase and worse TypeScript inference.
 - **Direct Pinia state mutation outside store files** — `store.someField = value` from a component or composable bypasses actions and breaks devtools traceability.
 - **`any` type without justification comment** — Erodes type safety on financial calculations where a wrong numeric type causes silent bugs.
-- **`console.log` / `console.error` in production paths** — Use `pino` logger with structured fields. `console.*` calls outside `if (import.meta.env.DEV)` blocks are forbidden.
+- **`console.log` / `console.error` in production paths** — `console.*` calls outside `if (import.meta.env.DEV)` blocks are forbidden.
 - **`v-html` with dynamic content** — XSS surface. Use `{{ }}` or DOM-safe bindings.
-- **Skipping Zod validation at storage boundaries** — `loadAppState()` and `importFromFile()` **MUST** call `AppStateSchemaV2.safeParse()` before touching any Pinia store. For UI forms, Zod is **SHOULD** (encouraged); the store action's own boundary guards (`isValidName`, `isValidAmount`) are the minimum acceptable fallback. Raw mutations that bypass both form validation AND store guards are forbidden.
+- **Skipping Zod validation at storage boundaries** — `loadAppState()` and `importFromFile()` **MUST** call `AppStateSchemaV3.safeParse()` before touching any Pinia store. For UI forms, Zod is **SHOULD** (encouraged); the store action's own boundary guards (`isValidName`, `isValidAmount`) are the minimum acceptable fallback. Raw mutations that bypass both form validation AND store guards are forbidden.
 - **ARL as an employee deduction** — ARL is 100% employer cost (Art. 16 Ley 1562/2012). **MUST NOT** appear in employee-facing deduction presets or default store state.
 - **`lib/calculations/` or `lib/tax/` importing Vue or Pinia** — These are pure function libraries. A Vue/Pinia import makes them untestable in isolation and couples domain logic to the framework.
 - **Charting outside Chart.js** — No D3, no native Canvas API, no Highcharts. Custom canvas drawing requires an ADR with justification.
@@ -82,7 +82,7 @@
 
 ## Versioning
 
-- Constitution version: **v2** (this document)
+- Constitution version: **v4** (this document)
 - Amendments: recorded as `v{N+1}` with date + diff summary at the bottom
 
 ---
@@ -91,13 +91,15 @@
 
 - [x] Author: `Johann Medina` — `2026-05-14` (v2)
 - [x] Author: `Johann Medina` — `2026-05-15` (v3)
+- [x] Author: `Johann Medina` — `2026-05-29` (v4)
 
 ---
 
 ## Amendment History
 
-| Version | Date       | Author        | Summary                                                                                                                                                                                                                                                                                                                                                        |
-| ------- | ---------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| v1      | 2026-05-14 | Johann Medina | Initial Constitution — vanilla JS SPA, zero-dependency, manual testing.                                                                                                                                                                                                                                                                                        |
-| v2      | 2026-05-14 | Johann Medina | Full stack migration: Vue 3.5 + Vite 6 + TypeScript + Pinia + Tailwind + Vitest. Testing policy upgraded to 80% coverage on financial calculations. Forbidden list updated for Vue/TypeScript idioms.                                                                                                                                                          |
-| v3      | 2026-05-15 | Johann Medina | Post-implementation retrospective corrections: (1) Stack fixed — removed `shadcn-vue`, `@sentry/vue`, `pino` (never installed); added `radix-vue`, `lucide-vue-next`, `vue-chartjs`. (2) Architecture — added mandatory navigation shell rule for `App.vue` and CRUD completeness rule for domain views. (3) Zod rule relaxed from MUST to SHOULD on UI forms. |
+| Version | Date       | Author        | Summary                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------- | ---------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| v1      | 2026-05-14 | Johann Medina | Initial Constitution — vanilla JS SPA, zero-dependency, manual testing.                                                                                                                                                                                                                                                                                                                                 |
+| v2      | 2026-05-14 | Johann Medina | Full stack migration: Vue 3.5 + Vite 6 + TypeScript + Pinia + Tailwind + Vitest. Testing policy upgraded to 80% coverage on financial calculations. Forbidden list updated for Vue/TypeScript idioms.                                                                                                                                                                                                   |
+| v3      | 2026-05-15 | Johann Medina | Post-implementation retrospective corrections: (1) Stack fixed — removed `shadcn-vue`, `@sentry/vue`, `pino` (never installed); added `radix-vue`, `lucide-vue-next`, `vue-chartjs`. (2) Architecture — added mandatory navigation shell rule for `App.vue` and CRUD completeness rule for domain views. (3) Zod rule relaxed from MUST to SHOULD on UI forms.                                          |
+| v4      | 2026-05-29 | Johann Medina | (1) Version header synced to v4; removed stale `pino` references from Security/Forbidden. (2) Storage boundary updated to `AppStateSchemaV3`. (3) Store catalog expanded to all 9 Pinia domains. (4) Onboarding wizard removed — app opens directly on dashboard; legacy `onboarding` field in persisted schema kept for migration compat only. (5) Navigation shell no longer hides during onboarding. |

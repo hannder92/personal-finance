@@ -24,7 +24,7 @@ describe('EmptyState (AC-17.8 TC-C-034)', () => {
       props: { icon: 'inbox', message: 'Vacío' },
     })
 
-    const iconEl = document.querySelector('[data-icon]')
+    const iconEl = document.querySelector('svg.lucide')
     expect(iconEl).toBeTruthy()
   })
 })

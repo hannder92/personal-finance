@@ -61,7 +61,7 @@ src/
 ├── composables/     # useTheme, useLocale, useCurrencyFormat, useForm, useChartTheme
 ├── components/      # UI components grouped by section
 ├── views/           # One view per route (lazy-loaded)
-├── router/          # Vue Router + onboarding guard (ADR-9)
+├── router/          # Vue Router (lazy-loaded views)
 └── i18n/            # es.json, en.json translation files
 ```
 
@@ -76,4 +76,5 @@ src/
 
 ## Specs
 
-All feature specifications live in `specs/20260514-project-refactor/`. See `specs/20260514-project-refactor/_state.yaml` for the implementation progress (SDD workflow).
+Active feature: `specs/20260515-fix-calculos-financieros/` (phase 6 — review complete).  
+Previous refactor: `specs/20260514-project-refactor/`. See `specs/.active` for the current slug.

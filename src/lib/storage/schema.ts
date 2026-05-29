@@ -19,10 +19,10 @@ const SettingsSchema = z.object({
   payoffMethod: z.enum(['avalanche', 'snowball']).default('avalanche'),
   onboarding: z
     .object({
-      done: z.boolean().default(false),
+      done: z.boolean().default(true),
       currentStep: z.number().int().min(0).max(3).default(0),
     })
-    .default({ done: false, currentStep: 0 }),
+    .default({ done: true, currentStep: 0 }),
   lastMonthSeen: YearMonth.nullable().default(null),
 })
 

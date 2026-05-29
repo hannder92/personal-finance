@@ -1,43 +1,42 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import LanguageToggle from '@/components/common/LanguageToggle.vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
 import { useLocale } from '@/composables/useLocale'
 import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
+const { t } = useI18n()
 const { theme, setTheme } = useTheme()
 const { locale, setLocale } = useLocale()
 
-const isOnboarding = computed(() => route.name === 'onboarding')
+const ALL_NAV = computed(() => [
+  { name: 'dashboard', label: t('nav.dashboard'), to: '/' },
+  { name: 'income', label: t('nav.income'), to: '/income' },
+  { name: 'expenses', label: t('nav.expenses'), to: '/expenses' },
+  { name: 'debts', label: t('nav.debts'), to: '/debts' },
+  { name: 'goals', label: t('nav.goals'), to: '/goals' },
+  { name: 'variable', label: t('nav.variable'), to: '/variable' },
+  { name: 'networth', label: t('nav.networth'), to: '/networth' },
+  { name: 'allocation', label: t('nav.allocation'), to: '/allocation' },
+  { name: 'history', label: t('nav.history'), to: '/history' },
+  { name: 'settings', label: t('nav.settings'), to: '/settings' },
+])
 
-const ALL_NAV = [
-  { name: 'dashboard', label: 'Inicio', to: '/' },
-  { name: 'income', label: 'Ingresos', to: '/income' },
-  { name: 'expenses', label: 'Gastos fijos', to: '/expenses' },
-  { name: 'debts', label: 'Deudas', to: '/debts' },
-  { name: 'goals', label: 'Metas', to: '/goals' },
-  { name: 'variable', label: 'Variables', to: '/variable' },
-  { name: 'networth', label: 'Patrimonio', to: '/networth' },
-  { name: 'allocation', label: 'Distribución', to: '/allocation' },
-  { name: 'history', label: 'Historial', to: '/history' },
-  { name: 'settings', label: 'Config', to: '/settings' },
-]
-
-const MOBILE_NAV = [
-  { name: 'dashboard', label: 'Inicio', to: '/' },
-  { name: 'income', label: 'Ingresos', to: '/income' },
-  { name: 'expenses', label: 'Gastos', to: '/expenses' },
-  { name: 'debts', label: 'Deudas', to: '/debts' },
-  { name: 'settings', label: 'Config', to: '/settings' },
-]
+const MOBILE_NAV = computed(() => [
+  { name: 'dashboard', label: t('nav.dashboard'), to: '/' },
+  { name: 'income', label: t('nav.income'), to: '/income' },
+  { name: 'expenses', label: t('nav.expensesMobile'), to: '/expenses' },
+  { name: 'debts', label: t('nav.debts'), to: '/debts' },
+  { name: 'settings', label: t('nav.settings'), to: '/settings' },
+])
 </script>
 
 <template>
   <div class="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-50">
     <header
-      v-if="!isOnboarding"
       class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95"
     >
       <div class="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4">
@@ -45,12 +44,12 @@ const MOBILE_NAV = [
           to="/"
           class="shrink-0 text-sm font-semibold text-slate-900 dark:text-slate-100"
         >
-          MisFinanzas
+          {{ t('nav.appName') }}
         </RouterLink>
 
         <nav
           class="hidden flex-1 overflow-x-auto md:block"
-          aria-label="Navegación principal"
+          :aria-label="t('nav.ariaMain')"
         >
           <ul class="flex gap-0.5">
             <li
@@ -84,7 +83,7 @@ const MOBILE_NAV = [
       </div>
     </header>
 
-    <main :class="{ 'pb-16 md:pb-0': !isOnboarding }">
+    <main class="pb-16 md:pb-0">
       <RouterView v-slot="{ Component }">
         <Transition
           name="fade"
@@ -96,9 +95,8 @@ const MOBILE_NAV = [
     </main>
 
     <nav
-      v-if="!isOnboarding"
       class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 md:hidden"
-      aria-label="Navegación principal"
+      :aria-label="t('nav.ariaMain')"
     >
       <ul class="flex">
         <li

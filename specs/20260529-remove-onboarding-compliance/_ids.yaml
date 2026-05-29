@@ -1,0 +1,48 @@
+ac:
+  - { id: AC-1.1, desc: "Usuario nuevo abre la app y ve el dashboard sin wizard de onboarding" }
+  - { id: AC-1.2, desc: "Reiniciar datos desde Configuración navega al dashboard, no a /onboarding" }
+  - { id: AC-1.3, desc: "Configuración no expone botón de relanzar onboarding" }
+  - { id: AC-2.1, desc: "constitution.md versión v4 sincronizada con historial de enmiendas" }
+  - { id: AC-2.2, desc: "Sin referencias obsoletas a pino en Security/Forbidden" }
+  - { id: AC-2.3, desc: "Reglas de storage boundary referencian AppStateSchemaV3" }
+  - { id: AC-3.1, desc: "Navegación en App.vue usa t() de vue-i18n" }
+  - { id: AC-3.2, desc: "Claves nav.* y theme.* existen en es.json y en.json" }
+  - { id: AC-4.1, desc: "Iconos renderizados con lucide-vue-next vía LucideIcon, sin data-icon" }
+  - { id: AC-5.1, desc: "npm install funciona con registry.npmjs.org (.npmrc en repo)" }
+  - { id: AC-6.1, desc: "Suite Vitest pasa con exit code 0 (347 tests)" }
+
+tc:
+  - { id: TC-U-001, covers: [AC-2.3], kind: unit }
+  - { id: TC-U-002, covers: [AC-1.1], kind: unit }
+  - { id: TC-C-001, covers: [AC-3.1, AC-4.1], kind: unit }
+  - { id: TC-C-002, covers: [AC-4.1], kind: unit }
+  - { id: TC-C-003, covers: [AC-4.1], kind: unit }
+  - { id: TC-C-004, covers: [AC-4.1], kind: unit }
+  - { id: TC-C-005, covers: [AC-3.2], kind: unit }
+  - { id: TC-I-001, covers: [AC-2.3], kind: integration }
+  - { id: TC-E-001, covers: [AC-1.1], kind: e2e }
+  - { id: TC-E-002, covers: [AC-1.2], kind: e2e }
+
+tasks:
+  - { id: T-001, status: done, type: docs, size: S, covers: [AC-2.1, AC-2.2, AC-2.3], deps: [] }
+  - { id: T-002, status: done, type: impl, size: M, covers: [AC-1.1, AC-1.2, AC-1.3], deps: [T-001], risk: M }
+  - { id: T-003, status: done, type: impl, size: S, covers: [AC-3.1, AC-3.2], deps: [T-002] }
+  - { id: T-004, status: done, type: impl, size: S, covers: [AC-4.1], deps: [T-003] }
+  - { id: T-005, status: done, type: impl, size: XS, covers: [AC-5.1], deps: [] }
+  - { id: T-006, status: done, type: test, size: S, covers: [AC-1.1, AC-4.1], deps: [T-002, T-004] }
+  - { id: T-007, status: done, type: test, size: S, covers: [AC-6.1], deps: [T-006] }
+  - { id: T-008, status: done, type: test, size: XS, covers: [AC-1.1], deps: [T-002] }
+  - { id: T-009, status: done, type: docs, size: XS, covers: [AC-2.1], deps: [T-001] }
+  - { id: T-010, status: done, type: docs, size: S, covers: [AC-2.1], deps: [T-001] }
+  - { id: T-011, status: done, type: test, size: XS, covers: [AC-2.3], deps: [T-002] }
+  - { id: T-012, status: done, type: test, size: XS, covers: [AC-6.1], deps: [T-007], risk: L }
+
+adr: []
+open_questions: []
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "El campo onboarding en schema persistido se mantiene por compatibilidad con datos v1/v2/v3 existentes."
+    impact_if_wrong: M
+    verify_by: "Migración v1→v3 sigue parseando; persist siempre escribe done=true"
+    status: verified
