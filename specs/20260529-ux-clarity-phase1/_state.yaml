@@ -1,0 +1,38 @@
+feature:
+  slug: "20260529-ux-clarity-phase1"
+  name: "UX claridad — fase 1"
+  branch: "feature/20260529-ux-clarity-phase1"
+  created: "2026-05-29"
+  mode: solo
+  size_class: M
+  ac_count: 24
+
+phase:
+  current: 5
+  name: implement
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true }
+  spec: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  plan: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  review: { approved: false }
+
+artifacts:
+  constitution: constitution.md
+  spec: specs/20260529-ux-clarity-phase1/1-spec.md
+  plan: specs/20260529-ux-clarity-phase1/2-plan.md
+  test_plan: specs/20260529-ux-clarity-phase1/3-test-plan.md
+  tasks: specs/20260529-ux-clarity-phase1/4-tasks.md
+  review: null
+
+progress:
+  tasks_done: 22
+  tasks_total: 22
+  next_pending: null
+  last_update: "2026-05-29T14:15:00Z"
+  implement_session: null
+
+drift: []
