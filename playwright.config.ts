@@ -14,7 +14,8 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // Bundled Playwright Chromium is unavailable on ubuntu26.04-x64; use system Chrome.
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
   ],
   webServer: {
