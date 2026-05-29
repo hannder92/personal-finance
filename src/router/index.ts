@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
   { path: '/debts', name: 'debts', component: () => import('@/views/DebtsView.vue') },
   { path: '/goals', name: 'goals', component: () => import('@/views/GoalsView.vue') },
   {
+    path: '/financial-freedom',
+    name: 'financialFreedom',
+    component: () => import('@/views/FinancialFreedomView.vue'),
+  },
+  {
     path: '/variable',
     name: 'variable',
     component: () => import('@/views/VariableExpensesView.vue'),

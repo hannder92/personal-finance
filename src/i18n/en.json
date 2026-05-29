@@ -2,6 +2,18 @@
   "nav": {
     "appName": "MyFinances",
     "ariaMain": "Main navigation",
+    "groups": {
+      "home": "Home",
+      "money": "Money",
+      "plan": "Plan",
+      "more": "More"
+    },
+    "sheet": {
+      "titleMoney": "Monthly money",
+      "titlePlan": "Planning",
+      "titleMore": "More options",
+      "close": "Close"
+    },
     "dashboard": "Home",
     "income": "Income",
     "expenses": "Fixed expenses",
@@ -12,7 +24,55 @@
     "networth": "Net worth",
     "allocation": "Allocation",
     "history": "History",
-    "settings": "Settings"
+    "settings": "Settings",
+    "financialFreedom": "Financial freedom"
+  },
+  "dashboard": {
+    "title": "Overview",
+    "hero": {
+      "availableLabel": "Available this month",
+      "emptyIncome": "Set up your income to see how much you have available.",
+      "emptyIncomeCta": "Go to income",
+      "ctaAllocation": "Assign budget",
+      "healthLabel": "Financial health",
+      "vsPrevious": "vs last month"
+    },
+    "kpi": {
+      "netIncome": "Net income",
+      "fixedExpenses": "Fixed expenses",
+      "debtPayments": "Debt payments",
+      "dti": "DTI"
+    },
+    "insight": {
+      "donut": "You allocate {amount} to savings ({percent}%).",
+      "projection": "At this pace you would accumulate {amount} in 12 months ({monthly}/mo).",
+      "flow": "Your cumulative cash flow would reach {amount} in 12 months."
+    },
+    "savingsGap": {
+      "title": "Savings gap",
+      "objective": "Target (rule)",
+      "feasible": "Feasible savings",
+      "gap": "Gap",
+      "notViable": "With your current expenses and debts, the savings rule is not viable this month.",
+      "unavailable": "No feasible savings this month."
+    },
+    "empty": {
+      "donut": "Set up income and allocation to see this chart.",
+      "projection": "Set up your finances to see the projection."
+    },
+    "health": {
+      "labelOk": "Healthy",
+      "labelWarn": "Needs work",
+      "labelDanger": "At risk",
+      "scoreTitle": "Health score",
+      "breakdown": {
+        "dti": "DTI",
+        "emergency": "Emergency",
+        "housing": "Housing",
+        "savings": "Savings",
+        "noData": "no data"
+      }
+    }
   },
   "theme": {
     "system": "Theme: system",
@@ -38,6 +98,9 @@
       },
       "compound": {
         "label": "Compound growth"
+      },
+      "compoundGrowth": {
+        "label": "Patrimony growth with rate"
       }
     }
   },
@@ -51,6 +114,44 @@
     "apr": {
       "label": "Effective Annual Rate (EAR)",
       "tooltip": "APR here means Effective Annual Rate, the Colombian Superfinanciera standard. Monthly rate uses (1 + EAR)^(1/12) − 1."
+    },
+    "payoff": {
+      "summary": {
+        "title": "Debt-free",
+        "estimated": "Estimated date: {date}"
+      },
+      "simulator": {
+        "title": "Extra payment simulator",
+        "extraLabel": "Extra monthly payment",
+        "monthsSaved": "Months saved: {count}",
+        "interestSaved": "Interest saved: {amount}",
+        "cardsOnly": "Simulator applies to credit cards only."
+      },
+      "priority": {
+        "title": "Suggested payoff order"
+      },
+      "strategy": {
+        "label": "Payoff strategy",
+        "avalanche": "Avalanche (highest rate first)",
+        "snowball": "Snowball (smallest balance first)"
+      }
+    }
+  },
+  "fi": {
+    "compact": {
+      "title": "Financial freedom",
+      "progress": "{percent}% toward goal",
+      "viewDetail": "View details"
+    },
+    "detail": {
+      "title": "Financial freedom",
+      "subtitle": "Financial independence target (25× annual living expenses)",
+      "livingExpense": "Monthly living expenses",
+      "liquidAssets": "Liquid net worth",
+      "target": "Patrimony target",
+      "horizon": "Estimated horizon",
+      "targetReached": "Goal reached!",
+      "noFeasibleSavings": "Without feasible monthly savings, a horizon cannot be estimated."
     }
   }
 }

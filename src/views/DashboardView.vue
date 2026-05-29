@@ -1,104 +1,64 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import BudgetDonut from '@/components/dashboard/BudgetDonut.vue'
-import ComparisonBadge from '@/components/dashboard/ComparisonBadge.vue'
+import DashboardHero from '@/components/dashboard/DashboardHero.vue'
+import FinancialFreedomCompact from '@/components/dashboard/FinancialFreedomCompact.vue'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
-import KpiCard from '@/components/dashboard/KpiCard.vue'
+import KpiStrip from '@/components/dashboard/KpiStrip.vue'
 import ProjectionChart from '@/components/dashboard/ProjectionChart.vue'
+import SavingsGapCard from '@/components/dashboard/SavingsGapCard.vue'
 import SavingsProjectionChart from '@/components/dashboard/SavingsProjectionChart.vue'
 import { useChartTheme } from '@/composables/useChartTheme'
-import { useDTI } from '@/composables/useDTI'
+import { useCashFlowProjection } from '@/composables/useCashFlowProjection'
+import { useDashboardInsights } from '@/composables/useDashboardInsights'
 import { useHealthScore } from '@/composables/useHealthScore'
-import { useNetIncome } from '@/composables/useNetIncome'
 import { useAllocationStore } from '@/stores/allocationStore'
-import { useExpensesStore } from '@/stores/expensesStore'
-import { useSettingsStore } from '@/stores/settingsStore'
-import { useSnapshotsStore } from '@/stores/snapshotsStore'
 
-const settings = useSettingsStore()
-const expenses = useExpensesStore()
+const { t } = useI18n()
 const allocation = useAllocationStore()
-const snapshots = useSnapshotsStore()
 const { options: chartTheme } = useChartTheme()
-const { netIncome, freeForAllocation } = useNetIncome()
-const { dti: dtiPct, totalDebtObligation } = useDTI()
+const { months: cashflowMonths } = useCashFlowProjection()
 const { result: healthScoreResult } = useHealthScore()
+const { hasDonutData, hasProjectionData, donutInsight, projectionInsight } = useDashboardInsights()
 
-const fixedExpensesTotal = computed(() =>
-  expenses.state.items.reduce((acc, e) => acc + e.amount, 0)
-)
-
-const sortedSnapshots = computed(() =>
-  [...snapshots.state.items].sort((a, b) => b.month.localeCompare(a.month))
-)
 const latestScore = computed(() => healthScoreResult.value.score)
-const previousScore = computed(() => sortedSnapshots.value[0]?.healthScore ?? null)
 
-// Project net income forward over 12 months. Periodic income streams are not yet
-// folded into this view (out of scope for T-028; calendar-aware projection is a
-// future enhancement noted in T-006).
-const projectionMonths = computed(() => {
-  const base = freeForAllocation.value
-  return Array.from({ length: 12 }, (_, i) => ({
-    label: `M${i + 1}`,
-    balance: base * (i + 1),
-  }))
+const healthLabel = computed(() => {
+  const score = latestScore.value
+  if (score >= 70) return t('dashboard.health.labelOk')
+  if (score >= 50) return t('dashboard.health.labelWarn')
+  return t('dashboard.health.labelDanger')
 })
+
+const projectionMonths = computed(() =>
+  cashflowMonths.value.map((m, i) => ({
+    label: `M${i + 1}`,
+    balance: m.projectedBalance,
+  }))
+)
 </script>
 
 <template>
   <section class="mx-auto flex max-w-4xl flex-col gap-6 p-6">
-    <header class="flex items-baseline justify-between">
-      <h1 class="text-2xl font-semibold">
-        Dashboard
-      </h1>
-      <ComparisonBadge
-        :current="latestScore"
-        :previous="previousScore"
-        label="vs mes anterior"
-      />
-    </header>
+    <h1 class="text-2xl font-semibold">
+      {{ t('dashboard.title') }}
+    </h1>
+
+    <DashboardHero />
+
+    <SavingsGapCard />
+
+    <KpiStrip />
+
+    <FinancialFreedomCompact />
 
     <HealthScore
       :score="latestScore"
-      label="Saludable"
+      :label="healthLabel"
       :breakdown="healthScoreResult.components"
-      :default-open="true"
+      :default-open="false"
     />
-
-    <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
-      <KpiCard
-        label="Ingreso neto"
-        :value="netIncome"
-        type="income"
-        :currency="settings.state.currency"
-      />
-      <KpiCard
-        label="Gastos fijos"
-        :value="fixedExpensesTotal"
-        type="expenses"
-        :currency="settings.state.currency"
-      />
-      <KpiCard
-        label="Pagos deuda"
-        :value="totalDebtObligation"
-        type="expenses"
-        :currency="settings.state.currency"
-      />
-      <KpiCard
-        label="DTI"
-        :value="dtiPct"
-        type="dti"
-        :threshold="36"
-        :currency="settings.state.currency"
-      />
-      <KpiCard
-        label="Disponible"
-        :value="freeForAllocation"
-        type="free"
-        :currency="settings.state.currency"
-      />
-    </div>
 
     <div class="grid gap-6 md:grid-cols-2">
       <BudgetDonut
@@ -107,11 +67,15 @@ const projectionMonths = computed(() => {
         :savings="allocation.state.savings"
         :text-color="chartTheme.color"
         :background-color="chartTheme.backgroundColor"
+        :insight="donutInsight"
+        :empty-message="hasDonutData ? '' : t('dashboard.empty.donut')"
       />
       <ProjectionChart
         :months="projectionMonths"
         :text-color="chartTheme.color"
         :grid-color="chartTheme.gridColor"
+        :insight="projectionInsight"
+        :empty-message="hasProjectionData ? '' : t('dashboard.empty.projection')"
       />
     </div>
 

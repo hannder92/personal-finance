@@ -1,0 +1,142 @@
+entries:
+  - at: "2026-05-29T15:00:00Z"
+    event: feature_initialized
+    by: agent
+    phase: 1
+    context: "Brecha ahorro objetivo vs disponible; proyecciones desalineadas; deudas y libertad financiera sin UI"
+  - at: "2026-05-29T15:00:00Z"
+    event: feature_size_classified
+    by: agent
+    phase: 1
+    size_class: M
+    estimated_ac: 20
+    note: "Alcance propuesto en 4 bloques; si specify supera 25 AC dividir en sub-features"
+  - at: "2026-05-29T16:00:00Z"
+    event: spec_generated
+    by: agent
+    phase: 1
+    count: 21
+    us_count: 6
+    oq_open: 1
+  - at: "2026-05-29T16:30:00Z"
+    event: clarify_run
+    by: "Johann Medina"
+    phase: 1.5
+    resolved: [OQ-1]
+    ac_added: [AC-5.5, AC-5.6]
+  - at: "2026-05-29T17:00:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: spec
+    spec_score: 100
+  - at: "2026-05-29T17:00:00Z"
+    event: plan_generated
+    by: agent
+    phase: 2
+    adr_count: 4
+  - at: "2026-05-29T17:00:00Z"
+    event: assumption_register_populated
+    by: agent
+    phase: 2
+    count: 5
+  - at: "2026-05-29T17:30:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: plan
+    ac_mapped: 23
+    adr_count: 4
+    assumptions: 5
+  - at: "2026-05-29T18:00:00Z"
+    event: test_plan_generated
+    by: agent
+    phase: 3
+    tc_count: 26
+    ac_coverage: "23/23"
+    spec_challenges: 0
+    spec_gaps: 0
+  - at: "2026-05-29T18:30:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: test_plan
+    ac_coverage: "23/23"
+    tc_count: 26
+  - at: "2026-05-29T19:00:00Z"
+    event: tasks_generated
+    by: agent
+    phase: 4
+    task_count: 36
+    next_pending: T-001
+  - at: "2026-05-29T19:30:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: tasks
+    task_count: 36
+    next_pending: T-001
+  - at: "2026-05-29T20:00:00Z"
+    event: task_started
+    by: agent
+    phase: 5
+    task: T-001
+  - at: "2026-05-29T20:05:00Z"
+    event: task_finished
+    by: agent
+    phase: 5
+    task: T-001
+  - at: "2026-05-29T20:10:00Z"
+    event: task_started
+    by: agent
+    phase: 5
+    task: T-002
+  - at: "2026-05-29T20:15:00Z"
+    event: task_finished
+    by: agent
+    phase: 5
+    task: T-002
+  - at: "2026-05-29T21:00:00Z"
+    event: phase_tests_red_complete
+    by: agent
+    phase: 5
+    tasks: [T-010, T-011, T-012, T-013, T-014, T-015, T-016, T-017, T-018, T-019, T-020, T-021, T-022, T-023, T-024, T-025]
+    vitest_failed: 23
+    vitest_passed: 382
+  - at: "2026-05-29T22:05:00Z"
+    event: phase_impl_complete
+    by: agent
+    phase: 5
+    tasks: [T-030, T-031, T-032, T-033, T-034, T-035, T-036, T-037, T-038, T-039, T-040, T-041, T-042, T-043, T-044, T-045, T-046]
+    vitest_passed: 405
+    gates: [typecheck, lint, build]
+  - at: "2026-05-29T23:32:00Z"
+    event: task_finished
+    by: agent
+    phase: 5
+    task: T-LAST
+    vitest_passed: 405
+    gates: [typecheck, lint, build]
+    e2e: skipped
+    e2e_reason: "Chromium no instalable en ubuntu26.04-x64 (Playwright unsupported platform)"
+    smoke_routes: [/, /allocation, /debts, /goals, /financial-freedom, /settings]
+    smoke_http: 200
+    a001_regression: [net-income.test.ts, projection.test.ts, useCashFlowProjection.test.ts]
+  - at: "2026-05-29T23:33:00Z"
+    event: verify_run
+    by: agent
+    phase: 5.5
+    ac_total: 23
+    ac_auto: 23
+    ac_manual: 0
+    ac_deferred: 0
+    e2e_supplemental_deferred: [TC-E-010, TC-E-011, TC-E-012, TC-E-013]
+    vitest_passed: 405
+    assumptions_verified: 5
+    assumptions_unverified: 0
+    rollback: executable
+  - at: "2026-05-29T23:35:00Z"
+    event: review_generated
+    by: agent
+    phase: 6
+    verdict: YELLOW
+    vitest_passed: 405
+    coverage_global: 86.17
+    coverage_calculations: 96.52
+    merge_blockers: 0

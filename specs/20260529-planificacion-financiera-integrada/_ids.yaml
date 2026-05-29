@@ -1,0 +1,156 @@
+ac:
+  - id: AC-1.1
+    desc: Tres cifras brecha — objetivo, factible, diferencia
+  - id: AC-1.2
+    desc: Alerta cuando regla de ahorro no es viable
+  - id: AC-1.3
+    desc: Sin ahorro factible positivo ficticio si disponible ≤ 0
+  - id: AC-1.4
+    desc: Distribución montos sobre ingreso neto
+  - id: AC-1.5
+    desc: Frase donut no confunde con factible
+  - id: AC-2.1
+    desc: Proyección flujo base ingreso neto
+  - id: AC-2.2
+    desc: Ingresos no mensuales solo en meses correctos
+  - id: AC-2.3
+    desc: Frase flujo distinta de ahorro hipotético
+  - id: AC-3.1
+    desc: Serie hipotética sin rendimiento etiquetada
+  - id: AC-3.2
+    desc: Serie rendimiento sobre saldo actual etiquetada
+  - id: AC-3.3
+    desc: Sin tasa — mensaje y hipotética visible
+  - id: AC-4.1
+    desc: Fecha libre de deudas global
+  - id: AC-4.2
+    desc: Simulador pago extra — meses e interés ahorrado
+  - id: AC-4.3
+    desc: Estrategia avalancha/bola de nieve guardada
+  - id: AC-4.4
+    desc: Orden de deudas coherente con estrategia
+  - id: AC-5.1
+    desc: Gasto de vida mensual visible
+  - id: AC-5.2
+    desc: Patrimonio líquido sin inmuebles/vehículos
+  - id: AC-5.3
+    desc: Meta independencia 25× gasto anual
+  - id: AC-5.4
+    desc: Horizonte con ahorro factible mensual
+  - id: AC-5.5
+    desc: Bloque compacto libertad financiera en resumen
+  - id: AC-5.6
+    desc: Enlace resumen a detalle en Plan
+  - id: AC-6.1
+    desc: Alerta metas si aportes > min(objetivo, factible)
+  - id: AC-6.2
+    desc: Cupo regla y tope factible visibles en metas
+tc:
+  - { id: TC-U-001, covers: [AC-1.1, AC-1.2, AC-1.3], kind: unit }
+  - { id: TC-U-002, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], kind: unit }
+  - { id: TC-U-003, covers: [AC-2.1, AC-2.2], kind: unit }
+  - { id: TC-U-004, covers: [AC-6.1, AC-6.2], kind: unit }
+  - { id: TC-U-005, covers: [AC-1.5, AC-2.3], kind: unit }
+  - { id: TC-U-006, covers: [AC-5.6], kind: unit }
+  - { id: TC-U-007, covers: [AC-4.4], kind: unit }
+  - { id: TC-U-008, covers: [AC-4.2], kind: unit }
+  - { id: TC-C-040, covers: [AC-1.1, AC-1.2, AC-1.3], kind: component }
+  - { id: TC-C-041, covers: [AC-1.4], kind: component }
+  - { id: TC-C-042, covers: [AC-1.5], kind: component }
+  - { id: TC-C-043, covers: [AC-2.1, AC-2.2], kind: component }
+  - { id: TC-C-044, covers: [AC-2.3], kind: component }
+  - { id: TC-C-045, covers: [AC-3.1, AC-3.2, AC-3.3], kind: component }
+  - { id: TC-C-046, covers: [AC-4.1], kind: component }
+  - { id: TC-C-047, covers: [AC-4.2], kind: component }
+  - { id: TC-C-048, covers: [AC-4.3], kind: component }
+  - { id: TC-C-049, covers: [AC-4.4], kind: component }
+  - { id: TC-C-050, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], kind: component }
+  - { id: TC-C-051, covers: [AC-5.5, AC-5.6], kind: component }
+  - { id: TC-C-052, covers: [AC-6.1, AC-6.2], kind: component }
+  - { id: TC-I-002, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-2.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-3.3, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-5.5, AC-5.6, AC-6.1, AC-6.2], kind: integration }
+  - { id: TC-E-010, covers: [AC-1.1, AC-1.2], kind: e2e }
+  - { id: TC-E-011, covers: [AC-2.2], kind: e2e }
+  - { id: TC-E-012, covers: [AC-4.1, AC-4.2], kind: e2e }
+  - { id: TC-E-013, covers: [AC-5.5, AC-5.6], kind: e2e }
+tasks:
+  - { id: T-001, status: done, type: setup, size: S, layer: cross, covers: [], deps: [] }
+  - { id: T-002, status: done, type: setup, size: S, layer: infra, covers: [], deps: [T-001] }
+  - { id: T-010, status: done, type: test, size: S, layer: domain, covers: [AC-1.1, AC-1.2, AC-1.3], deps: [T-002] }
+  - { id: T-011, status: done, type: test, size: S, layer: domain, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], deps: [T-002] }
+  - { id: T-012, status: done, type: test, size: M, layer: app, covers: [AC-2.1, AC-2.2], deps: [T-002] }
+  - { id: T-013, status: done, type: test, size: S, layer: app, covers: [AC-6.1, AC-6.2], deps: [T-002] }
+  - { id: T-014, status: done, type: test, size: M, layer: app, covers: [AC-1.5, AC-2.3], deps: [T-002] }
+  - { id: T-015, status: done, type: test, size: S, layer: infra, covers: [AC-5.6], deps: [T-002] }
+  - { id: T-016, status: done, type: test, size: S, layer: domain, covers: [AC-4.2, AC-4.4], deps: [T-002] }
+  - { id: T-017, status: done, type: test, size: S, layer: app, covers: [AC-1.1, AC-1.2, AC-1.3], deps: [T-002] }
+  - { id: T-018, status: done, type: test, size: S, layer: app, covers: [AC-1.4], deps: [T-002] }
+  - { id: T-019, status: done, type: test, size: S, layer: app, covers: [AC-1.5], deps: [T-014] }
+  - { id: T-020, status: done, type: test, size: M, layer: app, covers: [AC-2.1, AC-2.2, AC-2.3], deps: [T-012] }
+  - { id: T-021, status: done, type: test, size: S, layer: app, covers: [AC-3.1, AC-3.2, AC-3.3], deps: [T-002] }
+  - { id: T-022, status: done, type: test, size: M, layer: app, covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4], deps: [T-016] }
+  - { id: T-023, status: done, type: test, size: M, layer: app, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-5.5, AC-5.6], deps: [T-015] }
+  - { id: T-024, status: done, type: test, size: S, layer: app, covers: [AC-6.1, AC-6.2], deps: [T-013] }
+  - { id: T-025, status: done, type: test, size: M, layer: cross, covers: [AC-1.1, AC-1.2, AC-2.2, AC-4.1, AC-4.2, AC-5.5, AC-5.6], deps: [T-002] }
+  - { id: T-030, status: done, type: impl, size: S, layer: domain, covers: [AC-1.1, AC-1.2, AC-1.3], deps: [T-010], risk: H }
+  - { id: T-031, status: done, type: impl, size: S, layer: app, covers: [AC-1.1, AC-1.2, AC-1.3, AC-6.1, AC-6.2], deps: [T-013, T-030], risk: H }
+  - { id: T-032, status: done, type: impl, size: M, layer: app, covers: [AC-1.1, AC-1.2, AC-1.3], deps: [T-017, T-031], risk: H }
+  - { id: T-033, status: done, type: impl, size: S, layer: app, covers: [AC-1.4], deps: [T-018], risk: M }
+  - { id: T-034, status: done, type: impl, size: S, layer: domain, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], deps: [T-011], risk: H }
+  - { id: T-035, status: done, type: impl, size: S, layer: app, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], deps: [T-034, T-031], risk: H }
+  - { id: T-036, status: done, type: impl, size: M, layer: app, covers: [AC-2.1, AC-2.2], deps: [T-012], risk: H }
+  - { id: T-037, status: done, type: impl, size: M, layer: app, covers: [AC-1.5, AC-2.3], deps: [T-014, T-036, T-031], risk: H }
+  - { id: T-038, status: done, type: impl, size: M, layer: app, covers: [AC-2.1, AC-2.2, AC-2.3], deps: [T-020, T-036, T-037], risk: H }
+  - { id: T-039, status: done, type: impl, size: S, layer: app, covers: [AC-3.1, AC-3.2, AC-3.3], deps: [T-021], risk: M }
+  - { id: T-040, status: done, type: impl, size: M, layer: app, covers: [AC-4.1, AC-4.2, AC-4.4], deps: [T-016], risk: M }
+  - { id: T-041, status: done, type: impl, size: M, layer: app, covers: [AC-4.1, AC-4.2, AC-4.4], deps: [T-022, T-040], risk: M }
+  - { id: T-042, status: done, type: impl, size: S, layer: app, covers: [AC-4.3], deps: [T-022], risk: L }
+  - { id: T-043, status: done, type: impl, size: M, layer: infra, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-5.6], deps: [T-015, T-023, T-035], risk: M }
+  - { id: T-044, status: done, type: impl, size: S, layer: app, covers: [AC-5.5, AC-5.6], deps: [T-043], risk: M }
+  - { id: T-045, status: done, type: impl, size: M, layer: app, covers: [AC-6.1, AC-6.2], deps: [T-024, T-031], risk: M }
+  - { id: T-046, status: done, type: impl, size: S, layer: cross, covers: [AC-1.5, AC-2.3, AC-3.1, AC-3.2], deps: [T-032, T-037, T-038, T-039, T-041, T-043, T-044, T-045], risk: L }
+  - { id: T-LAST, status: done, type: test, size: S, layer: cross, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-2.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-3.3, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-5.5, AC-5.6, AC-6.1, AC-6.2], deps: [T-030, T-031, T-032, T-033, T-034, T-035, T-036, T-037, T-038, T-039, T-040, T-041, T-042, T-043, T-044, T-045, T-046, T-025] }
+adr:
+  - id: ADR-1
+    desc: Composable único useSavingsFeasibility
+  - id: ADR-2
+    desc: Dashboard flujo vía calcProjection
+  - id: ADR-3
+    desc: Ruta /financial-freedom bajo Plan
+  - id: ADR-4
+    desc: Simulador pago extra inline en DebtsView
+open_questions:
+  - id: OQ-1
+    desc: Ubicación UI vista libertad financiera
+    resolved: true
+    resolution: "Híbrido — resumen compacto en inicio + detalle en Plan con enlace"
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "useNetIncome y calcProjection disponibles en rama base"
+    impact_if_wrong: H
+    verify_by: "merge gate"
+    status: verified
+  - id: A-002
+    stated_in: plan
+    text: "Gasto de vida = fijos (+ variables del mes si hay datos)"
+    impact_if_wrong: M
+    verify_by: "AC-5.1"
+    status: verified
+  - id: A-003
+    stated_in: plan
+    text: "Líquido = cash, savings, investment"
+    impact_if_wrong: M
+    verify_by: "AC-5.2"
+    status: verified
+  - id: A-004
+    stated_in: plan
+    text: "Horizonte FIRE usa ahorro factible no objetivo 20%"
+    impact_if_wrong: M
+    verify_by: "AC-5.4"
+    status: verified
+  - id: A-005
+    stated_in: plan
+    text: "Simulador pago extra prioriza tarjetas revolving"
+    impact_if_wrong: L
+    verify_by: "AC-4.2"
+    status: verified

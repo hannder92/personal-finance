@@ -2,6 +2,18 @@
   "nav": {
     "appName": "MisFinanzas",
     "ariaMain": "Navegación principal",
+    "groups": {
+      "home": "Inicio",
+      "money": "Dinero",
+      "plan": "Plan",
+      "more": "Más"
+    },
+    "sheet": {
+      "titleMoney": "Dinero del mes",
+      "titlePlan": "Planificación",
+      "titleMore": "Más opciones",
+      "close": "Cerrar"
+    },
     "dashboard": "Inicio",
     "income": "Ingresos",
     "expenses": "Gastos fijos",
@@ -12,7 +24,55 @@
     "networth": "Patrimonio",
     "allocation": "Distribución",
     "history": "Historial",
-    "settings": "Config"
+    "settings": "Config",
+    "financialFreedom": "Libertad financiera"
+  },
+  "dashboard": {
+    "title": "Resumen",
+    "hero": {
+      "availableLabel": "Disponible este mes",
+      "emptyIncome": "Configura tu ingreso para ver cuánto tienes disponible.",
+      "emptyIncomeCta": "Ir a ingresos",
+      "ctaAllocation": "Asignar presupuesto",
+      "healthLabel": "Salud financiera",
+      "vsPrevious": "vs mes anterior"
+    },
+    "kpi": {
+      "netIncome": "Ingreso neto",
+      "fixedExpenses": "Gastos fijos",
+      "debtPayments": "Pagos deuda",
+      "dti": "DTI"
+    },
+    "insight": {
+      "donut": "Destinas {amount} a ahorros ({percent}%).",
+      "projection": "A este ritmo acumularías {amount} en 12 meses ({monthly}/mes).",
+      "flow": "Tu flujo de caja acumulado llegaría a {amount} en 12 meses."
+    },
+    "savingsGap": {
+      "title": "Brecha de ahorro",
+      "objective": "Objetivo (regla)",
+      "feasible": "Ahorro factible",
+      "gap": "Diferencia",
+      "notViable": "Con tus gastos y deudas actuales, la regla de ahorro no es viable este mes.",
+      "unavailable": "Sin ahorro factible este mes."
+    },
+    "empty": {
+      "donut": "Configura ingresos y distribución para ver este gráfico.",
+      "projection": "Configura tus finanzas para ver la proyección."
+    },
+    "health": {
+      "labelOk": "Saludable",
+      "labelWarn": "Mejorable",
+      "labelDanger": "En riesgo",
+      "scoreTitle": "Puntaje de salud",
+      "breakdown": {
+        "dti": "DTI",
+        "emergency": "Emergencia",
+        "housing": "Vivienda",
+        "savings": "Ahorros",
+        "noData": "sin datos"
+      }
+    }
   },
   "theme": {
     "system": "Tema: sistema",
@@ -38,6 +98,9 @@
       },
       "compound": {
         "label": "Interés compuesto"
+      },
+      "compoundGrowth": {
+        "label": "Crecimiento del patrimonio con tasa"
       }
     }
   },
@@ -51,6 +114,44 @@
     "apr": {
       "label": "Tasa Efectiva Anual (E.A.)",
       "tooltip": "APR aquí significa Tasa Efectiva Anual (E.A.), el estándar Superfinanciera de Colombia. El cálculo mensual usa (1 + E.A.)^(1/12) − 1."
+    },
+    "payoff": {
+      "summary": {
+        "title": "Libre de deudas",
+        "estimated": "Fecha estimada: {date}"
+      },
+      "simulator": {
+        "title": "Simulador de pago extra",
+        "extraLabel": "Pago extra mensual",
+        "monthsSaved": "Meses ahorrados: {count}",
+        "interestSaved": "Interés ahorrado: {amount}",
+        "cardsOnly": "El simulador aplica a tarjetas de crédito."
+      },
+      "priority": {
+        "title": "Orden de pago sugerido"
+      },
+      "strategy": {
+        "label": "Estrategia de pago",
+        "avalanche": "Avalancha (mayor tasa primero)",
+        "snowball": "Bola de nieve (menor saldo primero)"
+      }
+    }
+  },
+  "fi": {
+    "compact": {
+      "title": "Libertad financiera",
+      "progress": "{percent}% hacia la meta",
+      "viewDetail": "Ver detalle"
+    },
+    "detail": {
+      "title": "Libertad financiera",
+      "subtitle": "Meta de independencia financiera (25× gasto anual de vida)",
+      "livingExpense": "Gasto de vida mensual",
+      "liquidAssets": "Patrimonio líquido",
+      "target": "Meta de patrimonio",
+      "horizon": "Horizonte estimado",
+      "targetReached": "¡Meta alcanzada!",
+      "noFeasibleSavings": "Sin ahorro factible mensual no es posible estimar un horizonte."
     }
   }
 }

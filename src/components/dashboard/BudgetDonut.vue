@@ -12,6 +12,8 @@ const props = withDefaults(
     savings?: number
     textColor?: string
     backgroundColor?: string
+    insight?: string | null
+    emptyMessage?: string
   }>(),
   {
     needs: 50,
@@ -19,6 +21,8 @@ const props = withDefaults(
     savings: 20,
     textColor: '#1e293b',
     backgroundColor: '#f8fafc',
+    insight: null,
+    emptyMessage: '',
   }
 )
 
@@ -43,13 +47,34 @@ const chartOptions = computed(() => ({
     },
   },
 }))
+
+const showChart = computed(() => !props.emptyMessage)
 </script>
 
 <template>
-  <div class="relative h-64 w-full">
-    <Doughnut
-      :data="chartData"
-      :options="chartOptions"
-    />
+  <div class="flex flex-col gap-2">
+    <div
+      v-if="showChart"
+      class="relative h-64 w-full"
+    >
+      <Doughnut
+        :data="chartData"
+        :options="chartOptions"
+      />
+    </div>
+    <p
+      v-else
+      data-testid="donut-empty"
+      class="rounded border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500 dark:border-slate-600"
+    >
+      {{ emptyMessage }}
+    </p>
+    <p
+      v-if="insight"
+      data-testid="donut-insight"
+      class="text-sm text-slate-600 dark:text-slate-300"
+    >
+      {{ insight }}
+    </p>
   </div>
 </template>

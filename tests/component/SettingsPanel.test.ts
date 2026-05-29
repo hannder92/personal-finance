@@ -1,12 +1,17 @@
+/**
+ * Planificación integrada — extend in T-022: TC-C-048 (AC-4.3) payoff strategy UI.
+ */
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import SettingsPanel from '@/components/settings/SettingsPanel.vue'
+import { i18n } from '@/i18n'
 
 function mount(initial: Record<string, unknown> = {}) {
   return render(SettingsPanel, {
     global: {
       plugins: [
+        i18n,
         createTestingPinia({
           createSpy: vi.fn,
           stubActions: false,
@@ -72,6 +77,16 @@ describe('SettingsPanel — Import (AC-15.2 AC-15.3 TC-C-030)', () => {
     const importEvents = emitted('import') as unknown[][] | undefined
     expect(importEvents).toBeTruthy()
     expect((importEvents?.[0]?.[0] as File | undefined)?.name).toBe('backup.json')
+  })
+})
+
+describe('SettingsPanel — payoff strategy (TC-C-048)', () => {
+  it('TC-C-048 (AC-4.3): user can select snowball strategy', async () => {
+    const { useSettingsStore } = await import('@/stores/settingsStore')
+    mount()
+    const snowball = screen.getByRole('radio', { name: /bola de nieve|snowball/i })
+    await fireEvent.click(snowball)
+    expect(useSettingsStore().state.payoffMethod).toBe('snowball')
   })
 })
 

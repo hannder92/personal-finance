@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useSettingsStore } from '@/stores/settingsStore'
+
+const { t } = useI18n()
 
 const emit = defineEmits<{
   (e: 'export'): void
@@ -88,6 +91,32 @@ function cancelReset() {
           Reiniciar
         </button>
       </div>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-2 rounded border border-slate-200 p-4 dark:border-slate-700">
+      <legend class="text-sm font-semibold">
+        {{ t('debts.payoff.strategy.label') }}
+      </legend>
+      <label class="flex items-center gap-2 text-sm">
+        <input
+          type="radio"
+          name="payoffMethod"
+          value="avalanche"
+          :checked="settings.state.payoffMethod === 'avalanche'"
+          @change="settings.setPayoffMethod('avalanche')"
+        >
+        {{ t('debts.payoff.strategy.avalanche') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <input
+          type="radio"
+          name="payoffMethod"
+          value="snowball"
+          :checked="settings.state.payoffMethod === 'snowball'"
+          @change="settings.setPayoffMethod('snowball')"
+        >
+        {{ t('debts.payoff.strategy.snowball') }}
+      </label>
     </fieldset>
 
     <ConfirmDialog

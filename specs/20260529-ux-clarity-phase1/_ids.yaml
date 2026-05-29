@@ -1,0 +1,381 @@
+ac:
+  - id: AC-1.1
+    desc: Disponible visible sin scroll en móvil 390x844
+  - id: AC-1.2
+    desc: Salud secundaria al disponible en jerarquía
+  - id: AC-1.3
+    desc: Sin ingreso — mensaje y enlace a ingresos
+  - id: AC-1.4
+    desc: Comparación puntaje vs mes anterior
+  - id: AC-1.5
+    desc: CTA visible a distribución desde inicio
+  - id: AC-2.1
+    desc: KPIs secundarios bajo resumen principal
+  - id: AC-2.2
+    desc: KPIs en fila horizontal scroll en móvil
+  - id: AC-3.1
+    desc: Cuatro grupos nav escritorio
+  - id: AC-3.2
+    desc: Cada destino alcanzable desde grupos escritorio
+  - id: AC-3.3
+    desc: Resaltado sección activa escritorio
+  - id: AC-3.4
+    desc: Inicio enlace directo sin dropdown escritorio
+  - id: AC-3.5
+    desc: Dinero Plan Más abren dropdown al clic
+  - id: AC-3.6
+    desc: Cierre dropdown al elegir o clic fuera
+  - id: AC-3.7
+    desc: Texto legible en menús de navegación con tema oscuro
+  - id: AC-4.1
+    desc: Cuatro tabs con icono en bottom nav móvil
+  - id: AC-4.2
+    desc: Tab Dinero — 4 destinos
+  - id: AC-4.3
+    desc: Tab Plan — deudas y metas
+  - id: AC-4.4
+    desc: Tab Más — patrimonio historial config
+  - id: AC-4.5
+    desc: Padding inferior contenido no tapado por barra
+  - id: AC-4.6
+    desc: Tab Inicio navega sin bottom sheet
+  - id: AC-4.7
+    desc: Dinero Plan Más abren bottom sheet con destinos
+  - id: AC-4.8
+    desc: Cierre sheet al elegir o deslizar abajo
+  - id: AC-5.1
+    desc: Cambio idioma actualiza todo el inicio
+  - id: AC-5.2
+    desc: Claves dashboard en es y en
+  - id: AC-6.1
+    desc: Frase contexto donut con monto ahorros
+  - id: AC-6.2
+    desc: Frase contexto proyección 12 meses
+  - id: AC-6.3
+    desc: Sin frase interpretativa sin datos
+tc:
+  - id: TC-U-001
+    covers: [AC-3.1, AC-3.2]
+    kind: unit
+  - id: TC-U-002
+    covers: [AC-5.2]
+    kind: unit
+  - id: TC-U-010
+    covers: [AC-6.1]
+    kind: unit
+  - id: TC-U-011
+    covers: [AC-6.2]
+    kind: unit
+  - id: TC-U-012
+    covers: [AC-6.3]
+    kind: unit
+  - id: TC-C-001
+    covers: [AC-1.1, AC-1.2]
+    kind: unit
+  - id: TC-C-002
+    covers: [AC-1.2]
+    kind: unit
+  - id: TC-C-003
+    covers: [AC-1.3]
+    kind: unit
+  - id: TC-C-004
+    covers: [AC-1.4]
+    kind: unit
+  - id: TC-C-005
+    covers: [AC-1.5]
+    kind: unit
+  - id: TC-C-006
+    covers: [AC-2.1]
+    kind: unit
+  - id: TC-C-007
+    covers: [AC-2.2]
+    kind: unit
+  - id: TC-C-010
+    covers: [AC-3.1]
+    kind: unit
+  - id: TC-C-011
+    covers: [AC-3.2, AC-3.3]
+    kind: unit
+  - id: TC-C-012
+    covers: [AC-3.4]
+    kind: unit
+  - id: TC-C-013
+    covers: [AC-3.5]
+    kind: unit
+  - id: TC-C-014
+    covers: [AC-3.6]
+    kind: unit
+  - id: TC-C-033
+    covers: [AC-3.7]
+    kind: unit
+  - id: TC-C-034
+    covers: [AC-3.7]
+    kind: unit
+  - id: TC-C-020
+    covers: [AC-4.1]
+    kind: unit
+  - id: TC-C-021
+    covers: [AC-4.2]
+    kind: unit
+  - id: TC-C-022
+    covers: [AC-4.3]
+    kind: unit
+  - id: TC-C-023
+    covers: [AC-4.4]
+    kind: unit
+  - id: TC-C-024
+    covers: [AC-4.5]
+    kind: unit
+  - id: TC-C-025
+    covers: [AC-4.6]
+    kind: unit
+  - id: TC-C-026
+    covers: [AC-4.7]
+    kind: unit
+  - id: TC-C-027
+    covers: [AC-4.8]
+    kind: unit
+  - id: TC-C-030
+    covers: [AC-5.1]
+    kind: unit
+  - id: TC-C-031
+    covers: [AC-6.1, AC-6.3]
+    kind: unit
+  - id: TC-C-032
+    covers: [AC-6.2, AC-6.3]
+    kind: unit
+  - id: TC-I-001
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-2.1, AC-2.2, AC-3.1, AC-3.2, AC-3.3, AC-3.4, AC-3.5, AC-3.6, AC-3.7, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-4.5, AC-4.6, AC-4.7, AC-4.8, AC-5.1, AC-5.2, AC-6.1, AC-6.2, AC-6.3]
+    kind: integration
+  - id: TC-E-001
+    covers: [AC-3.2, AC-4.2, AC-4.3, AC-4.4]
+    kind: e2e
+  - id: TC-E-002
+    covers: [AC-1.1, AC-4.5]
+    kind: e2e
+tasks:
+  - id: T-001
+    status: done
+    type: setup
+    size: S
+    layer: cross
+    risk: L
+    covers: [AC-3.1, AC-5.2]
+    deps: []
+  - id: T-002
+    status: done
+    type: setup
+    size: S
+    layer: infra
+    risk: L
+    covers: []
+    deps: [T-001]
+  - id: T-010
+    status: done
+    type: test
+    size: S
+    layer: cross
+    risk: L
+    covers: [AC-3.1, AC-3.2]
+    deps: [T-002]
+  - id: T-011
+    status: done
+    type: test
+    size: S
+    layer: infra
+    risk: L
+    covers: [AC-5.2]
+    deps: [T-001]
+  - id: T-012
+    status: done
+    type: test
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-6.1, AC-6.2, AC-6.3]
+    deps: [T-002]
+  - id: T-013
+    status: done
+    type: test
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5]
+    deps: [T-002, T-011]
+  - id: T-014
+    status: done
+    type: test
+    size: S
+    layer: app
+    risk: L
+    covers: [AC-2.1, AC-2.2]
+    deps: [T-002]
+  - id: T-015
+    status: done
+    type: test
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-3.1, AC-3.2, AC-3.3, AC-3.4, AC-3.5, AC-3.6]
+    deps: [T-010]
+  - id: T-016
+    status: done
+    type: test
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-4.6, AC-4.7, AC-4.8]
+    deps: [T-010]
+  - id: T-017
+    status: done
+    type: test
+    size: S
+    layer: app
+    risk: L
+    covers: [AC-4.5]
+    deps: [T-002]
+  - id: T-018
+    status: done
+    type: test
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-5.1, AC-6.1, AC-6.2, AC-6.3]
+    deps: [T-011, T-012]
+  - id: T-019
+    status: done
+    type: test
+    size: M
+    layer: infra
+    risk: M
+    covers: [AC-1.1, AC-3.2, AC-4.2, AC-4.3, AC-4.4, AC-4.5]
+    deps: [T-002]
+  - id: T-020
+    status: done
+    type: impl
+    size: S
+    layer: cross
+    risk: H
+    covers: [AC-3.1, AC-3.2, AC-3.3]
+    deps: [T-010]
+  - id: T-021
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: H
+    covers: [AC-3.1, AC-3.3, AC-3.4, AC-3.5, AC-3.6]
+    deps: [T-015, T-020]
+  - id: T-022
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-4.6, AC-4.7, AC-4.8]
+    deps: [T-016, T-020]
+  - id: T-023
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-3.2, AC-4.5]
+    deps: [T-021, T-022, T-017]
+  - id: T-024
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-6.1, AC-6.2, AC-6.3]
+    deps: [T-012]
+  - id: T-025
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5]
+    deps: [T-013, T-024]
+  - id: T-026
+    status: done
+    type: impl
+    size: S
+    layer: app
+    risk: L
+    covers: [AC-2.1, AC-2.2, AC-1.2]
+    deps: [T-014, T-025]
+  - id: T-027
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: L
+    covers: [AC-5.1, AC-2.1]
+    deps: [T-018, T-025, T-026]
+  - id: T-028
+    status: done
+    type: impl
+    size: S
+    layer: app
+    risk: L
+    covers: [AC-6.1, AC-6.2, AC-6.3]
+    deps: [T-018, T-024, T-027]
+  - id: T-LAST
+    status: done
+    type: test
+    size: S
+    layer: infra
+    risk: L
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-2.1, AC-2.2, AC-3.1, AC-3.2, AC-3.3, AC-3.4, AC-3.5, AC-3.6, AC-3.7, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-4.5, AC-4.6, AC-4.7, AC-4.8, AC-5.1, AC-5.2, AC-6.1, AC-6.2, AC-6.3]
+    deps: [T-023, T-027, T-028, T-019]
+adr:
+  - id: ADR-1
+    desc: Fuente única nav-config.ts
+  - id: ADR-2
+    desc: radix-vue DropdownMenu + Dialog sheet
+  - id: ADR-3
+    desc: useDashboardInsights composable
+  - id: ADR-4
+    desc: DashboardHero component
+open_questions:
+  - id: OQ-1
+    desc: Desktop nav — dropdown vs secciones visibles
+    resolved: true
+    resolution: "Híbrido — Inicio directo; Dinero/Plan/Más dropdown al clic (OQ-1)"
+  - id: OQ-2
+    desc: Mobile subnav — sheet vs overlay vs pantalla lista
+    resolved: true
+    resolution: "Bottom sheet para Dinero/Plan/Más; Inicio directo (OQ-2)"
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "freeForAllocation es el monto héroe 'disponible'"
+    impact_if_wrong: H
+    verify_by: "TC-C-001, TC-C-005"
+    status: verified
+  - id: A-002
+    stated_in: plan
+    text: "ComparisonBadge + último snapshot satisface AC-1.4"
+    impact_if_wrong: M
+    verify_by: "TC-C-004"
+    status: verified
+  - id: A-003
+    stated_in: plan
+    text: "radix-vue DropdownMenu y Dialog disponibles y estables"
+    impact_if_wrong: M
+    verify_by: "TC-C-013"
+    status: verified
+  - id: A-004
+    stated_in: plan
+    text: "Breakpoint Tailwind md=768 alinea con spec"
+    impact_if_wrong: L
+    verify_by: "TC-C-007, TC-E-002"
+    status: verified
+  - id: A-005
+    stated_in: plan
+    text: "KpiStrip omite tarjeta Disponible duplicada"
+    impact_if_wrong: L
+    verify_by: "TC-C-006"
+    status: verified

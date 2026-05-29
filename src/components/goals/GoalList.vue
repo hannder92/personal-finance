@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import GoalCard from './GoalCard.vue'
 import { formatCurrency } from '@/lib/currency/format'
+import { useSavingsFeasibility } from '@/composables/useSavingsFeasibility'
 import { useGoalsStore } from '@/stores/goalsStore'
 
 const props = withDefaults(
@@ -13,10 +14,17 @@ const props = withDefaults(
 )
 
 const goals = useGoalsStore()
+const { objective, feasible, effectiveGoalCap } = useSavingsFeasibility()
 const totalMonthlyContrib = computed(() =>
   goals.state.items.reduce((acc, g) => acc + g.monthlyContrib, 0)
 )
-const overBudget = computed(() => totalMonthlyContrib.value > props.savingsBucket)
+const cap = computed(() =>
+  effectiveGoalCap.value > 0 ? effectiveGoalCap.value : props.savingsBucket
+)
+const overBudget = computed(() => totalMonthlyContrib.value > cap.value)
+const showFeasibilityAlert = computed(
+  () => overBudget.value && objective.value > 0 && feasible.value >= 0
+)
 
 function move(idx: number, dir: -1 | 1): void {
   const next = idx + dir
@@ -129,8 +137,32 @@ function removeGoal(id: string) {
       </button>
     </form>
 
+    <p
+      data-testid="goals-rule-cap"
+      class="text-sm text-slate-600 dark:text-slate-400"
+    >
+      Cupo por regla: {{ formatCurrency(objective, currency) }}
+    </p>
+    <p
+      data-testid="goals-feasible-cap"
+      class="text-sm text-slate-600 dark:text-slate-400"
+    >
+      Tope factible: {{ formatCurrency(feasible, currency) }}
+    </p>
+
     <div
-      v-if="overBudget"
+      v-if="showFeasibilityAlert"
+      data-testid="goals-feasibility-alert"
+      role="alert"
+      class="rounded border-l-4 border-l-amber-500 bg-amber-50 px-3 py-2 text-sm dark:bg-amber-950"
+    >
+      Aportes {{ formatCurrency(totalMonthlyContrib, currency) }} superan el mínimo entre regla ({{
+        formatCurrency(objective, currency)
+      }}) y factible ({{ formatCurrency(feasible, currency) }}).
+    </div>
+
+    <div
+      v-else-if="overBudget"
       role="alert"
       class="rounded border-l-4 border-l-amber-500 bg-amber-50 px-3 py-2 text-sm dark:bg-amber-950"
     >

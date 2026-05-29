@@ -1,28 +1,29 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+Guidance for AI agents (Cursor, Codex, Claude Code) in **personal-finance**.
 
-## Running the app
-
-```bash
-npm install        # install dependencies (Node 20+ required)
-npm start          # dev server on http://localhost:5173 (alias for npm run dev)
-npm run build      # TypeScript check + production build → dist/
-npm run preview    # serve dist/ at http://localhost:4173
-```
-
-## Testing
+## Quick start
 
 ```bash
-npm test                  # Vitest unit + component tests
-npm run test:coverage     # with lcov report
-npm run e2e               # Playwright E2E (builds + boots preview server)
-npm run lint              # ESLint (Vue + TypeScript rules)
-npm run typecheck         # vue-tsc --noEmit
+npm install
+npm start              # http://localhost:5173
+npm test && npm run typecheck && npm run lint
 ```
+
+## Rule layers (read in order)
+
+1. **`.cursor/rules/00-project-context.mdc`** — always on: commands, doc map, SDD pointers
+2. **`.cursor/rules/*.mdc`** — path-scoped: Vue architecture, testing, Colombia payroll
+3. **`constitution.md`** — immutable MUST/MUST NOT (amend via `/sdd.constitution` only)
+4. **`CLAUDE.md`** — deep reference: stores, lib modules, boot cycle, checklists
+5. **`specs/.active`** — current feature folder when doing spec-driven work
+
+For `/sdd-*` or `/sdt-*` commands, use the **sdd-workflow** skill — rules do not duplicate SDD phases.
 
 ## Stack
 
-Vue 3.5 · Vite 6 · TypeScript strict · Pinia · Tailwind v4 · Chart.js 4 + vue-chartjs · vue-i18n · Zod · Vitest 2 · Playwright
+Vue 3.5 · Vite 6 · TypeScript strict · Pinia · Tailwind v4 · Zod · Vitest · Playwright · vue-i18n
 
-See `CLAUDE.md` for full architecture details.
+## Legacy
+
+`.claude/rules/` stubs point to `.cursor/rules/` — edit `.mdc` files only.

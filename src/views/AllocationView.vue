@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import AllocationPanel from '@/components/allocation/AllocationPanel.vue'
-import { useIncomeStore } from '@/stores/incomeStore'
+import { useNetIncome } from '@/composables/useNetIncome'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const settings = useSettingsStore()
-const income = useIncomeStore()
-
-const totalIncome = computed(() => income.state.grossSalary)
+const { netIncome: totalIncome } = useNetIncome()
 </script>
 
 <template>

@@ -78,7 +78,7 @@
 - **`lib/calculations/` or `lib/tax/` importing Vue or Pinia** — These are pure function libraries. A Vue/Pinia import makes them untestable in isolation and couples domain logic to the framework.
 - **Charting outside Chart.js** — No D3, no native Canvas API, no Highcharts. Custom canvas drawing requires an ADR with justification.
 - **Adding a persisted field without updating `migrate()`** — Existing users with localStorage data get `undefined` on the new field. Schema change = Zod update + migration step, both mandatory.
-- **Guessing Colombian payroll percentages** — Always reference `node-colombia-payroll.md` and cite the legal source (UVT 2025 = $49,799, Art. 383 ET, Art. 16 Ley 1562/2012, etc.).
+- **Guessing Colombian payroll percentages** — Always follow `.cursor/rules/colombia-payroll.mdc` and cite the legal source (UVT 2025 = $49,799, Art. 383 ET, Art. 16 Ley 1562/2012, etc.).
 
 ## Versioning
 
