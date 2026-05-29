@@ -1,0 +1,13 @@
+events:
+  - at: "2026-05-29T13:00:00"
+    type: feature_initialized
+    detail: "Retrospective SDD bootstrap for onboarding removal + constitution v4 compliance"
+  - at: "2026-05-29T13:30:00"
+    type: feature_size_classified
+    detail: "size_class=S (11 ACs)"
+  - at: "2026-05-29T18:00:00"
+    type: phase_completed
+    detail: "phase 5 implement — all 12 tasks done"
+  - at: "2026-05-29T18:45:00"
+    type: phase_completed
+    detail: "phase 6 review — GREEN verdict"

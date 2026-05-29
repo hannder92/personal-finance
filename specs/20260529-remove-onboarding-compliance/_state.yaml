@@ -1,0 +1,40 @@
+feature:
+  slug: "20260529-remove-onboarding-compliance"
+  name: "Eliminar onboarding y compliance v4"
+  branch: "feature/20260529-remove-onboarding-compliance"
+  created: "2026-05-29"
+  mode: solo
+  size_class: S
+
+phase:
+  current: 6
+  name: review
+  blocked: false
+
+sign_offs:
+  constitution: {approved: true, by: "Johann Medina", at: "2026-05-29"}
+  spec:         {approved: true, by: "Johann Medina", at: "2026-05-29"}
+  plan:         {approved: true, by: "Johann Medina", at: "2026-05-29"}
+  test_plan:    {approved: true, by: "Johann Medina", at: "2026-05-29"}
+  tasks:        {approved: true, by: "Johann Medina", at: "2026-05-29"}
+  review:       {approved: true, by: "Johann Medina", at: "2026-05-29"}
+
+artifacts:
+  constitution: "constitution.md"
+  spec:         "specs/20260529-remove-onboarding-compliance/1-spec.md"
+  plan:         "specs/20260529-remove-onboarding-compliance/2-plan.md"
+  test_plan:    "specs/20260529-remove-onboarding-compliance/3-test-plan.md"
+  tasks:        "specs/20260529-remove-onboarding-compliance/4-tasks.md"
+  review:       "specs/20260529-remove-onboarding-compliance/6-review.md"
+
+progress:
+  tasks_done:   12
+  tasks_total:  12
+  next_pending: null
+  last_update:  "2026-05-29T18:45:00"
+
+drift:
+  - {check: "ID-INTEGRITY",            status: pass, detail: "11/11 ACs, 14/14 TCs, 12/12 tasks. No duplicates."}
+  - {check: "COVERAGE-CHAIN",          status: pass, detail: "All ACs covered by ≥1 TC and ≥1 impl task."}
+  - {check: "SPEC-CODE-DRIFT",         status: pass, detail: "Onboarding removed; LucideIcon, i18n nav, .npmrc present."}
+  - {check: "CONSTITUTION-COMPLIANCE", status: pass, detail: "v4 amendment applied; no data-icon in src/."}
