@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import LucideIcon from '@/components/common/LucideIcon.vue'
+
 withDefaults(
   defineProps<{
     status?: 'success' | 'warning' | 'danger' | 'info'
@@ -30,10 +32,9 @@ const STATUS_ICON: Record<string, string> = {
       STATUS_CLASS[status],
     ]"
   >
-    <span
-      :data-icon="STATUS_ICON[status]"
-      class="inline-block h-3 w-3"
-      aria-hidden="true"
+    <LucideIcon
+      :name="STATUS_ICON[status]"
+      icon-class="h-3 w-3"
     />
     {{ label }}
   </span>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import LucideIcon from '@/components/common/LucideIcon.vue'
+
 defineProps<{
   icon?: string
   message?: string
@@ -9,11 +11,10 @@ defineProps<{
 
 <template>
   <div class="flex flex-col items-center justify-center gap-3 p-8 text-center">
-    <span
+    <LucideIcon
       v-if="icon"
-      :data-icon="icon"
-      class="inline-block h-10 w-10 text-slate-400"
-      aria-hidden="true"
+      :name="icon"
+      icon-class="h-10 w-10 text-slate-400"
     />
     <p
       v-if="message"

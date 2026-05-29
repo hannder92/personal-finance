@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { formatCurrency } from '@/lib/currency/format'
+import LucideIcon from '@/components/common/LucideIcon.vue'
 
 type Risk = 'ok' | 'warn' | 'danger'
 
@@ -68,10 +69,9 @@ const contextOrDefault = computed(() => {
   >
     <header class="flex items-center justify-between text-xs text-slate-500">
       <span>{{ label }}</span>
-      <span
-        :data-icon="ICONS[risk]"
-        class="inline-block h-3 w-3"
-        aria-hidden="true"
+      <LucideIcon
+        :name="ICONS[risk]"
+        icon-class="h-3 w-3"
       />
     </header>
     <p class="text-lg font-semibold">
