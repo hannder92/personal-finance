@@ -68,6 +68,7 @@
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergency",
+        "emergencyHint": "Emergency reserve (cash + savings vs fixed + debt). Distinct from autonomy runway.",
         "housing": "Housing",
         "savings": "Savings",
         "noData": "no data"
@@ -101,7 +102,11 @@
       },
       "compoundGrowth": {
         "label": "Patrimony growth with rate"
-      }
+      },
+      "rateLabel": "Projection annual rate (EAR %)",
+      "rateHint": "Return assumption for the dashboard compound curve.",
+      "hintNeedRate": "Enter a rate above 0% to see the compound projection.",
+      "hintNeedAssets": "Add liquid net worth (cash, savings, or investment) to project growth."
     }
   },
   "assets": {
@@ -135,6 +140,39 @@
         "avalanche": "Avalanche (highest rate first)",
         "snowball": "Snowball (smallest balance first)"
       }
+    }
+  },
+  "common": {
+    "delete": "Delete"
+  },
+  "runway": {
+    "title": "Runway (months of autonomy)",
+    "months": "{count} months",
+    "unavailable": {
+      "no_liquid": "No liquid net worth recorded",
+      "no_expense": "No living expenses this month"
+    }
+  },
+  "flowCoverage": {
+    "title": "Flow coverage",
+    "percent": "{percent}%",
+    "percentLabel": "Coverage",
+    "gap": "Monthly gap: {amount}",
+    "gapLabel": "Monthly gap",
+    "covered": "Expenses covered by passive and residual income"
+  },
+  "income": {
+    "class": {
+      "label": "Income class",
+      "linear": "Linear (active)",
+      "residual": "Residual",
+      "passive": "Passive"
+    },
+    "mix": {
+      "title": "Income mix",
+      "linear": "Linear",
+      "residual": "Residual",
+      "passive": "Passive"
     }
   },
   "fi": {
