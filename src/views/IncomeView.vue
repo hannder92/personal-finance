@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DeductionRow from '@/components/income/DeductionRow.vue'
+import IncomeClassSelect from '@/components/income/IncomeClassSelect.vue'
 import IncomeStreamRow from '@/components/income/IncomeStreamRow.vue'
 import NonSalaryBenefitRow from '@/components/income/NonSalaryBenefitRow.vue'
 import PresetButtons from '@/components/income/PresetButtons.vue'
 import RetentionEstimator from '@/components/income/RetentionEstimator.vue'
-import type { DeductionType, IncomeFrequency } from '@/stores/incomeStore'
+import { useIncomeMix } from '@/composables/useIncomeMix'
+import { formatCurrency } from '@/lib/currency/format'
+import type { DeductionType, IncomeClass, IncomeFrequency } from '@/stores/incomeStore'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
+const { t } = useI18n()
 const settings = useSettingsStore()
 const income = useIncomeStore()
+const { mix } = useIncomeMix()
+
+function fmt(amount: number): string {
+  return formatCurrency(amount, settings.state.currency)
+}
 
 const grossInputValue = computed(() => {
   return income.state.grossSalary === 0
@@ -42,7 +52,12 @@ function addDeduction() {
 
 // --- Otros ingresos ---
 const showStreamForm = ref(false)
-const streamForm = ref({ label: '', amount: '', frequency: 'monthly' as IncomeFrequency })
+const streamForm = ref({
+  label: '',
+  amount: '',
+  frequency: 'monthly' as IncomeFrequency,
+  incomeClass: 'linear' as IncomeClass,
+})
 
 function addStream() {
   const label = streamForm.value.label.trim()
@@ -51,8 +66,9 @@ function addStream() {
     label,
     amount: Number(streamForm.value.amount) || 0,
     frequency: streamForm.value.frequency,
+    incomeClass: streamForm.value.incomeClass,
   })
-  streamForm.value = { label: '', amount: '', frequency: 'monthly' }
+  streamForm.value = { label: '', amount: '', frequency: 'monthly', incomeClass: 'linear' }
   showStreamForm.value = false
 }
 
@@ -78,7 +94,10 @@ function addBenefit() {
     </header>
 
     <label class="flex flex-col gap-1">
-      <span class="text-sm text-slate-600 dark:text-slate-300">Salario bruto mensual</span>
+      <span class="text-sm text-slate-600 dark:text-slate-300">
+        Salario bruto mensual
+        <span class="ml-1 text-xs text-slate-500">({{ t('income.class.linear') }})</span>
+      </span>
       <input
         type="text"
         inputmode="numeric"
@@ -90,6 +109,32 @@ function addBenefit() {
     </label>
 
     <PresetButtons />
+
+    <section class="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
+      <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
+        {{ t('income.mix.title') }}
+      </h2>
+      <dl class="mt-3 grid gap-2 text-sm">
+        <div class="flex justify-between gap-2">
+          <dt>{{ t('income.mix.linear') }}</dt>
+          <dd data-testid="income-mix-linear">
+            {{ fmt(mix.linear) }}
+          </dd>
+        </div>
+        <div class="flex justify-between gap-2">
+          <dt>{{ t('income.mix.residual') }}</dt>
+          <dd data-testid="income-mix-residual">
+            {{ fmt(mix.residual) }}
+          </dd>
+        </div>
+        <div class="flex justify-between gap-2">
+          <dt>{{ t('income.mix.passive') }}</dt>
+          <dd data-testid="income-mix-passive">
+            {{ fmt(mix.passive) }}
+          </dd>
+        </div>
+      </dl>
+    </section>
 
     <!-- Deducciones -->
     <section class="flex flex-col gap-2">
@@ -236,6 +281,10 @@ function addBenefit() {
               <option value="annual">Anual</option>
             </select>
           </label>
+          <IncomeClassSelect
+            v-model="streamForm.incomeClass"
+            class="col-span-2"
+          />
         </div>
         <button
           type="submit"
@@ -255,7 +304,7 @@ function addBenefit() {
       <div
         v-for="s in income.state.otherStreams"
         :key="s.id"
-        class="flex items-center gap-2"
+        class="flex flex-col gap-2 sm:flex-row sm:items-end"
       >
         <IncomeStreamRow
           :label="s.label"
@@ -263,6 +312,11 @@ function addBenefit() {
           :frequency="s.frequency"
           :currency="settings.state.currency"
           class="flex-1"
+        />
+        <IncomeClassSelect
+          :model-value="s.incomeClass"
+          class="sm:w-48"
+          @update:model-value="(c) => income.updateStream(s.id, { incomeClass: c })"
         />
         <button
           type="button"
