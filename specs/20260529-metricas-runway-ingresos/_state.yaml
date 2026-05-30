@@ -1,0 +1,45 @@
+feature:
+  slug: "20260529-metricas-runway-ingresos"
+  name: "Métricas verificadas: runway, ingresos y cobertura"
+  branch: "feature/20260529-metricas-runway-ingresos"
+  created: "2026-05-29"
+  mode: solo
+  size_class: M
+
+phase:
+  current: 6
+  name: review
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  spec: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  plan: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  review: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+
+artifacts:
+  constitution: constitution.md
+  spec: specs/20260529-metricas-runway-ingresos/1-spec.md
+  plan: specs/20260529-metricas-runway-ingresos/2-plan.md
+  test_plan: specs/20260529-metricas-runway-ingresos/3-test-plan.md
+  tasks: specs/20260529-metricas-runway-ingresos/4-tasks.md
+  review: specs/20260529-metricas-runway-ingresos/6-review.md
+
+progress:
+  tasks_done: 31
+  tasks_total: 31
+  next_pending: null
+  last_update: "2026-05-29T21:10:00Z"
+  implement_session:
+    scope: all
+    scope_arg: null
+    auto_continue: false
+    last_task: T-LAST
+    paused: false
+    pause_reason: null
+    phase_2_complete: true
+    phase_3_complete: true
+
+drift: []

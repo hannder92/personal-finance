@@ -1,0 +1,163 @@
+entries:
+  - at: "2026-05-29T00:00:00Z"
+    event: feature_initialized
+    by: agent
+  - at: "2026-05-29T00:00:00Z"
+    event: feature_size_classified
+    by: agent
+    count: 10
+  - at: "2026-05-29T12:00:00Z"
+    event: spec_generated
+    by: agent
+    spec_score: 100
+    count: 15
+  - at: "2026-05-29T14:00:00Z"
+    event: spec_regenerated
+    by: agent
+    spec_score: 100
+    count: 21
+  - at: "2026-05-29T15:00:00Z"
+    event: plan_generated
+    by: agent
+    phase: 2
+  - at: "2026-05-29T15:00:00Z"
+    event: assumption_register_populated
+    by: agent
+    count: 7
+  - at: "2026-05-29T16:00:00Z"
+    event: test_plan_generated
+    by: agent
+    count: 21
+  - at: "2026-05-29T17:00:00Z"
+    event: tasks_generated
+    by: agent
+    count: 31
+  - at: "2026-05-29T18:00:00Z"
+    event: phase_signed_off
+    by: Johann Medina
+    phase: spec
+    spec_score: 100
+  - at: "2026-05-29T18:00:00Z"
+    event: phase_signed_off
+    by: Johann Medina
+    phase: plan
+  - at: "2026-05-29T18:00:00Z"
+    event: phase_signed_off
+    by: Johann Medina
+    phase: test_plan
+  - at: "2026-05-29T18:00:00Z"
+    event: phase_signed_off
+    by: Johann Medina
+    phase: tasks
+  - at: "2026-05-29T20:32:00Z"
+    event: task_completed
+    by: agent
+    task: T-001
+    evidence: "npm run typecheck green; stubs domain/composables/SFC + i18n keys"
+  - at: "2026-05-29T20:33:00Z"
+    event: task_completed
+    by: agent
+    task: T-002
+    evidence: "AppStateSchemaV4 stub; migrateV3toV4; test files skipped; npm test 405 passed"
+  - at: "2026-05-29T20:34:00Z"
+    event: task_completed
+    by: agent
+    task: T-010
+    evidence: "npm test -- liquid-metrics financial-runway: 3 failed (RED), 4 passed"
+  - at: "2026-05-29T20:35:00Z"
+    event: task_completed
+    by: agent
+    task: T-011
+    evidence: "npm test -- passive-coverage income-mix: 5 failed (RED)"
+  - at: "2026-05-29T20:35:00Z"
+    event: task_completed
+    by: agent
+    task: T-012
+    evidence: "npm test -- useLiquidMetrics: 1 failed (cash not in ALLOWED_TYPES), 1 passed"
+  - at: "2026-05-29T20:36:00Z"
+    event: task_completed
+    by: agent
+    task: T-013
+    evidence: "npm test -- settingsStore incomeStore migrate: 4 failed (RED), 30 passed; migrations[4] GREEN"
+  - at: "2026-05-29T20:36:00Z"
+    event: task_completed
+    by: agent
+    task: T-014
+    evidence: "npm test -- useSavingsProjection: 4 failed (RED)"
+  - at: "2026-05-29T20:36:00Z"
+    event: task_completed
+    by: agent
+    task: T-015
+    evidence: "npm test -- useFinancialFreedom: 2 passed (contract GREEN; refactor gate T-035)"
+  - at: "2026-05-29T20:37:00Z"
+    event: task_completed
+    by: agent
+    task: T-016
+    evidence: "npm test -- RunwayCard: 2 failed (RED)"
+  - at: "2026-05-29T20:38:00Z"
+    event: phase_completed
+    by: agent
+    phase: implement_phase_2_tests
+    evidence: "T-010..T-022 RED; npm test 417 passed 35 failed; e2e 4 failed"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-017
+    evidence: "HealthScore: emergency hint missing (1 failed)"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-018
+    evidence: "IncomeView: income-mix-* and class select missing (2 failed)"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-019
+    evidence: "PassiveCoverage+FlowCoverage: 30%/covered/gap RED (4 failed)"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-020
+    evidence: "IconButton GREEN; CardCard+DebtsView delete-in-card RED (5 failed)"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-021
+    evidence: "SavingsProjectionChart TEA input/hints RED (4 failed)"
+  - at: "2026-05-29T20:38:00Z"
+    event: task_completed
+    by: agent
+    task: T-022
+    evidence: "e2e runway/income/debt/projection: 4 failed (Chromium)"
+  - at: "2026-05-29T20:43:00Z"
+    event: phase_completed
+    by: agent
+    phase: implement_phase_3
+    evidence: "T-030..T-044 GREEN; npm test 452/452; npm run typecheck green"
+  - at: "2026-05-29T20:50:00Z"
+    event: task_started
+    by: agent
+    task: T-LAST
+  - at: "2026-05-29T20:55:00Z"
+    event: task_completed
+    by: agent
+    task: T-LAST
+    evidence: "npm test 452/452; npm run typecheck; npm run lint (0 errors); npm run build; npm run e2e 30/30; smoke HTTP 200 on /, /income, /debts, /financial-freedom"
+  - at: "2026-05-29T20:55:00Z"
+    event: implement_complete
+    by: agent
+    feature: "20260529-metricas-runway-ingresos"
+  - at: "2026-05-29T21:00:00Z"
+    event: verify_run
+    by: agent
+    feature: "20260529-metricas-runway-ingresos"
+    evidence: "26/26 AC AUTO-VERIFIED; rollback executable; 7/7 assumptions verified; npm test 452/452; e2e feature 4/4; e2e full 30/30"
+  - at: "2026-05-29T21:05:00Z"
+    event: review_generated
+    by: agent
+    feature: "20260529-metricas-runway-ingresos"
+    evidence: "6-review.md verdict YELLOW; constitution gate pass; calculations coverage 96.89%"
+  - at: "2026-05-29T21:10:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: review
