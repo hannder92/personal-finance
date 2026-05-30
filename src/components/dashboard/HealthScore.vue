@@ -117,12 +117,20 @@ const rows = computed(() => [
         :data-component-status="
           statusFor(row.key, row.value) === 'missing' ? 'warn' : statusFor(row.key, row.value)
         "
-        class="flex items-center justify-between text-sm"
+        class="flex flex-col gap-1 text-sm"
       >
-        <span class="font-medium">{{ row.label }}</span>
-        <span class="text-xs text-slate-500">
-          {{ row.value ?? t('dashboard.health.breakdown.noData') }} · meta {{ row.ideal }}
-        </span>
+        <div class="flex items-center justify-between">
+          <span class="font-medium">{{ row.label }}</span>
+          <span class="text-xs text-slate-500">
+            {{ row.value ?? t('dashboard.health.breakdown.noData') }} · meta {{ row.ideal }}
+          </span>
+        </div>
+        <p
+          v-if="row.key === 'emergency'"
+          class="text-xs text-slate-500 dark:text-slate-400"
+        >
+          {{ t('dashboard.health.breakdown.emergencyHint') }}
+        </p>
       </li>
     </ul>
   </article>

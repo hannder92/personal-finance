@@ -13,13 +13,14 @@ import SavingsProjectionChart from '@/components/dashboard/SavingsProjectionChar
 import { useAllocationStore } from '@/stores/allocationStore'
 import { i18n } from '@/i18n'
 
-function defaultSettingsState() {
+function defaultSettingsState(projectionRate = 0) {
   return {
     lang: 'es',
     currency: 'COP',
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
+    projectionAnnualRatePercent: projectionRate,
   }
 }
 
@@ -27,6 +28,7 @@ function pinia(options: {
   grossSalary?: number
   deductions?: Array<{ id: string; label: string; amount: number; type: 'fixed' | 'percent' }>
   savings?: number
+  projectionRate?: number
   goals?: Array<{
     id: string
     name: string
@@ -48,7 +50,7 @@ function pinia(options: {
     createSpy: vi.fn,
     stubActions: false,
     initialState: {
-      settings: { state: defaultSettingsState() },
+      settings: { state: defaultSettingsState(options.projectionRate ?? 0) },
       income: {
         state: {
           grossSalary: options.grossSalary ?? 0,
@@ -126,6 +128,7 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
                 annualRatePercent: 10,
               },
             ],
+            projectionRate: 10,
           }),
         ],
         stubs: chartStubs(),
@@ -184,9 +187,9 @@ describe('SavingsProjectionChart — fix-calculos-financieros (AC-8.1/8.3/8.4/8.
     const chart = container.querySelector('[data-testid="savings-projection-chart"]')
     expect(chart).toBeTruthy()
     // Empty-state lives INSIDE the chart, not in DashboardView (per vue-component-engineer review).
-    const emptyState = chart?.querySelector('[data-testid="savings-no-rate-empty"]')
+    const emptyState = chart?.querySelector('[data-testid="projection-hint-need-rate"]')
     expect(emptyState).toBeTruthy()
-    // Should reference the i18n key 'savings.noRateConfigured' or its rendered Spanish text.
+    // Should reference the hint to configure projection rate.
     expect(emptyState?.textContent ?? '').toMatch(/tasa|rate/i)
   })
 

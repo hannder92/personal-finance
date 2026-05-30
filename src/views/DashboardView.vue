@@ -6,7 +6,9 @@ import DashboardHero from '@/components/dashboard/DashboardHero.vue'
 import FinancialFreedomCompact from '@/components/dashboard/FinancialFreedomCompact.vue'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
 import KpiStrip from '@/components/dashboard/KpiStrip.vue'
+import PassiveCoverageCompact from '@/components/dashboard/PassiveCoverageCompact.vue'
 import ProjectionChart from '@/components/dashboard/ProjectionChart.vue'
+import RunwayCard from '@/components/dashboard/RunwayCard.vue'
 import SavingsGapCard from '@/components/dashboard/SavingsGapCard.vue'
 import SavingsProjectionChart from '@/components/dashboard/SavingsProjectionChart.vue'
 import { useChartTheme } from '@/composables/useChartTheme'
@@ -52,6 +54,11 @@ const projectionMonths = computed(() =>
     <KpiStrip />
 
     <FinancialFreedomCompact />
+
+    <div class="grid gap-4 md:grid-cols-2">
+      <RunwayCard />
+      <PassiveCoverageCompact />
+    </div>
 
     <HealthScore
       :score="latestScore"
