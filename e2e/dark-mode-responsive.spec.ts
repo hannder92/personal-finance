@@ -3,7 +3,9 @@ import { expect, test } from './fixtures'
 // TC-E-008: AC-16.3, AC-17.1, AC-17.2, AC-17.4
 test('TC-E-008: dark mode toggle adds "dark" class to <html>', async ({ returningPage: page }) => {
   await page.goto('/')
-  await expect(page.getByText('Dashboard').first()).toBeVisible({ timeout: 8000 })
+  await expect(page.getByRole('heading', { name: /resumen|overview/i })).toBeVisible({
+    timeout: 8000,
+  })
 
   // Simulate clicking ThemeToggle (if wired to App).
   const themeBtn = page.getByRole('button', { name: /tema|theme/i }).first()
@@ -27,6 +29,7 @@ test('TC-E-008 AC-17.3: no horizontal overflow on 375px viewport on every sectio
       const els = document.querySelectorAll('*')
       const overflowing: string[] = []
       for (const el of els) {
+        if (el.closest('[class*="overflow-x-auto"], [class*="overflow-x-scroll"]')) continue
         const rect = el.getBoundingClientRect()
         if (rect.right > window.innerWidth + 2) {
           overflowing.push(el.tagName)

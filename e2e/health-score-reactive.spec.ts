@@ -9,20 +9,22 @@ test.describe('TC-E-003 — health score reactive', () => {
     returningPage: page,
   }) => {
     await page.goto('/')
-    // Capture initial emergency status (data-status or similar marker on the HealthScore breakdown).
+    await page.getByRole('button', { name: /puntaje de salud/i }).click()
     const emergencyRow = page.locator('[data-component="emergency"]')
-    const before = await emergencyRow.getAttribute('data-status').catch(() => null)
+    await expect(emergencyRow).toBeVisible()
+    const before = await emergencyRow.getAttribute('data-status')
 
     // Add asset via /networth.
     await page.goto('/networth')
-    await page.getByRole('button', { name: /agregar|añadir activo/i }).first().click()
-    await page.getByLabel(/nombre/i).fill('Ahorro')
-    await page.getByLabel(/valor|monto/i).fill('6000000')
-    await page.getByRole('button', { name: /guardar/i }).click()
+    await page.getByLabel(/^nombre$/i).fill('Ahorro')
+    await page.getByLabel(/^valor$/i).fill('6000000')
+    await page.getByRole('button', { name: /^agregar$/i }).click()
 
     // Back to dashboard.
     await page.goto('/')
-    const after = await emergencyRow.getAttribute('data-status').catch(() => null)
+    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await expect(emergencyRow).toBeVisible()
+    const after = await emergencyRow.getAttribute('data-status')
     expect(after).not.toBe(before)
   })
 
@@ -30,18 +32,20 @@ test.describe('TC-E-003 — health score reactive', () => {
     returningPage: page,
   }) => {
     await page.goto('/')
+    await page.getByRole('button', { name: /puntaje de salud/i }).click()
     const housingRow = page.locator('[data-component="housing"]')
-    const before = await housingRow.getAttribute('data-status').catch(() => null)
+    await expect(housingRow).toBeVisible()
+    const before = await housingRow.getAttribute('data-status')
 
     await page.goto('/expenses')
-    await page.getByRole('button', { name: /agregar|añadir gasto/i }).first().click()
     await page.getByLabel(/nombre/i).fill('Arriendo')
     await page.getByLabel(/monto/i).fill('1500000')
-    await page.getByLabel(/categor[íi]a/i).selectOption({ label: /vivienda/i })
-    await page.getByRole('button', { name: /guardar/i }).click()
+    await page.getByRole('button', { name: /^agregar$/i }).click()
 
     await page.goto('/')
-    const after = await housingRow.getAttribute('data-status').catch(() => null)
+    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await expect(housingRow).toBeVisible()
+    const after = await housingRow.getAttribute('data-status')
     expect(after).not.toBe(before)
   })
 })
