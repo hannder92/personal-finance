@@ -245,21 +245,12 @@ function cancelDelete() {
         :key="item.id"
         class="flex flex-col gap-2"
       >
-        <div class="flex items-start gap-2">
-          <CardCard
-            :card="item"
-            :currency="settings.state.currency"
-            class="flex-1"
-          />
-          <button
-            type="button"
-            aria-label="Eliminar deuda"
-            class="mt-1 rounded border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
-            @click="askDelete(item.id)"
-          >
-            Eliminar
-          </button>
-        </div>
+        <CardCard
+          :card="item"
+          :currency="settings.state.currency"
+          show-delete
+          @delete="askDelete(item.id)"
+        />
 
         <DebtPayoffSimulator
           v-if="item.type === 'card'"
