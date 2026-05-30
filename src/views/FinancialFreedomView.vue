@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import FlowCoverageBlock from '@/components/fi/FlowCoverageBlock.vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useFinancialFreedom } from '@/composables/useFinancialFreedom'
 import { useSettingsStore } from '@/stores/settingsStore'
@@ -56,5 +57,7 @@ function fmt(n: number): string {
         </dd>
       </div>
     </dl>
+
+    <FlowCoverageBlock />
   </section>
 </template>
