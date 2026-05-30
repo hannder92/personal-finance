@@ -1,7 +1,5 @@
 // Bridges assets/income/allocation stores to lib/calculations/savings-projection.
-// Returns both the hypothetical (linear) and compound (per-asset rate) series.
-// hasConfiguredRate is false when no qualifying asset (savings | investment with rate > 0)
-// exists — drives the AC-8.5 empty state inside SavingsProjectionChart.
+// Compound series uses total liquid net worth × settings.projectionAnnualRatePercent (OQ-3).
 
 import { computed, type ComputedRef } from 'vue'
 import {
@@ -11,30 +9,29 @@ import {
   type HypotheticalSavingsPoint,
 } from '@/lib/calculations/savings-projection'
 import { useAllocationStore } from '@/stores/allocationStore'
-import { useAssetsStore } from '@/stores/assetsStore'
+import { useLiquidMetrics } from '@/composables/useLiquidMetrics'
 import { useNetIncome } from './useNetIncome'
+import { useSettingsStore } from '@/stores/settingsStore'
 
-const COMPOUND_ELIGIBLE_TYPES = new Set(['savings', 'investment'])
 const MONTHS_AHEAD = 12
 
 export interface UseSavingsProjection {
   hypothetical: ComputedRef<HypotheticalSavingsPoint[]>
   compound: ComputedRef<CompoundGrowthPoint[]>
   hasConfiguredRate: ComputedRef<boolean>
+  projectionRatePercent: ComputedRef<number>
+  liquidTotal: ComputedRef<number>
 }
 
 export function useSavingsProjection(): UseSavingsProjection {
   const allocation = useAllocationStore()
-  const assets = useAssetsStore()
+  const settings = useSettingsStore()
+  const { liquidAssets } = useLiquidMetrics()
   const { netIncome } = useNetIncome()
 
-  const qualifyingAssets = computed(() =>
-    assets.state.items.filter(
-      (a) => COMPOUND_ELIGIBLE_TYPES.has(a.type) && a.annualRatePercent > 0
-    )
-  )
-
-  const hasConfiguredRate = computed(() => qualifyingAssets.value.length > 0)
+  const projectionRatePercent = computed(() => settings.state.projectionAnnualRatePercent)
+  const liquidTotal = computed(() => liquidAssets.value)
+  const hasConfiguredRate = computed(() => projectionRatePercent.value > 0 && liquidTotal.value > 0)
 
   const hypothetical = computed(() =>
     calcHypotheticalSavings({
@@ -46,13 +43,21 @@ export function useSavingsProjection(): UseSavingsProjection {
 
   const compound = computed(() =>
     calcCompoundGrowth(
-      qualifyingAssets.value.map((a) => ({
-        balance: a.value,
-        annualRatePercent: a.annualRatePercent,
-      })),
+      [
+        {
+          balance: liquidTotal.value,
+          annualRatePercent: projectionRatePercent.value,
+        },
+      ],
       MONTHS_AHEAD
     )
   )
 
-  return { hypothetical, compound, hasConfiguredRate }
+  return {
+    hypothetical,
+    compound,
+    hasConfiguredRate,
+    projectionRatePercent,
+    liquidTotal,
+  }
 }
