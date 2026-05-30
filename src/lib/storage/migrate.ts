@@ -1,6 +1,8 @@
 // v1 → v2 migration per `specs/20260514-project-refactor/2-data-model.md`.
 // Uses a versioned chain (ADR-4): each migrations[N] transforms (N-1) → N in isolation.
 
+import type { AppStateV3 } from './schema'
+
 type V1State = {
   schemaVersion?: number
   lang?: 'es' | 'en'
@@ -239,23 +241,42 @@ function migrateV2toV3(v2: V2Like): unknown {
       // dueDate: legacy number day-of-month is dropped (lossy without calendar context); set to null.
       // Pre-existing string ISO is preserved.
       const dueDate = typeof c.dueDate === 'string' ? c.dueDate : null
-       
+
       const { installmentsList: _drop, ...rest } = c
       return { ...rest, installments, dueDate }
     }),
   }
 }
 
+function migrateV3toV4(v3: AppStateV3): unknown {
+  return {
+    ...v3,
+    schemaVersion: 4,
+    settings: {
+      ...v3.settings,
+      projectionAnnualRatePercent: 0,
+    },
+    income: {
+      ...v3.income,
+      otherStreams: v3.income.otherStreams.map((stream) => ({
+        ...stream,
+        incomeClass: 'linear' as const,
+      })),
+    },
+  }
+}
+
 export const migrations: Record<number, (state: unknown) => unknown> = {
   2: (state: unknown) => migrateV1toV2(state as V1State),
   3: (state: unknown) => migrateV2toV3(state as V2Like),
+  4: (state: unknown) => migrateV3toV4(state as AppStateV3),
 }
 
 export function migrate(state: unknown): unknown {
   if (typeof state !== 'object' || state === null) return state
   const current = (state as { schemaVersion?: number }).schemaVersion ?? 1
   let s = state
-  for (let v = current + 1; v <= 3; v++) {
+  for (let v = current + 1; v <= 4; v++) {
     const migrator = migrations[v]
     if (migrator) s = migrator(s)
   }

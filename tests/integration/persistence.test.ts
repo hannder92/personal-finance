@@ -17,10 +17,10 @@ import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import type { AppStateV3 } from '@/lib/storage/schema'
+import type { AppStateV4 } from '@/lib/storage/schema'
 
-// Builds the AppStateV3 payload from current store states (mirrors main.ts persistStores logic).
-function snapshotState(): AppStateV3 {
+// Builds the AppStateV4 payload from current store states (mirrors main.ts persistStores logic).
+function snapshotState(): AppStateV4 {
   const settings = useSettingsStore()
   const income = useIncomeStore()
   const expenses = useExpensesStore()
@@ -31,7 +31,7 @@ function snapshotState(): AppStateV3 {
   const allocation = useAllocationStore()
   const snapshots = useSnapshotsStore()
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     settings: {
       lang: settings.state.lang,
       currency: settings.state.currency,
@@ -39,6 +39,7 @@ function snapshotState(): AppStateV3 {
       payoffMethod: settings.state.payoffMethod,
       lastMonthSeen: settings.state.lastMonthSeen,
       onboarding: { done: true, currentStep: 0 },
+      projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
     },
     income: {
       grossSalary: income.state.grossSalary,

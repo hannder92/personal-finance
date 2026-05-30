@@ -5,7 +5,7 @@ import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
-import type { AppStateV3 } from './lib/storage/schema'
+import type { AppStateV4 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -33,6 +33,7 @@ function hydrateStores() {
   settings.setCurrency(state.settings.currency)
   settings.setTheme(state.settings.theme)
   settings.setPayoffMethod(state.settings.payoffMethod)
+  settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
 
   const income = useIncomeStore()
@@ -82,9 +83,9 @@ function persistStores(): void {
 
   const { setError, registerRetrySource } = useStorageError()
 
-  function buildPayload(): AppStateV3 {
+  function buildPayload(): AppStateV4 {
     return {
-      schemaVersion: 3,
+      schemaVersion: 4,
       settings: {
         lang: settings.state.lang,
         currency: settings.state.currency,
@@ -92,6 +93,7 @@ function persistStores(): void {
         payoffMethod: settings.state.payoffMethod,
         lastMonthSeen: settings.state.lastMonthSeen,
         onboarding: { done: true, currentStep: 0 },
+        projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
       },
       income: {
         grossSalary: income.state.grossSalary,

@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { migrate } from '@/lib/storage/migrate'
-import { AppStateSchemaV3 } from '@/lib/storage/schema'
+import { migrate, migrations } from '@/lib/storage/migrate'
+import { AppStateSchemaV3, AppStateSchemaV4 } from '@/lib/storage/schema'
 import { applySnapshotCap, buildSnapshot } from '@/lib/calculations/snapshot'
 import v1Typical from '../../fixtures/v1-typical.json'
 import v1Empty from '../../fixtures/v1-empty.json'
 
 describe('lib/storage/migrate', () => {
-  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid latest-schema state (v3)', () => {
+  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid latest-schema state (v4)', () => {
     const result = migrate(v1Typical)
-    const parse = AppStateSchemaV3.safeParse(result)
+    const parse = AppStateSchemaV4.safeParse(result)
     expect(parse.success).toBe(true)
   })
 
@@ -37,9 +37,9 @@ describe('lib/storage/migrate', () => {
     expect(result.income.otherStreams[0]?.frequency).toBe('monthly')
   })
 
-  it('EC-5: schemaVersion is set to the latest (3) on migrated output', () => {
+  it('EC-5: schemaVersion is set to the latest (4) on migrated output', () => {
     const result = migrate(v1Typical) as { schemaVersion: number }
-    expect(result.schemaVersion).toBe(3)
+    expect(result.schemaVersion).toBe(4)
   })
 })
 
@@ -93,5 +93,56 @@ describe('lib/calculations/snapshot', () => {
     )
     const result = applySnapshotCap(records)
     expect(result).toHaveLength(24)
+  })
+})
+
+describe('lib/storage/migrate v3→v4 (20260529-metricas-runway-ingresos)', () => {
+  const v3Fixture = {
+    schemaVersion: 3 as const,
+    settings: {
+      lang: 'es' as const,
+      currency: 'COP' as const,
+      theme: 'system' as const,
+      payoffMethod: 'avalanche' as const,
+      onboarding: { done: true, currentStep: 0 },
+      lastMonthSeen: null,
+    },
+    income: {
+      grossSalary: 5_000_000,
+      deductions: [],
+      otherStreams: [
+        {
+          id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          label: 'Renta',
+          amount: 1_000_000,
+          frequency: 'monthly' as const,
+        },
+      ],
+      nonSalaryBenefits: [],
+    },
+    expenses: [],
+    cards: [],
+    goals: [],
+    assets: [],
+    variableExpenses: [],
+    allocation: { needs: 50, wants: 30, savings: 20 },
+    snapshots: [],
+  }
+
+  it('TC-U-008 (AC-3.4, AC-6.2): migrations[4] adds incomeClass linear and projectionAnnualRatePercent 0', () => {
+    expect(AppStateSchemaV3.safeParse(v3Fixture).success).toBe(true)
+    const result = migrations[4](v3Fixture)
+    const parsed = AppStateSchemaV4.safeParse(result)
+    expect(parsed.success).toBe(true)
+    if (!parsed.success) return
+    expect(parsed.data.schemaVersion).toBe(4)
+    expect(parsed.data.settings.projectionAnnualRatePercent).toBe(0)
+    expect(parsed.data.income.otherStreams[0]?.incomeClass).toBe('linear')
+  })
+
+  it('TC-U-008 (AC-3.4, AC-6.2): full migrate chain reaches v4 when loop extended', () => {
+    const result = migrate(v3Fixture)
+    const parsed = AppStateSchemaV4.safeParse(result)
+    expect(parsed.success).toBe(true)
   })
 })
