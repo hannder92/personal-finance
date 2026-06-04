@@ -276,6 +276,40 @@ export const AppStateSchemaV3 = z.object({
 
 export type AppStateV2 = z.infer<typeof AppStateSchemaV2>
 export type AppStateV3 = z.infer<typeof AppStateSchemaV3>
+
+// V4 stub — active after migration task (T-035). See specs/20260529-metricas-runway-ingresos/2-data-model.md
+const IncomeClassEnum = z.enum(['linear', 'residual', 'passive'])
+
+const IncomeStreamSchemaV4 = IncomeStreamSchema.extend({
+  incomeClass: IncomeClassEnum.default('linear'),
+})
+
+const IncomeSchemaV4 = z.object({
+  grossSalary: Money.default(0),
+  deductions: z.array(DeductionSchema).default([]),
+  otherStreams: z.array(IncomeStreamSchemaV4).default([]),
+  nonSalaryBenefits: z.array(NonSalaryBenefitSchema).default([]),
+})
+
+const SettingsSchemaV4 = SettingsSchema.extend({
+  projectionAnnualRatePercent: Percent01.default(0),
+})
+
+export const AppStateSchemaV4 = z.object({
+  schemaVersion: z.literal(4),
+  settings: SettingsSchemaV4,
+  income: IncomeSchemaV4,
+  expenses: z.array(FixedExpenseSchema).default([]),
+  cards: z.array(CardSchema).default([]),
+  goals: z.array(GoalSchema).default([]),
+  assets: z.array(AssetSchema).default([]),
+  variableExpenses: z.array(VariableCategorySchema).default([]),
+  allocation: AllocationSchema,
+  snapshots: z.array(SnapshotSchema).default([]),
+})
+
+export type AppStateV4 = z.infer<typeof AppStateSchemaV4>
+export type IncomeClass = z.infer<typeof IncomeClassEnum>
 export type Deduction = z.infer<typeof DeductionSchema>
 export type IncomeStream = z.infer<typeof IncomeStreamSchema>
 export type FixedExpense = z.infer<typeof FixedExpenseSchema>

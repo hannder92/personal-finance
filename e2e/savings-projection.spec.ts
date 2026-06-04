@@ -4,39 +4,34 @@
 // Performance note: frame-budget assertion (< 16ms) was intentionally NOT included
 // per finance-test-engineer review (jitter on CI makes it flaky).
 
-import { test, expect, minimalState } from './fixtures'
-
-const STORAGE_KEY = 'finance_app_data'
+import { test, expect, SEED_ONCE_INIT_SCRIPT, seedStorageOnce } from './fixtures'
 
 test.describe('TC-E-005 — savings projection chart', () => {
   test('two series visible with month 12 values reflecting both projections', async ({ page }) => {
     await page.context().addInitScript(
-      (args: { key: string; state: string }) => {
-        localStorage.setItem(args.key, args.state)
-      },
-      {
-        key: STORAGE_KEY,
-        state: minimalState({
-          income: {
-            grossSalary: 10_000_000,
-            deductions: [],
-            otherStreams: [],
-            nonSalaryBenefits: [],
+      SEED_ONCE_INIT_SCRIPT,
+      seedStorageOnce({
+        income: {
+          grossSalary: 10_000_000,
+          deductions: [],
+          otherStreams: [],
+          nonSalaryBenefits: [],
+        },
+        allocation: { needs: 50, wants: 30, savings: 20 },
+        assets: [
+          {
+            id: '11111111-1111-4111-8111-111111111111',
+            name: 'CDT',
+            value: 5_000_000,
+            type: 'savings',
+            annualRatePercent: 10,
           },
-          allocation: { needs: 50, wants: 30, savings: 20 },
-          assets: [
-            {
-              id: '11111111-1111-4111-8111-111111111111',
-              name: 'CDT',
-              value: 5_000_000,
-              type: 'savings',
-              annualRatePercent: 10,
-            },
-          ],
-        }),
-      }
+        ],
+      })
     )
     await page.goto('/')
+
+    await page.getByTestId('projection-rate-input').fill('10')
 
     const chart = page.getByTestId('savings-projection-chart')
     await expect(chart).toBeVisible()

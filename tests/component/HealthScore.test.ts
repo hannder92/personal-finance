@@ -22,9 +22,9 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
     await fireEvent.click(btn)
 
     expect(screen.getByText(/dti/i)).toBeTruthy()
-    expect(screen.getByText(/emergencia|emergency/i)).toBeTruthy()
+    expect(document.querySelector('[data-component="emergency"]')).toBeTruthy()
     expect(screen.getByText(/vivienda|housing/i)).toBeTruthy()
-    expect(screen.getByText(/ahorro|savings/i)).toBeTruthy()
+    expect(document.querySelector('[data-component="savings"]')).toBeTruthy()
   })
 
   it('AC-11.2 TC-C-027: each breakdown row exposes a semaphore status', async () => {
@@ -56,5 +56,40 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
     })
     expect(screen.getByText('82')).toBeTruthy()
     expect(screen.getByText(/excelente/i)).toBeTruthy()
+  })
+})
+
+describe('HealthScore (20260529-metricas-runway-ingresos)', () => {
+  it('TC-C-062 (AC-2.3): emergency breakdown label differs from runway title', async () => {
+    const runwayTitle = i18n.global.t('runway.title')
+    const emergencyLabel = i18n.global.t('dashboard.health.breakdown.emergency')
+
+    expect(emergencyLabel).not.toBe(runwayTitle)
+
+    render(HealthScore, {
+      props: {
+        score: 75,
+        label: 'Saludable',
+        breakdown: { dti: 25, emergency: 80, housing: 28, savings: 18 },
+      },
+      global: globalPlugins,
+    })
+
+    await fireEvent.click(screen.getByRole('button', { name: /75/ }))
+    expect(screen.getByText(emergencyLabel)).toBeTruthy()
+  })
+
+  it('TC-C-062 (AC-2.3): emergency hint explains distinction from runway', async () => {
+    render(HealthScore, {
+      props: {
+        score: 75,
+        label: 'Saludable',
+        breakdown: { dti: 25, emergency: 80, housing: 28, savings: 18 },
+      },
+      global: globalPlugins,
+    })
+
+    await fireEvent.click(screen.getByRole('button', { name: /75/ }))
+    expect(screen.getByText(/reserva de emergencia|emergency reserve/i)).toBeTruthy()
   })
 })

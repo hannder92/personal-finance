@@ -41,7 +41,7 @@ const { locale, setLocale } = useLocale()
       </div>
     </header>
 
-    <main class="pb-16 md:pb-0">
+    <main class="overflow-x-hidden pb-16 md:pb-0">
       <RouterView v-slot="{ Component }">
         <Transition
           name="fade"

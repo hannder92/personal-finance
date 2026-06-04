@@ -10,7 +10,10 @@ test.describe('TC-E-001 — persistence cycle', () => {
   }) => {
     // /debts: add a credit card.
     await page.goto('/debts')
-    await page.getByRole('button', { name: /agregar|añadir|nuevo/i }).first().click()
+    await page
+      .getByRole('button', { name: /agregar|añadir|nuevo/i })
+      .first()
+      .click()
     await page.getByLabel(/nombre/i).fill('Visa')
     await page.getByLabel(/saldo/i).fill('3000000')
     await page.getByLabel(/cupo|l[ií]mite/i).fill('10000000')
@@ -20,9 +23,12 @@ test.describe('TC-E-001 — persistence cycle', () => {
 
     // /income: add a Salud 4% deduction.
     await page.goto('/income')
-    await page.getByRole('button', { name: /agregar|añadir deducci[oó]n/i }).first().click()
+    await page
+      .getByRole('button', { name: /agregar|añadir deducci[oó]n/i })
+      .first()
+      .click()
     await page.getByLabel(/etiqueta|nombre/i).fill('Salud')
-    await page.getByLabel(/monto|porcentaje/i).fill('4')
+    await page.getByRole('spinbutton', { name: /monto|%/i }).fill('4')
     // (percent toggle assumed default)
     await page.getByRole('button', { name: /guardar/i }).click()
 
@@ -31,7 +37,7 @@ test.describe('TC-E-001 — persistence cycle', () => {
 
     // Assert: both entries present.
     await page.goto('/debts')
-    await expect(page.getByText('Visa')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Visa' })).toBeVisible()
 
     await page.goto('/income')
     await expect(page.getByText(/Salud/)).toBeVisible()

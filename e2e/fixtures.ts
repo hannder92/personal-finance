@@ -34,6 +34,20 @@ function minimalV2State(overrides: Record<string, unknown> = {}): string {
   return JSON.stringify(state)
 }
 
+/** Init script args: seed localStorage only when empty (survives page.reload). */
+export function seedStorageOnce(overrides: Record<string, unknown> = {}): {
+  key: string
+  state: string
+} {
+  return { key: STORAGE_KEY, state: minimalV2State(overrides) }
+}
+
+export const SEED_ONCE_INIT_SCRIPT = (args: { key: string; state: string }) => {
+  if (localStorage.getItem(args.key) === null) {
+    localStorage.setItem(args.key, args.state)
+  }
+}
+
 export const test = base.extend<AppFixtures>({
   freshPage: async ({ page }, use) => {
     await page.context().clearCookies()
@@ -42,12 +56,9 @@ export const test = base.extend<AppFixtures>({
   },
 
   returningPage: async ({ page }, use) => {
-    await page.context().addInitScript(
-      (args: { key: string; state: string }) => {
-        localStorage.setItem(args.key, args.state)
-      },
-      { key: STORAGE_KEY, state: minimalV2State() }
-    )
+    await page
+      .context()
+      .addInitScript(SEED_ONCE_INIT_SCRIPT, { key: STORAGE_KEY, state: minimalV2State() })
     await use(page)
   },
 })

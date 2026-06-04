@@ -1,0 +1,131 @@
+ac:
+  - { id: AC-1.1, desc: "Runway visible en resumen con valor en meses" }
+  - { id: AC-1.2, desc: "Runway = líquido 30M / gasto 5M → 6 meses" }
+  - { id: AC-1.3, desc: "Ilíquidos excluidos del numerador runway" }
+  - { id: AC-1.4, desc: "Estado explícito si líquido o gasto cero" }
+  - { id: AC-2.1, desc: "Mismo líquido en compacto y detalle FIRE" }
+  - { id: AC-2.2, desc: "Runway y FIRE comparten definición líquido incl. inversión" }
+  - { id: AC-2.3, desc: "Emergencia health score etiqueta distinta a runway" }
+  - { id: AC-3.1, desc: "Salario nómina clasificado lineal" }
+  - { id: AC-3.2, desc: "Streams adicionales con clase lineal/residual/pasivo persistente" }
+  - { id: AC-3.3, desc: "Totales mensuales por clase visibles" }
+  - { id: AC-3.4, desc: "Migración ingresos previos → lineal por defecto" }
+  - { id: AC-4.1, desc: "Cobertura (pasivo+residual)/gasto → 30%" }
+  - { id: AC-4.2, desc: "Cobertura ≥100% con indicador cubierto" }
+  - { id: AC-4.3, desc: "Brecha mensual cuando cobertura <100%" }
+  - { id: AC-4.4, desc: "Cobertura flujo y meta FIRE etiquetas separadas" }
+  - { id: AC-5.1, desc: "Icono eliminar dentro de card de deuda" }
+  - { id: AC-5.2, desc: "Cards deudas mismo ancho sin botón externo" }
+  - { id: AC-5.3, desc: "Confirmación antes de eliminar deuda" }
+  - { id: AC-5.4, desc: "aria-label traducido en botón eliminar deuda" }
+  - { id: AC-6.1, desc: "Campo TEA % visible en bloque proyección inicio" }
+  - { id: AC-6.2, desc: "TEA del gráfico persiste al recargar" }
+  - { id: AC-6.3, desc: "Serie compuesta crece con TEA 12% vs 0%" }
+  - { id: AC-6.4, desc: "Leyenda compuesta visible con tasa y patrimonio >0" }
+  - { id: AC-6.5, desc: "Texto orientación si falta tasa o patrimonio" }
+  - { id: AC-6.6, desc: "Base compuesto = líquido elegible sin inmuebles" }
+tc:
+  - { id: TC-U-001, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4], kind: unit }
+  - { id: TC-U-002, covers: [AC-1.3, AC-2.2, AC-6.6], kind: unit }
+  - { id: TC-U-003, covers: [AC-3.1, AC-3.3], kind: unit }
+  - { id: TC-U-004, covers: [AC-1.2, AC-2.2], kind: unit }
+  - { id: TC-U-005, covers: [AC-4.1, AC-4.2, AC-4.3], kind: unit }
+  - { id: TC-U-006, covers: [AC-6.2], kind: unit }
+  - { id: TC-U-007, covers: [AC-3.2, AC-3.4], kind: unit }
+  - { id: TC-U-008, covers: [AC-3.4, AC-6.2], kind: unit }
+  - { id: TC-U-009, covers: [AC-6.3, AC-6.6], kind: unit }
+  - { id: TC-C-060, covers: [AC-1.1, AC-1.4], kind: unit }
+  - { id: TC-C-061, covers: [AC-2.1], kind: unit }
+  - { id: TC-C-062, covers: [AC-2.3], kind: unit }
+  - { id: TC-C-063, covers: [AC-3.1, AC-3.2, AC-3.3], kind: unit }
+  - { id: TC-C-064, covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4], kind: unit }
+  - { id: TC-C-065, covers: [AC-5.1, AC-5.2, AC-5.4], kind: unit }
+  - { id: TC-C-066, covers: [AC-5.2, AC-5.3], kind: unit }
+  - { id: TC-C-067, covers: [AC-6.1, AC-6.3, AC-6.4, AC-6.5], kind: unit }
+  - { id: TC-I-003, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-2.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-3.3, AC-3.4, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-6.1, AC-6.2, AC-6.3, AC-6.4, AC-6.5, AC-6.6], kind: integration }
+  - { id: TC-E-020, covers: [AC-1.1], kind: e2e }
+  - { id: TC-E-021, covers: [AC-3.2], kind: e2e }
+  - { id: TC-E-022, covers: [AC-5.3], kind: e2e }
+  - { id: TC-E-023, covers: [AC-6.2], kind: e2e }
+adr:
+  - { id: ADR-1, decision: "liquid-metrics.ts + useLiquidMetrics fuente única líquido/gasto" }
+  - { id: ADR-2, decision: "projectionAnnualRatePercent en settingsStore (OQ-3)" }
+  - { id: ADR-3, decision: "incomeClass en IncomeStream schema v4" }
+  - { id: ADR-4, decision: "IconButton + delete dentro de CardCard" }
+  - { id: ADR-5, decision: "RunwayCard + PassiveCoverageCompact en dashboard" }
+open_questions: []
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "Rama base incluye planificacion-financiera-integrada mergeada"
+    impact_if_wrong: H
+    verify_by: "git merge / smoke /financial-freedom"
+    status: verified
+  - id: A-002
+    stated_in: plan
+    text: "Líquido = cash + savings + investment"
+    impact_if_wrong: M
+    verify_by: "TC unit liquid-metrics"
+    status: verified
+  - id: A-003
+    stated_in: plan
+    text: "Gasto de vida = fijos + variables mes corriente"
+    impact_if_wrong: M
+    verify_by: "TC calcFinancialRunway"
+    status: verified
+  - id: A-004
+    stated_in: plan
+    text: "Salario neto 100% lineal sin campo persistido"
+    impact_if_wrong: L
+    verify_by: "AC-3.1 UI"
+    status: verified
+  - id: A-005
+    stated_in: plan
+    text: "Streams sin incomeClass migran a linear"
+    impact_if_wrong: M
+    verify_by: "migrate test AC-3.4"
+    status: verified
+  - id: A-006
+    stated_in: plan
+    text: "Health emergencia mantiene fórmula distinta; solo etiqueta cambia"
+    impact_if_wrong: L
+    verify_by: "HealthScore component test"
+    status: verified
+  - id: A-007
+    stated_in: plan
+    text: "Sin nuevas deps npm; lucide-vue-next para iconos"
+    impact_if_wrong: L
+    verify_by: "package.json sin cambios deps"
+    status: verified
+tasks:
+  - { id: T-001, status: done, type: setup, size: S, layer: cross, covers: [], deps: [] }
+  - { id: T-002, status: done, type: setup, size: S, layer: infra, covers: [], deps: [T-001] }
+  - { id: T-010, status: done, type: test, size: S, layer: domain, covers: [AC-1.2, AC-1.3, AC-1.4, AC-2.2, AC-6.6], deps: [T-002] }
+  - { id: T-011, status: done, type: test, size: S, layer: domain, covers: [AC-3.1, AC-3.3, AC-4.1, AC-4.2, AC-4.3], deps: [T-002] }
+  - { id: T-012, status: done, type: test, size: S, layer: app, covers: [AC-1.2, AC-2.2], deps: [T-002] }
+  - { id: T-013, status: done, type: test, size: M, layer: infra, covers: [AC-3.2, AC-3.4, AC-6.2], deps: [T-002] }
+  - { id: T-014, status: done, type: test, size: M, layer: app, covers: [AC-6.3, AC-6.6], deps: [T-002] }
+  - { id: T-015, status: done, type: test, size: S, layer: app, covers: [AC-2.1, AC-2.2], deps: [T-012] }
+  - { id: T-016, status: done, type: test, size: S, layer: app, covers: [AC-1.1, AC-1.4], deps: [T-002] }
+  - { id: T-017, status: done, type: test, size: S, layer: app, covers: [AC-2.3], deps: [T-002] }
+  - { id: T-018, status: done, type: test, size: M, layer: app, covers: [AC-3.1, AC-3.2, AC-3.3], deps: [T-011] }
+  - { id: T-019, status: done, type: test, size: M, layer: app, covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4], deps: [T-011] }
+  - { id: T-020, status: done, type: test, size: M, layer: app, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], deps: [T-002] }
+  - { id: T-021, status: done, type: test, size: M, layer: app, covers: [AC-6.1, AC-6.3, AC-6.4, AC-6.5], deps: [T-014] }
+  - { id: T-022, status: done, type: test, size: M, layer: cross, covers: [AC-1.1, AC-3.2, AC-5.3, AC-6.2], deps: [T-002] }
+  - { id: T-030, status: done, type: impl, size: S, layer: domain, risk: H, covers: [AC-1.2, AC-1.3, AC-1.4, AC-2.2, AC-6.6], deps: [T-010] }
+  - { id: T-031, status: done, type: impl, size: M, layer: infra, risk: H, covers: [AC-3.4, AC-6.2], deps: [T-013] }
+  - { id: T-032, status: done, type: impl, size: S, layer: app, risk: H, covers: [AC-3.2, AC-6.2], deps: [T-013, T-031] }
+  - { id: T-033, status: done, type: impl, size: S, layer: domain, risk: H, covers: [AC-3.1, AC-3.3, AC-4.1, AC-4.2, AC-4.3], deps: [T-011] }
+  - { id: T-034, status: done, type: impl, size: S, layer: app, risk: H, covers: [AC-1.2, AC-2.2], deps: [T-012, T-030] }
+  - { id: T-035, status: done, type: impl, size: M, layer: app, risk: H, covers: [AC-2.1, AC-2.2], deps: [T-015, T-034, T-030] }
+  - { id: T-036, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-3.1, AC-3.3, AC-4.1, AC-4.2, AC-4.3], deps: [T-011, T-033, T-032, T-034] }
+  - { id: T-037, status: done, type: impl, size: M, layer: app, risk: H, covers: [AC-6.3, AC-6.6], deps: [T-014, T-030, T-032, T-034] }
+  - { id: T-038, status: done, type: impl, size: S, layer: app, risk: M, covers: [AC-1.1, AC-1.4], deps: [T-016, T-035] }
+  - { id: T-039, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-4.1, AC-4.2, AC-4.3, AC-4.4], deps: [T-019, T-036] }
+  - { id: T-040, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-3.1, AC-3.2, AC-3.3], deps: [T-018, T-036, T-032] }
+  - { id: T-041, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-5.1, AC-5.2, AC-5.3, AC-5.4], deps: [T-020] }
+  - { id: T-042, status: done, type: impl, size: M, layer: app, risk: H, covers: [AC-6.1, AC-6.4, AC-6.5], deps: [T-021, T-037] }
+  - { id: T-043, status: done, type: impl, size: S, layer: app, risk: L, covers: [AC-2.3], deps: [T-017] }
+  - { id: T-044, status: done, type: impl, size: S, layer: cross, risk: L, covers: [AC-2.3, AC-4.4, AC-5.4, AC-6.1], deps: [T-038, T-039, T-040, T-041, T-042, T-043] }
+  - { id: T-LAST, status: done, type: test, size: S, layer: cross, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-2.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-3.3, AC-3.4, AC-4.1, AC-4.2, AC-4.3, AC-4.4, AC-5.1, AC-5.2, AC-5.3, AC-5.4, AC-6.1, AC-6.2, AC-6.3, AC-6.4, AC-6.5, AC-6.6], deps: [T-030, T-031, T-032, T-033, T-034, T-035, T-036, T-037, T-038, T-039, T-040, T-041, T-042, T-043, T-044, T-022] }

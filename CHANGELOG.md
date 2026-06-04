@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added (feature `20260529-metricas-runway-ingresos`)
+
+- **Runway card** — meses de autonomía (líquido ÷ gasto de vida) con estados explícitos sin líquido/gasto.
+- **Passive coverage** — cobertura pasivo+residual vs gasto de vida en resumen y vista libertad financiera.
+- **Income class** — streams adicionales con clase lineal/residual/pasivo persistente (schema v4).
+- **Projection TEA** — tasa anual editable en gráfico de proyección; persiste en settings.
+- **Debt delete in-card** — icono eliminar dentro de cada card con confirmación.
+- **Shared liquid metrics** — `useLiquidMetrics` como fuente única para runway, FIRE y proyección compuesta.
+
 ### Added (feature `20260529-planificacion-financiera-integrada`)
 
 - **Savings gap card** — objetivo (regla %), factible (libre tras gastos/deudas) y brecha con alerta cuando la regla no es viable (AC-1.1–1.3).

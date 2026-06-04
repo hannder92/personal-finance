@@ -3,8 +3,8 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
-export type AssetType = 'savings' | 'investment' | 'property' | 'vehicle' | 'other'
-const ALLOWED_TYPES: AssetType[] = ['savings', 'investment', 'property', 'vehicle', 'other']
+export type AssetType = 'cash' | 'savings' | 'investment' | 'property' | 'vehicle' | 'other'
+const ALLOWED_TYPES: AssetType[] = ['cash', 'savings', 'investment', 'property', 'vehicle', 'other']
 
 export interface Asset {
   id: string
@@ -38,7 +38,9 @@ function isValidRate(n: number): boolean {
 export const useAssetsStore = defineStore('assets', () => {
   const state = reactive<AssetsState>({ items: [] })
 
-  function add(input: Omit<Asset, 'id' | 'annualRatePercent'> & { annualRatePercent?: number }): void {
+  function add(
+    input: Omit<Asset, 'id' | 'annualRatePercent'> & { annualRatePercent?: number }
+  ): void {
     if (!isValidName(input.name)) return
     if (!isValidAmount(input.value)) return
     if (!ALLOWED_TYPES.includes(input.type)) return

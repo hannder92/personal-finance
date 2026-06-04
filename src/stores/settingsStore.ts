@@ -16,6 +16,7 @@ export interface SettingsState {
   theme: 'system' | 'light' | 'dark'
   payoffMethod: 'avalanche' | 'snowball'
   lastMonthSeen: string | null
+  projectionAnnualRatePercent: number
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -25,6 +26,7 @@ export const useSettingsStore = defineStore('settings', () => {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
+    projectionAnnualRatePercent: 0,
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -47,6 +49,10 @@ export const useSettingsStore = defineStore('settings', () => {
     if (!YEAR_MONTH.test(iso)) return
     state.lastMonthSeen = iso
   }
+  function setProjectionAnnualRatePercent(rate: number): void {
+    if (!Number.isFinite(rate) || rate < 0 || rate > 100) return
+    state.projectionAnnualRatePercent = rate
+  }
 
   return {
     state,
@@ -55,5 +61,6 @@ export const useSettingsStore = defineStore('settings', () => {
     setTheme,
     setPayoffMethod,
     setLastMonthSeen,
+    setProjectionAnnualRatePercent,
   }
 })

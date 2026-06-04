@@ -21,6 +21,7 @@ function defaultSettingsState() {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
+    projectionAnnualRatePercent: 0,
   }
 }
 
@@ -106,7 +107,7 @@ describe('DashboardView — fix-calculos-financieros (reactive wiring)', () => {
   it('TC-C-003 (AC-3.4): with empty assets store, emergency component shows a "sin datos" indicator', async () => {
     mount({ grossSalary: 5_000_000 })
     await expandHealthBreakdown()
-    const emergencyRow = screen.queryByText(/emergencia/i)?.closest('[data-status]')
+    const emergencyRow = document.querySelector('[data-component="emergency"]')
     expect(emergencyRow?.getAttribute('data-status')).toBe('missing')
   })
 
@@ -114,15 +115,13 @@ describe('DashboardView — fix-calculos-financieros (reactive wiring)', () => {
     mount({ grossSalary: 5_000_000 })
     await expandHealthBreakdown()
     const assets = useAssetsStore()
-    const before = screen
-      .queryByText(/emergencia/i)
-      ?.closest('[data-status]')
+    const before = document
+      .querySelector('[data-component="emergency"]')
       ?.getAttribute('data-status')
     assets.add({ name: 'Ahorro', value: 6_000_000, type: 'savings' })
     await nextTick()
-    const after = screen
-      .queryByText(/emergencia/i)
-      ?.closest('[data-status]')
+    const after = document
+      .querySelector('[data-component="emergency"]')
       ?.getAttribute('data-status')
     // Reactivity expectation: the status changed because real data arrived.
     expect(after).not.toBe(before)

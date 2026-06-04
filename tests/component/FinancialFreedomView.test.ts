@@ -73,3 +73,6 @@ describe('FinancialFreedomView', () => {
     )
   })
 })
+
+// Feature: 20260529-metricas-runway-ingresos · extended in T-018
+describe.skip('FinancialFreedomView (20260529-metricas-runway-ingresos flow coverage)', () => {})

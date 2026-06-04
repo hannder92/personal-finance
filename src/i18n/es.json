@@ -68,6 +68,7 @@
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergencia",
+        "emergencyHint": "Reserva de emergencia (efectivo + ahorros vs fijos + deuda). Distinto del runway de autonomía.",
         "housing": "Vivienda",
         "savings": "Ahorros",
         "noData": "sin datos"
@@ -101,7 +102,11 @@
       },
       "compoundGrowth": {
         "label": "Crecimiento del patrimonio con tasa"
-      }
+      },
+      "rateLabel": "Tasa anual de proyección (E.A. %)",
+      "rateHint": "Hipótesis de rendimiento para la curva compuesta del dashboard.",
+      "hintNeedRate": "Ingresa una tasa mayor a 0% para ver la proyección compuesta.",
+      "hintNeedAssets": "Registra patrimonio líquido (efectivo, ahorros o inversión) para proyectar el crecimiento."
     }
   },
   "assets": {
@@ -135,6 +140,39 @@
         "avalanche": "Avalancha (mayor tasa primero)",
         "snowball": "Bola de nieve (menor saldo primero)"
       }
+    }
+  },
+  "common": {
+    "delete": "Eliminar"
+  },
+  "runway": {
+    "title": "Runway (meses de autonomía)",
+    "months": "{count} meses",
+    "unavailable": {
+      "no_liquid": "Sin patrimonio líquido registrado",
+      "no_expense": "Sin gasto de vida este mes"
+    }
+  },
+  "flowCoverage": {
+    "title": "Cobertura por flujo",
+    "percent": "{percent}%",
+    "percentLabel": "Cobertura",
+    "gap": "Brecha mensual: {amount}",
+    "gapLabel": "Brecha mensual",
+    "covered": "Gastos cubiertos por ingresos pasivos y residuales"
+  },
+  "income": {
+    "class": {
+      "label": "Clase de ingreso",
+      "linear": "Lineal (activo)",
+      "residual": "Residual",
+      "passive": "Pasivo"
+    },
+    "mix": {
+      "title": "Mix de ingresos",
+      "linear": "Lineal",
+      "residual": "Residual",
+      "passive": "Pasivo"
     }
   },
   "fi": {

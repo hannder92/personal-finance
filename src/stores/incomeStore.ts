@@ -6,6 +6,7 @@ import { reactive } from 'vue'
 
 export type DeductionType = 'fixed' | 'percent'
 export type IncomeFrequency = 'monthly' | 'quarterly' | 'semiannual' | 'annual'
+export type IncomeClass = 'linear' | 'residual' | 'passive'
 
 export interface Deduction {
   id: string
@@ -19,6 +20,7 @@ export interface IncomeStream {
   label: string
   amount: number
   frequency: IncomeFrequency
+  incomeClass: IncomeClass
   /** Marker for the auto-managed prima de servicios entry. Always paired with id === PRIMA_ID. */
   isPrima?: boolean
 }
@@ -41,6 +43,7 @@ export interface IncomeState {
 
 const ALLOWED_TYPES: DeductionType[] = ['fixed', 'percent']
 const ALLOWED_FREQS: IncomeFrequency[] = ['monthly', 'quarterly', 'semiannual', 'annual']
+const ALLOWED_CLASSES: IncomeClass[] = ['linear', 'residual', 'passive']
 
 function newId(): string {
   return globalThis.crypto.randomUUID()
@@ -52,6 +55,12 @@ function isValidLabel(label: string): boolean {
 
 function isValidAmount(amount: number): boolean {
   return Number.isFinite(amount) && amount >= 0
+}
+
+type StreamInput = Omit<IncomeStream, 'id' | 'incomeClass'> & {
+  id?: IncomeStream['id']
+  incomeClass?: IncomeClass
+  isPrima?: boolean
 }
 
 export const useIncomeStore = defineStore('income', () => {
@@ -86,20 +95,22 @@ export const useIncomeStore = defineStore('income', () => {
     Object.assign(item, patch)
   }
 
-  function addStream(input: Omit<IncomeStream, 'id'> | IncomeStream): void {
+  function addStream(input: StreamInput): void {
     if (!isValidLabel(input.label)) return
     if (!isValidAmount(input.amount)) return
     if (!ALLOWED_FREQS.includes(input.frequency)) return
+    const incomeClass = input.incomeClass ?? 'linear'
+    if (!ALLOWED_CLASSES.includes(incomeClass)) return
 
     // ADR-6 guards: isPrima ⇔ id === PRIMA_ID; at most one isPrima stream.
-    const inputId = (input as IncomeStream).id
-    const inputIsPrima = (input as IncomeStream).isPrima === true
+    const inputId = input.id
+    const inputIsPrima = input.isPrima === true
     if (inputId === PRIMA_ID && !inputIsPrima) return
     if (inputIsPrima && inputId !== PRIMA_ID && inputId !== undefined) return
     if (inputIsPrima && state.otherStreams.some((s) => s.isPrima === true)) return
 
     const id = inputId === PRIMA_ID ? PRIMA_ID : newId()
-    state.otherStreams.push({ ...input, id })
+    state.otherStreams.push({ ...input, id, incomeClass })
   }
   function removeStream(id: string): void {
     const idx = state.otherStreams.findIndex((x) => x.id === id)
@@ -112,6 +123,7 @@ export const useIncomeStore = defineStore('income', () => {
     if (patch.label !== undefined && !isValidLabel(patch.label)) return
     if (patch.amount !== undefined && !isValidAmount(patch.amount)) return
     if (patch.frequency !== undefined && !ALLOWED_FREQS.includes(patch.frequency)) return
+    if (patch.incomeClass !== undefined && !ALLOWED_CLASSES.includes(patch.incomeClass)) return
     Object.assign(item, patch)
   }
 
@@ -149,6 +161,7 @@ export const useIncomeStore = defineStore('income', () => {
       existing.isPrima = true
       existing.frequency = 'semiannual'
       existing.label = 'Prima de servicios'
+      existing.incomeClass = 'linear'
       return
     }
     state.otherStreams.push({
@@ -157,6 +170,7 @@ export const useIncomeStore = defineStore('income', () => {
       label: 'Prima de servicios',
       amount,
       frequency: 'semiannual',
+      incomeClass: 'linear',
     })
   }
 

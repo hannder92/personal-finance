@@ -172,3 +172,26 @@ describe('incomeStore — fix-calculos-financieros (prima upsert + guards)', () 
     expect(primaCount).toBe(1)
   })
 })
+
+describe('incomeStore (20260529-metricas-runway-ingresos)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('TC-U-007 (AC-3.2): addStream persists incomeClass passive', () => {
+    const s = useIncomeStore()
+    s.addStream({
+      label: 'Renta',
+      amount: 1_500_000,
+      frequency: 'monthly',
+      incomeClass: 'passive',
+    })
+    expect(s.state.otherStreams[0]?.incomeClass).toBe('passive')
+  })
+
+  it('TC-U-007 (AC-3.4): addStream without incomeClass defaults to linear', () => {
+    const s = useIncomeStore()
+    s.addStream({ label: 'Freelance', amount: 2_000_000, frequency: 'monthly' })
+    expect(s.state.otherStreams[0]?.incomeClass).toBe('linear')
+  })
+})
