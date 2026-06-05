@@ -6,17 +6,22 @@
 
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
-import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import { useAssetsStore } from '@/stores/assetsStore'
 import { useExpensesStore } from '@/stores/expensesStore'
 import { i18n } from '@/i18n'
+import { setMockDesktop, mockIsDesktop } from '../helpers/mockMediaQuery'
 
 vi.mock('@vueuse/core', () => ({
-  useMediaQuery: () => ref(true),
+  useMediaQuery: () => mockIsDesktop,
 }))
+
+beforeEach(() => {
+  setMockDesktop(true)
+})
 
 function defaultSettingsState() {
   return {

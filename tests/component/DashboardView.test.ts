@@ -1,16 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import { i18n } from '@/i18n'
 import { DASHBOARD_TIER2_SESSION_KEY } from '@/lib/dashboard-tier2-storage'
-
-const isDesktopRef = ref(false)
+import { mockIsDesktop } from '../helpers/mockMediaQuery'
 
 vi.mock('@vueuse/core', () => ({
-  useMediaQuery: () => isDesktopRef,
+  useMediaQuery: () => mockIsDesktop,
 }))
 
 const router = createRouter({
@@ -84,7 +82,7 @@ function mountDashboard(overrides: { grossSalary?: number } = {}) {
 
 describe('DashboardView — mi-dia-cobertura (20260530)', () => {
   beforeEach(() => {
-    isDesktopRef.value = false
+    mockIsDesktop.value = false
   })
 
   it('TC-C-075 (AC-4.1): day overview precedes dashboard hero', () => {
@@ -97,7 +95,7 @@ describe('DashboardView — mi-dia-cobertura (20260530)', () => {
 
 describe('DashboardView — progressive disclosure (20260604)', () => {
   beforeEach(() => {
-    isDesktopRef.value = false
+    mockIsDesktop.value = false
   })
 
   it('TC-C-080 (AC-1.1): tier 2 hidden by default on mobile', () => {
@@ -131,13 +129,13 @@ describe('DashboardView — progressive disclosure (20260604)', () => {
   })
 
   it('TC-C-088 (AC-4.1): no toggle on desktop', () => {
-    isDesktopRef.value = true
+    mockIsDesktop.value = true
     mountDashboard()
     expect(screen.queryByTestId('dashboard-tier2-toggle')).toBeNull()
   })
 
   it('TC-C-089 (AC-4.2): tier 2 visible on desktop without interaction', () => {
-    isDesktopRef.value = true
+    mockIsDesktop.value = true
     mountDashboard()
     expect(screen.getByTestId('dashboard-tier-2')).toBeTruthy()
     expect(screen.getByTestId('kpi-strip')).toBeTruthy()

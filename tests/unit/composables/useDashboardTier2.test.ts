@@ -1,14 +1,12 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
 import { useDashboardTier2 } from '@/composables/useDashboardTier2'
 import { DASHBOARD_TIER2_SESSION_KEY } from '@/lib/dashboard-tier2-storage'
 import { useIncomeStore } from '@/stores/incomeStore'
-
-const isDesktopRef = ref(false)
+import { mockIsDesktop } from '../../helpers/mockMediaQuery'
 
 vi.mock('@vueuse/core', () => ({
-  useMediaQuery: () => isDesktopRef,
+  useMediaQuery: () => mockIsDesktop,
 }))
 
 function mockSessionStorage(): Storage {
@@ -38,7 +36,7 @@ function mockSessionStorage(): Storage {
 describe('useDashboardTier2 (20260604-dashboard-progressive-disclosure)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    isDesktopRef.value = false
+    mockIsDesktop.value = false
     vi.stubGlobal('sessionStorage', mockSessionStorage())
   })
 
