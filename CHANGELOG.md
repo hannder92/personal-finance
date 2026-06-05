@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added (feature `20260604-dashboard-progressive-disclosure`)
+
+- **Progressive disclosure** — analytics tier (KPIs, charts, runway) collapsed by default on mobile; single “Ver análisis del mes” toggle with sessionStorage memory.
+- **Desktop unchanged** — tier 2 always visible at ≥768px without toggle.
+- **Fresh user guard** — tier 2 hidden when `grossSalary` is zero.
+
+### Added (feature `20260530-mi-dia-cobertura`)
+
+- **Mi Día block** — daily coverage badge, payments due today, and 3-day agenda above dashboard hero.
+- **Day obligations** — pure `day-obligations.ts` for local-date due matching and coverage status.
+
 ### Added (feature `20260529-metricas-runway-ingresos`)
 
 - **Runway card** — meses de autonomía (líquido ÷ gasto de vida) con estados explícitos sin líquido/gasto.

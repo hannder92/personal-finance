@@ -1,0 +1,63 @@
+entries:
+  - at: "2026-05-29T21:45:00Z"
+    phase: 0.5
+    event: discovery_generated
+  - at: "2026-05-29T22:00:00Z"
+    phase: 1
+    event: spec_generated
+  - at: "2026-06-04T12:00:00Z"
+    phase: 1
+    event: check_run
+  - at: "2026-06-04T12:00:00Z"
+    phase: spec
+    event: phase_signed_off
+    by: "Johann Medina"
+    spec_score: 100
+  - at: "2026-06-04T14:00:00Z"
+    phase: 2
+    event: plan_generated
+  - at: "2026-06-04T14:00:00Z"
+    phase: 2
+    event: assumption_register_populated
+    count: 5
+  - at: "2026-06-04T15:00:00Z"
+    phase: plan
+    event: phase_signed_off
+    by: "Johann Medina"
+  - at: "2026-06-04T16:00:00Z"
+    phase: 3
+    event: test_plan_generated
+  - at: "2026-06-04T17:00:00Z"
+    phase: test_plan
+    event: phase_signed_off
+    by: "Johann Medina"
+  - at: "2026-06-04T18:00:00Z"
+    phase: 4
+    event: tasks_generated
+  - at: "2026-06-04T20:00:00Z"
+    phase: tasks
+    event: phase_signed_off
+    by: "Johann Medina"
+  - at: "2026-06-05T00:15:00Z"
+    phase: 6
+    event: review_generated
+    verdict: YELLOW
+    file: specs/20260530-mi-dia-cobertura/6-review.md
+  - at: "2026-06-05T00:00:00Z"
+    phase: 5.5
+    event: verify_run
+    ac_verified: 12
+    ac_auto: 11
+    ac_manual: 1
+    ac_deferred: 0
+    rollback: ok
+    assumptions_verified: 5
+  - at: "2026-06-04T23:50:00Z"
+    phase: 5
+    event: implement_complete
+    tasks_done: 18
+    gates:
+      - "npm test — 472 passed"
+      - "npm run typecheck — pass"
+      - "npm run lint — 0 errors"
+      - "npm run e2e -- day-overview — 1 passed"
