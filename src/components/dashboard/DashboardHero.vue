@@ -38,7 +38,7 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
 
 <template>
   <header
-    data-testid="dashboard-hero"
+    data-testid="data-dashboard-hero"
     class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/50"
   >
     <div class="flex flex-wrap items-start justify-between gap-4">

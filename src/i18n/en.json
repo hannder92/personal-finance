@@ -60,6 +60,11 @@
       "donut": "Set up income and allocation to see this chart.",
       "projection": "Set up your finances to see the projection."
     },
+    "tier2": {
+      "expand": "View monthly analysis",
+      "collapse": "Hide analysis",
+      "hint": "KPIs, charts and projection"
+    },
     "health": {
       "labelOk": "Healthy",
       "labelWarn": "Needs work",
@@ -173,6 +178,31 @@
       "linear": "Linear",
       "residual": "Residual",
       "passive": "Passive"
+    }
+  },
+  "day": {
+    "sectionTitle": "My day",
+    "coverage": {
+      "title": "Today's coverage",
+      "ok": "You cover what's due today",
+      "shortfall": "Short {amount} to cover today",
+      "noDue": "No payments due today",
+      "liquidLabel": "Operating liquidity",
+      "context": "Includes cash, savings, and liquid investments",
+      "noLiquidCta": "Add liquid assets to see coverage"
+    },
+    "payments": {
+      "title": "Payments due today",
+      "empty": "No payments due today",
+      "viewDebts": "View debts"
+    },
+    "agenda": {
+      "title": "Next 3 days",
+      "none": "No due dates",
+      "row": "{count} payments · {amount}",
+      "day0": "Today",
+      "day1": "Tomorrow",
+      "day2": "Day after tomorrow"
     }
   },
   "fi": {

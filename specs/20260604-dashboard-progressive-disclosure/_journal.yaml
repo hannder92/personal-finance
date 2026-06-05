@@ -1,0 +1,82 @@
+entries:
+  - at: "2026-06-04T20:45:00Z"
+    event: feature_initialized
+    by: "agent"
+    phase: 0.5
+  - at: "2026-06-04T20:45:00Z"
+    event: feature_size_classified
+    by: "agent"
+    count: 8
+    spec_score: null
+  - at: "2026-06-04T21:15:00Z"
+    event: discovery_generated
+    by: "agent"
+    phase: 0.5
+  - at: "2026-06-04T21:30:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: discovery
+  - at: "2026-06-04T21:30:00Z"
+    event: clarify_run
+    by: "Johann Medina"
+    count: 3
+  - at: "2026-06-04T21:30:00Z"
+    event: spec_generated
+    by: "agent"
+    phase: 1
+    count: 12
+    spec_score: 100
+  - at: "2026-06-04T22:00:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: spec
+    spec_score: 100
+  - at: "2026-06-04T22:00:00Z"
+    event: plan_generated
+    by: "agent"
+    phase: 2
+  - at: "2026-06-04T22:00:00Z"
+    event: assumption_register_populated
+    by: "agent"
+    count: 5
+  - at: "2026-06-04T22:30:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: plan
+  - at: "2026-06-04T22:30:00Z"
+    event: test_plan_generated
+    by: "agent"
+    phase: 3
+    count: 28
+  - at: "2026-06-04T23:00:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: test_plan
+  - at: "2026-06-04T23:00:00Z"
+    event: tasks_generated
+    by: "agent"
+    phase: 4
+    count: 14
+  - at: "2026-06-04T23:15:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: tasks
+  - at: "2026-06-04T23:45:00Z"
+    event: task_finished
+    by: "agent"
+    task: T-LAST
+    count: 14
+  - at: "2026-06-04T24:00:00Z"
+    event: verify_run
+    by: "agent"
+    phase: 5.5
+    count: 12
+  - at: "2026-06-04T24:00:00Z"
+    event: review_generated
+    by: "agent"
+    phase: 6
+  - at: "2026-06-04T24:15:00Z"
+    event: phase_signed_off
+    by: "Johann Medina"
+    phase: review
+    spec_score: null
