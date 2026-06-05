@@ -1,9 +1,14 @@
 import { render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
+import { ref } from 'vue'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import { i18n } from '@/i18n'
+
+vi.mock('@vueuse/core', () => ({
+  useMediaQuery: () => ref(true),
+}))
 
 const router = createRouter({
   history: createMemoryHistory(),
