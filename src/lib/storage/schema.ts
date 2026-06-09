@@ -309,6 +309,33 @@ export const AppStateSchemaV4 = z.object({
 })
 
 export type AppStateV4 = z.infer<typeof AppStateSchemaV4>
+
+// V5 — active schema (20260609-dashboard-fintech-redesign, ADR-2).
+// Additive over V4: settings.userName (optional greeting name, ≤30 chars) and
+// snapshots[].debtPayments (monthly debt obligation captured at month close,
+// consumed by the cash flow chart).
+const SettingsSchemaV5 = SettingsSchemaV4.extend({
+  userName: z.string().max(30).default(''),
+})
+
+const SnapshotSchemaV5 = SnapshotSchema.extend({
+  debtPayments: Money.default(0),
+})
+
+export const AppStateSchemaV5 = z.object({
+  schemaVersion: z.literal(5),
+  settings: SettingsSchemaV5,
+  income: IncomeSchemaV4,
+  expenses: z.array(FixedExpenseSchema).default([]),
+  cards: z.array(CardSchema).default([]),
+  goals: z.array(GoalSchema).default([]),
+  assets: z.array(AssetSchema).default([]),
+  variableExpenses: z.array(VariableCategorySchema).default([]),
+  allocation: AllocationSchema,
+  snapshots: z.array(SnapshotSchemaV5).default([]),
+})
+
+export type AppStateV5 = z.infer<typeof AppStateSchemaV5>
 export type IncomeClass = z.infer<typeof IncomeClassEnum>
 export type Deduction = z.infer<typeof DeductionSchema>
 export type IncomeStream = z.infer<typeof IncomeStreamSchema>
@@ -318,5 +345,7 @@ export type Installment = z.infer<typeof InstallmentSchema>
 export type Goal = z.infer<typeof GoalSchema>
 export type Asset = z.infer<typeof AssetSchema>
 export type VariableCategory = z.infer<typeof VariableCategorySchema>
-export type Snapshot = z.infer<typeof SnapshotSchema>
-export type Settings = z.infer<typeof SettingsSchema>
+// Single source of truth for the runtime Snapshot shape (ADR-4): always the
+// latest persisted version.
+export type Snapshot = z.infer<typeof SnapshotSchemaV5>
+export type Settings = z.infer<typeof SettingsSchemaV5>

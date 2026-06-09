@@ -17,10 +17,10 @@ import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import type { AppStateV4 } from '@/lib/storage/schema'
+import type { AppStateV5 } from '@/lib/storage/schema'
 
-// Builds the AppStateV4 payload from current store states (mirrors main.ts persistStores logic).
-function snapshotState(): AppStateV4 {
+// Builds the AppStateV5 payload from current store states (mirrors main.ts persistStores logic).
+function snapshotState(): AppStateV5 {
   const settings = useSettingsStore()
   const income = useIncomeStore()
   const expenses = useExpensesStore()
@@ -31,7 +31,7 @@ function snapshotState(): AppStateV4 {
   const allocation = useAllocationStore()
   const snapshots = useSnapshotsStore()
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
     settings: {
       lang: settings.state.lang,
       currency: settings.state.currency,
@@ -40,6 +40,7 @@ function snapshotState(): AppStateV4 {
       lastMonthSeen: settings.state.lastMonthSeen,
       onboarding: { done: true, currentStep: 0 },
       projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
+      userName: settings.state.userName,
     },
     income: {
       grossSalary: income.state.grossSalary,
@@ -53,8 +54,7 @@ function snapshotState(): AppStateV4 {
     goals: goals.state.items,
     assets: assets.state.items,
     variableExpenses: variable.state.items,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    snapshots: snapshots.state.items as any,
+    snapshots: snapshots.state.items,
     allocation: {
       needs: allocation.state.needs,
       wants: allocation.state.wants,

@@ -38,6 +38,38 @@ describe('settingsStore (T-043)', () => {
   })
 })
 
+// T-005 — Covers: AC-1.3, EC-2 · TC-U-003
+describe('settingsStore.setUserName (TC-U-003)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('stores a trimmed name up to 30 chars', () => {
+    const s = useSettingsStore()
+    s.setUserName('  Johann  ')
+    expect(s.state.userName).toBe('Johann')
+  })
+
+  it('rejects names longer than 30 chars leaving state unchanged (EC-2)', () => {
+    const s = useSettingsStore()
+    s.setUserName('Johann')
+    s.setUserName('x'.repeat(31))
+    expect(s.state.userName).toBe('Johann')
+  })
+
+  it('clears the name with an empty string (back to generic greeting)', () => {
+    const s = useSettingsStore()
+    s.setUserName('Johann')
+    s.setUserName('')
+    expect(s.state.userName).toBe('')
+  })
+
+  it('defaults to empty string (optional field)', () => {
+    const s = useSettingsStore()
+    expect(s.state.userName).toBe('')
+  })
+})
+
 describe('settingsStore (20260529-metricas-runway-ingresos)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())

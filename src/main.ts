@@ -4,8 +4,9 @@ import App from './App.vue'
 import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
+import { runMonthRollover } from './composables/useMonthRollover'
 import { useStorageError } from './composables/useStorageError'
-import type { AppStateV4 } from './lib/storage/schema'
+import type { AppStateV5 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -35,6 +36,7 @@ function hydrateStores() {
   settings.setPayoffMethod(state.settings.payoffMethod)
   settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
+  settings.setUserName(state.settings.userName ?? '')
 
   const income = useIncomeStore()
   income.setGrossSalary(state.income.grossSalary)
@@ -62,8 +64,7 @@ function hydrateStores() {
   variable.state.items.splice(0, Infinity, ...(state.variableExpenses as any[]))
 
   const snapshots = useSnapshotsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  snapshots.setAll(state.snapshots as any)
+  snapshots.setAll(state.snapshots)
 
   const allocation = useAllocationStore()
   allocation.setAllocation(state.allocation.needs, state.allocation.wants)
@@ -83,9 +84,9 @@ function persistStores(): void {
 
   const { setError, registerRetrySource } = useStorageError()
 
-  function buildPayload(): AppStateV4 {
+  function buildPayload(): AppStateV5 {
     return {
-      schemaVersion: 4,
+      schemaVersion: 5,
       settings: {
         lang: settings.state.lang,
         currency: settings.state.currency,
@@ -94,6 +95,7 @@ function persistStores(): void {
         lastMonthSeen: settings.state.lastMonthSeen,
         onboarding: { done: true, currentStep: 0 },
         projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
+        userName: settings.state.userName,
       },
       income: {
         grossSalary: income.state.grossSalary,
@@ -107,8 +109,7 @@ function persistStores(): void {
       goals: goals.state.items,
       assets: assets.state.items,
       variableExpenses: variable.state.items,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      snapshots: snapshots.state.items as any,
+      snapshots: snapshots.state.items,
       allocation: {
         needs: allocation.state.needs,
         wants: allocation.state.wants,
@@ -148,4 +149,7 @@ persistStores()
 app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
+  // ADR-1: run after the hydration flag clears so the persist watcher saves the
+  // closed-month snapshot and the variable-spent reset.
+  runMonthRollover()
 })
