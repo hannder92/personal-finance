@@ -29,6 +29,39 @@
   },
   "dashboard": {
     "title": "Overview",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "withName": "{greeting}, {name}"
+    },
+    "pace": {
+      "badgeAhead": "↑ +{delta}%",
+      "badgeBelow": "↓ −{delta}%",
+      "contextAhead": "You've spent {spent}% of last month's total and the month is {elapsed}% through",
+      "contextBelow": "You're below last month's pace: {spent}% of its spending at {elapsed}% of the month",
+      "noHistory": "Starting next month you'll see your comparison with the previous month"
+    },
+    "networth": {
+      "title": "Your net worth",
+      "have": "I have",
+      "owe": "I owe",
+      "net": "Net",
+      "empty": "Add your assets or debts to see your net worth here."
+    },
+    "flow": {
+      "title": "Cash flow",
+      "subtitle": "Income vs expenses per closed month",
+      "income": "Income",
+      "expenses": "Expenses",
+      "empty": "Your chart builds up as each month closes. You'll see it once you have at least two closed months."
+    },
+    "activity": {
+      "title": "This month's activity",
+      "viewAll": "View all",
+      "empty": "No expenses recorded this month yet.",
+      "emptyCta": "Record first expense"
+    },
     "hero": {
       "availableLabel": "Available this month",
       "emptyIncome": "Set up your income to see how much you have available.",
@@ -149,6 +182,14 @@
   },
   "common": {
     "delete": "Delete"
+  },
+  "settings": {
+    "userName": {
+      "label": "Your name (optional)",
+      "placeholder": "What should we call you?",
+      "hint": "Used only to greet you. Stored on your device.",
+      "error": "Maximum 30 characters"
+    }
   },
   "runway": {
     "title": "Runway (months of autonomy)",

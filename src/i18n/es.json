@@ -29,6 +29,39 @@
   },
   "dashboard": {
     "title": "Resumen",
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches",
+      "withName": "{greeting}, {name}"
+    },
+    "pace": {
+      "badgeAhead": "↑ +{delta}%",
+      "badgeBelow": "↓ −{delta}%",
+      "contextAhead": "Llevas el {spent}% del gasto del mes pasado y va el {elapsed}% del mes",
+      "contextBelow": "Vas por debajo del ritmo del mes pasado: {spent}% del gasto y va el {elapsed}% del mes",
+      "noHistory": "Desde el próximo mes verás tu comparación con el mes anterior"
+    },
+    "networth": {
+      "title": "Tu patrimonio",
+      "have": "Tengo",
+      "owe": "Debo",
+      "net": "Neto",
+      "empty": "Registra tus activos o deudas para ver tu patrimonio aquí."
+    },
+    "flow": {
+      "title": "Flujo de caja",
+      "subtitle": "Ingresos vs gastos por mes cerrado",
+      "income": "Ingresos",
+      "expenses": "Gastos",
+      "empty": "Tu gráfica se construye con el cierre de cada mes. La verás cuando tengas al menos dos meses cerrados."
+    },
+    "activity": {
+      "title": "Actividad del mes",
+      "viewAll": "Ver todo",
+      "empty": "Aún no registras gastos este mes.",
+      "emptyCta": "Registrar primer gasto"
+    },
     "hero": {
       "availableLabel": "Disponible este mes",
       "emptyIncome": "Configura tu ingreso para ver cuánto tienes disponible.",
@@ -149,6 +182,14 @@
   },
   "common": {
     "delete": "Eliminar"
+  },
+  "settings": {
+    "userName": {
+      "label": "Tu nombre (opcional)",
+      "placeholder": "¿Cómo te llamamos?",
+      "hint": "Se usa solo para saludarte. Queda guardado en tu dispositivo.",
+      "error": "Máximo 30 caracteres"
+    }
   },
   "runway": {
     "title": "Runway (meses de autonomía)",
