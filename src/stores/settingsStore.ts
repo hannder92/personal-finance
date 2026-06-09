@@ -17,6 +17,8 @@ export interface SettingsState {
   payoffMethod: 'avalanche' | 'snowball'
   lastMonthSeen: string | null
   projectionAnnualRatePercent: number
+  /** Optional display name for the dashboard greeting (≤30 chars, local only). */
+  userName: string
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -27,6 +29,7 @@ export const useSettingsStore = defineStore('settings', () => {
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
     projectionAnnualRatePercent: 0,
+    userName: '',
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -53,6 +56,13 @@ export const useSettingsStore = defineStore('settings', () => {
     if (!Number.isFinite(rate) || rate < 0 || rate > 100) return
     state.projectionAnnualRatePercent = rate
   }
+  // Mirrors SettingsSchemaV5.userName (max 30). Trims; rejects (no-op) above the cap
+  // so the persisted payload can never fail schema validation.
+  function setUserName(name: string): void {
+    const trimmed = name.trim()
+    if (trimmed.length > 30) return
+    state.userName = trimmed
+  }
 
   return {
     state,
@@ -62,5 +72,6 @@ export const useSettingsStore = defineStore('settings', () => {
     setPayoffMethod,
     setLastMonthSeen,
     setProjectionAnnualRatePercent,
+    setUserName,
   }
 })

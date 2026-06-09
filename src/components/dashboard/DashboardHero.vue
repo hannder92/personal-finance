@@ -4,9 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import ComparisonBadge from '@/components/dashboard/ComparisonBadge.vue'
 import HealthScore from '@/components/dashboard/HealthScore.vue'
+import SpendingPaceBadge from '@/components/dashboard/SpendingPaceBadge.vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useHealthScore } from '@/composables/useHealthScore'
 import { useNetIncome } from '@/composables/useNetIncome'
+import { useSpendingPace } from '@/composables/useSpendingPace'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
@@ -17,6 +19,7 @@ const income = useIncomeStore()
 const snapshots = useSnapshotsStore()
 const { freeForAllocation } = useNetIncome()
 const { result: healthScoreResult } = useHealthScore()
+const { pace } = useSpendingPace()
 
 const hasIncome = computed(() => income.state.grossSalary > 0)
 
@@ -38,7 +41,7 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
 
 <template>
   <header
-    data-testid="dashboard-hero"
+    data-testid="data-dashboard-hero"
     class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/50"
   >
     <div class="flex flex-wrap items-start justify-between gap-4">
@@ -53,6 +56,12 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
           >
             {{ formatCurrency(freeForAllocation, settings.state.currency) }}
           </p>
+          <SpendingPaceBadge
+            class="mt-1.5"
+            :status="pace.status"
+            :spent-pct="pace.spentPct"
+            :elapsed-pct="pace.elapsedPct"
+          />
         </template>
         <template v-else>
           <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">

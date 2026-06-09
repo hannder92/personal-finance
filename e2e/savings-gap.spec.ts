@@ -45,6 +45,8 @@ test.describe('Savings gap on dashboard (TC-E-010)', () => {
       }
     )
     await page.goto('/')
+    // Tier-2 is collapsed by default on mobile (20260604-dashboard-progressive-disclosure).
+    await page.getByTestId('dashboard-tier2-toggle').click()
     await expect(page.getByTestId('savings-gap-objective')).toContainText('2')
     await expect(page.getByTestId('savings-gap-feasible')).toContainText('800')
     await expect(page.getByRole('alert')).toBeVisible()

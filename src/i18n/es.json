@@ -29,6 +29,39 @@
   },
   "dashboard": {
     "title": "Resumen",
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches",
+      "withName": "{greeting}, {name}"
+    },
+    "pace": {
+      "badgeAhead": "↑ +{delta}%",
+      "badgeBelow": "↓ −{delta}%",
+      "contextAhead": "Llevas el {spent}% del gasto del mes pasado y va el {elapsed}% del mes",
+      "contextBelow": "Vas por debajo del ritmo del mes pasado: {spent}% del gasto y va el {elapsed}% del mes",
+      "noHistory": "Desde el próximo mes verás tu comparación con el mes anterior"
+    },
+    "networth": {
+      "title": "Tu patrimonio",
+      "have": "Tengo",
+      "owe": "Debo",
+      "net": "Neto",
+      "empty": "Registra tus activos o deudas para ver tu patrimonio aquí."
+    },
+    "flow": {
+      "title": "Flujo de caja",
+      "subtitle": "Ingresos vs gastos por mes cerrado",
+      "income": "Ingresos",
+      "expenses": "Gastos",
+      "empty": "Tu gráfica se construye con el cierre de cada mes. La verás cuando tengas al menos dos meses cerrados."
+    },
+    "activity": {
+      "title": "Actividad del mes",
+      "viewAll": "Ver todo",
+      "empty": "Aún no registras gastos este mes.",
+      "emptyCta": "Registrar primer gasto"
+    },
     "hero": {
       "availableLabel": "Disponible este mes",
       "emptyIncome": "Configura tu ingreso para ver cuánto tienes disponible.",
@@ -59,6 +92,11 @@
     "empty": {
       "donut": "Configura ingresos y distribución para ver este gráfico.",
       "projection": "Configura tus finanzas para ver la proyección."
+    },
+    "tier2": {
+      "expand": "Ver análisis del mes",
+      "collapse": "Ocultar análisis",
+      "hint": "KPIs, gráficos y proyección"
     },
     "health": {
       "labelOk": "Saludable",
@@ -145,6 +183,14 @@
   "common": {
     "delete": "Eliminar"
   },
+  "settings": {
+    "userName": {
+      "label": "Tu nombre (opcional)",
+      "placeholder": "¿Cómo te llamamos?",
+      "hint": "Se usa solo para saludarte. Queda guardado en tu dispositivo.",
+      "error": "Máximo 30 caracteres"
+    }
+  },
   "runway": {
     "title": "Runway (meses de autonomía)",
     "months": "{count} meses",
@@ -173,6 +219,31 @@
       "linear": "Lineal",
       "residual": "Residual",
       "passive": "Pasivo"
+    }
+  },
+  "day": {
+    "sectionTitle": "Mi día",
+    "coverage": {
+      "title": "Cobertura de hoy",
+      "ok": "Cubres lo pendiente de hoy",
+      "shortfall": "Faltan {amount} para cubrir hoy",
+      "noDue": "Sin pagos para hoy",
+      "liquidLabel": "Liquidez operativa",
+      "context": "Incluye efectivo, ahorros e inversiones líquidas",
+      "noLiquidCta": "Registra patrimonio líquido para ver cobertura"
+    },
+    "payments": {
+      "title": "Pagos de hoy",
+      "empty": "Sin pagos para hoy",
+      "viewDebts": "Ver deudas"
+    },
+    "agenda": {
+      "title": "Próximos 3 días",
+      "none": "Sin vencimientos",
+      "row": "{count} pagos · {amount}",
+      "day0": "Hoy",
+      "day1": "Mañana",
+      "day2": "Pasado mañana"
     }
   },
   "fi": {

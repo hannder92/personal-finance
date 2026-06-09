@@ -19,9 +19,7 @@ const type = ref<AssetType>('savings')
 const rateRaw = ref('')
 
 // annualRatePercent is only meaningful for savings/investment per OQ-P2 (2-plan.md).
-const showRateInput = computed(
-  () => type.value === 'savings' || type.value === 'investment'
-)
+const showRateInput = computed(() => type.value === 'savings' || type.value === 'investment')
 
 function onSubmit(event: Event) {
   event.preventDefault()
@@ -76,7 +74,10 @@ function onSubmit(event: Event) {
           <option value="other">Otro</option>
         </select>
       </label>
-      <label v-if="showRateInput" class="flex flex-1 flex-col gap-1">
+      <label
+        v-if="showRateInput"
+        class="flex flex-1 flex-col gap-1"
+      >
         <span class="text-xs">Tasa anual (E.A. %)</span>
         <input
           v-model="rateRaw"

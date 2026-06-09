@@ -1,0 +1,136 @@
+ac:
+  - { id: "AC-1.1", desc: "Saludo por franja horaria + fecha (sin nombre)" }
+  - { id: "AC-1.2", desc: "Saludo incluye nombre configurado" }
+  - { id: "AC-1.3", desc: "Campo nombre opcional en ajustes, persiste y es removible" }
+  - { id: "AC-2.1", desc: "Badge ritmo gasto variable visible con histórico" }
+  - { id: "AC-2.2", desc: "Ritmo adelantado: rojo + línea contexto X%/Y%" }
+  - { id: "AC-2.3", desc: "Ritmo por debajo: verde + contexto" }
+  - { id: "AC-2.4", desc: "Sin histórico: neutro, sin badge ni NaN" }
+  - { id: "AC-3.1", desc: "Tres tarjetas Tengo/Debo/Neto con jerarquía héroe" }
+  - { id: "AC-3.2", desc: "Drill-down de tarjetas a vistas detalle" }
+  - { id: "AC-3.3", desc: "Neto negativo rojo / positivo verde" }
+  - { id: "AC-3.4", desc: "Empty state patrimonio con icono y copy" }
+  - { id: "AC-4.1", desc: "Barras ingresos vs gasto total por mes cerrado, máx 6" }
+  - { id: "AC-4.2", desc: "Colores semánticos verde/rojo + leyenda en gráfica" }
+  - { id: "AC-4.3", desc: "Empty state flujo con <2 meses cerrados" }
+  - { id: "AC-5.1", desc: "Top 5 categorías del mes ordenadas + ver todo" }
+  - { id: "AC-5.2", desc: "Empty state actividad con CTA registrar gasto" }
+  - { id: "AC-6.1", desc: "P0 (saludo+cobertura+héroe) sin scroll en 390x844" }
+  - { id: "AC-6.2", desc: "Orden secciones + dos columnas desktop ≥768px" }
+  - { id: "AC-6.3", desc: "Toggle tier-2 sin regresión; secciones nuevas fuera del colapsable" }
+  - { id: "AC-6.4", desc: "Touch targets ≥44px en controles nuevos" }
+tc:
+  - { id: "TC-U-001", covers: [AC-1.1], kind: unit }
+  - { id: "TC-U-002", covers: [AC-1.1, AC-1.2], kind: unit }
+  - { id: "TC-U-003", covers: [AC-1.3], kind: unit }
+  - { id: "TC-U-004", covers: [AC-2.2, AC-2.3], kind: unit }
+  - { id: "TC-U-005", covers: [AC-2.4], kind: unit }
+  - { id: "TC-U-006", covers: [AC-4.1], kind: unit }
+  - { id: "TC-U-007", covers: [AC-4.1], kind: unit }
+  - { id: "TC-U-008", covers: [AC-3.1, AC-3.3], kind: unit }
+  - { id: "TC-U-009", covers: [AC-2.1, AC-4.1], kind: unit }
+  - { id: "TC-U-010", covers: [AC-1.3], kind: unit }
+  - { id: "TC-U-011", covers: [AC-4.1], kind: unit }
+  - { id: "TC-U-012", covers: [AC-2.1], kind: unit }
+  - { id: "TC-I-001", covers: [AC-1.1, AC-1.2], kind: integration }
+  - { id: "TC-I-002", covers: [AC-1.3], kind: integration }
+  - { id: "TC-I-003", covers: [AC-2.1, AC-2.2], kind: integration }
+  - { id: "TC-I-004", covers: [AC-2.3], kind: integration }
+  - { id: "TC-I-005", covers: [AC-2.4], kind: integration }
+  - { id: "TC-I-006", covers: [AC-3.1, AC-3.2, AC-3.3], kind: integration }
+  - { id: "TC-I-007", covers: [AC-3.4], kind: integration }
+  - { id: "TC-I-008", covers: [AC-4.1, AC-4.2], kind: integration }
+  - { id: "TC-I-009", covers: [AC-4.3], kind: integration }
+  - { id: "TC-I-010", covers: [AC-5.1], kind: integration }
+  - { id: "TC-I-011", covers: [AC-5.2], kind: integration }
+  - { id: "TC-I-012", covers: [AC-6.2, AC-6.3], kind: integration }
+  - { id: "TC-I-013", covers: [AC-2.1, AC-4.1], kind: integration }
+  - { id: "TC-I-014", covers: [AC-1.3], kind: integration }
+  - { id: "TC-I-015", covers: [AC-1.1, AC-2.2, AC-3.4, AC-4.3, AC-5.2], kind: integration }
+  - { id: "TC-E-001", covers: [AC-6.1], kind: e2e }
+  - { id: "TC-E-002", covers: [AC-6.2], kind: e2e }
+  - { id: "TC-E-003", covers: [AC-6.3], kind: e2e }
+  - { id: "TC-E-004", covers: [AC-6.4], kind: e2e }
+  - { id: "TC-E-005", covers: [AC-1.2, AC-1.3], kind: e2e }
+tasks:
+  - { id: "T-001", status: done, type: refactor, size: M, layer: infra, covers: [ADR-4], deps: [] }
+  - { id: "T-002", status: done, type: setup, size: S, layer: cross, covers: [AC-1.1, AC-2.2, AC-3.4, AC-4.3, AC-5.2], deps: [] }
+  - { id: "T-003", status: done, type: setup, size: S, layer: cross, covers: [], deps: [] }
+  - { id: "T-004", status: done, type: test, size: S, layer: domain, covers: [AC-1.1, AC-1.2, TC-U-001, TC-U-002], deps: [T-003] }
+  - { id: "T-005", status: done, type: test, size: M, layer: infra, covers: [AC-1.3, TC-U-003, TC-U-010, TC-I-014], deps: [T-003] }
+  - { id: "T-006", status: done, type: test, size: M, layer: domain, covers: [AC-2.1, AC-2.2, AC-2.3, AC-2.4, TC-U-004, TC-U-005, TC-U-012], deps: [T-003] }
+  - { id: "T-007", status: done, type: test, size: S, layer: domain, covers: [AC-4.1, TC-U-006, TC-U-007, TC-U-011], deps: [T-003] }
+  - { id: "T-008", status: done, type: test, size: M, layer: infra, covers: [AC-2.1, AC-4.1, TC-U-009, TC-I-013], deps: [T-003] }
+  - { id: "T-009", status: done, type: test, size: M, layer: app, covers: [AC-1.1, AC-1.2, AC-1.3, TC-I-001, TC-I-002], deps: [T-002, T-003] }
+  - { id: "T-010", status: done, type: test, size: M, layer: app, covers: [AC-2.1, AC-2.2, AC-2.3, AC-2.4, TC-I-003, TC-I-004, TC-I-005], deps: [T-002, T-003] }
+  - { id: "T-011", status: done, type: test, size: M, layer: app, covers: [AC-3.1, AC-3.2, AC-3.3, AC-3.4, TC-U-008, TC-I-006, TC-I-007], deps: [T-002, T-003] }
+  - { id: "T-012", status: done, type: test, size: S, layer: app, covers: [AC-4.1, AC-4.2, AC-4.3, TC-I-008, TC-I-009], deps: [T-002, T-003] }
+  - { id: "T-013", status: done, type: test, size: S, layer: app, covers: [AC-5.1, AC-5.2, TC-I-010, TC-I-011], deps: [T-002, T-003] }
+  - { id: "T-014", status: done, type: test, size: M, layer: app, covers: [AC-6.2, AC-6.3, TC-I-012, TC-I-015], deps: [T-002, T-003] }
+  - { id: "T-015", status: done, type: test, size: M, layer: app, covers: [AC-6.1, AC-6.2, AC-6.3, AC-6.4, AC-1.2, AC-1.3, TC-E-001, TC-E-002, TC-E-003, TC-E-004, TC-E-005], deps: [T-003] }
+  - { id: "T-016", status: done, type: impl, size: M, layer: infra, risk: H, covers: [AC-1.3, TC-U-010, TC-I-014], deps: [T-005] }
+  - { id: "T-017", status: done, type: impl, size: M, layer: infra, risk: H, covers: [AC-2.1, AC-4.1, TC-U-009, TC-I-013], deps: [T-008, T-016] }
+  - { id: "T-018", status: done, type: impl, size: S, layer: domain, risk: M, covers: [AC-2.1, AC-2.2, AC-2.3, AC-2.4, TC-U-004, TC-U-005, TC-U-012], deps: [T-006] }
+  - { id: "T-019", status: done, type: impl, size: S, layer: domain, risk: M, covers: [AC-4.1, TC-U-006, TC-U-007, TC-U-011], deps: [T-007] }
+  - { id: "T-020", status: done, type: impl, size: S, layer: domain, risk: L, covers: [AC-1.1, AC-1.2, TC-U-001, TC-U-002], deps: [T-004] }
+  - { id: "T-021", status: done, type: impl, size: S, layer: app, risk: M, covers: [AC-1.3, TC-U-003, TC-I-002], deps: [T-005, T-009, T-016] }
+  - { id: "T-022", status: done, type: impl, size: S, layer: app, risk: M, covers: [AC-1.1, AC-1.2, TC-I-001], deps: [T-009, T-020, T-021] }
+  - { id: "T-023", status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-2.1, AC-2.2, AC-2.3, AC-2.4, TC-I-003, TC-I-004, TC-I-005], deps: [T-001, T-010, T-018] }
+  - { id: "T-024", status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-3.1, AC-3.2, AC-3.3, AC-3.4, TC-U-008, TC-I-006, TC-I-007], deps: [T-011] }
+  - { id: "T-025", status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-4.1, AC-4.2, AC-4.3, TC-I-008, TC-I-009], deps: [T-001, T-012, T-019] }
+  - { id: "T-026", status: done, type: impl, size: S, layer: app, risk: L, covers: [AC-5.1, AC-5.2, TC-I-010, TC-I-011], deps: [T-013] }
+  - { id: "T-027", status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-6.1, AC-6.2, AC-6.3, AC-6.4, TC-I-012, TC-E-001, TC-E-002, TC-E-003, TC-E-004], deps: [T-014, T-015, T-022, T-023, T-024, T-025, T-026] }
+  - { id: "T-LAST", status: done, type: test, size: S, layer: cross, covers: [], deps: [T-016, T-017, T-018, T-019, T-020, T-021, T-022, T-023, T-024, T-025, T-026, T-027] }
+adr:
+  - { id: "ADR-1", desc: "Cablear rollover mensual en boot (useMonthRollover)" }
+  - { id: "ADR-2", desc: "Schema V5 con migración aditiva para userName" }
+  - { id: "ADR-3", desc: "SpendingPaceBadge propio, no extender ComparisonBadge" }
+  - { id: "ADR-4", desc: "Snapshot: fuente única de tipo desde schema Zod; eliminar as any de main.ts" }
+open_questions:
+  - id: "OQ-1"
+    desc: "Actividad reciente: adaptar a categorías del mes vs construir ledger de movimientos con fecha"
+    status: resolved
+    resolution: "Actividad del mes por categoría; ledger fuera de alcance (feature futuro)"
+  - id: "OQ-2"
+    desc: "Base de cálculo del % gastos vs mes anterior y comportamiento sin histórico"
+    status: resolved
+    resolution: "Badge héroe = ritmo de gasto variable vs mes anterior ajustado por días transcurridos; gráfica = gasto total por mes cerrado; sin histórico = neutro sin badge"
+  - id: "OQ-3"
+    desc: "Saludo: nombre opcional en ajustes vs saludo genérico por franja horaria"
+    status: resolved
+    resolution: "Nombre opcional en ajustes (≤30 chars) + fallback por franja horaria; dato local"
+  - id: "OQ-4"
+    desc: "Tarjetas de patrimonio: tres fijas (activos/deudas/neto) vs una por activo"
+    status: resolved
+    resolution: "Tres fijas: Tengo / Debo / Neto con drill-down"
+assumptions:
+  - id: "A-001"
+    stated_in: plan
+    text: "Schema Zod V4 de snapshots ya incluye totalVariableSpent compatible con buildSnapshot()"
+    impact_if_wrong: M
+    verify_by: "Verificado leyendo schema.ts L165-177 (2026-06-09)"
+    status: verified
+  - id: "A-002"
+    stated_in: plan
+    text: "Hidratación de snapshots es pass-through directo; re-tipar el store no rompe datos V4; debtPayments nuevo cubierto por migrate v5 default 0"
+    impact_if_wrong: H
+    verify_by: "Verificado en main.ts L66/L111 (2026-06-09); test migración V4→V5 en fase 5"
+    status: verified
+  - id: "A-003"
+    stated_in: plan
+    text: "chart.js instalado expone BarElement sin dependencia nueva"
+    impact_if_wrong: L
+    verify_by: "Import en CashFlowChart + suite verde"
+    status: verified
+  - id: "A-004"
+    stated_in: plan
+    text: "Rollover detectado solo en boot es suficiente (sesiones no cruzan fin de mes)"
+    impact_if_wrong: L
+    verify_by: "ADR-1; revisar en feedback post-release"
+    status: unverified
+  - id: "A-005"
+    stated_in: plan
+    text: "Fold 390x844 admite saludo compacto + cobertura Mi Día + héroe sin reducir Mi Día"
+    impact_if_wrong: M
+    verify_by: "E2E móvil de fold en fase 5"
+    status: verified

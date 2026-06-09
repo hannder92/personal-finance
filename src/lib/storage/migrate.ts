@@ -1,7 +1,7 @@
 // v1 → v2 migration per `specs/20260514-project-refactor/2-data-model.md`.
 // Uses a versioned chain (ADR-4): each migrations[N] transforms (N-1) → N in isolation.
 
-import type { AppStateV3 } from './schema'
+import type { AppStateV3, AppStateV4 } from './schema'
 
 type V1State = {
   schemaVersion?: number
@@ -266,17 +266,36 @@ function migrateV3toV4(v3: AppStateV3): unknown {
   }
 }
 
+// migrations[5]: v4 → v5 (20260609-dashboard-fintech-redesign, ADR-2). Additive:
+// settings.userName defaults to '' and each snapshot gains debtPayments: 0
+// (pre-V5 months did not capture the debt obligation; 0 keeps the chart honest).
+function migrateV4toV5(v4: AppStateV4): unknown {
+  return {
+    ...v4,
+    schemaVersion: 5,
+    settings: {
+      ...v4.settings,
+      userName: '',
+    },
+    snapshots: v4.snapshots.map((s) => ({
+      ...s,
+      debtPayments: (s as { debtPayments?: number }).debtPayments ?? 0,
+    })),
+  }
+}
+
 export const migrations: Record<number, (state: unknown) => unknown> = {
   2: (state: unknown) => migrateV1toV2(state as V1State),
   3: (state: unknown) => migrateV2toV3(state as V2Like),
   4: (state: unknown) => migrateV3toV4(state as AppStateV3),
+  5: (state: unknown) => migrateV4toV5(state as AppStateV4),
 }
 
 export function migrate(state: unknown): unknown {
   if (typeof state !== 'object' || state === null) return state
   const current = (state as { schemaVersion?: number }).schemaVersion ?? 1
   let s = state
-  for (let v = current + 1; v <= 4; v++) {
+  for (let v = current + 1; v <= 5; v++) {
     const migrator = migrations[v]
     if (migrator) s = migrator(s)
   }

@@ -66,6 +66,26 @@
 - ID generation: **MUST** use `crypto.randomUUID()` for new entity IDs — **MUST NOT** use sequential integers or `Math.random()` alone
 - PII: **MUST NOT** log store state or financial data to external services; no analytics SDKs
 
+## Product Principles
+
+- **Moment-first:** Every new feature **MUST** declare in `0-discovery.md` the user moment (when they open the app), the horizon (`today` | `week` | `month` | `year`), and the human question it answers — before `1-spec.md` ACs are written.
+- **Decision over data:** Screens that only list numbers **MUST** justify read-only scope in the spec. Operational screens **MUST** expose at least one of: comparison (A vs B), coverage (have vs need), or a clear next action.
+- **Feedback loops:** Operational features **MUST** close a loop visible to the user: e.g. projected → paid → pending, or strategy A vs B → time/money saved.
+- **AI proposes, human decides:** Phase 0.5 discovery **MUST** include ≥2 concrete UI/UX proposals with a recommended option and trade-offs — not only open questions.
+- **Benchmark before invent:** Features with `size_class` **M** or **L** **MUST** reference ≥1 external or internal benchmark (`finanzas ej/`, competitor, or prior spec) with adopt / adapt / reject rationale.
+
+## UX Experience Standards
+
+- **One idea per card:** Each visible card **MUST** answer one question; **MUST NOT** stack unrelated metrics in the same card without hierarchy (label → hero number → supporting detail).
+- **Hero typography:** The primary number of a section **MUST** use the largest type in that section; secondary metrics **MUST NOT** compete in size.
+- **Semantic color:** Green = covered / paid / positive flow; amber = pending / attention; red = shortfall / risk. Color **MUST** encode status, not decoration alone.
+- **Empty states:** **MUST** communicate emotional tone (relief, neutral, alert) with icon + short copy — **MUST NOT** use bare “No data” without context.
+- **Context line:** Non-obvious metrics **MUST** include one plain-language sentence explaining what the number means or what to do next (extends ux-clarity goal to all new surfaces).
+- **Mobile-first layout:** New UI **MUST** be designed for 390×844 first; desktop **MAY** add columns but **MUST NOT** require horizontal scroll for primary actions on mobile.
+- **Touch targets:** Interactive controls on mobile **MUST** meet ≥44×44px effective tap area.
+- **Visual warmth:** Prefer rounded cards (`rounded-xl`), soft elevation (`shadow-sm` / subtle border), section icons, and generous vertical rhythm — avoid dense spreadsheet-like grids on primary flows.
+- **Benefit copy on decisions:** Comparison UIs (debt strategies, savings scenarios, purchase simulators) **MUST** show human benefit text (“4 months earlier”, “$X less interest”) — not only raw deltas.
+
 ## Forbidden
 
 - **Options API** — `defineComponent({ data() {}, methods: {} })` is banned. Use `<script setup>` + Composition API exclusively. Reason: inconsistency with the rest of the codebase and worse TypeScript inference.
@@ -82,7 +102,7 @@
 
 ## Versioning
 
-- Constitution version: **v4** (this document)
+- Constitution version: **v5** (this document)
 - Amendments: recorded as `v{N+1}` with date + diff summary at the bottom
 
 ---
@@ -92,6 +112,7 @@
 - [x] Author: `Johann Medina` — `2026-05-14` (v2)
 - [x] Author: `Johann Medina` — `2026-05-15` (v3)
 - [x] Author: `Johann Medina` — `2026-05-29` (v4)
+- [ ] Author: `Johann Medina` — `2026-05-29` (v5)
 
 ---
 
@@ -103,3 +124,4 @@
 | v2      | 2026-05-14 | Johann Medina | Full stack migration: Vue 3.5 + Vite 6 + TypeScript + Pinia + Tailwind + Vitest. Testing policy upgraded to 80% coverage on financial calculations. Forbidden list updated for Vue/TypeScript idioms.                                                                                                                                                                                                   |
 | v3      | 2026-05-15 | Johann Medina | Post-implementation retrospective corrections: (1) Stack fixed — removed `shadcn-vue`, `@sentry/vue`, `pino` (never installed); added `radix-vue`, `lucide-vue-next`, `vue-chartjs`. (2) Architecture — added mandatory navigation shell rule for `App.vue` and CRUD completeness rule for domain views. (3) Zod rule relaxed from MUST to SHOULD on UI forms.                                          |
 | v4      | 2026-05-29 | Johann Medina | (1) Version header synced to v4; removed stale `pino` references from Security/Forbidden. (2) Storage boundary updated to `AppStateSchemaV3`. (3) Store catalog expanded to all 9 Pinia domains. (4) Onboarding wizard removed — app opens directly on dashboard; legacy `onboarding` field in persisted schema kept for migration compat only. (5) Navigation shell no longer hides during onboarding. |
+| v5      | 2026-05-29 | Johann Medina | Product Principles (moment-first, decision over data, feedback loops, AI proposals in discovery, benchmark gate). UX Experience Standards (card hierarchy, semantic color, empty states, context lines, mobile-first, benefit copy on comparisons). Introduces mandatory `0-discovery.md` for features size M+.                                                                                         |

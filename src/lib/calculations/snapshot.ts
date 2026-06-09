@@ -4,6 +4,8 @@ export interface SnapshotInputs {
   totalFixedExpenses: number
   totalVariableSpent: number
   totalDebt: number
+  /** Monthly debt obligation (min payments + installments) at month close. V5 field. */
+  debtPayments: number
   dti: number
   savingsRate: number
   netWorth: number

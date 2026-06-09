@@ -1,18 +1,12 @@
-// Full impl (T-047). FIFO cap of 24 enforced on append (mirrors applySnapshotCap logic).
+// FIFO cap of 24 enforced on append (mirrors applySnapshotCap logic).
+// ADR-4 (20260609-dashboard-fintech-redesign): the Zod schema is the single
+// source of truth for the Snapshot shape — a local interface drifted silently
+// from the persisted data and was masked by `as any` casts in main.ts.
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
+import type { Snapshot } from '@/lib/storage/schema'
 
-export interface Snapshot {
-  id: string
-  capturedAt: string
-  month: string // YYYY-MM
-  netIncome: number
-  fixedExpenses: number
-  debtPayments: number
-  dti: number
-  netWorth: number
-  healthScore: number
-}
+export type { Snapshot }
 
 export interface SnapshotsState {
   items: Snapshot[]
