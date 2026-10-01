@@ -150,5 +150,10 @@ app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
   // Runs after hydration so the snapshot and the variable reset are persisted.
-  useMonthClose().runMonthClose()
+  const { runMonthClose } = useMonthClose()
+  runMonthClose()
+  // Catch a month change while the tab stays open in the background.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') runMonthClose()
+  })
 })
