@@ -71,12 +71,23 @@ function scoreSavings(rate: number): number {
   return lerp(rate, SAVINGS_THRESHOLDS.warning, 50, SAVINGS_THRESHOLDS.good, 100)
 }
 
-function labelFor(score: number): HealthLabel {
+export type HealthLevel = 'ok' | 'warn' | 'danger'
+
+export function labelFor(score: number): HealthLabel {
   if (score <= 20) return 'critical'
   if (score <= 40) return 'at-risk'
   if (score <= 60) return 'regular'
   if (score <= 80) return 'good'
   return 'excellent'
+}
+
+// Traffic-light level shared by the overall score and each component sub-score,
+// derived from the same cutoffs as labelFor: good/excellent → ok, regular → warn.
+export function healthLevel(score: number): HealthLevel {
+  const label = labelFor(score)
+  if (label === 'good' || label === 'excellent') return 'ok'
+  if (label === 'regular') return 'warn'
+  return 'danger'
 }
 
 // Per ADR-6: when components are missing, re-normalize the remaining weights to sum to 1.

@@ -13,11 +13,11 @@ export interface UseSavingsFeasibility {
 
 export function useSavingsFeasibility(): UseSavingsFeasibility {
   const allocation = useAllocationStore()
-  const { netIncome, freeForAllocation } = useNetIncome()
+  const { totalMonthlyIncome, freeForAllocation } = useNetIncome()
 
   const result = computed(() =>
     calcSavingsFeasibility({
-      netIncome: netIncome.value,
+      netIncome: totalMonthlyIncome.value,
       savingsPercent: allocation.state.savings,
       freeForAllocation: freeForAllocation.value,
     })

@@ -93,3 +93,29 @@ describe('HealthScore (20260529-metricas-runway-ingresos)', () => {
     expect(screen.getByText(/reserva de emergencia|emergency reserve/i)).toBeTruthy()
   })
 })
+
+describe('HealthScore — levels and raw metrics', () => {
+  it('row status comes from the levels prop, not from raw-metric cutoffs', async () => {
+    render(HealthScore, {
+      props: {
+        score: 70,
+        label: 'Bueno',
+        // DTI sub-score 100 (excellent) used to be flagged "danger" because it was read as 100%.
+        breakdown: { dti: 100, emergency: 50, housing: 20, savings: null },
+        levels: { dti: 'ok', emergency: 'warn', housing: 'danger', savings: null },
+        metrics: { dti: 12, emergencyMonths: 3, housingRatio: 45, savingsRate: null },
+      },
+      global: globalPlugins,
+    })
+    await fireEvent.click(screen.getByRole('button', { name: /70/ }))
+
+    const status = (k: string) =>
+      document.querySelector(`[data-component="${k}"]`)!.getAttribute('data-status')
+    expect(status('dti')).toBe('ok')
+    expect(status('emergency')).toBe('warn')
+    expect(status('housing')).toBe('danger')
+    expect(status('savings')).toBe('missing')
+    expect(document.querySelector('[data-component="dti"]')!.textContent).toContain('12%')
+    expect(document.querySelector('[data-component="emergency"]')!.textContent).toContain('3.0')
+  })
+})

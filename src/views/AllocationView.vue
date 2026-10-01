@@ -4,7 +4,7 @@ import { useNetIncome } from '@/composables/useNetIncome'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const settings = useSettingsStore()
-const { netIncome: totalIncome } = useNetIncome()
+const { totalMonthlyIncome: totalIncome } = useNetIncome()
 </script>
 
 <template>

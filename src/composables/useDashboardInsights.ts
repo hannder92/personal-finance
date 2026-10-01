@@ -17,19 +17,19 @@ export function useDashboardInsights(): UseDashboardInsights {
   const { t } = useI18n()
   const allocation = useAllocationStore()
   const settings = useSettingsStore()
-  const { netIncome } = useNetIncome()
+  const { totalMonthlyIncome } = useNetIncome()
   const { months: projectionMonths } = useCashFlowProjection()
 
   const hasDonutData = computed(
     () =>
-      netIncome.value > 0 &&
+      totalMonthlyIncome.value > 0 &&
       allocation.state.needs + allocation.state.wants + allocation.state.savings > 0
   )
 
   const hasProjectionData = computed(() => projectionMonths.value.length > 0)
 
   const savingsObjective = computed(() =>
-    Math.round((netIncome.value * allocation.state.savings) / 100)
+    Math.round((totalMonthlyIncome.value * allocation.state.savings) / 100)
   )
 
   const projectionM12 = computed(() => {

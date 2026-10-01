@@ -173,20 +173,24 @@ Allocation    needs% + wants% + savings% = 100 (Zod refinement enforced)
 ```
 grossSalary + deductions[] + nonSalaryBenefits[]
   → calcNetSalary() → netIncome                          [useNetIncome]
+netIncome + Σ calcMonthlyEquivalent(otherStreams)  →  totalMonthlyIncome   [useNetIncome]
+debtObligations = calcTotalDebtObligation(cards)  (diferidos con paid ≥ installments no cuentan)
 
-netIncome
+totalMonthlyIncome   (única base para DTI, vivienda, tasa de ahorro y distribución)
   → × allocation%              →  distribución (needs/wants/savings amounts)
-  → - fixedExpenses - debtObligations  →  disponible libre
+  → - fixedExpenses - variableBudget - debtObligations  →  disponible libre
   → calcDTI()                  →  DTI%                  [useDTI]
   → calcHousingRatio()         →  housingRatio%          [useHealthScore]
   → sum(goal.monthlyContrib) / netIncome  →  savingsRate%
-  → liquidAssets / (fixedExpenses + debtObligations)     →  emergencyMonths
+  → liquidAssets(cash+savings+investment) / (fixed + variableBudget + debt)  →  emergencyMonths
   → calcHealthScore({dti, emergencyMonths, housingRatio, savingsRate})  →  score 0-100
                                                          [useHealthScore]
   Health weights: DTI 35% · Emergency 30% · Housing 20% · Savings 15%
   Catastrophic DTI cap: if DTI > 100% → score capped at 40 regardless
 
-  → calcProjection(netIncome, streams[], fixedExpenses, debtObligation, 12)  →  chart data
+  → calcProjection(netIncome, streams[], fixed, variableBudget, debt, startCalendarMonth, 12)
+                               →  chart data (prima en junio y diciembre)
+  Health label/levels: labelFor() + healthLevel() en health-score.ts (good/excellent=ok, regular=warn)
   → calcNetWorth(assets[], cards[])  →  net worth
   → calcHypotheticalSavings + calcCompoundGrowth  →  SavingsProjectionChart
 ```
@@ -238,7 +242,7 @@ Migration path: v1→v2→v3 (auto, en `loadAppState`). Backups: `finance_app_da
 | Ratio vivienda   | ≤30%     | 40%     | ≥60% | 20%  |
 | Tasa ahorro      | ≥20%     | 10%     | 0%   | 15%  |
 
-Fondo emergencia denominador: `gastos fijos + obligaciones de deuda mínimas` (no solo gastos fijos).
+Fondo emergencia: `efectivo + ahorros + inversiones` / `gastos fijos + presupuesto variable + obligaciones de deuda`.
 
 ---
 

@@ -95,3 +95,11 @@ describe('DashboardHero (TC-C-001 … TC-C-005)', () => {
     expect(cta.getAttribute('href')).toBe('/allocation')
   })
 })
+
+describe('DashboardHero — health label uses lib cutoffs', () => {
+  it('score 0 (no data) shows the lib "critical" label, not the old 3-level text', () => {
+    mountHero()
+    const el = document.querySelector('[data-testid="hero-health-score"]')!
+    expect(el.textContent).toContain(i18n.global.t('dashboard.health.labels.critical'))
+  })
+})

@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import KpiCard from '@/components/dashboard/KpiCard.vue'
 import { useDTI } from '@/composables/useDTI'
 import { useNetIncome } from '@/composables/useNetIncome'
-import { useExpensesStore } from '@/stores/expensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const { t } = useI18n()
 const settings = useSettingsStore()
-const expenses = useExpensesStore()
-const { netIncome } = useNetIncome()
+const { totalMonthlyIncome, fixedExpensesTotal, variableBudgetTotal } = useNetIncome()
 const { dti: dtiPct, totalDebtObligation } = useDTI()
-
-const fixedExpensesTotal = computed(() =>
-  expenses.state.items.reduce((acc, e) => acc + e.amount, 0)
-)
 </script>
 
 <template>
@@ -26,7 +19,7 @@ const fixedExpensesTotal = computed(() =>
     <KpiCard
       class="min-w-[9rem] shrink-0"
       :label="t('dashboard.kpi.netIncome')"
-      :value="netIncome"
+      :value="totalMonthlyIncome"
       type="income"
       :currency="settings.state.currency"
     />
@@ -34,6 +27,14 @@ const fixedExpensesTotal = computed(() =>
       class="min-w-[9rem] shrink-0"
       :label="t('dashboard.kpi.fixedExpenses')"
       :value="fixedExpensesTotal"
+      type="expenses"
+      :currency="settings.state.currency"
+    />
+    <KpiCard
+      v-if="variableBudgetTotal > 0"
+      class="min-w-[9rem] shrink-0"
+      :label="t('dashboard.kpi.variableExpenses')"
+      :value="variableBudgetTotal"
       type="expenses"
       :currency="settings.state.currency"
     />

@@ -18,7 +18,8 @@ export function calcDebtFreeDate(debts: ReadonlyArray<Debt>): Date | null {
 export function calcFreeForAllocation(
   totalIncome: number,
   fixedExpenses: number,
-  debtObligations: number
+  debtObligations: number,
+  variableExpenses = 0
 ): number {
-  return totalIncome - fixedExpenses - debtObligations
+  return totalIncome - fixedExpenses - debtObligations - variableExpenses
 }

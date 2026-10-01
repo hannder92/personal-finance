@@ -38,8 +38,9 @@
       "vsPrevious": "vs mes anterior"
     },
     "kpi": {
-      "netIncome": "Ingreso neto",
+      "netIncome": "Ingreso neto mensual",
       "fixedExpenses": "Gastos fijos",
+      "variableExpenses": "Gastos variables",
       "debtPayments": "Pagos deuda",
       "dti": "DTI"
     },
@@ -61,17 +62,23 @@
       "projection": "Configura tus finanzas para ver la proyección."
     },
     "health": {
-      "labelOk": "Saludable",
-      "labelWarn": "Mejorable",
-      "labelDanger": "En riesgo",
+      "labels": {
+        "critical": "Crítico",
+        "at-risk": "En riesgo",
+        "regular": "Regular",
+        "good": "Bueno",
+        "excellent": "Excelente"
+      },
       "scoreTitle": "Puntaje de salud",
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergencia",
-        "emergencyHint": "Reserva de emergencia (efectivo + ahorros vs fijos + deuda). Distinto del runway de autonomía.",
+        "emergencyHint": "Reserva de emergencia (efectivo, ahorros e inversiones vs fijos + variables + deuda). Distinto del runway de autonomía.",
         "housing": "Vivienda",
         "savings": "Ahorros",
-        "noData": "sin datos"
+        "noData": "sin datos",
+        "months": "{n} meses",
+        "target": "meta"
       }
     }
   },

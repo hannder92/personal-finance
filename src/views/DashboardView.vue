@@ -17,25 +17,23 @@ import { useDashboardInsights } from '@/composables/useDashboardInsights'
 import { useHealthScore } from '@/composables/useHealthScore'
 import { useAllocationStore } from '@/stores/allocationStore'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const allocation = useAllocationStore()
 const { options: chartTheme } = useChartTheme()
-const { months: cashflowMonths } = useCashFlowProjection()
-const { result: healthScoreResult } = useHealthScore()
+const { months: cashflowMonths, startCalendarMonth } = useCashFlowProjection()
+const { result: healthScoreResult, metrics: healthMetrics, componentLevels } = useHealthScore()
 const { hasDonutData, hasProjectionData, donutInsight, projectionInsight } = useDashboardInsights()
 
 const latestScore = computed(() => healthScoreResult.value.score)
 
-const healthLabel = computed(() => {
-  const score = latestScore.value
-  if (score >= 70) return t('dashboard.health.labelOk')
-  if (score >= 50) return t('dashboard.health.labelWarn')
-  return t('dashboard.health.labelDanger')
-})
+const healthLabel = computed(() => t(`dashboard.health.labels.${healthScoreResult.value.label}`))
 
 const projectionMonths = computed(() =>
   cashflowMonths.value.map((m, i) => ({
-    label: `M${i + 1}`,
+    // Calendar labels so dated inflows (prima in jun/dic) are visible on the chart.
+    label: new Date(2000, startCalendarMonth.value + i, 1).toLocaleDateString(locale.value, {
+      month: 'short',
+    }),
     balance: m.projectedBalance,
   }))
 )
@@ -64,6 +62,8 @@ const projectionMonths = computed(() =>
       :score="latestScore"
       :label="healthLabel"
       :breakdown="healthScoreResult.components"
+      :levels="componentLevels"
+      :metrics="healthMetrics"
       :default-open="false"
     />
 

@@ -9,13 +9,25 @@ export interface HealthBreakdown {
   savings?: number | null
 }
 
-type Status = 'ok' | 'warn' | 'danger' | 'missing'
+// Raw indicators behind each sub-score (percentages, months of coverage).
+export interface HealthMetricsProp {
+  dti?: number | null
+  emergencyMonths?: number | null
+  housingRatio?: number | null
+  savingsRate?: number | null
+}
+
+type Level = 'ok' | 'warn' | 'danger'
+type Status = Level | 'missing'
 
 const props = withDefaults(
   defineProps<{
     score?: number
     label?: string
     breakdown?: HealthBreakdown
+    // Per-component level computed by useHealthScore (same cutoffs as the overall label).
+    levels?: Partial<Record<keyof HealthBreakdown, Level | null>>
+    metrics?: HealthMetricsProp
     defaultOpen?: boolean
     variant?: 'default' | 'compact'
   }>(),
@@ -23,6 +35,8 @@ const props = withDefaults(
     score: 0,
     label: '',
     breakdown: () => ({}),
+    levels: () => ({}),
+    metrics: () => ({}),
     defaultOpen: false,
     variant: 'default',
   }
@@ -35,50 +49,56 @@ const isCompact = computed(() => props.variant === 'compact')
 
 function statusFor(component: keyof HealthBreakdown, value: number | null | undefined): Status {
   if (value === null || value === undefined) return 'missing'
-  switch (component) {
-    case 'dti':
-      if (value <= 30) return 'ok'
-      if (value <= 45) return 'warn'
-      return 'danger'
-    case 'emergency':
-      if (value >= 75) return 'ok'
-      if (value >= 40) return 'warn'
-      return 'danger'
-    case 'housing':
-      if (value <= 30) return 'ok'
-      if (value <= 40) return 'warn'
-      return 'danger'
-    case 'savings':
-      if (value >= 15) return 'ok'
-      if (value >= 5) return 'warn'
-      return 'danger'
-  }
+  return props.levels[component] ?? 'missing'
 }
 
+const pct = (n: number): string => `${Math.round(n)}%`
+
+function formatMonths(n: number): string {
+  if (!Number.isFinite(n)) return '∞'
+  return t('dashboard.health.breakdown.months', { n: n.toFixed(1) })
+}
+
+// Shows the raw indicator when available; falls back to the 0-100 sub-score.
+function display(
+  score: number | null | undefined,
+  metric: number | null | undefined,
+  format: (n: number) => string
+): string {
+  if (score === null || score === undefined) return t('dashboard.health.breakdown.noData')
+  if (metric === null || metric === undefined) return `${Math.round(score)}/100`
+  return format(metric)
+}
+
+// Targets mirror the "good" cutoffs in lib/health/thresholds.ts.
 const rows = computed(() => [
   {
     key: 'dti' as const,
     label: t('dashboard.health.breakdown.dti'),
     value: props.breakdown.dti ?? null,
-    ideal: '≤ 30%',
+    shown: display(props.breakdown.dti, props.metrics.dti, pct),
+    ideal: '≤ 20%',
   },
   {
     key: 'emergency' as const,
     label: t('dashboard.health.breakdown.emergency'),
     value: props.breakdown.emergency ?? null,
-    ideal: '≥ 75%',
+    shown: display(props.breakdown.emergency, props.metrics.emergencyMonths, formatMonths),
+    ideal: t('dashboard.health.breakdown.months', { n: '≥ 6' }),
   },
   {
     key: 'housing' as const,
     label: t('dashboard.health.breakdown.housing'),
     value: props.breakdown.housing ?? null,
+    shown: display(props.breakdown.housing, props.metrics.housingRatio, pct),
     ideal: '≤ 30%',
   },
   {
     key: 'savings' as const,
     label: t('dashboard.health.breakdown.savings'),
     value: props.breakdown.savings ?? null,
-    ideal: '≥ 15%',
+    shown: display(props.breakdown.savings, props.metrics.savingsRate, pct),
+    ideal: '≥ 20%',
   },
 ])
 </script>
@@ -122,7 +142,7 @@ const rows = computed(() => [
         <div class="flex items-center justify-between">
           <span class="font-medium">{{ row.label }}</span>
           <span class="text-xs text-slate-500">
-            {{ row.value ?? t('dashboard.health.breakdown.noData') }} · meta {{ row.ideal }}
+            {{ row.shown }} · {{ t('dashboard.health.breakdown.target') }} {{ row.ideal }}
           </span>
         </div>
         <p

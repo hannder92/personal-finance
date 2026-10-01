@@ -16,7 +16,7 @@ const settings = useSettingsStore()
 const income = useIncomeStore()
 const snapshots = useSnapshotsStore()
 const { freeForAllocation } = useNetIncome()
-const { result: healthScoreResult } = useHealthScore()
+const { result: healthScoreResult, componentLevels } = useHealthScore()
 
 const hasIncome = computed(() => income.state.grossSalary > 0)
 
@@ -26,12 +26,7 @@ const sortedSnapshots = computed(() =>
 const latestScore = computed(() => healthScoreResult.value.score)
 const previousScore = computed(() => sortedSnapshots.value[0]?.healthScore ?? null)
 
-const healthLabel = computed(() => {
-  const score = latestScore.value
-  if (score >= 70) return t('dashboard.health.labelOk')
-  if (score >= 50) return t('dashboard.health.labelWarn')
-  return t('dashboard.health.labelDanger')
-})
+const healthLabel = computed(() => t(`dashboard.health.labels.${healthScoreResult.value.label}`))
 
 const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.value > 0)
 </script>
@@ -89,6 +84,7 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
             :score="latestScore"
             :label="healthLabel"
             :breakdown="healthScoreResult.components"
+            :levels="componentLevels"
           />
           <ComparisonBadge
             :current="latestScore"

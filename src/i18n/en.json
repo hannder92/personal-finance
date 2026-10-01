@@ -38,8 +38,9 @@
       "vsPrevious": "vs last month"
     },
     "kpi": {
-      "netIncome": "Net income",
+      "netIncome": "Monthly net income",
       "fixedExpenses": "Fixed expenses",
+      "variableExpenses": "Variable expenses",
       "debtPayments": "Debt payments",
       "dti": "DTI"
     },
@@ -61,17 +62,23 @@
       "projection": "Set up your finances to see the projection."
     },
     "health": {
-      "labelOk": "Healthy",
-      "labelWarn": "Needs work",
-      "labelDanger": "At risk",
+      "labels": {
+        "critical": "Critical",
+        "at-risk": "At risk",
+        "regular": "Fair",
+        "good": "Good",
+        "excellent": "Excellent"
+      },
       "scoreTitle": "Health score",
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergency",
-        "emergencyHint": "Emergency reserve (cash + savings vs fixed + debt). Distinct from autonomy runway.",
+        "emergencyHint": "Emergency reserve (cash, savings and investments vs fixed + variable + debt). Distinct from autonomy runway.",
         "housing": "Housing",
         "savings": "Savings",
-        "noData": "no data"
+        "noData": "no data",
+        "months": "{n} months",
+        "target": "target"
       }
     }
   },

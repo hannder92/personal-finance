@@ -27,7 +27,7 @@ export function useSavingsProjection(): UseSavingsProjection {
   const allocation = useAllocationStore()
   const settings = useSettingsStore()
   const { liquidAssets } = useLiquidMetrics()
-  const { netIncome } = useNetIncome()
+  const { totalMonthlyIncome } = useNetIncome()
 
   const projectionRatePercent = computed(() => settings.state.projectionAnnualRatePercent)
   const liquidTotal = computed(() => liquidAssets.value)
@@ -35,7 +35,7 @@ export function useSavingsProjection(): UseSavingsProjection {
 
   const hypothetical = computed(() =>
     calcHypotheticalSavings({
-      netIncome: netIncome.value,
+      netIncome: totalMonthlyIncome.value,
       savingsRatePercent: allocation.state.savings,
       monthsAhead: MONTHS_AHEAD,
     })
