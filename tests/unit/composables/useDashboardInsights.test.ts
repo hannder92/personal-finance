@@ -39,7 +39,13 @@ describe('useDashboardInsights (TC-U-010, TC-U-011, TC-U-012)', () => {
     i18n.global.locale.value = 'es'
     const insights = runInsights({
       settings: {
-        state: { currency: 'COP', lang: 'es', theme: 'system', payoffMethod: 'avalanche' },
+        state: {
+          currency: 'COP',
+          lang: 'es',
+          theme: 'system',
+          payoffMethod: 'avalanche',
+          deductRetencion: false,
+        },
       },
       income: {
         state: { grossSalary: 10_000_000, deductions: [], otherStreams: [], nonSalaryBenefits: [] },
@@ -56,7 +62,13 @@ describe('useDashboardInsights (TC-U-010, TC-U-011, TC-U-012)', () => {
   it('TC-U-011: projection insight mentions 12-month accumulation', () => {
     const insights = runInsights({
       settings: {
-        state: { currency: 'COP', lang: 'es', theme: 'system', payoffMethod: 'avalanche' },
+        state: {
+          currency: 'COP',
+          lang: 'es',
+          theme: 'system',
+          payoffMethod: 'avalanche',
+          deductRetencion: false,
+        },
       },
       income: {
         state: { grossSalary: 12_000_000, deductions: [], otherStreams: [], nonSalaryBenefits: [] },
@@ -73,7 +85,13 @@ describe('useDashboardInsights (TC-U-010, TC-U-011, TC-U-012)', () => {
     i18n.global.locale.value = 'es'
     const insights = runInsights({
       settings: {
-        state: { currency: 'COP', lang: 'es', theme: 'system', payoffMethod: 'avalanche' },
+        state: {
+          currency: 'COP',
+          lang: 'es',
+          theme: 'system',
+          payoffMethod: 'avalanche',
+          deductRetencion: false,
+        },
       },
       income: {
         state: { grossSalary: 10_000_000, deductions: [], otherStreams: [], nonSalaryBenefits: [] },
@@ -90,7 +108,13 @@ describe('useDashboardInsights (TC-U-010, TC-U-011, TC-U-012)', () => {
     i18n.global.locale.value = 'es'
     const insights = runInsights({
       settings: {
-        state: { currency: 'COP', lang: 'es', theme: 'system', payoffMethod: 'avalanche' },
+        state: {
+          currency: 'COP',
+          lang: 'es',
+          theme: 'system',
+          payoffMethod: 'avalanche',
+          deductRetencion: false,
+        },
       },
       income: {
         state: { grossSalary: 10_000_000, deductions: [], otherStreams: [], nonSalaryBenefits: [] },
@@ -107,7 +131,13 @@ describe('useDashboardInsights (TC-U-010, TC-U-011, TC-U-012)', () => {
   it('TC-U-012: no insight when no income', () => {
     const insights = runInsights({
       settings: {
-        state: { currency: 'COP', lang: 'es', theme: 'system', payoffMethod: 'avalanche' },
+        state: {
+          currency: 'COP',
+          lang: 'es',
+          theme: 'system',
+          payoffMethod: 'avalanche',
+          deductRetencion: false,
+        },
       },
       income: {
         state: { grossSalary: 0, deductions: [], otherStreams: [], nonSalaryBenefits: [] },

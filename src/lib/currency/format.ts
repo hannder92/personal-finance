@@ -8,6 +8,10 @@ const CONFIGS: Readonly<Record<string, CurrencyConfig>> = {
   COP: { locale: 'es-CO', decimals: 0, symbol: '$' },
   USD: { locale: 'en-US', decimals: 2, symbol: '$' },
   CLP: { locale: 'es-CL', decimals: 0, symbol: '$' },
+  MXN: { locale: 'es-MX', decimals: 2, symbol: '$' },
+  ARS: { locale: 'es-AR', decimals: 2, symbol: '$' },
+  BRL: { locale: 'pt-BR', decimals: 2, symbol: 'R$' },
+  PEN: { locale: 'es-PE', decimals: 2, symbol: 'S/' },
 }
 
 export function getCurrencyConfig(code: string): CurrencyConfig {

@@ -4,7 +4,7 @@ Technical debt and future improvements tracked here.
 
 ## DEBT
 
-### DEBT-001 — Align `snapshotsStore.Snapshot` field names with `SnapshotSchema` ✅ Resolved (2026-10-01, month rollover)
+### DEBT-001 — Align `snapshotsStore.Snapshot` field names with `SnapshotSchema`
 
 **Priority:** High  
 **Effort:** S  

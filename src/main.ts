@@ -5,7 +5,7 @@ import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
-import { useMonthRollover } from './composables/useMonthRollover'
+import { useMonthClose } from './composables/useMonthClose'
 import type { AppStateV4 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
@@ -35,6 +35,7 @@ function hydrateStores() {
   settings.setTheme(state.settings.theme)
   settings.setPayoffMethod(state.settings.payoffMethod)
   settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
+  settings.setDeductRetencion(state.settings.deductRetencion ?? true)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
 
   const income = useIncomeStore()
@@ -94,6 +95,7 @@ function persistStores(): void {
         lastMonthSeen: settings.state.lastMonthSeen,
         onboarding: { done: true, currentStep: 0 },
         projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
+        deductRetencion: settings.state.deductRetencion,
       },
       income: {
         grossSalary: income.state.grossSalary,
@@ -147,11 +149,11 @@ persistStores()
 app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
-  // Month close runs after hydration so the persist watcher saves the snapshot and reset.
-  const { checkRollover } = useMonthRollover()
-  checkRollover()
+  // Runs after hydration so the snapshot and the variable reset are persisted.
+  const { runMonthClose } = useMonthClose()
+  runMonthClose()
   // Catch a month change while the tab stays open in the background.
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') checkRollover()
+    if (document.visibilityState === 'visible') runMonthClose()
   })
 })

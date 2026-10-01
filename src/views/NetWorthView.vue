@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import AssetList from '@/components/networth/AssetList.vue'
 import NetWorthBanner from '@/components/networth/NetWorthBanner.vue'
 import { useAssetsStore } from '@/stores/assetsStore'
 import { useCardsStore } from '@/stores/cardsStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
+const { t } = useI18n()
 const settings = useSettingsStore()
 const assets = useAssetsStore()
 const cards = useCardsStore()
@@ -18,7 +20,7 @@ const totalLiabilities = computed(() => cards.state.items.reduce((acc, c) => acc
   <section class="mx-auto flex max-w-2xl flex-col gap-6 p-6">
     <header>
       <h1 class="text-xl font-semibold">
-        Patrimonio
+        {{ t('networth.title') }}
       </h1>
     </header>
 

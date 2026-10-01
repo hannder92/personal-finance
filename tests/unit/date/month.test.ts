@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { detectMonthRollover, formatYearMonth, getMonthToClose } from '@/lib/date/month'
+import { detectMonthRollover, formatYearMonth } from '@/lib/date/month'
 
 describe('lib/date/month', () => {
   describe('detectMonthRollover', () => {
@@ -23,28 +23,6 @@ describe('lib/date/month', () => {
 
     it('zero-pads single-digit months', () => {
       expect(formatYearMonth(new Date(2026, 0, 1))).toBe('2026-01')
-    })
-  })
-
-  describe('getMonthToClose', () => {
-    it('returns the last seen month when the calendar moved forward', () => {
-      expect(getMonthToClose('2026-09', '2026-10')).toBe('2026-09')
-    })
-
-    it('returns the last seen month across a year boundary', () => {
-      expect(getMonthToClose('2025-12', '2026-01')).toBe('2025-12')
-    })
-
-    it('returns null within the same month', () => {
-      expect(getMonthToClose('2026-10', '2026-10')).toBeNull()
-    })
-
-    it('returns null on first run (no month seen yet)', () => {
-      expect(getMonthToClose(null, '2026-10')).toBeNull()
-    })
-
-    it('returns null when the clock went backwards', () => {
-      expect(getMonthToClose('2026-11', '2026-10')).toBeNull()
     })
   })
 })

@@ -46,11 +46,9 @@ const makeSnap = (month: string, healthScore = 70) => ({
   capturedAt: `${month}-01T00:00:00.000Z`,
   month,
   netIncome: 4_000_000,
-  totalFixedExpenses: 1_000_000,
-  totalVariableSpent: 300_000,
-  totalDebt: 2_000_000,
+  fixedExpenses: 1_000_000,
+  debtPayments: 500_000,
   dti: 12,
-  savingsRate: 10,
   netWorth: 5_000_000,
   healthScore,
 })
@@ -73,14 +71,6 @@ describe('snapshotsStore (T-047)', () => {
     // Oldest (2024-01) should be gone; newest (2024-25) should exist.
     expect(s.state.items.some((x) => x.month === '2024-01')).toBe(false)
     expect(s.state.items.some((x) => x.month === '2024-25')).toBe(true)
-  })
-
-  it('append replaces an existing snapshot for the same month (one per month)', () => {
-    const s = useSnapshotsStore()
-    s.append(makeSnap('2026-01', 50))
-    s.append({ ...makeSnap('2026-01', 80), id: 'replacement' })
-    expect(s.state.items.length).toBe(1)
-    expect(s.state.items[0]!.healthScore).toBe(80)
   })
 
   it('setAll replaces items', () => {

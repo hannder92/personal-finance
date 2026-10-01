@@ -5,6 +5,10 @@ export interface ProjectionInputs {
   streams: ReadonlyArray<FrequencyStream>
   fixedExpenses: number
   debtObligation: number
+  /** Monthly variable spending (budgets); defaults to 0. */
+  variableExpenses?: number
+  /** Calendar month (0 = January) of projection month 0; used by streams with paymentMonths. */
+  startCalendarMonth?: number
 }
 
 export interface ProjectionMonth {
@@ -20,12 +24,19 @@ export interface ProjectionResult {
 // Cumulative balance over `monthsAhead` months. Monthly income arrives every month;
 // non-monthly streams are credited only on the months returned by getProjectionMonthsForStream.
 export function calcProjection(inputs: ProjectionInputs, monthsAhead: number): ProjectionResult {
-  const { monthlyIncome, streams, fixedExpenses, debtObligation } = inputs
+  const {
+    monthlyIncome,
+    streams,
+    fixedExpenses,
+    debtObligation,
+    variableExpenses = 0,
+    startCalendarMonth = 0,
+  } = inputs
 
   // Pre-compute which months each non-monthly stream hits.
   const streamHits = streams.map((s) => ({
     stream: s,
-    months: new Set(getProjectionMonthsForStream(s, 0, monthsAhead)),
+    months: new Set(getProjectionMonthsForStream(s, 0, monthsAhead, startCalendarMonth)),
   }))
 
   const months: ProjectionMonth[] = []
@@ -37,7 +48,7 @@ export function calcProjection(inputs: ProjectionInputs, monthsAhead: number): P
     for (const { stream, months: hitSet } of streamHits) {
       if (hitSet.has(i)) monthIncome += stream.amount
     }
-    cumulative += monthIncome - fixedExpenses - debtObligation
+    cumulative += monthIncome - fixedExpenses - debtObligation - variableExpenses
     months.push({ month: i, projectedBalance: cumulative })
     if (cumulative < 0) negativeMonths.push(i)
   }

@@ -4,6 +4,7 @@
 // components, so every assertion below FAILS — confirmed RED phase.
 
 import { createPinia, setActivePinia } from 'pinia'
+import { useSettingsStore } from '@/stores/settingsStore'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useHealthScore } from '@/composables/useHealthScore'
 import { useIncomeStore } from '@/stores/incomeStore'
@@ -15,6 +16,8 @@ import { useAssetsStore } from '@/stores/assetsStore'
 describe('useHealthScore — fix-calculos-financieros', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    // These cases pin ratios on a round net income; retención has its own tests.
+    useSettingsStore().setDeductRetencion(false)
   })
 
   it('TC-U-006 (AC-3.2): emergency months denominator = fixedExpenses + debt obligations', () => {

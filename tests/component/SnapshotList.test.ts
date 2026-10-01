@@ -6,11 +6,9 @@ const baseSnapshot = {
   id: '',
   capturedAt: '2026-04-01T00:00:00.000Z',
   netIncome: 4_000_000,
-  totalFixedExpenses: 1_000_000,
-  totalVariableSpent: 300_000,
-  totalDebt: 2_000_000,
+  fixedExpenses: 1_000_000,
+  debtPayments: 500_000,
   dti: 12,
-  savingsRate: 10,
   netWorth: 5_000_000,
   healthScore: 70,
 }
@@ -35,7 +33,7 @@ describe('SnapshotList (AC-13.4 TC-C-029)', () => {
     render(SnapshotList, { props: { snapshots: [], currency: 'COP' } })
     expect(document.querySelectorAll('[data-month]').length).toBe(0)
     const text = document.body.textContent ?? ''
-    expect(/sin\s+snapshots|sin\s+historial|empty|vac/i.test(text)).toBe(true)
+    expect(/sin\s+snapshots|sin\s+historial|a[uú]n no hay cierres|empty|vac/i.test(text)).toBe(true)
   })
 
   it('AC-13.4 TC-C-029: each item shows score and net income', () => {

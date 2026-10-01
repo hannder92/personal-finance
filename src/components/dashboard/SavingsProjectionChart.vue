@@ -12,16 +12,32 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Line } from 'vue-chartjs'
 import { useSavingsProjection } from '@/composables/useSavingsProjection'
+import { formatCurrency } from '@/lib/currency/format'
+import { formatCompactCurrency, projectionMonthLabels } from '@/lib/format/locale'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip, Legend)
 
 const { t } = useI18n()
 const settings = useSettingsStore()
-const { hypothetical, compound, hasConfiguredRate, projectionRatePercent, liquidTotal } =
-  useSavingsProjection()
+const {
+  hypothetical,
+  compound,
+  hasConfiguredRate,
+  projectionRatePercent,
+  liquidTotal,
+  monthlyContribution,
+} = useSavingsProjection()
 
-const labels = computed(() => hypothetical.value.map((p) => `M${p.month + 1}`))
+const now = new Date()
+const labels = computed(() =>
+  projectionMonthLabels(
+    now.getFullYear(),
+    now.getMonth(),
+    hypothetical.value.length,
+    settings.state.lang
+  )
+)
 
 const chartData = computed(() => ({
   labels: labels.value,
@@ -46,11 +62,34 @@ const chartData = computed(() => ({
   ],
 }))
 
-const chartOptions = {
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { position: 'bottom' as const } },
-}
+  plugins: {
+    legend: { position: 'bottom' as const },
+    tooltip: {
+      callbacks: {
+        label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
+          `${ctx.dataset.label ?? ''}: ${formatCurrency(ctx.parsed.y ?? 0, settings.state.currency)}`,
+      },
+    },
+  },
+  scales: {
+    y: {
+      ticks: {
+        callback: (value: number | string) =>
+          formatCompactCurrency(Number(value), settings.state.currency),
+      },
+    },
+  },
+}))
+
+const assumptions = computed(() =>
+  t('savings.projection.assumptions', {
+    liquid: formatCurrency(liquidTotal.value, settings.state.currency),
+    monthly: formatCurrency(monthlyContribution.value, settings.state.currency),
+  })
+)
 
 const seriesCount = computed(() => (hasConfiguredRate.value ? 2 : 1))
 const hypotheticalFinal = computed(() => {
@@ -122,5 +161,11 @@ const rateModel = computed({
         :options="chartOptions"
       />
     </div>
+    <p
+      data-testid="savings-projection-assumptions"
+      class="text-xs text-slate-500 dark:text-slate-400"
+    >
+      {{ assumptions }}
+    </p>
   </article>
 </template>
