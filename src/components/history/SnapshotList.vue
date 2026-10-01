@@ -25,11 +25,7 @@ const ordered = computed(() => [...props.snapshots].sort((a, b) => b.month.local
 
 <template>
   <div>
-    <ul
-      v-if="ordered.length > 0"
-      class="flex flex-col gap-2"
-      role="list"
-    >
+    <ul v-if="ordered.length > 0" class="flex flex-col gap-2" role="list">
       <li
         v-for="s in ordered"
         :key="s.id"

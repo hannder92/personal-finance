@@ -16,9 +16,6 @@ const snapshots = useSnapshotsStore()
         {{ t('history.title') }}
       </h1>
     </header>
-    <SnapshotList
-      :snapshots="snapshots.state.items"
-      :currency="settings.state.currency"
-    />
+    <SnapshotList :snapshots="snapshots.state.items" :currency="settings.state.currency" />
   </section>
 </template>

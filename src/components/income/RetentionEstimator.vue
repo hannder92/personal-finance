@@ -32,38 +32,25 @@ function onToggle(event: Event) {
   >
     <div class="flex items-center justify-between gap-3">
       <span class="text-sm font-medium">{{ t('income.retencion.title') }}</span>
-      <span
-        class="text-lg font-semibold"
-        data-retention-amount
-      >
+      <span class="text-lg font-semibold" data-retention-amount>
         {{ formatted }}
       </span>
     </div>
-    <p
-      v-if="result.belowThreshold"
-      class="text-xs text-slate-500"
-    >
+    <p v-if="result.belowThreshold" class="text-xs text-slate-500">
       {{ t('income.retencion.notApplicable') }}
     </p>
     <template v-else>
-      <label
-        v-if="!hasManualRetencion"
-        class="flex items-center gap-2 text-sm"
-      >
+      <label v-if="!hasManualRetencion" class="flex items-center gap-2 text-sm">
         <input
           type="checkbox"
           data-testid="retention-deduct-toggle"
           :checked="settings.state.deductRetencion"
           class="h-4 w-4"
           @change="onToggle"
-        >
+        />
         {{ t('income.retencion.deduct') }}
       </label>
-      <p
-        v-else
-        data-testid="retention-manual-note"
-        class="text-xs text-slate-500"
-      >
+      <p v-else data-testid="retention-manual-note" class="text-xs text-slate-500">
         {{ t('income.retencion.manual') }}
       </p>
     </template>

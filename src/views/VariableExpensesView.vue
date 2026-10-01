@@ -65,7 +65,7 @@ function onRecord(payload: { categoryId: string; amount: number }) {
           type="text"
           maxlength="60"
           class="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-        >
+        />
       </label>
       <label class="flex flex-1 flex-col gap-1 text-sm">
         <span>{{ t('variable.form.budget') }}</span>
@@ -75,7 +75,7 @@ function onRecord(payload: { categoryId: string; amount: number }) {
           type="text"
           inputmode="numeric"
           class="rounded-md border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-        >
+        />
       </label>
       <button
         type="submit"
@@ -95,10 +95,7 @@ function onRecord(payload: { categoryId: string; amount: number }) {
       {{ t('variable.empty') }}
     </p>
 
-    <div
-      v-else
-      class="grid gap-3 sm:grid-cols-2"
-    >
+    <div v-else class="grid gap-3 sm:grid-cols-2">
       <VariableCategoryCard
         v-for="c in variable.state.items"
         :key="c.id"

@@ -60,10 +60,7 @@ const statusText = computed(() => {
           class="rounded p-1 text-slate-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950"
           @click="emit('remove')"
         >
-          <Trash2
-            class="h-3.5 w-3.5"
-            aria-hidden="true"
-          />
+          <Trash2 class="h-3.5 w-3.5" aria-hidden="true" />
         </button>
       </div>
     </header>
@@ -76,10 +73,7 @@ const statusText = computed(() => {
       :aria-valuetext="statusText"
       class="h-2 w-full overflow-hidden rounded bg-slate-200 dark:bg-slate-700"
     >
-      <div
-        :class="['h-full', COLOR[status]]"
-        :style="{ width: `${pctCapped}%` }"
-      />
+      <div :class="['h-full', COLOR[status]]" :style="{ width: `${pctCapped}%` }" />
     </div>
     <p
       data-testid="variable-status-text"

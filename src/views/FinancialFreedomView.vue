@@ -29,10 +29,7 @@ const horizonText = computed(() => {
 </script>
 
 <template>
-  <section
-    data-testid="financial-freedom-view"
-    class="mx-auto flex max-w-2xl flex-col gap-6 p-6"
-  >
+  <section data-testid="financial-freedom-view" class="mx-auto flex max-w-2xl flex-col gap-6 p-6">
     <header>
       <h1 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
         {{ t('fi.detail.title') }}
@@ -71,10 +68,7 @@ const horizonText = computed(() => {
       </div>
     </dl>
 
-    <p
-      data-testid="fi-assumptions"
-      class="text-xs text-slate-500 dark:text-slate-400"
-    >
+    <p data-testid="fi-assumptions" class="text-xs text-slate-500 dark:text-slate-400">
       {{ t('fi.detail.assumptions', { monthly: fmt(feasible) }) }}
     </p>
 

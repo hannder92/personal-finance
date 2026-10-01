@@ -38,10 +38,7 @@ function onSubmit(event: Event) {
 </script>
 
 <template>
-  <div
-    v-if="visible"
-    class="fixed bottom-20 right-4 z-40 flex flex-col items-end gap-2"
-  >
+  <div v-if="visible" class="fixed bottom-20 right-4 z-40 flex flex-col items-end gap-2">
     <form
       v-if="open"
       class="flex flex-col gap-2 rounded-lg bg-white p-3 shadow-lg dark:bg-slate-800"
@@ -54,11 +51,7 @@ function onSubmit(event: Event) {
           :aria-label="t('variable.quickAdd.category')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
-          <option
-            v-for="c in categories"
-            :key="c.id"
-            :value="c.id"
-          >
+          <option v-for="c in categories" :key="c.id" :value="c.id">
             {{ c.name }}
           </option>
         </select>
@@ -71,12 +64,9 @@ function onSubmit(event: Event) {
           inputmode="numeric"
           :aria-label="t('variable.quickAdd.amount')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
-        >
+        />
       </label>
-      <button
-        type="submit"
-        class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
-      >
+      <button type="submit" class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white">
         {{ t('variable.quickAdd.save') }}
       </button>
     </form>
