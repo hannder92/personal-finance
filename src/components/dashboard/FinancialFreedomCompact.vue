@@ -13,9 +13,9 @@ const { progressPercent, targetPatrimony, targetReached } = useFinancialFreedom(
 <template>
   <section
     data-testid="financial-freedom-compact"
-    class="rounded-lg border border-slate-200 p-4 dark:border-slate-700"
+    class="card"
   >
-    <h2 class="text-base font-semibold">
+    <h2 class="card-title">
       {{ t('fi.compact.title') }}
     </h2>
     <p

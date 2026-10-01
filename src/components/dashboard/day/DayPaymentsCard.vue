@@ -17,7 +17,7 @@ const settings = useSettingsStore()
 <template>
   <section
     data-testid="day-payments-card"
-    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+    class="py-3 first:pt-0 last:pb-0"
   >
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-500">
@@ -39,13 +39,13 @@ const settings = useSettingsStore()
     </div>
     <p
       v-if="payments.length === 0"
-      class="mt-4 text-sm text-slate-600 dark:text-slate-400"
+      class="mt-2 text-sm text-slate-600 dark:text-slate-400"
     >
       {{ t('day.payments.empty') }}
     </p>
     <ul
       v-else
-      class="mt-4 flex flex-col gap-3"
+      class="mt-2 flex flex-col gap-2"
       role="list"
     >
       <li

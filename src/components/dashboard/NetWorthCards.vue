@@ -18,7 +18,7 @@ const netClass = computed(() =>
 )
 
 const cardClass =
-  'flex min-h-[44px] flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-blue-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-700'
+  'flex min-h-[44px] flex-col gap-1 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-blue-300 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-blue-700'
 </script>
 
 <template>
@@ -32,7 +32,7 @@ const cardClass =
 
     <div
       v-if="hasData"
-      class="grid grid-cols-1 gap-3 sm:grid-cols-3"
+      class="grid grid-cols-2 gap-3 sm:grid-cols-3"
     >
       <RouterLink to="/networth">
         <article
@@ -44,7 +44,7 @@ const cardClass =
           </p>
           <p
             data-testid="networth-have-amount"
-            class="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-50"
+            class="text-lg font-bold tabular-nums sm:text-xl text-slate-900 dark:text-slate-50"
           >
             {{ fmt(assetsTotal) }}
           </p>
@@ -61,14 +61,17 @@ const cardClass =
           </p>
           <p
             data-testid="networth-owe-amount"
-            class="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-50"
+            class="text-lg font-bold tabular-nums sm:text-xl text-slate-900 dark:text-slate-50"
           >
             {{ fmt(liabilitiesTotal) }}
           </p>
         </article>
       </RouterLink>
 
-      <RouterLink to="/networth">
+      <RouterLink
+        to="/networth"
+        class="col-span-2 sm:col-span-1"
+      >
         <article
           data-testid="networth-net"
           :class="cardClass"
@@ -78,7 +81,7 @@ const cardClass =
           </p>
           <p
             data-testid="networth-net-amount"
-            class="text-xl font-bold tabular-nums"
+            class="text-lg font-bold tabular-nums sm:text-xl"
             :class="netClass"
           >
             {{ fmt(netWorth) }}

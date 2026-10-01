@@ -22,7 +22,7 @@ function rowLabel(offset: 0 | 1 | 2): string {
 <template>
   <section
     data-testid="day-agenda-card"
-    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+    class="py-3 first:pt-0 last:pb-0"
   >
     <div class="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-500">
       <CalendarDays
@@ -33,27 +33,29 @@ function rowLabel(offset: 0 | 1 | 2): string {
       <span>{{ t('day.agenda.title') }}</span>
     </div>
     <ul
-      class="mt-4 flex flex-col gap-2"
+      class="mt-2 grid grid-cols-3 gap-2"
       role="list"
     >
       <li
         v-for="row in agenda"
         :key="row.offset"
         data-testid="data-agenda-row"
-        class="flex items-center justify-between rounded-lg border border-slate-100 px-3 py-2 text-sm dark:border-slate-800"
+        class="flex flex-col gap-0.5 rounded-lg bg-slate-50 px-3 py-2 text-sm dark:bg-slate-800/60"
       >
-        <span>{{ rowLabel(row.offset) }}</span>
+        <span class="text-xs font-medium text-slate-600 dark:text-slate-300">
+          {{ rowLabel(row.offset) }}
+        </span>
         <span
           v-if="row.paymentCount === 0"
           data-agenda-count="0"
-          class="text-slate-500"
+          class="text-xs text-slate-500 dark:text-slate-400"
         >
           {{ t('day.agenda.none') }}
         </span>
         <span
           v-else
           :data-agenda-count="row.paymentCount"
-          class="tabular-nums"
+          class="text-xs font-semibold tabular-nums text-slate-900 dark:text-slate-100"
         >
           {{
             t('day.agenda.row', {

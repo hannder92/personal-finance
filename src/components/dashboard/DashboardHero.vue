@@ -41,8 +41,8 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
     data-testid="data-dashboard-hero"
     class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-700 dark:bg-slate-900/50"
   >
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <div class="min-w-0 flex-1">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0 sm:flex-1">
         <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
           {{ t('dashboard.hero.availableLabel') }}
         </p>
@@ -89,13 +89,13 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
 
       <div
         v-if="hasIncome"
-        class="shrink-0"
+        class="shrink-0 border-t border-slate-200 pt-3 sm:border-t-0 sm:pt-0 dark:border-slate-700"
         data-testid="hero-health-score"
       >
         <p class="text-xs text-slate-500">
           {{ t('dashboard.hero.healthLabel') }}
         </p>
-        <div class="flex items-center gap-2">
+        <div class="mt-1 flex flex-wrap items-center gap-2">
           <HealthScore
             variant="compact"
             :score="latestScore"

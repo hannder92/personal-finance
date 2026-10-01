@@ -52,7 +52,7 @@ const riskClass = computed(() => {
     case 'warn':
       return 'border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-950'
     default:
-      return 'border-slate-200 dark:border-slate-700'
+      return 'border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900'
   }
 })
 
@@ -72,7 +72,7 @@ const contextOrDefault = computed(() => {
 <template>
   <article
     :data-risk="risk"
-    :class="['flex flex-col gap-1 rounded border p-3', riskClass]"
+    :class="['flex flex-col gap-1 rounded-xl border p-3 shadow-sm', riskClass]"
   >
     <header class="flex items-center justify-between text-xs text-slate-500">
       <span>{{ label }}</span>

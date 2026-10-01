@@ -12,14 +12,18 @@ const { coverage, paymentsToday, agenda } = useDayOverview()
 <template>
   <section
     data-testid="data-day-overview"
-    class="flex flex-col gap-6"
+    class="card flex flex-col divide-y divide-slate-100 dark:divide-slate-800"
     :aria-label="t('day.sectionTitle')"
   >
     <h2 class="sr-only">
       {{ t('day.sectionTitle') }}
     </h2>
     <DayCoverageCard :coverage="coverage" />
-    <DayPaymentsCard :payments="paymentsToday" />
+    <!-- The coverage line already says "no payments today"; skip the empty list. -->
+    <DayPaymentsCard
+      v-if="paymentsToday.length > 0"
+      :payments="paymentsToday"
+    />
     <DayAgendaCard :agenda="agenda" />
   </section>
 </template>

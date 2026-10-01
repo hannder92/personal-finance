@@ -43,7 +43,7 @@ const badgeText = computed(() => {
 <template>
   <section
     data-testid="day-coverage-card"
-    class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+    class="py-3 first:pt-0 last:pb-0"
   >
     <div class="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-500">
       <CalendarCheck
@@ -56,7 +56,7 @@ const badgeText = computed(() => {
     <p
       data-testid="coverage-badge"
       :data-coverage-status="coverage.status"
-      class="mt-3 inline-flex rounded-lg border px-3 py-2 text-xl font-bold"
+      class="mt-2 inline-flex rounded-lg border px-2.5 py-1 text-base font-semibold"
       :class="badgeClass"
     >
       {{ badgeText }}
@@ -65,7 +65,7 @@ const badgeText = computed(() => {
       v-if="coverage.status !== 'no_due_today'"
       data-testid="liquid-secondary"
       data-liquid-secondary
-      class="mt-3 text-sm text-slate-600 dark:text-slate-400"
+      class="mt-2 text-sm text-slate-600 dark:text-slate-400"
     >
       <span class="font-medium">{{ t('day.coverage.liquidLabel') }}:</span>
       {{ formatCurrency(coverage.liquidTotal, settings.state.currency) }}
