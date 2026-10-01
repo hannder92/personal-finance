@@ -255,6 +255,7 @@ function migrateV3toV4(v3: AppStateV3): unknown {
     settings: {
       ...v3.settings,
       projectionAnnualRatePercent: 0,
+      deductRetencion: true,
     },
     income: {
       ...v3.income,

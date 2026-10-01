@@ -1,7 +1,8 @@
 import { computed, type ComputedRef } from 'vue'
 import type { Debt as AmortDebt } from '@/lib/calculations/amortization'
 import { calcExtraPaymentImpact, type CardDebt as AmortCard } from '@/lib/calculations/amortization'
-import { calcDebtFreeDate } from '@/lib/calculations/dti'
+import { calcDebtFreeOutlook, type DebtFreeOutlook } from '@/lib/calculations/dti'
+import { calcDebtTimeline } from '@/lib/calculations/amortization'
 import { sortByAvalanche, sortBySnowball } from '@/lib/calculations/payoff-strategy'
 import { useCardsStore, type CardDebt, type Debt } from '@/stores/cardsStore'
 import { useSettingsStore } from '@/stores/settingsStore'
@@ -13,6 +14,10 @@ export interface DebtPayoffSimulatorResult {
 
 export interface UseDebtPayoffPlan {
   debtFreeDate: ComputedRef<Date | null>
+  debtFreeOutlook: ComputedRef<DebtFreeOutlook>
+  totalBalance: ComputedRef<number>
+  /** Interest still to pay at the current payments; Infinity when a debt never ends. */
+  totalInterest: ComputedRef<number>
   sortedDebtIds: ComputedRef<string[]>
   simulateExtraPayment: (debtId: string, extraPayment: number) => DebtPayoffSimulatorResult
 }
@@ -60,8 +65,15 @@ export function useDebtPayoffPlan(): UseDebtPayoffPlan {
     return sorted.map((d) => d.id)
   })
 
+  const debtFreeOutlook = computed(() =>
+    calcDebtFreeOutlook(cards.state.items.map((d) => toAmortDebt(d)))
+  )
   const debtFreeDate = computed(() =>
-    calcDebtFreeDate(cards.state.items.map((d) => toAmortDebt(d)))
+    debtFreeOutlook.value.kind === 'date' ? debtFreeOutlook.value.date : null
+  )
+  const totalBalance = computed(() => cards.state.items.reduce((acc, d) => acc + d.balance, 0))
+  const totalInterest = computed(() =>
+    cards.state.items.reduce((acc, d) => acc + calcDebtTimeline(toAmortDebt(d)).totalInterest, 0)
   )
 
   function simulateExtraPayment(debtId: string, extraPayment: number): DebtPayoffSimulatorResult {
@@ -72,5 +84,12 @@ export function useDebtPayoffPlan(): UseDebtPayoffPlan {
     return calcExtraPaymentImpact(toAmortCard(debt), extraPayment)
   }
 
-  return { debtFreeDate, sortedDebtIds, simulateExtraPayment }
+  return {
+    debtFreeDate,
+    debtFreeOutlook,
+    totalBalance,
+    totalInterest,
+    sortedDebtIds,
+    simulateExtraPayment,
+  }
 }

@@ -20,6 +20,7 @@ function mount(initial: Record<string, unknown> = {}) {
                 theme: 'system',
                 payoffMethod: 'avalanche',
                 lastMonthSeen: null,
+                deductRetencion: false,
                 onboarding: { done: true, currentStep: 0, totalSteps: 3 },
               },
             },

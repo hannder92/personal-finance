@@ -1,11 +1,10 @@
-// Bridges cardsStore + netIncome composable to compute DTI as a percentage.
-// Includes installments in card obligation (calcCardObligation) per AC-4.2.
+// DTI = monthly debt obligations / gross monthly income (CFPB definition; the 36%
+// warning threshold in lib/health/thresholds.ts is defined on gross income).
+// Paid-off deferred installments do not count (calcInstallmentMonthly).
 
 import { computed, type ComputedRef } from 'vue'
 import { calcDTI } from '@/lib/calculations/dti'
-import { calcCardObligation } from '@/lib/calculations/installments'
-import { useCardsStore } from '@/stores/cardsStore'
-import { useNetIncome } from './useNetIncome'
+import { useBaseMetrics } from './useBaseMetrics'
 
 export interface UseDTI {
   dti: ComputedRef<number>
@@ -13,19 +12,7 @@ export interface UseDTI {
 }
 
 export function useDTI(): UseDTI {
-  const cards = useCardsStore()
-  const { netIncome } = useNetIncome()
-
-  const totalDebtObligation = computed(() =>
-    cards.state.items.reduce((acc, c) => {
-      if (c.type === 'card') {
-        return acc + calcCardObligation({ minPayment: c.minPayment, installmentsList: c.installments })
-      }
-      return acc + c.minPayment
-    }, 0)
-  )
-
-  const dti = computed(() => calcDTI(totalDebtObligation.value, netIncome.value))
-
-  return { dti, totalDebtObligation }
+  const { debtObligation, grossMonthlyIncome } = useBaseMetrics()
+  const dti = computed(() => calcDTI(debtObligation.value, grossMonthlyIncome.value))
+  return { dti, totalDebtObligation: debtObligation }
 }

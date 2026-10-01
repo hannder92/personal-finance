@@ -27,14 +27,18 @@ export interface ExtraPaymentImpact {
   interestSaved: number
 }
 
-// Returns months to pay off and total interest using standard fixed-payment amortization.
-// For APR=0, falls back to simple division to avoid log(1+0)/log(1+0) = 0/0 NaN.
-// For loans, preserves remainingInstallments on the result.
+// Returns months to pay off and total interest using fixed-payment amortization.
+// Cards: simulated month by month so the last (partial) payment is not overcharged.
+// Loans with a known number of remaining installments follow the bank schedule:
+// months = remainingInstallments, interest = cuotas pagadas − saldo.
 export function calcDebtTimeline(debt: Debt): DebtTimeline {
   const { balance, apr, minPayment } = debt
-  const months = monthsToPayoff(balance, apr, minPayment)
-  const totalInterest = Math.max(0, months * minPayment - balance)
   if (debt.type === 'loan') {
+    const scheduled = debt.remainingInstallments > 0 && minPayment > 0 && balance > 0
+    const months = scheduled ? debt.remainingInstallments : monthsToPayoff(balance, apr, minPayment)
+    const totalInterest = scheduled
+      ? Math.max(0, months * minPayment - balance)
+      : simulateInterest(balance, apr, minPayment)
     return {
       type: 'loan',
       months,
@@ -42,7 +46,31 @@ export function calcDebtTimeline(debt: Debt): DebtTimeline {
       remainingInstallments: debt.remainingInstallments,
     }
   }
-  return { type: 'card', months, totalInterest }
+  const months = monthsToPayoff(balance, apr, minPayment)
+  return { type: 'card', months, totalInterest: simulateInterest(balance, apr, minPayment) }
+}
+
+function monthlyRateFromTEA(aprPercent: number): number {
+  // APR is interpreted as TEA (Tasa Efectiva Anual) per Superfinanciera convention,
+  // so the equivalent monthly rate is (1 + TEA)^(1/12) − 1, NOT TEA/12. See ADR-1.
+  return Math.pow(1 + aprPercent / 100, 1 / 12) - 1
+}
+
+// Total interest paid until the balance reaches zero; Infinity when the payment never
+// covers the monthly interest.
+function simulateInterest(balance: number, aprPercent: number, payment: number): number {
+  if (balance <= 0 || payment <= 0) return 0
+  const rate = monthlyRateFromTEA(aprPercent)
+  if (payment <= balance * rate) return Number.POSITIVE_INFINITY
+  let remaining = balance
+  let interest = 0
+  // Bounded loop: payment > first month's interest guarantees payoff; 1200 months is a guard.
+  for (let i = 0; i < 1200 && remaining > 0; i++) {
+    const monthInterest = remaining * rate
+    interest += monthInterest
+    remaining = remaining + monthInterest - payment
+  }
+  return Math.round(interest)
 }
 
 export function calcExtraPaymentImpact(card: CardDebt, extra: number): ExtraPaymentImpact {
@@ -58,9 +86,7 @@ export function calcExtraPaymentImpact(card: CardDebt, extra: number): ExtraPaym
 function monthsToPayoff(balance: number, aprPercent: number, payment: number): number {
   if (balance <= 0 || payment <= 0) return 0
   if (aprPercent === 0) return Math.ceil(balance / payment)
-  // APR is interpreted as TEA (Tasa Efectiva Anual) per Superfinanciera convention,
-  // so the equivalent monthly rate is (1 + TEA)^(1/12) − 1, NOT TEA/12. See ADR-1.
-  const monthlyRate = Math.pow(1 + aprPercent / 100, 1 / 12) - 1
+  const monthlyRate = monthlyRateFromTEA(aprPercent)
   if (payment <= balance * monthlyRate) return Number.POSITIVE_INFINITY
   const n = -Math.log(1 - (balance * monthlyRate) / payment) / Math.log(1 + monthlyRate)
   return Math.ceil(n)

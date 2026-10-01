@@ -61,3 +61,40 @@ export function calcCompoundGrowth(
   }
   return out
 }
+
+export interface ContributionGrowthInputs {
+  startingBalance: number
+  monthlyContribution: number
+  annualRatePercent: number
+  monthsAhead: number
+}
+
+export interface ContributionGrowthPoint {
+  month: number
+  /** Starting balance + contributions, no returns. */
+  contributed: number
+  /** Same contributions compounding at the annual rate (TEA). */
+  withReturns: number
+}
+
+// One comparable pair of curves: both start from the same balance and receive the same
+// monthly contribution; the gap between them is the return earned. Contributions are
+// made at the end of each month.
+export function calcContributionGrowth(
+  inputs: ContributionGrowthInputs
+): ContributionGrowthPoint[] {
+  const { startingBalance, monthlyContribution, annualRatePercent, monthsAhead } = inputs
+  if (monthsAhead <= 0) return []
+  const base = Math.max(0, startingBalance)
+  const contribution = Math.max(0, monthlyContribution)
+  const rate = Math.pow(1 + Math.max(0, annualRatePercent) / 100, 1 / 12) - 1
+  const out: ContributionGrowthPoint[] = []
+  let contributed = base
+  let withReturns = base
+  for (let i = 0; i < monthsAhead; i++) {
+    contributed += contribution
+    withReturns = withReturns * (1 + rate) + contribution
+    out.push({ month: i, contributed, withReturns })
+  }
+  return out
+}

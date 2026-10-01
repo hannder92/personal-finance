@@ -23,7 +23,9 @@ describe('HealthScore (AC-11.2 TC-C-027)', () => {
 
     expect(screen.getByText(/dti/i)).toBeTruthy()
     expect(document.querySelector('[data-component="emergency"]')).toBeTruthy()
-    expect(screen.getByText(/vivienda|housing/i)).toBeTruthy()
+    expect(document.querySelector('[data-component="housing"]')?.textContent).toMatch(
+      /vivienda|housing/i
+    )
     expect(document.querySelector('[data-component="savings"]')).toBeTruthy()
   })
 

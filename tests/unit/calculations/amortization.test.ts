@@ -94,8 +94,9 @@ describe('lib/calculations/amortization — fix-calculos-financieros', () => {
     }
     const result = calcDebtTimeline(card)
     expect(result.months).toBe(27)
-    // totalInterest = months × payment − balance = 27 × 100K − 2M = 700K under TEA.
-    expect(result.totalInterest).toBe(700_000)
+    // Month-by-month simulation: the 27th payment is partial, so interest is
+    // ≈ 669.297 (not 27 × 100K − 2M = 700K, which charges a full last payment).
+    expect(result.totalInterest).toBeCloseTo(669_297, 0)
   })
 
   it('TC-U-008 (AC-4.1): TEA 30% case 2 — bigger balance, still fewer months than TNA', () => {

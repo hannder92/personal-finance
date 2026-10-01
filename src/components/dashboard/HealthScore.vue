@@ -2,6 +2,8 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+// Breakdown values are the component SCORES (0–100) returned by calcHealthScore,
+// not the raw ratios — the row status is derived from that score.
 export interface HealthBreakdown {
   dti?: number | null
   emergency?: number | null
@@ -17,7 +19,8 @@ const props = withDefaults(
     label?: string
     breakdown?: HealthBreakdown
     defaultOpen?: boolean
-    variant?: 'default' | 'compact'
+    /** default: score + collapsible breakdown · compact: score + label · breakdown: rows only. */
+    variant?: 'default' | 'compact' | 'breakdown'
   }>(),
   {
     score: 0,
@@ -32,55 +35,34 @@ const { t } = useI18n()
 const open = ref(props.defaultOpen)
 
 const isCompact = computed(() => props.variant === 'compact')
+const isBreakdownOnly = computed(() => props.variant === 'breakdown')
 
-function statusFor(component: keyof HealthBreakdown, value: number | null | undefined): Status {
+function statusFor(value: number | null | undefined): Status {
   if (value === null || value === undefined) return 'missing'
-  switch (component) {
-    case 'dti':
-      if (value <= 30) return 'ok'
-      if (value <= 45) return 'warn'
-      return 'danger'
-    case 'emergency':
-      if (value >= 75) return 'ok'
-      if (value >= 40) return 'warn'
-      return 'danger'
-    case 'housing':
-      if (value <= 30) return 'ok'
-      if (value <= 40) return 'warn'
-      return 'danger'
-    case 'savings':
-      if (value >= 15) return 'ok'
-      if (value >= 5) return 'warn'
-      return 'danger'
-  }
+  if (value >= 70) return 'ok'
+  if (value >= 40) return 'warn'
+  return 'danger'
 }
 
-const rows = computed(() => [
-  {
-    key: 'dti' as const,
-    label: t('dashboard.health.breakdown.dti'),
-    value: props.breakdown.dti ?? null,
-    ideal: '≤ 30%',
-  },
-  {
-    key: 'emergency' as const,
-    label: t('dashboard.health.breakdown.emergency'),
-    value: props.breakdown.emergency ?? null,
-    ideal: '≥ 75%',
-  },
-  {
-    key: 'housing' as const,
-    label: t('dashboard.health.breakdown.housing'),
-    value: props.breakdown.housing ?? null,
-    ideal: '≤ 30%',
-  },
-  {
-    key: 'savings' as const,
-    label: t('dashboard.health.breakdown.savings'),
-    value: props.breakdown.savings ?? null,
-    ideal: '≥ 15%',
-  },
-])
+const rows = computed(() =>
+  (['dti', 'emergency', 'housing', 'savings'] as const).map((key) => {
+    const raw = props.breakdown[key]
+    const value = raw === null || raw === undefined ? null : Math.round(raw)
+    return {
+      key,
+      label: t(`dashboard.health.breakdown.${key}`),
+      value,
+      ideal: t(`dashboard.health.breakdown.ideal.${key}`),
+    }
+  })
+)
+
+const STATUS_DOT: Record<Status, string> = {
+  ok: 'bg-emerald-500',
+  warn: 'bg-amber-500',
+  danger: 'bg-red-500',
+  missing: 'bg-slate-300 dark:bg-slate-600',
+}
 </script>
 
 <template>
@@ -90,41 +72,62 @@ const rows = computed(() => [
   >
     <button
       type="button"
-      class="flex items-center justify-between gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      class="flex items-center justify-between gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      :aria-expanded="open"
       @click="open = !open"
     >
-      <div class="flex flex-col items-start">
+      <h2
+        v-if="isBreakdownOnly"
+        class="text-base font-semibold"
+      >
+        {{ t('dashboard.health.breakdownTitle') }}
+      </h2>
+      <div
+        v-else
+        class="flex flex-col items-start"
+      >
         <span class="text-xs uppercase tracking-wide text-slate-500">
           {{ t('dashboard.health.scoreTitle') }}
         </span>
         <span class="text-3xl font-bold">{{ score }}</span>
       </div>
       <span class="rounded bg-slate-100 px-2 py-0.5 text-xs font-medium dark:bg-slate-800">
-        {{ label }}
+        {{ isBreakdownOnly ? `${score} · ${label}` : label }}
       </span>
     </button>
 
     <ul
       v-if="open"
-      class="flex flex-col gap-2 border-t border-slate-200 pt-3 dark:border-slate-700"
+      class="flex flex-col gap-3 border-t border-slate-200 pt-3 dark:border-slate-700"
       role="list"
     >
       <li
         v-for="row in rows"
         :key="row.key"
         :data-component="row.key"
-        :data-status="statusFor(row.key, row.value)"
-        :data-component-status="
-          statusFor(row.key, row.value) === 'missing' ? 'warn' : statusFor(row.key, row.value)
-        "
+        :data-status="statusFor(row.value)"
+        :data-component-status="statusFor(row.value) === 'missing' ? 'warn' : statusFor(row.value)"
         class="flex flex-col gap-1 text-sm"
       >
-        <div class="flex items-center justify-between">
-          <span class="font-medium">{{ row.label }}</span>
-          <span class="text-xs text-slate-500">
-            {{ row.value ?? t('dashboard.health.breakdown.noData') }} · meta {{ row.ideal }}
+        <div class="flex items-center justify-between gap-2">
+          <span class="flex items-center gap-2 font-medium">
+            <span
+              :class="['inline-block h-2 w-2 rounded-full', STATUS_DOT[statusFor(row.value)]]"
+              aria-hidden="true"
+            />
+            {{ row.label }}
+          </span>
+          <span class="text-xs tabular-nums text-slate-600 dark:text-slate-300">
+            {{
+              row.value === null
+                ? t('dashboard.health.breakdown.noData')
+                : t('dashboard.health.breakdown.points', { value: row.value })
+            }}
           </span>
         </div>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          {{ row.ideal }}
+        </p>
         <p
           v-if="row.key === 'emergency'"
           class="text-xs text-slate-500 dark:text-slate-400"

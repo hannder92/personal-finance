@@ -17,6 +17,7 @@ export interface SettingsState {
   payoffMethod: 'avalanche' | 'snowball'
   lastMonthSeen: string | null
   projectionAnnualRatePercent: number
+  deductRetencion: boolean
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -27,6 +28,7 @@ export const useSettingsStore = defineStore('settings', () => {
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
     projectionAnnualRatePercent: 0,
+    deductRetencion: true,
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -53,9 +55,14 @@ export const useSettingsStore = defineStore('settings', () => {
     if (!Number.isFinite(rate) || rate < 0 || rate > 100) return
     state.projectionAnnualRatePercent = rate
   }
+  function setDeductRetencion(value: boolean): void {
+    if (typeof value !== 'boolean') return
+    state.deductRetencion = value
+  }
 
   return {
     state,
+    setDeductRetencion,
     setLang,
     setCurrency,
     setTheme,

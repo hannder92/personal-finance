@@ -45,5 +45,5 @@ test('TC-E-007: /history shows snapshot list when snapshots exist in store', asy
     localStorage.setItem('finance_app_data', JSON.stringify(state))
   })
   await page.goto('/history')
-  await expect(page.getByText('2026-04').first()).toBeVisible({ timeout: 5000 })
+  await expect(page.getByText(/abril de 2026/i).first()).toBeVisible({ timeout: 5000 })
 })

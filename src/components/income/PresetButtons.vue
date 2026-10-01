@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
+const { t } = useI18n()
 const settings = useSettingsStore()
 const income = useIncomeStore()
 
@@ -25,7 +27,7 @@ function onPrimaClick() {
       class="rounded bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600"
       @click="onColombiaClick"
     >
-      🇨🇴 Cargar deducciones Colombia
+      {{ t('income.presets.colombia') }}
     </button>
     <button
       v-if="isCOP"
@@ -33,7 +35,7 @@ function onPrimaClick() {
       class="rounded bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
       @click="onPrimaClick"
     >
-      Cargar prima de servicios
+      {{ t('income.presets.prima') }}
     </button>
   </div>
 </template>

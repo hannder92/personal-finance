@@ -11,34 +11,41 @@ import ProjectionChart from '@/components/dashboard/ProjectionChart.vue'
 import RunwayCard from '@/components/dashboard/RunwayCard.vue'
 import SavingsGapCard from '@/components/dashboard/SavingsGapCard.vue'
 import SavingsProjectionChart from '@/components/dashboard/SavingsProjectionChart.vue'
+import QuickAddFAB from '@/components/variable/QuickAddFAB.vue'
 import { useChartTheme } from '@/composables/useChartTheme'
 import { useCashFlowProjection } from '@/composables/useCashFlowProjection'
 import { useDashboardInsights } from '@/composables/useDashboardInsights'
 import { useHealthScore } from '@/composables/useHealthScore'
+import { projectionMonthLabels } from '@/lib/format/locale'
 import { useAllocationStore } from '@/stores/allocationStore'
+import { useSettingsStore } from '@/stores/settingsStore'
+import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 
 const { t } = useI18n()
 const allocation = useAllocationStore()
+const settings = useSettingsStore()
+const variable = useVariableExpensesStore()
 const { options: chartTheme } = useChartTheme()
-const { months: cashflowMonths } = useCashFlowProjection()
-const { result: healthScoreResult } = useHealthScore()
+const { months: cashflowMonths, startCalendarMonth, startYear } = useCashFlowProjection()
+const { result: healthScoreResult, labelKey } = useHealthScore()
 const { hasDonutData, hasProjectionData, donutInsight, projectionInsight } = useDashboardInsights()
 
 const latestScore = computed(() => healthScoreResult.value.score)
 
-const healthLabel = computed(() => {
-  const score = latestScore.value
-  if (score >= 70) return t('dashboard.health.labelOk')
-  if (score >= 50) return t('dashboard.health.labelWarn')
-  return t('dashboard.health.labelDanger')
-})
+const healthLabel = computed(() => t(labelKey.value))
 
-const projectionMonths = computed(() =>
-  cashflowMonths.value.map((m, i) => ({
-    label: `M${i + 1}`,
+const projectionMonths = computed(() => {
+  const labels = projectionMonthLabels(
+    startYear.value,
+    startCalendarMonth.value,
+    cashflowMonths.value.length,
+    settings.state.lang
+  )
+  return cashflowMonths.value.map((m, i) => ({
+    label: labels[i] ?? `M${i + 1}`,
     balance: m.projectedBalance,
   }))
-)
+})
 </script>
 
 <template>
@@ -61,6 +68,7 @@ const projectionMonths = computed(() =>
     </div>
 
     <HealthScore
+      variant="breakdown"
       :score="latestScore"
       :label="healthLabel"
       :breakdown="healthScoreResult.components"
@@ -82,10 +90,19 @@ const projectionMonths = computed(() =>
         :text-color="chartTheme.color"
         :grid-color="chartTheme.gridColor"
         :insight="projectionInsight"
+        :dataset-label="t('dashboard.projection.datasetLabel')"
+        :currency="settings.state.currency"
         :empty-message="hasProjectionData ? '' : t('dashboard.empty.projection')"
       />
     </div>
 
     <SavingsProjectionChart />
+
+    <QuickAddFAB
+      v-if="variable.state.items.length > 0"
+      route="/dashboard"
+      :categories="variable.state.items"
+      @record="(p) => variable.recordSpending(p.categoryId, p.amount)"
+    />
   </section>
 </template>

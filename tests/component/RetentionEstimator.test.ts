@@ -1,37 +1,70 @@
-import { render, screen } from '@testing-library/vue'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/vue'
+import { createTestingPinia } from '@pinia/testing'
+import { describe, expect, it, vi } from 'vitest'
 import RetentionEstimator from '@/components/income/RetentionEstimator.vue'
+import { useSettingsStore } from '@/stores/settingsStore'
+
+type Deduction = { id: string; label: string; amount: number; type: 'fixed' | 'percent' }
+
+function mountEstimator(grossSalary: number, deductions: Deduction[] = []) {
+  return render(RetentionEstimator, {
+    props: { grossSalary, currency: 'COP' },
+    global: {
+      plugins: [
+        createTestingPinia({
+          createSpy: vi.fn,
+          stubActions: false,
+          initialState: {
+            settings: { state: { currency: 'COP', lang: 'es', deductRetencion: true } },
+            income: {
+              state: { grossSalary, deductions, otherStreams: [], nonSalaryBenefits: [] },
+            },
+          },
+        }),
+      ],
+    },
+  })
+}
 
 describe('RetentionEstimator (AC-2.3 TC-C-008)', () => {
-  it('AC-2.3 TC-C-008: gross above threshold shows a retention amount with "estimado"', () => {
-    render(RetentionEstimator, { props: { grossSalary: 12_000_000, currency: 'COP' } })
+  it('AC-2.3 TC-C-008: gross above threshold shows an estimated retention amount', () => {
+    mountEstimator(12_000_000)
 
-    expect(screen.getByText(/estimado/i)).toBeTruthy()
-    // Some currency value visible somewhere in the component.
+    expect(screen.getByText(/estimada|estimated/i)).toBeTruthy()
     const $matches = screen.queryAllByText(/\$\s*[\d.]+/)
     expect($matches.length).toBeGreaterThan(0)
   })
 
   it('AC-2.3 TC-C-008: gross below threshold shows zero / no retention indicator', () => {
-    render(RetentionEstimator, { props: { grossSalary: 2_000_000, currency: 'COP' } })
-    // Either renders a "$0" or a "no aplica" message.
+    mountEstimator(2_000_000)
     const text = document.body.textContent ?? ''
     expect(text.match(/\$\s*0|no\s+aplica|sin\s+retenci/i)).toBeTruthy()
+    expect(screen.queryByTestId('retention-deduct-toggle')).toBeNull()
   })
 
   it('AC-2.3 TC-C-008: retention value matches calcRetencion for 12M gross', async () => {
-    render(RetentionEstimator, { props: { grossSalary: 12_000_000, currency: 'COP' } })
-    // Cross-check against the canonical lib calculation.
+    mountEstimator(12_000_000)
     const { calcRetencion } = await import('@/lib/tax/colombia/retencion')
     const expected = calcRetencion(12_000_000).amount
+    expect(expected).toBeGreaterThan(0)
+    const formatted = new Intl.NumberFormat('es-CO').format(expected)
+    expect(document.body.textContent).toContain(formatted)
+  })
 
-    if (expected > 0) {
-      // Format expected with es-CO grouping for matching (no decimals for COP).
-      const formatted = new Intl.NumberFormat('es-CO').format(expected)
-      // Strip thousands separators for robust substring match.
-      const stripped = String(expected)
-      const bodyText = document.body.textContent ?? ''
-      expect(bodyText.includes(formatted) || bodyText.includes(stripped)).toBe(true)
-    }
+  it('toggle turns off subtracting the retention from net income', async () => {
+    mountEstimator(12_000_000)
+    const settings = useSettingsStore()
+    const toggle = screen.getByTestId('retention-deduct-toggle') as HTMLInputElement
+    expect(toggle.checked).toBe(true)
+    await fireEvent.click(toggle)
+    expect(settings.state.deductRetencion).toBe(false)
+  })
+
+  it('shows a note instead of the toggle when a manual retention deduction exists', () => {
+    mountEstimator(12_000_000, [
+      { id: 'r', label: 'Retención en la fuente', amount: 500_000, type: 'fixed' },
+    ])
+    expect(screen.queryByTestId('retention-deduct-toggle')).toBeNull()
+    expect(screen.getByTestId('retention-manual-note')).toBeTruthy()
   })
 })
