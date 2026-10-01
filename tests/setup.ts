@@ -1,7 +1,9 @@
 // Vitest setup file. Registered via vitest.config.ts.
 // Runs once before each test file.
 
+import { config } from '@vue/test-utils'
 import { afterEach, vi } from 'vitest'
+import { i18n } from '@/i18n'
 
 // Stub vue-chartjs globally so Chart.js never mounts in jsdom (no canvas API).
 // Component tests assert wrapper data-* attrs or <canvas> presence, not Chart internals.
@@ -47,3 +49,8 @@ if (
     value: async () => ({ quota: 5_000_000, usage: 0 }),
   })
 }
+
+// Components translate their copy with vue-i18n. Install the app's i18n instance on
+// every mount so component tests that don't pass it explicitly still render text.
+// (Vue skips a plugin a test also passes in `global.plugins`.)
+config.global.plugins.push(i18n)

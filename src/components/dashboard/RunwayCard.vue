@@ -28,5 +28,8 @@ const { runway } = useFinancialRunway()
     >
       {{ t(`runway.unavailable.${runway.reason}`) }}
     </p>
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+      {{ t('runway.hint') }}
+    </p>
   </section>
 </template>

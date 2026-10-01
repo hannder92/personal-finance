@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -13,7 +14,11 @@ const emit = defineEmits<{
   (e: 'record', payload: { categoryId: string; amount: number }): void
 }>()
 
-const visible = computed(() => props.route === '/' || props.route === '/dashboard')
+const { t } = useI18n()
+
+// AC-8.3: quick add lives on the dashboard and on the variable spending view.
+const VISIBLE_ROUTES = new Set(['/', '/dashboard', '/variable'])
+const visible = computed(() => VISIBLE_ROUTES.has(props.route))
 const open = ref(false)
 const selectedId = ref('')
 const amount = ref('')
@@ -43,10 +48,10 @@ function onSubmit(event: Event) {
       @submit="onSubmit"
     >
       <label class="flex flex-col gap-1">
-        <span class="text-xs">Categoría</span>
+        <span class="text-xs">{{ t('variable.quickAdd.category') }}</span>
         <select
           v-model="selectedId"
-          aria-label="Categoría"
+          :aria-label="t('variable.quickAdd.category')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
           <option
@@ -59,12 +64,12 @@ function onSubmit(event: Event) {
         </select>
       </label>
       <label class="flex flex-col gap-1">
-        <span class="text-xs">Monto</span>
+        <span class="text-xs">{{ t('variable.quickAdd.amount') }}</span>
         <input
           v-model="amount"
           type="text"
           inputmode="numeric"
-          aria-label="Monto"
+          :aria-label="t('variable.quickAdd.amount')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
       </label>
@@ -72,13 +77,13 @@ function onSubmit(event: Event) {
         type="submit"
         class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
       >
-        Guardar
+        {{ t('variable.quickAdd.save') }}
       </button>
     </form>
 
     <button
       type="button"
-      aria-label="Registrar gasto rápido"
+      :aria-label="t('variable.quickAdd.open')"
       class="h-12 w-12 rounded-full bg-blue-600 text-2xl text-white shadow-lg hover:bg-blue-700"
       @click="onClick"
     >

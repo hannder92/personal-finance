@@ -42,5 +42,8 @@ function fmt(amount: number): string {
     >
       {{ t('flowCoverage.gap', { amount: fmt(coverage.monthlyGap) }) }}
     </p>
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+      {{ t('flowCoverage.hint') }}
+    </p>
   </section>
 </template>

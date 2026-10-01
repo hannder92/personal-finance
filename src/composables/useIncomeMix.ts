@@ -13,11 +13,11 @@ export interface UseIncomeMix {
 
 export function useIncomeMix(): UseIncomeMix {
   const income = useIncomeStore()
-  const { netIncome } = useNetIncome()
+  const { netSalary } = useNetIncome()
 
   const mix = computed(() =>
     calcIncomeMixByClass({
-      salaryNetMonthly: netIncome.value,
+      salaryNetMonthly: netSalary.value,
       streams: income.state.otherStreams.map((s) => ({
         amount: s.amount,
         frequency: s.frequency,

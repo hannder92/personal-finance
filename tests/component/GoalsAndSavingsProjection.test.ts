@@ -20,6 +20,7 @@ function defaultSettingsState(projectionRate = 0) {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
+    deductRetencion: false,
     projectionAnnualRatePercent: projectionRate,
   }
 }

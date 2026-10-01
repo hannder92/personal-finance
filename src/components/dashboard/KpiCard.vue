@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { formatCurrency } from '@/lib/currency/format'
+import { formatPercent, type AppLang } from '@/lib/format/locale'
 import LucideIcon from '@/components/common/LucideIcon.vue'
 
 type Risk = 'ok' | 'warn' | 'danger'
@@ -13,6 +15,8 @@ const props = withDefaults(
     threshold?: number
     currency?: string
     context?: string
+    /** Short explanation shown under the value. */
+    hint?: string
   }>(),
   {
     label: '',
@@ -21,8 +25,11 @@ const props = withDefaults(
     threshold: 0,
     currency: 'COP',
     context: '',
+    hint: '',
   }
 )
+
+const { t, locale } = useI18n()
 
 const risk = computed<Risk>(() => {
   if (props.type === 'dti' && props.threshold > 0) {
@@ -33,7 +40,7 @@ const risk = computed<Risk>(() => {
 })
 
 const displayValue = computed(() => {
-  if (props.type === 'dti') return `${props.value}%`
+  if (props.type === 'dti') return formatPercent(props.value, locale.value as AppLang)
   if (props.type === 'health') return String(props.value)
   return formatCurrency(props.value, props.currency)
 })
@@ -57,7 +64,7 @@ const ICONS: Record<Risk, string> = {
 
 const contextOrDefault = computed(() => {
   if (props.context) return props.context
-  if (props.type === 'dti' && risk.value !== 'ok') return 'Riesgo de deuda alto'
+  if (props.type === 'dti' && risk.value !== 'ok') return t('dashboard.kpi.dtiHigh')
   return ''
 })
 </script>
@@ -82,6 +89,12 @@ const contextOrDefault = computed(() => {
       class="text-xs text-slate-600 dark:text-slate-300"
     >
       {{ contextOrDefault }}
+    </p>
+    <p
+      v-if="hint"
+      class="text-xs text-slate-500 dark:text-slate-400"
+    >
+      {{ hint }}
     </p>
   </article>
 </template>

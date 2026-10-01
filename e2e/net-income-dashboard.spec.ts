@@ -5,7 +5,7 @@
 import { test, expect, SEED_ONCE_INIT_SCRIPT, seedStorageOnce } from './fixtures'
 
 test.describe('TC-E-002 — dashboard uses net income', () => {
-  test('gross 12.1M + 4% salud + 4% pensión → distribution amounts show $11.132.000 (AC-2.2)', async ({
+  test('gross 12.1M + 4% salud + 4% pensión minus estimated retención → KPI shows $10.495.658 (AC-2.2)', async ({
     page,
   }) => {
     await page.context().addInitScript(
@@ -36,6 +36,7 @@ test.describe('TC-E-002 — dashboard uses net income', () => {
 
     const kpiStrip = page.getByTestId('kpi-strip')
     await expect(kpiStrip).toBeVisible({ timeout: 5000 })
-    await expect(kpiStrip).toContainText(/11[.,\s]?132[.,\s]?000/)
+    // 12.1M × 0.92 = 11.132.000 − retención 2026 (636.342) = 10.495.658.
+    await expect(kpiStrip).toContainText(/10[.,\s]?495[.,\s]?658/)
   })
 })

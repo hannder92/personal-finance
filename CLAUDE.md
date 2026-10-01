@@ -135,12 +135,13 @@ All exports are pure functions. Input/output types live in the same file.
 
 ### `src/lib/tax/colombia/`
 
-| Module         | Key export(s)                                                                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `constants.ts` | `UVT_BY_YEAR`/`uvtForYear(year)` (2025=49799, 2026=52374), `RENTA_EXENTA_CAP_UVT_ANUAL=790`, `APORTE_SALUD=0.04`, `APORTE_PENSION=0.04`, `ART_383_BRACKETS[]` |
-| `retencion.ts` | `calcRetencion(grossSalary, year?)→{amount,label,belowThreshold}` (year defaults to current)                                                                  |
-| `prima.ts`     | `calcPrimaServicios(grossSalary)→{amount,frequency:'semiannual'}`                                                                                             |
-| `presets.ts`   | `applyColombiaPresets(deductions[],salary)→deductions[]` (idempotente)                                                                                        |
+| Module         | Key export(s)                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `constants.ts` | `uvtForYear(y)`, `smmlvForYear(y)`, `RENTA_EXENTA_CAP_UVT=790/12`, `FSP_BRACKETS`, `ART_383_BRACKETS[]` |
+| `aportes.ts`   | `calcAportesEmpleado(gross, year)→{salud,pension,fsp,total}` (IBC ≤ 25 SMMLV)                           |
+| `retencion.ts` | `calcRetencion(grossSalary, now)→{amount,label,belowThreshold}`                                         |
+| `prima.ts`     | `calcPrimaServicios(grossSalary)→{amount,frequency:'semiannual'}`                                       |
+| `presets.ts`   | `applyColombiaPresets(deductions[],salary)→deductions[]` (idempotente)                                  |
 
 ---
 
@@ -245,9 +246,10 @@ Fondo emergencia denominador: `gastos fijos + obligaciones de deuda mínimas` (n
 ## Colombian Payroll Quick Reference
 
 - **ARL**: 100% costo del empleador — NUNCA agregar como deducción del empleado
-- **Retención base**: `gross − salud(4%) − pensión(4%)` (Art. 383 ET)
-- **Renta exenta cap**: `790 UVT/año` → `790/12 × UVT_2026 ≈ $3.447.955/mes` (Art. 206 num. 10 ET, mod. Ley 2277/2022)
+- **Retención base**: `gross − salud(4%) − pensión(4%) − FSP` (Art. 383 ET); FSP 1% desde 4 SMMLV, hasta 2% desde 20 SMMLV
+- **Renta exenta**: 25%, tope `790 UVT/año` (790/12 por mes, Art. 206 num. 10 ET, Ley 2277/2022); límite global 40% / 1.340 UVT/año (Art. 336)
+- **Neto**: `useBaseMetrics` descuenta la retención estimada salvo `settings.deductRetencion = false` o una deducción manual de retención
 - **No-salary benefits**: se suman AL FINAL, nunca entran en base de aportes (Art. 128 CST)
 - **Prima de servicios**: `bruto / 2` semestral (Art. 306 CST, 6 meses completos)
-- **UVT por año**: 2025 `$49.799` (Res. DIAN 000187/2024) · 2026 `$52.374` (Res. DIAN 000238/2025) — agregar cada año en `UVT_BY_YEAR`
+- **UVT**: 2025 `$49.799` (Res. DIAN 000187/2024) · 2026 `$52.374` (Res. DIAN 000238/2025). SMMLV 2026 `$1.750.905`
 - **APR field = TEA**: `(1+TEA)^(1/12)−1` para obtener tasa mensual equivalente

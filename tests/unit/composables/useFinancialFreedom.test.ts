@@ -41,6 +41,7 @@ describe('composables/useFinancialFreedom (20260529-metricas-runway-ingresos)', 
     const liquid = useLiquidMetrics()
 
     expect(ff.monthlyLivingExpense.value).toBe(liquid.monthlyLivingExpense.value)
-    expect(ff.monthlyLivingExpense.value).toBe(3_500_000)
+    // 3M fixed + max(1M budget, 500K spent).
+    expect(ff.monthlyLivingExpense.value).toBe(4_000_000)
   })
 })

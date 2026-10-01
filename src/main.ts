@@ -5,6 +5,7 @@ import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
+import { useMonthClose } from './composables/useMonthClose'
 import type { AppStateV4 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
@@ -34,6 +35,7 @@ function hydrateStores() {
   settings.setTheme(state.settings.theme)
   settings.setPayoffMethod(state.settings.payoffMethod)
   settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
+  settings.setDeductRetencion(state.settings.deductRetencion ?? true)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
 
   const income = useIncomeStore()
@@ -62,8 +64,7 @@ function hydrateStores() {
   variable.state.items.splice(0, Infinity, ...(state.variableExpenses as any[]))
 
   const snapshots = useSnapshotsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  snapshots.setAll(state.snapshots as any)
+  snapshots.setAll(state.snapshots)
 
   const allocation = useAllocationStore()
   allocation.setAllocation(state.allocation.needs, state.allocation.wants)
@@ -94,6 +95,7 @@ function persistStores(): void {
         lastMonthSeen: settings.state.lastMonthSeen,
         onboarding: { done: true, currentStep: 0 },
         projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
+        deductRetencion: settings.state.deductRetencion,
       },
       income: {
         grossSalary: income.state.grossSalary,
@@ -107,8 +109,7 @@ function persistStores(): void {
       goals: goals.state.items,
       assets: assets.state.items,
       variableExpenses: variable.state.items,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      snapshots: snapshots.state.items as any,
+      snapshots: snapshots.state.items,
       allocation: {
         needs: allocation.state.needs,
         wants: allocation.state.wants,
@@ -148,4 +149,6 @@ persistStores()
 app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
+  // Runs after hydration so the snapshot and the variable reset are persisted.
+  useMonthClose().runMonthClose()
 })

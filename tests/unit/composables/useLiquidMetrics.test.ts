@@ -10,7 +10,7 @@ describe('composables/useLiquidMetrics', () => {
     setActivePinia(createPinia())
   })
 
-  it('TC-U-004 (AC-1.2, AC-2.2): living expense = fixed + variable spent; liquid from eligible assets', () => {
+  it('TC-U-004 (AC-1.2, AC-2.2): living expense = fixed + max(variable budget, spent); liquid from eligible assets', () => {
     const expenses = useExpensesStore()
     expenses.add({ name: 'Arriendo', amount: 4_000_000, category: 'vivienda' })
 
@@ -23,7 +23,8 @@ describe('composables/useLiquidMetrics', () => {
 
     const { liquidAssets, monthlyLivingExpense } = useLiquidMetrics()
 
-    expect(monthlyLivingExpense.value).toBe(5_000_000)
+    // 4M fixed + max(2M budget, 1M spent) — the budget counts while the month is open.
+    expect(monthlyLivingExpense.value).toBe(6_000_000)
     expect(liquidAssets.value).toBe(50_000_000)
   })
 

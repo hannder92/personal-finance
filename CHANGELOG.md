@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Fixed
+### Fixed (benchmark UX + revisión de cálculos)
 
-- **Retención en la fuente** — tope de renta exenta 25% corregido a 790 UVT anuales (Art. 206 num. 10 ET, Ley 2277/2022) en lugar de 240 UVT/mes; UVT por año (`uvtForYear`) con 2026 = $52.374 (Res. DIAN 000238/2025). Corrige retención subestimada en salarios altos.
+- **Retención 2026** — UVT y SMMLV por año (2026: $52.374 / $1.750.905), renta exenta 25% con tope 790 UVT/año, límite 40% / 1.340 UVT, Fondo de Solidaridad Pensional y tope IBC 25 SMMLV; constantes Art. 383 = 268 y 770 UVT.
+- **Neto real** — la retención estimada se descuenta del ingreso neto (interruptor en Ingresos; no se descuenta dos veces si ya hay una deducción manual).
+- **Métricas unificadas** (`useBaseMetrics`) — DTI y vivienda sobre ingreso bruto, ahorro sobre neto; ingresos adicionales, gastos variables y cuotas pagadas tratados igual en todo el dashboard.
+- **Cierre de mes** — al empezar un mes se guarda el snapshot del mes anterior y se reinician los gastos variables; el historial ya no queda vacío.
+- **Deudas** — "nunca" cuando la cuota no cubre intereses, intereses reales mes a mes, préstamos con cuotas restantes.
+- **Proyección** — prima en junio y diciembre, gastos variables restados, meses con nombre.
+- **Metas** — fechas locales (sin corrimiento UTC), aviso de atraso y aporte necesario.
+- **UI** — botón rápido de gastos visible, alta/borrado de categorías variables, desglose del puntaje con puntos e ideal, etiquetas de puntaje coherentes, porcentajes y fechas según idioma, monedas MXN/ARS/BRL/PEN sin error, textos pendientes traducidos.
 
 ### Added (feature `20260529-metricas-runway-ingresos`)
 
