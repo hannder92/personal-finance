@@ -10,6 +10,8 @@ import {
 } from 'chart.js'
 import { computed } from 'vue'
 import { Line } from 'vue-chartjs'
+import { formatCurrency } from '@/lib/currency/format'
+import { formatCompactCurrency } from '@/lib/format/locale'
 
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend)
 
@@ -20,6 +22,8 @@ const props = withDefaults(
     gridColor?: string
     insight?: string | null
     emptyMessage?: string
+    datasetLabel?: string
+    currency?: string
   }>(),
   {
     months: () => [],
@@ -27,6 +31,8 @@ const props = withDefaults(
     gridColor: '#cbd5e1',
     insight: null,
     emptyMessage: '',
+    datasetLabel: '',
+    currency: 'COP',
   }
 )
 
@@ -34,7 +40,7 @@ const chartData = computed(() => ({
   labels: props.months.map((m) => m.label),
   datasets: [
     {
-      label: 'Balance proyectado',
+      label: props.datasetLabel,
       data: props.months.map((m) => m.balance),
       borderColor: '#3b82f6',
       backgroundColor: 'rgba(59,130,246,0.15)',
@@ -48,6 +54,12 @@ const chartOptions = computed(() => ({
   maintainAspectRatio: false,
   plugins: {
     legend: { labels: { color: props.textColor } },
+    tooltip: {
+      callbacks: {
+        label: (ctx: { parsed: { y: number | null } }) =>
+          formatCurrency(ctx.parsed.y ?? 0, props.currency),
+      },
+    },
   },
   scales: {
     x: {
@@ -55,7 +67,10 @@ const chartOptions = computed(() => ({
       grid: { color: props.gridColor },
     },
     y: {
-      ticks: { color: props.textColor },
+      ticks: {
+        color: props.textColor,
+        callback: (value: number | string) => formatCompactCurrency(Number(value), props.currency),
+      },
       grid: { color: props.gridColor },
     },
   },

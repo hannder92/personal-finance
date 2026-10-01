@@ -2,9 +2,11 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDebtPayoffPlan } from '@/composables/useDebtPayoffPlan'
+import { useFormat } from '@/composables/useFormat'
 import { useCardsStore } from '@/stores/cardsStore'
 
 const { t } = useI18n()
+const fmt = useFormat()
 const cards = useCardsStore()
 const { sortedDebtIds } = useDebtPayoffPlan()
 
@@ -30,7 +32,7 @@ const ordered = computed(() =>
         data-testid="debt-priority-item"
         :data-debt-id="debt.id"
       >
-        {{ debt.name }} — {{ debt.apr }}% · {{ debt.balance.toLocaleString() }}
+        {{ debt.name }} — {{ fmt.percent(debt.apr, 2) }} E.A. · {{ fmt.currency(debt.balance) }}
       </li>
     </ol>
   </section>

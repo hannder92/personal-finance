@@ -9,7 +9,7 @@ test.describe('TC-E-003 — health score reactive', () => {
     returningPage: page,
   }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await page.getByRole('button', { name: /cómo se calcula tu puntaje/i }).click()
     const emergencyRow = page.locator('[data-component="emergency"]')
     await expect(emergencyRow).toBeVisible()
     const before = await emergencyRow.getAttribute('data-status')
@@ -22,7 +22,7 @@ test.describe('TC-E-003 — health score reactive', () => {
 
     // Back to dashboard.
     await page.goto('/')
-    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await page.getByRole('button', { name: /cómo se calcula tu puntaje/i }).click()
     await expect(emergencyRow).toBeVisible()
     const after = await emergencyRow.getAttribute('data-status')
     expect(after).not.toBe(before)
@@ -32,7 +32,7 @@ test.describe('TC-E-003 — health score reactive', () => {
     returningPage: page,
   }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await page.getByRole('button', { name: /cómo se calcula tu puntaje/i }).click()
     const housingRow = page.locator('[data-component="housing"]')
     await expect(housingRow).toBeVisible()
     const before = await housingRow.getAttribute('data-status')
@@ -43,7 +43,7 @@ test.describe('TC-E-003 — health score reactive', () => {
     await page.getByRole('button', { name: /^agregar$/i }).click()
 
     await page.goto('/')
-    await page.getByRole('button', { name: /puntaje de salud/i }).click()
+    await page.getByRole('button', { name: /cómo se calcula tu puntaje/i }).click()
     await expect(housingRow).toBeVisible()
     const after = await housingRow.getAttribute('data-status')
     expect(after).not.toBe(before)

@@ -49,20 +49,20 @@ describe('variableExpensesStore (T-044)', () => {
 
   it('add creates category with UUID id', () => {
     const s = useVariableExpensesStore()
-    s.add({ name: 'Restaurantes', budget: 500_000, spent: 0, categoryId: 'food' })
+    s.add({ name: 'Restaurantes', budget: 500_000, spent: 0, icon: 'utensils' })
     expect(s.state.items.length).toBe(1)
     expect(s.state.items[0]!.id).toMatch(UUID_V4_REGEX)
   })
 
   it('add rejects negative budget', () => {
     const s = useVariableExpensesStore()
-    s.add({ name: 'X', budget: -1, spent: 0, categoryId: 'food' })
+    s.add({ name: 'X', budget: -1, spent: 0, icon: 'utensils' })
     expect(s.state.items.length).toBe(0)
   })
 
   it('recordSpending increments spent', () => {
     const s = useVariableExpensesStore()
-    s.add({ name: 'Restaurantes', budget: 500_000, spent: 0, categoryId: 'food' })
+    s.add({ name: 'Restaurantes', budget: 500_000, spent: 0, icon: 'utensils' })
     const id = s.state.items[0]!.id
     s.recordSpending(id, 50_000)
     expect(s.state.items[0]!.spent).toBe(50_000)
@@ -72,7 +72,7 @@ describe('variableExpensesStore (T-044)', () => {
 
   it('recordSpending ignores invalid amount', () => {
     const s = useVariableExpensesStore()
-    s.add({ name: 'X', budget: 100, spent: 0, categoryId: 'food' })
+    s.add({ name: 'X', budget: 100, spent: 0, icon: 'utensils' })
     const id = s.state.items[0]!.id
     s.recordSpending(id, -1)
     expect(s.state.items[0]!.spent).toBe(0)
@@ -80,8 +80,8 @@ describe('variableExpensesStore (T-044)', () => {
 
   it('resetAllSpent zeroes every category', () => {
     const s = useVariableExpensesStore()
-    s.add({ name: 'A', budget: 100, spent: 50, categoryId: 'food' })
-    s.add({ name: 'B', budget: 100, spent: 30, categoryId: 'fun' })
+    s.add({ name: 'A', budget: 100, spent: 50, icon: 'utensils' })
+    s.add({ name: 'B', budget: 100, spent: 30, icon: 'gamepad' })
     s.resetAllSpent()
     expect(s.state.items.every((x) => x.spent === 0)).toBe(true)
   })

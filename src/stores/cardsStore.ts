@@ -74,10 +74,23 @@ export const useCardsStore = defineStore('cards', () => {
     state.items.push({ ...input, id: newId() })
   }
 
+  // Validates every patched field; the id and the card/loan type cannot change.
   function update(id: string, patch: Partial<Debt>): void {
     const idx = state.items.findIndex((x) => x.id === id)
     if (idx < 0) return
-    Object.assign(state.items[idx]!, patch)
+    const { id: _id, type: _type, ...rest } = patch as Partial<CardDebt & LoanDebt>
+    if (rest.name !== undefined && !isValidName(rest.name)) return
+    for (const key of ['balance', 'limit', 'apr', 'minPayment'] as const) {
+      const value = rest[key]
+      if (value !== undefined && !isValidAmount(value)) return
+    }
+    if (
+      rest.remainingInstallments !== undefined &&
+      (!Number.isInteger(rest.remainingInstallments) || rest.remainingInstallments < 0)
+    ) {
+      return
+    }
+    Object.assign(state.items[idx]!, rest)
   }
 
   function remove(id: string): void {
@@ -109,7 +122,12 @@ export const useCardsStore = defineStore('cards', () => {
     if (!card) return
     const item = card.installments.find((x) => x.id === id)
     if (!item) return
-    Object.assign(item, patch)
+    const next = { ...item, ...patch, id: item.id }
+    if (!isValidName(next.name)) return
+    if (!isValidAmount(next.total)) return
+    if (!Number.isInteger(next.installments) || next.installments <= 0) return
+    if (!Number.isInteger(next.paid) || next.paid < 0 || next.paid > next.installments) return
+    Object.assign(item, next)
   }
 
   function removeInstallment(cardId: string, id: string): void {

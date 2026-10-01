@@ -33,11 +33,12 @@ describe('KpiStrip (TC-C-006, TC-C-007)', () => {
       },
     })
     const strip = container.querySelector('[data-testid="kpi-strip"]')!
-    expect(strip.querySelectorAll('article').length).toBe(4)
+    // Net income, fixed, variable, debt, DTI.
+    expect(strip.querySelectorAll('article').length).toBe(5)
     expect(container.textContent).not.toMatch(/disponible/i)
   })
 
-  it('TC-C-007: uses horizontal scroll container', () => {
+  it('TC-C-007: wraps into a 2-column grid on mobile (no horizontal scroll)', () => {
     const { container } = render(KpiStrip, {
       global: {
         plugins: [
@@ -59,6 +60,7 @@ describe('KpiStrip (TC-C-006, TC-C-007)', () => {
       },
     })
     const strip = container.querySelector('[data-testid="kpi-strip"]') as HTMLElement
-    expect(strip.className).toMatch(/overflow-x-auto/)
+    expect(strip.className).toMatch(/grid-cols-2/)
+    expect(strip.className).not.toMatch(/overflow-x-auto/)
   })
 })

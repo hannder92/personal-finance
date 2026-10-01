@@ -3,6 +3,7 @@
 
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
+import { applyColombiaPresets as applyColombiaDeductionPresets } from '@/lib/tax/colombia/presets'
 
 export type DeductionType = 'fixed' | 'percent'
 export type IncomeFrequency = 'monthly' | 'quarterly' | 'semiannual' | 'annual'
@@ -138,16 +139,8 @@ export const useIncomeStore = defineStore('income', () => {
   }
 
   function applyColombiaPresets(): void {
-    const existingLabels = new Set(state.deductions.map((d) => d.label.toLowerCase()))
-    const presets: Array<Omit<Deduction, 'id'>> = [
-      { label: 'Salud', amount: 4, type: 'percent' },
-      { label: 'Pensión', amount: 4, type: 'percent' },
-    ]
-    for (const preset of presets) {
-      if (!existingLabels.has(preset.label.toLowerCase())) {
-        addDeduction(preset)
-      }
-    }
+    const next = applyColombiaDeductionPresets(state.deductions, state.grossSalary)
+    state.deductions.splice(0, state.deductions.length, ...next)
   }
 
   function addPrimaPreset(): void {

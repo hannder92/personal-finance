@@ -8,7 +8,8 @@ export interface VariableCategory {
   name: string
   budget: number
   spent: number
-  categoryId: string
+  /** Lucide icon name; required by VariableCategorySchema. */
+  icon: string
 }
 
 export interface VariableExpensesState {
@@ -30,11 +31,19 @@ function isValidAmount(amount: number): boolean {
 export const useVariableExpensesStore = defineStore('variableExpenses', () => {
   const state = reactive<VariableExpensesState>({ items: [] })
 
-  function add(input: Omit<VariableCategory, 'id'>): void {
-    if (!isValidName(input.name)) return
+  function add(input: { name: string; budget: number; spent?: number; icon?: string }): void {
+    const name = typeof input.name === 'string' ? input.name.trim() : ''
+    if (!isValidName(name)) return
     if (!isValidAmount(input.budget)) return
-    if (!isValidAmount(input.spent)) return
-    state.items.push({ ...input, id: newId() })
+    const spent = input.spent ?? 0
+    if (!isValidAmount(spent)) return
+    const icon = input.icon && input.icon.length <= 40 ? input.icon : 'wallet'
+    state.items.push({ id: newId(), name, budget: input.budget, spent, icon })
+  }
+  function updateBudget(id: string, budget: number): void {
+    if (!isValidAmount(budget)) return
+    const item = state.items.find((x) => x.id === id)
+    if (item) item.budget = budget
   }
   function remove(id: string): void {
     const idx = state.items.findIndex((x) => x.id === id)
@@ -52,5 +61,5 @@ export const useVariableExpensesStore = defineStore('variableExpenses', () => {
     })
   }
 
-  return { state, add, remove, recordSpending, resetAllSpent }
+  return { state, add, updateBudget, remove, recordSpending, resetAllSpent }
 })

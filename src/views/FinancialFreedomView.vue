@@ -1,25 +1,35 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FlowCoverageBlock from '@/components/fi/FlowCoverageBlock.vue'
-import { formatCurrency } from '@/lib/currency/format'
 import { useFinancialFreedom } from '@/composables/useFinancialFreedom'
-import { useSettingsStore } from '@/stores/settingsStore'
+import { useFormat } from '@/composables/useFormat'
+import { useSavingsFeasibility } from '@/composables/useSavingsFeasibility'
 
 const { t } = useI18n()
-const settings = useSettingsStore()
+const fmtx = useFormat()
+const { feasible } = useSavingsFeasibility()
 const { monthlyLivingExpense, liquidAssets, targetPatrimony, monthsToTarget, targetReached } =
   useFinancialFreedom()
 
 function fmt(n: number): string {
-  return formatCurrency(n, settings.state.currency)
+  return fmtx.currency(n)
 }
+
+const horizonText = computed(() => {
+  const months = monthsToTarget.value
+  if (months === null) return null
+  const now = new Date()
+  const date = fmtx.monthYear(new Date(now.getFullYear(), now.getMonth() + months, 1))
+  if (months >= 24) {
+    return t('fi.detail.horizonYears', { years: fmtx.number(months / 12, 1), date })
+  }
+  return t('fi.detail.horizonMonths', { months, date })
+})
 </script>
 
 <template>
-  <section
-    data-testid="financial-freedom-view"
-    class="mx-auto flex max-w-2xl flex-col gap-6 p-6"
-  >
+  <section data-testid="financial-freedom-view" class="mx-auto flex max-w-2xl flex-col gap-6 p-6">
     <header>
       <h1 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
         {{ t('fi.detail.title') }}
@@ -52,11 +62,15 @@ function fmt(n: number): string {
         <dt>{{ t('fi.detail.horizon') }}</dt>
         <dd data-testid="fi-horizon">
           <span v-if="targetReached">{{ t('fi.detail.targetReached') }}</span>
-          <span v-else-if="monthsToTarget !== null">{{ monthsToTarget }} meses</span>
+          <span v-else-if="horizonText">{{ horizonText }}</span>
           <span v-else>{{ t('fi.detail.noFeasibleSavings') }}</span>
         </dd>
       </div>
     </dl>
+
+    <p data-testid="fi-assumptions" class="text-xs text-slate-500 dark:text-slate-400">
+      {{ t('fi.detail.assumptions', { monthly: fmt(feasible) }) }}
+    </p>
 
     <FlowCoverageBlock />
   </section>

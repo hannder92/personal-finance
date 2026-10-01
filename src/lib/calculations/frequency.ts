@@ -3,7 +3,15 @@ export type Frequency = 'monthly' | 'quarterly' | 'semiannual' | 'annual'
 export interface FrequencyStream {
   amount: number
   frequency: Frequency
+  /**
+   * Calendar months (0 = January) in which the stream is paid. When set, the
+   * projection places payments on those months instead of starting at month 0.
+   * Prima de servicios is paid in June and December (Art. 306 CST).
+   */
+  paymentMonths?: ReadonlyArray<number>
 }
+
+export const PRIMA_PAYMENT_MONTHS: ReadonlyArray<number> = [5, 11]
 
 // Months between payments for each frequency.
 const PERIOD_MONTHS: Readonly<Record<Frequency, number>> = {
@@ -23,8 +31,17 @@ export function calcMonthlyEquivalent(stream: FrequencyStream): number {
 export function getProjectionMonthsForStream(
   stream: FrequencyStream,
   startMonth: number,
-  count: number
+  count: number,
+  startCalendarMonth = 0
 ): number[] {
+  if (stream.paymentMonths && stream.paymentMonths.length > 0) {
+    const paid = new Set(stream.paymentMonths)
+    const hits: number[] = []
+    for (let i = startMonth; i < count; i++) {
+      if (paid.has((startCalendarMonth + i) % 12)) hits.push(i)
+    }
+    return hits
+  }
   const period = PERIOD_MONTHS[stream.frequency]
   const result: number[] = []
   for (let i = 0; i < count; i++) {
