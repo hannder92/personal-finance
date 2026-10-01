@@ -1,0 +1,40 @@
+feature:
+  slug: "20260609-dashboard-fintech-redesign"
+  name: "Dashboard fintech redesign (layout, cash flow, transacciones, comparativa mensual)"
+  branch: "feature/20260609-dashboard-fintech-redesign"
+  created: "2026-06-09"
+  mode: solo
+  size_class: M
+  source: "benchmark image: specs/20260609-dashboard-fintech-redesign/assets/benchmark-fintech-dashboard.png"
+
+phase:
+  current: 7
+  name: feedback
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  discovery: { approved: true, by: "Johann Medina", at: "2026-06-09" }
+  spec: { approved: true, by: "Johann Medina", at: "2026-06-09", spec_score: 100 }
+  plan: { approved: true, by: "Johann Medina", at: "2026-06-09" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-06-09" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-06-09" }
+  review: { approved: true, by: "Johann Medina", at: "2026-06-09", verdict: YELLOW }
+
+artifacts:
+  constitution: constitution.md
+  discovery: specs/20260609-dashboard-fintech-redesign/0-discovery.md
+  spec: specs/20260609-dashboard-fintech-redesign/1-spec.md  # generated 2026-06-09, 20 ACs
+  plan: specs/20260609-dashboard-fintech-redesign/2-plan.md
+  test_plan: specs/20260609-dashboard-fintech-redesign/3-test-plan.md
+  tasks: specs/20260609-dashboard-fintech-redesign/4-tasks.md
+  review: specs/20260609-dashboard-fintech-redesign/6-review.md  # verdict YELLOW 2026-06-09
+
+progress:
+  tasks_done: 29
+  tasks_total: 29
+  next_pending: null
+  last_update: "2026-06-09T18:00:00-05:00"
+  implement_session: null
+
+drift: []

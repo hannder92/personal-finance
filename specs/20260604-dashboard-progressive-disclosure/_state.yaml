@@ -1,0 +1,40 @@
+feature:
+  slug: "20260604-dashboard-progressive-disclosure"
+  name: "Dashboard progressive disclosure (mobile hierarchy)"
+  branch: "feature/20260604-dashboard-progressive-disclosure"
+  created: "2026-06-04"
+  mode: solo
+  size_class: M
+  source: "docs/evaluations/personal-finance/improvement-backlog.md#IMP-001"
+
+phase:
+  current: 7
+  name: feedback
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  discovery: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  spec: { approved: true, by: "Johann Medina", at: "2026-06-04", spec_score: 100 }
+  plan: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  review: { approved: true, by: "Johann Medina", at: "2026-06-04", verdict: GREEN }
+
+artifacts:
+  constitution: constitution.md
+  discovery: specs/20260604-dashboard-progressive-disclosure/0-discovery.md
+  spec: specs/20260604-dashboard-progressive-disclosure/1-spec.md
+  plan: specs/20260604-dashboard-progressive-disclosure/2-plan.md
+  test_plan: specs/20260604-dashboard-progressive-disclosure/3-test-plan.md
+  tasks: specs/20260604-dashboard-progressive-disclosure/4-tasks.md
+  review: specs/20260604-dashboard-progressive-disclosure/6-review.md
+
+progress:
+  tasks_done: 14
+  tasks_total: 14
+  next_pending: null
+  last_update: "2026-06-04T24:15:00Z"
+  implement_session: null
+
+drift: []

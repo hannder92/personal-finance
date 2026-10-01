@@ -1,0 +1,39 @@
+feature:
+  slug: "20260530-mi-dia-cobertura"
+  name: "Mi Día — cobertura y vencimientos"
+  branch: "feature/20260530-mi-dia-cobertura"
+  created: "2026-05-29"
+  mode: solo
+  size_class: S
+
+phase:
+  current: 6
+  name: review
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true, by: "Johann Medina", at: "2026-05-29" }
+  discovery: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  spec: { approved: true, by: "Johann Medina", at: "2026-06-04", spec_score: 100 }
+  plan: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-06-04" }
+  review: { approved: false }
+
+artifacts:
+  constitution: constitution.md
+  discovery: specs/20260530-mi-dia-cobertura/0-discovery.md
+  spec: specs/20260530-mi-dia-cobertura/1-spec.md
+  plan: specs/20260530-mi-dia-cobertura/2-plan.md
+  test_plan: specs/20260530-mi-dia-cobertura/3-test-plan.md
+  tasks: specs/20260530-mi-dia-cobertura/4-tasks.md
+  review: specs/20260530-mi-dia-cobertura/6-review.md
+
+progress:
+  tasks_done: 18
+  tasks_total: 18
+  next_pending: null
+  last_update: "2026-06-05T00:15:00Z"
+  implement_session: null
+
+drift: []

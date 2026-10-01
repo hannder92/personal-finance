@@ -3,9 +3,8 @@ import { expect, test } from './fixtures'
 // TC-E-008: AC-16.3, AC-17.1, AC-17.2, AC-17.4
 test('TC-E-008: dark mode toggle adds "dark" class to <html>', async ({ returningPage: page }) => {
   await page.goto('/')
-  await expect(page.getByRole('heading', { name: /resumen|overview/i })).toBeVisible({
-    timeout: 8000,
-  })
+  // Since 20260609-dashboard-fintech-redesign the dashboard heading is the greeting.
+  await expect(page.getByTestId('dashboard-greeting')).toBeVisible({ timeout: 8000 })
 
   // Simulate clicking ThemeToggle (if wired to App).
   const themeBtn = page.getByRole('button', { name: /tema|theme/i }).first()

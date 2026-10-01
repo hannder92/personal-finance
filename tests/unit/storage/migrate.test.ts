@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { migrate, migrations } from '@/lib/storage/migrate'
-import { AppStateSchemaV3, AppStateSchemaV4 } from '@/lib/storage/schema'
+import { AppStateSchemaV3, AppStateSchemaV4, AppStateSchemaV5 } from '@/lib/storage/schema'
 import { applySnapshotCap, buildSnapshot } from '@/lib/calculations/snapshot'
 import v1Typical from '../../fixtures/v1-typical.json'
 import v1Empty from '../../fixtures/v1-empty.json'
 
 describe('lib/storage/migrate', () => {
-  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid latest-schema state (v4)', () => {
+  it('TC-U-042 (EC-5): migrating typical v1 state produces a valid latest-schema state (v5)', () => {
     const result = migrate(v1Typical)
-    const parse = AppStateSchemaV4.safeParse(result)
+    const parse = AppStateSchemaV5.safeParse(result)
     expect(parse.success).toBe(true)
   })
 
@@ -37,9 +37,9 @@ describe('lib/storage/migrate', () => {
     expect(result.income.otherStreams[0]?.frequency).toBe('monthly')
   })
 
-  it('EC-5: schemaVersion is set to the latest (4) on migrated output', () => {
+  it('EC-5: schemaVersion is set to the latest (5) on migrated output', () => {
     const result = migrate(v1Typical) as { schemaVersion: number }
-    expect(result.schemaVersion).toBe(4)
+    expect(result.schemaVersion).toBe(5)
   })
 })
 
@@ -140,9 +140,9 @@ describe('lib/storage/migrate v3→v4 (20260529-metricas-runway-ingresos)', () =
     expect(parsed.data.income.otherStreams[0]?.incomeClass).toBe('linear')
   })
 
-  it('TC-U-008 (AC-3.4, AC-6.2): full migrate chain reaches v4 when loop extended', () => {
+  it('TC-U-008 (AC-3.4, AC-6.2): full migrate chain reaches the latest schema (v5)', () => {
     const result = migrate(v3Fixture)
-    const parsed = AppStateSchemaV4.safeParse(result)
+    const parsed = AppStateSchemaV5.safeParse(result)
     expect(parsed.success).toBe(true)
   })
 })

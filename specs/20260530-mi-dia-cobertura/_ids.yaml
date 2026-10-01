@@ -1,0 +1,85 @@
+ac:
+  - { id: AC-1.1, desc: "Badge cubierto visible P0 móvil sin scroll" }
+  - { id: AC-1.2, desc: "Shortfall con monto faltante visible" }
+  - { id: AC-1.3, desc: "Sin vencimientos hoy mensaje aliviado" }
+  - { id: AC-1.4, desc: "Liquidez secundaria con línea contexto" }
+  - { id: AC-1.5, desc: "Sin liquidez CTA patrimonio" }
+  - { id: AC-2.1, desc: "Lista pagos hoy nombre y monto" }
+  - { id: AC-2.2, desc: "Enlace ver deudas desde card" }
+  - { id: AC-2.3, desc: "Card pagos estilo cálido móvil" }
+  - { id: AC-3.1, desc: "Agenda 3 días conteo y monto por día" }
+  - { id: AC-3.2, desc: "Fila día sin vencimientos copy neutro" }
+  - { id: AC-4.1, desc: "Mi Día encima disponible mensual" }
+  - { id: AC-4.2, desc: "i18n es+en bloque Mi Día" }
+tc:
+  - { id: TC-U-010, covers: [EC-1], kind: unit }
+  - { id: TC-U-011, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.5, EC-3], kind: unit }
+  - { id: TC-U-012, covers: [AC-2.1], kind: unit }
+  - { id: TC-U-013, covers: [AC-3.1, AC-3.2], kind: unit }
+  - { id: TC-U-014, covers: [A-004], kind: unit }
+  - { id: TC-I-010, covers: [AC-1.1, AC-2.1, AC-3.1], kind: integration }
+  - { id: TC-C-068, covers: [AC-1.1], kind: integration }
+  - { id: TC-C-069, covers: [AC-1.2], kind: integration }
+  - { id: TC-C-070, covers: [AC-1.3, AC-1.5], kind: integration }
+  - { id: TC-C-071, covers: [AC-1.4], kind: integration }
+  - { id: TC-C-072, covers: [AC-2.1, AC-2.3], kind: integration }
+  - { id: TC-C-073, covers: [AC-2.2], kind: integration }
+  - { id: TC-C-074, covers: [AC-3.1, AC-3.2], kind: integration }
+  - { id: TC-C-075, covers: [AC-4.1], kind: integration }
+  - { id: TC-C-076, covers: [AC-4.2], kind: integration }
+  - { id: TC-C-077, covers: [AC-2.1], kind: integration }
+  - { id: TC-E-024, covers: [AC-1.1, AC-2.2, AC-4.1], kind: e2e }
+tasks:
+  - { id: T-001, status: done, type: setup, size: S, layer: cross, covers: [AC-4.2], deps: [] }
+  - { id: T-002, status: done, type: setup, size: S, layer: cross, covers: [], deps: [T-001] }
+  - { id: T-010, status: done, type: test, size: M, layer: domain, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.5, AC-2.1, AC-3.1, AC-3.2], deps: [T-002] }
+  - { id: T-011, status: done, type: test, size: S, layer: app, covers: [AC-1.1, AC-2.1, AC-3.1], deps: [T-002] }
+  - { id: T-012, status: done, type: test, size: M, layer: app, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5], deps: [T-002] }
+  - { id: T-013, status: done, type: test, size: S, layer: app, covers: [AC-2.1, AC-2.2, AC-2.3], deps: [T-002] }
+  - { id: T-014, status: done, type: test, size: S, layer: app, covers: [AC-3.1, AC-3.2], deps: [T-002] }
+  - { id: T-015, status: done, type: test, size: S, layer: app, covers: [AC-4.1, AC-4.2], deps: [T-002] }
+  - { id: T-016, status: done, type: test, size: S, layer: cross, covers: [AC-1.1, AC-2.2, AC-4.1], deps: [T-002] }
+  - { id: T-020, status: done, type: impl, size: M, layer: domain, risk: H, covers: [AC-1.1, AC-1.2, AC-1.3, AC-2.1, AC-3.1, AC-3.2], deps: [T-010] }
+  - { id: T-021, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-1.1, AC-2.1, AC-3.1], deps: [T-010, T-011, T-020] }
+  - { id: T-022, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5], deps: [T-012, T-021] }
+  - { id: T-023, status: done, type: impl, size: S, layer: app, risk: L, covers: [AC-2.1, AC-2.2, AC-2.3], deps: [T-013, T-021] }
+  - { id: T-024, status: done, type: impl, size: S, layer: app, risk: L, covers: [AC-3.1, AC-3.2], deps: [T-014, T-021] }
+  - { id: T-025, status: done, type: impl, size: M, layer: app, risk: M, covers: [AC-4.1, AC-4.2], deps: [T-015, T-022, T-023, T-024] }
+  - { id: T-026, status: done, type: impl, size: S, layer: infra, risk: L, covers: [AC-4.2, AC-1.3, AC-3.2], deps: [T-001, T-025] }
+  - { id: T-027, status: done, type: impl, size: S, layer: cross, risk: M, covers: [AC-1.1, AC-2.2, AC-4.1], deps: [T-016, T-025] }
+  - { id: T-LAST, status: done, type: test, size: S, layer: cross, covers: [AC-1.1, AC-1.2, AC-1.3, AC-1.4, AC-1.5, AC-2.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-4.1, AC-4.2], deps: [T-020, T-021, T-022, T-023, T-024, T-025, T-026, T-027] }
+oq:
+  - { id: OQ-1, desc: "dueDay gastos fijos", status: resolved, resolution: "fase 2" }
+  - { id: OQ-2, desc: "definición liquidez", status: resolved, resolution: "misma que runway" }
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "dueDate ISO YYYY-MM-DD alineado con input date"
+    impact_if_wrong: H
+    verify_by: "Unit isDueOnLocalDay"
+    status: verified
+  - id: A-002
+    stated_in: plan
+    text: "Cobertura usa suma minPayment tarjetas que vencen hoy"
+    impact_if_wrong: H
+    verify_by: "TC-U calcDayCoverage + AC-1.1/1.2"
+    status: verified
+  - id: A-003
+    stated_in: plan
+    text: "Timezone local del dispositivo para hoy"
+    impact_if_wrong: M
+    verify_by: "Unit con Date fija"
+    status: verified
+  - id: A-004
+    stated_in: plan
+    text: "LoanDebt sin dueDate excluido en v1"
+    impact_if_wrong: L
+    verify_by: "Spec EC-2 documentado; tests solo cards"
+    status: verified
+  - id: A-005
+    stated_in: plan
+    text: "Sin schema migration"
+    impact_if_wrong: L
+    verify_by: "No changes schema.ts"
+    status: verified
+open_questions: []

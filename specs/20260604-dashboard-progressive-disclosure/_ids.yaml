@@ -1,0 +1,271 @@
+ac:
+  - id: AC-1.1
+    desc: "Analítico oculto por defecto móvil"
+  - id: AC-1.2
+    desc: "Mi Día above fold sin regresión"
+  - id: AC-1.3
+    desc: "Hint secundario bajo control colapsado"
+  - id: AC-2.1
+    desc: "Copy expand i18n dashboard.tier2.expand"
+  - id: AC-2.2
+    desc: "Expand revela dashboard-tier-2 completo"
+  - id: AC-2.3
+    desc: "Collapse oculta tier 2 y actualiza copy"
+  - id: AC-2.4
+    desc: "Touch target control ≥44px"
+  - id: AC-3.1
+    desc: "Sesión persiste expand al navegar"
+  - id: AC-3.2
+    desc: "Nueva sesión inicia colapsado móvil"
+  - id: AC-4.1
+    desc: "Desktop sin control toggle"
+  - id: AC-4.2
+    desc: "Desktop tier 2 siempre visible"
+  - id: AC-5.1
+    desc: "Sin ingresos tier 2 forzado colapsado"
+tc:
+  - id: TC-U-020
+    covers: [AC-1.1, AC-3.2]
+    kind: unit
+  - id: TC-U-021
+    covers: [AC-1.1]
+    kind: unit
+  - id: TC-U-022
+    covers: [AC-3.1]
+    kind: unit
+  - id: TC-U-023
+    covers: [AC-3.2]
+    kind: unit
+  - id: TC-U-024
+    covers: [AC-4.1, AC-4.2, EC-1, A-001]
+    kind: unit
+  - id: TC-U-025
+    covers: [AC-5.1, A-002]
+    kind: unit
+  - id: TC-U-026
+    covers: [AC-3.2]
+    kind: unit
+  - id: TC-U-027
+    covers: [EC-2]
+    kind: unit
+  - id: TC-C-080
+    covers: [AC-1.1]
+    kind: component
+  - id: TC-C-081
+    covers: [AC-1.2]
+    kind: component
+  - id: TC-C-082
+    covers: [AC-1.3]
+    kind: component
+  - id: TC-C-083
+    covers: [AC-2.1]
+    kind: component
+  - id: TC-C-084
+    covers: [AC-2.1]
+    kind: component
+  - id: TC-C-085
+    covers: [AC-2.2]
+    kind: component
+  - id: TC-C-086
+    covers: [AC-2.3]
+    kind: component
+  - id: TC-C-087
+    covers: [AC-2.4]
+    kind: component
+  - id: TC-C-088
+    covers: [AC-4.1, A-001]
+    kind: component
+  - id: TC-C-089
+    covers: [AC-4.2, EC-1]
+    kind: component
+  - id: TC-C-090
+    covers: [AC-5.1, EC-3]
+    kind: component
+  - id: TC-C-091
+    covers: []
+    kind: component
+  - id: TC-E-030
+    covers: [AC-1.1]
+    kind: e2e
+  - id: TC-E-031
+    covers: [AC-1.2]
+    kind: e2e
+  - id: TC-E-032
+    covers: [AC-2.2]
+    kind: e2e
+  - id: TC-E-033
+    covers: [AC-2.3]
+    kind: e2e
+  - id: TC-E-034
+    covers: [AC-3.1]
+    kind: e2e
+  - id: TC-E-035
+    covers: [AC-3.2]
+    kind: e2e
+  - id: TC-E-036
+    covers: [AC-4.1, AC-4.2]
+    kind: e2e
+  - id: TC-I-020
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-2.1, AC-2.2, AC-2.3, AC-2.4, AC-3.1, AC-3.2, AC-4.1, AC-4.2, AC-5.1]
+    kind: integration
+tasks:
+  - id: T-001
+    status: done
+    type: setup
+    size: S
+    layer: cross
+    covers: [AC-2.1, AC-1.3]
+    deps: []
+  - id: T-002
+    status: done
+    type: setup
+    size: S
+    layer: cross
+    covers: []
+    deps: [T-001]
+  - id: T-010
+    status: done
+    type: test
+    size: M
+    layer: domain
+    covers: [AC-1.1, AC-3.1, AC-3.2, AC-4.1, AC-4.2, AC-5.1, TC-U-020, TC-U-021, TC-U-024, TC-U-025, TC-U-026, TC-U-027]
+    deps: [T-002]
+  - id: T-011
+    status: done
+    type: test
+    size: S
+    layer: app
+    covers: [AC-3.1, AC-3.2, TC-U-022, TC-U-023]
+    deps: [T-002, T-010]
+  - id: T-012
+    status: done
+    type: test
+    size: M
+    layer: app
+    covers: [AC-1.3, AC-2.1, AC-2.3, AC-2.4, TC-C-082, TC-C-083, TC-C-084, TC-C-086, TC-C-087, TC-C-091]
+    deps: [T-002]
+  - id: T-013
+    status: done
+    type: test
+    size: M
+    layer: app
+    covers: [AC-1.1, AC-1.2, AC-2.2, AC-2.3, AC-4.1, AC-4.2, AC-5.1, TC-C-080, TC-C-081, TC-C-085, TC-C-086, TC-C-088, TC-C-089, TC-C-090]
+    deps: [T-002]
+  - id: T-014
+    status: done
+    type: test
+    size: M
+    layer: cross
+    covers: [AC-1.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-4.1, AC-4.2, TC-E-030, TC-E-032, TC-E-033, TC-E-034, TC-E-035, TC-E-036]
+    deps: [T-002]
+  - id: T-020
+    status: done
+    type: impl
+    size: S
+    layer: domain
+    risk: M
+    covers: [AC-1.1, AC-3.1, AC-3.2, AC-4.1, AC-4.2, AC-5.1, TC-U-020, TC-U-024, TC-U-025, TC-U-026, TC-U-027]
+    deps: [T-010]
+  - id: T-021
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-3.1, AC-3.2, AC-4.1, AC-4.2, AC-5.1, TC-U-022, TC-U-023]
+    deps: [T-010, T-011, T-020]
+  - id: T-022
+    status: done
+    type: impl
+    size: S
+    layer: app
+    risk: L
+    covers: [AC-1.3, AC-2.1, AC-2.3, AC-2.4, TC-C-082, TC-C-083, TC-C-084, TC-C-087, TC-C-091]
+    deps: [T-012, T-021]
+  - id: T-023
+    status: done
+    type: impl
+    size: M
+    layer: app
+    risk: M
+    covers: [AC-1.1, AC-1.2, AC-2.2, AC-2.3, AC-4.1, AC-4.2, AC-5.1, TC-C-080, TC-C-081, TC-C-085, TC-C-086, TC-C-088, TC-C-089, TC-C-090]
+    deps: [T-013, T-021, T-022]
+  - id: T-024
+    status: done
+    type: impl
+    size: S
+    layer: infra
+    risk: L
+    covers: [AC-2.1, AC-1.3, TC-C-083, TC-C-084]
+    deps: [T-001, T-022]
+  - id: T-025
+    status: done
+    type: impl
+    size: M
+    layer: cross
+    risk: M
+    covers: [AC-1.1, AC-2.2, AC-2.3, AC-3.1, AC-3.2, AC-4.1, AC-4.2, TC-E-030, TC-E-032, TC-E-033, TC-E-034, TC-E-035, TC-E-036]
+    deps: [T-014, T-023]
+  - id: T-LAST
+    status: done
+    type: test
+    size: S
+    layer: cross
+    covers: [AC-1.1, AC-1.2, AC-1.3, AC-2.1, AC-2.2, AC-2.3, AC-2.4, AC-3.1, AC-3.2, AC-4.1, AC-4.2, AC-5.1, TC-I-020, TC-E-031]
+    deps: [T-020, T-021, T-022, T-023, T-024, T-025]
+adr:
+  - id: ADR-1
+    desc: "Estado colapso en useDashboardTier2 composable"
+  - id: ADR-2
+    desc: "sessionStorage para preferencia UI"
+  - id: ADR-3
+    desc: "useMediaQuery 768px para desktop"
+  - id: ADR-4
+    desc: "v-if tier2Visible desmonta charts"
+open_questions:
+  - id: OQ-1
+    text: "Desktop (≥768px) — tier 2 siempre expandido sin toggle?"
+    decision: "Sí — mobile-only collapse"
+    status: resolved
+    resolved_at: "2026-06-04"
+  - id: OQ-2
+    text: "Fresh user sin ingresos — tier 2 colapsado aunque sessionStorage diga expandido?"
+    decision: "Sí — evitar gráficos vacíos"
+    status: resolved
+    resolved_at: "2026-06-04"
+  - id: OQ-3
+    text: "Copy del toggle — específico vs genérico"
+    decision: "Específico — i18n dashboard.tier2.expand/collapse"
+    status: resolved
+    resolved_at: "2026-06-04"
+assumptions:
+  - id: A-001
+    stated_in: plan
+    text: "Breakpoint desktop = 768px (Tailwind md)"
+    impact_if_wrong: M
+    verify_by: "TC-C-088, TC-U-024"
+    status: verified
+  - id: A-002
+    stated_in: plan
+    text: "grossSalary > 0 define usuario con ingresos"
+    impact_if_wrong: M
+    verify_by: "TC-U-025, TC-C-090"
+    status: verified
+  - id: A-003
+    stated_in: plan
+    text: "sessionStorage disponible en target browsers"
+    impact_if_wrong: L
+    verify_by: "TC-E-034"
+    status: verified
+  - id: A-004
+    stated_in: plan
+    text: "Tier 1 cabe above fold con toggle extra"
+    impact_if_wrong: H
+    verify_by: "TC-E-031"
+    status: verified
+  - id: A-005
+    stated_in: plan
+    text: "Chart remount al expandir no rompe UX"
+    impact_if_wrong: L
+    verify_by: "Manual verify post-impl"
+    status: unverified

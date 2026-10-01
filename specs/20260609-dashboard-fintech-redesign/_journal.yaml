@@ -1,0 +1,120 @@
+entries:
+  - at: "2026-06-09T15:35:00-05:00"
+    event: feature_initialized
+    by: "Johann Medina"
+  - at: "2026-06-09T15:35:00-05:00"
+    event: feature_size_classified
+    by: "agent"
+    count: 18
+  - at: "2026-06-09T15:40:00-05:00"
+    event: discovery_generated
+    phase: 0.5
+    by: "agent"
+    count: 4
+  - at: "2026-06-09T15:45:00-05:00"
+    event: clarify_run
+    phase: 1.5
+    by: "Johann Medina"
+    count: 4
+  - at: "2026-06-09T15:46:00-05:00"
+    event: phase_signed_off
+    phase: 0.5
+    by: "Johann Medina"
+  - at: "2026-06-09T15:50:00-05:00"
+    event: spec_generated
+    phase: 1
+    by: "agent"
+    count: 20
+  - at: "2026-06-09T15:55:00-05:00"
+    event: check_run
+    phase: 1
+    by: "agent"
+  - at: "2026-06-09T15:55:00-05:00"
+    event: phase_signed_off
+    phase: 1
+    by: "Johann Medina"
+    spec_score: 100
+  - at: "2026-06-09T16:05:00-05:00"
+    event: plan_generated
+    phase: 2
+    by: "agent"
+  - at: "2026-06-09T16:05:00-05:00"
+    event: assumption_register_populated
+    phase: 2
+    by: "agent"
+    count: 5
+  - at: "2026-06-09T16:10:00-05:00"
+    event: phase_signed_off
+    phase: 2
+    by: "Johann Medina"
+  - at: "2026-06-09T16:15:00-05:00"
+    event: test_plan_generated
+    phase: 3
+    by: "agent"
+    count: 32
+  - at: "2026-06-09T16:18:00-05:00"
+    event: phase_signed_off
+    phase: 3
+    by: "Johann Medina"
+  - at: "2026-06-09T16:25:00-05:00"
+    event: tasks_generated
+    phase: 4
+    by: "agent"
+    count: 29
+  - at: "2026-06-09T16:30:00-05:00"
+    event: phase_signed_off
+    phase: 4
+    by: "Johann Medina"
+  - at: "2026-06-09T16:30:00-05:00"
+    event: task_started
+    phase: 5
+    task: T-001
+    by: "agent"
+  - at: "2026-06-09T16:40:00-05:00"
+    event: task_finished
+    phase: 5
+    task: T-001
+    by: "agent"
+  - at: "2026-06-09T16:45:00-05:00"
+    event: task_finished
+    phase: 5
+    task: T-002
+    by: "agent"
+  - at: "2026-06-09T16:48:00-05:00"
+    event: task_finished
+    phase: 5
+    task: T-003
+    by: "agent"
+  - at: "2026-06-09T17:10:00-05:00"
+    event: task_finished
+    phase: 5
+    task: "T-004..T-015"
+    by: "agent"
+    note: "12 tareas de test escritas y verificadas en RED (unit, component, e2e)"
+  - at: "2026-06-09T17:55:00-05:00"
+    event: task_finished
+    phase: 5
+    task: "T-016..T-027"
+    by: "agent"
+    note: "Implementación completa en GREEN: schema V5, rollover en boot, saludo, ritmo de gasto, patrimonio, flujo de caja, actividad, layout"
+  - at: "2026-06-09T18:00:00-05:00"
+    event: task_finished
+    phase: 5
+    task: T-LAST
+    by: "agent"
+    note: "Gates: 554 unit/component/integration ✓, lint 0 errores ✓, typecheck ✓, e2e 42/42 ✓. A-003 y A-005 verificados. Se repararon 2 e2e preexistentes (tier-2 móvil) y 3 anclas de heading"
+  - at: "2026-06-09T17:05:00-05:00"
+    event: verify_run
+    phase: 5.5
+    by: "agent"
+    note: "20/20 ACs AUTO-VERIFIED (re-ejecución fresca: 555 tests + 42 e2e). Rollback V5→V4 verificado con test ejecutable nuevo. Assumptions: 4 verified, 1 unverified (A-004, plan post-release)"
+  - at: "2026-06-09T17:15:00-05:00"
+    event: review_generated
+    phase: 6
+    by: "agent"
+    note: "6-review.md generado. Veredicto YELLOW: coverage 92.74% global / 100% lib nueva, lint 0 errores, build ✓, 20/20 ACs. Riesgos no bloqueantes: A-004 post-release, PR pendiente, describe.skip heredado, retro-ADR-5 (rollover en main.ts)"
+  - at: "2026-06-09T17:29:00-05:00"
+    event: phase_signed_off
+    phase: 6
+    by: "Johann Medina"
+    note: "Review aprobado con veredicto YELLOW (sin RED). Feature lista para merge; riesgos anotados quedan para fase 7 feedback"

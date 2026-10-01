@@ -1,9 +1,18 @@
 import { render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import { i18n } from '@/i18n'
+import { setMockDesktop, mockIsDesktop } from '../helpers/mockMediaQuery'
+
+vi.mock('@vueuse/core', () => ({
+  useMediaQuery: () => mockIsDesktop,
+}))
+
+beforeEach(() => {
+  setMockDesktop(true)
+})
 
 const router = createRouter({
   history: createMemoryHistory(),

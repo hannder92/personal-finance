@@ -18,6 +18,21 @@ const { exportToFile, importFromFile } = useImportExport()
 const errorMsg = ref('')
 const successMsg = ref('')
 
+// US-1 AC-1.3: optional greeting name. Mirrors settingsStore guard (≤30 chars);
+// over-limit input shows the error inline and is not persisted.
+const settingsStore = useSettingsStore()
+const userName = ref(settingsStore.state.userName)
+const userNameError = ref(false)
+
+function onUserNameInput() {
+  if (userName.value.trim().length > 30) {
+    userNameError.value = true
+    return
+  }
+  userNameError.value = false
+  settingsStore.setUserName(userName.value)
+}
+
 function onExport() {
   exportToFile()
 }
@@ -80,6 +95,42 @@ function onReset() {
     >
       {{ successMsg }}
     </p>
+
+    <div
+      class="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+    >
+      <label
+        for="settings-username"
+        class="block text-sm font-medium"
+      >
+        {{ $t('settings.userName.label') }}
+      </label>
+      <input
+        id="settings-username"
+        v-model="userName"
+        data-testid="settings-username-input"
+        type="text"
+        maxlength="40"
+        :placeholder="$t('settings.userName.placeholder')"
+        :aria-invalid="userNameError"
+        class="mt-2 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-slate-600"
+        @input="onUserNameInput"
+      >
+      <p
+        v-if="userNameError"
+        data-testid="settings-username-error"
+        role="alert"
+        class="mt-1 text-xs text-red-600 dark:text-red-400"
+      >
+        {{ $t('settings.userName.error') }}
+      </p>
+      <p
+        v-else
+        class="mt-1 text-xs text-slate-500 dark:text-slate-400"
+      >
+        {{ $t('settings.userName.hint') }}
+      </p>
+    </div>
 
     <SettingsPanel
       @export="onExport"

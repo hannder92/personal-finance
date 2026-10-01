@@ -1,6 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useMonthClose } from '@/composables/useMonthClose'
+import { useCardsStore } from '@/stores/cardsStore'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
@@ -41,8 +42,26 @@ describe('composables/useMonthClose', () => {
       month: '2026-09',
       netIncome: 5_000_000,
       totalVariableSpent: 650_000,
+      debtPayments: 0,
     })
     expect(variable.state.items[0]!.spent).toBe(0)
     expect(settings.state.lastMonthSeen).toBe('2026-10')
+  })
+  it('captures the monthly debt obligation as debtPayments', () => {
+    const settings = useSettingsStore()
+    settings.setLastMonthSeen('2026-09')
+    useIncomeStore().setGrossSalary(5_000_000)
+    useCardsStore().addLoan({
+      type: 'loan',
+      name: 'Libranza',
+      balance: 10_000_000,
+      apr: 18,
+      minPayment: 450_000,
+      remainingInstallments: 24,
+    })
+
+    useMonthClose().runMonthClose(new Date(2026, 9, 1))
+
+    expect(useSnapshotsStore().state.items[0]!.debtPayments).toBe(450_000)
   })
 })
