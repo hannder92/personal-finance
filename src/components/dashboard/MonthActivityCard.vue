@@ -40,7 +40,7 @@ const topCategories = computed(() =>
 
     <ul
       v-if="topCategories.length > 0"
-      class="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-800"
+      class="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-900"
     >
       <li
         v-for="cat in topCategories"

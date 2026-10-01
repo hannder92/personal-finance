@@ -11,6 +11,7 @@ import {
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Line } from 'vue-chartjs'
+import { useChartTheme } from '@/composables/useChartTheme'
 import { useSavingsProjection } from '@/composables/useSavingsProjection'
 import { formatCurrency } from '@/lib/currency/format'
 import { formatCompactCurrency, projectionMonthLabels } from '@/lib/format/locale'
@@ -20,6 +21,7 @@ ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip,
 
 const { t } = useI18n()
 const settings = useSettingsStore()
+const { options: chartTheme } = useChartTheme()
 const {
   hypothetical,
   compound,
@@ -48,6 +50,9 @@ const chartData = computed(() => ({
       borderColor: '#10b981',
       backgroundColor: 'rgba(16, 185, 129, 0.2)',
       borderDash: [] as number[],
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 4,
       tension: 0.2,
     },
     {
@@ -56,6 +61,9 @@ const chartData = computed(() => ({
       borderColor: '#3b82f6',
       backgroundColor: 'rgba(59, 130, 246, 0.2)',
       borderDash: [5, 5],
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 4,
       tension: 0.2,
       hidden: !hasConfiguredRate.value,
     },
@@ -65,8 +73,12 @@ const chartData = computed(() => ({
 const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
+  interaction: { mode: 'index' as const, intersect: false },
   plugins: {
-    legend: { position: 'bottom' as const },
+    legend: {
+      position: 'bottom' as const,
+      labels: { color: chartTheme.value.color, usePointStyle: true, pointStyle: 'line' },
+    },
     tooltip: {
       callbacks: {
         label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
@@ -75,11 +87,19 @@ const chartOptions = computed(() => ({
     },
   },
   scales: {
+    x: {
+      ticks: { color: chartTheme.value.color, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 },
+      grid: { display: false },
+    },
     y: {
       ticks: {
+        color: chartTheme.value.color,
+        maxTicksLimit: 5,
         callback: (value: number | string) =>
           formatCompactCurrency(Number(value), settings.state.currency),
       },
+      grid: { color: chartTheme.value.gridColor },
+      border: { display: false },
     },
   },
 }))
@@ -119,10 +139,10 @@ const rateModel = computed({
     :data-hypothetical-final="hypotheticalFinal"
     :data-compound-final="compoundFinal"
     :data-chart-labels="chartLabels"
-    class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700"
+    class="card flex flex-col gap-3"
   >
     <header class="flex flex-col gap-2">
-      <h2 class="text-base font-semibold">
+      <h2 class="card-title">
         {{ t('savings.projection.sectionTitle') }}
       </h2>
       <label class="flex flex-col gap-1 text-sm">

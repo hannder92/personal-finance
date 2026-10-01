@@ -36,8 +36,8 @@
       "withName": "{greeting}, {name}"
     },
     "pace": {
-      "badgeAhead": "↑ +{delta}%",
-      "badgeBelow": "↓ −{delta}%",
+      "badgeAhead": "↑ {delta} pts",
+      "badgeBelow": "↓ {delta} pts",
       "contextAhead": "You've spent {spent}% of last month's total and the month is {elapsed}% through",
       "contextBelow": "You're below last month's pace: {spent}% of its spending at {elapsed}% of the month",
       "noHistory": "Starting next month you'll see your comparison with the previous month"
@@ -94,7 +94,8 @@
       "feasible": "Feasible savings",
       "gap": "Gap",
       "notViable": "With your current expenses and debts, the savings rule is not viable this month.",
-      "unavailable": "No feasible savings this month."
+      "unavailable": "No feasible savings this month.",
+      "surplus": "Extra you can save"
     },
     "empty": {
       "donut": "Set up income and allocation to see this chart.",
@@ -135,7 +136,14 @@
       "breakdownTitle": "How your score is calculated"
     },
     "projection": {
-      "datasetLabel": "Cumulative balance"
+      "datasetLabel": "Cumulative balance",
+      "title": "Projected balance (12 months)"
+    },
+    "donut": {
+      "title": "Your budget rule",
+      "needs": "Needs",
+      "wants": "Wants",
+      "savings": "Savings"
     }
   },
   "theme": {

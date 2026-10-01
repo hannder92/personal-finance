@@ -14,7 +14,7 @@ const { greetingText, dateText } = useGreeting()
     </h1>
     <p
       data-testid="dashboard-greeting-date"
-      class="mt-0.5 text-sm capitalize text-slate-500 dark:text-slate-400"
+      class="mt-0.5 text-sm text-slate-500 dark:text-slate-400"
     >
       {{ dateText }}
     </p>

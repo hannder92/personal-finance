@@ -47,6 +47,13 @@ describe('DashboardGreeting (TC-I-001)', () => {
     expect(date.toLowerCase()).toMatch(/junio|jun/)
   })
 
+  it('capitalises only the first letter of the date (no "De" mid-sentence)', () => {
+    mountGreeting('', new Date(2026, 9, 1, 8, 0, 0))
+    expect(screen.getByTestId('dashboard-greeting-date').textContent?.trim()).toBe(
+      'Jueves, 1 de octubre'
+    )
+  })
+
   it('AC-1.1 negative: old flat title is not the main heading', () => {
     mountGreeting()
     expect(screen.getByTestId('dashboard-greeting').textContent).not.toMatch(/^Resumen$/)

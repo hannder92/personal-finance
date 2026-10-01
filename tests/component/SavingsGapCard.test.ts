@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import SavingsGapCard from '@/components/dashboard/SavingsGapCard.vue'
 import { i18n } from '@/i18n'
 
-function mountCard() {
+function mountCard(expenses = 8_000_000, minPayment = 1_200_000) {
   return render(SavingsGapCard, {
     global: {
       plugins: [
@@ -33,7 +33,7 @@ function mountCard() {
             },
             expenses: {
               state: {
-                items: [{ id: 'e1', name: 'Rent', amount: 8_000_000, category: 'vivienda' }],
+                items: [{ id: 'e1', name: 'Rent', amount: expenses, category: 'vivienda' }],
               },
             },
             cards: {
@@ -46,7 +46,7 @@ function mountCard() {
                     balance: 1_000_000,
                     limit: 2_000_000,
                     apr: 24,
-                    minPayment: 1_200_000,
+                    minPayment,
                     installments: [],
                   },
                 ],
@@ -67,5 +67,12 @@ describe('SavingsGapCard', () => {
     expect(screen.getByTestId('savings-gap-feasible')).toBeTruthy()
     expect(screen.getByTestId('savings-gap-gap')).toBeTruthy()
     expect(screen.getByRole('alert')).toBeTruthy()
+  })
+
+  it('shows the surplus instead of a $0 gap when feasible saving beats the rule', () => {
+    mountCard(2_000_000, 0)
+    expect(screen.queryByTestId('savings-gap-gap')).toBeNull()
+    expect(screen.getByTestId('savings-gap-surplus').textContent).toMatch(/^\s*\+\$/)
+    expect(screen.queryByRole('alert')).toBeNull()
   })
 })

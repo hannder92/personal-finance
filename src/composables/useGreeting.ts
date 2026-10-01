@@ -22,13 +22,16 @@ export function useGreeting(now: Date = new Date()): UseGreeting {
     return name ? t('dashboard.greeting.withName', { greeting: base, name }) : base
   })
 
-  const dateText = computed(() =>
-    now.toLocaleDateString(locale.value === 'en' ? 'en-US' : 'es-CO', {
+  // Only the first letter is capitalised: CSS `capitalize` would also turn the
+  // Spanish "de" into "De" ("Jueves, 1 De Octubre").
+  const dateText = computed(() => {
+    const text = now.toLocaleDateString(locale.value === 'en' ? 'en-US' : 'es-CO', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
     })
-  )
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  })
 
   return { greetingText, dateText }
 }

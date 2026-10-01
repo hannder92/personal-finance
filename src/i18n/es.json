@@ -36,8 +36,8 @@
       "withName": "{greeting}, {name}"
     },
     "pace": {
-      "badgeAhead": "↑ +{delta}%",
-      "badgeBelow": "↓ −{delta}%",
+      "badgeAhead": "↑ {delta} pts",
+      "badgeBelow": "↓ {delta} pts",
       "contextAhead": "Llevas el {spent}% del gasto del mes pasado y va el {elapsed}% del mes",
       "contextBelow": "Vas por debajo del ritmo del mes pasado: {spent}% del gasto y va el {elapsed}% del mes",
       "noHistory": "Desde el próximo mes verás tu comparación con el mes anterior"
@@ -94,7 +94,8 @@
       "feasible": "Ahorro factible",
       "gap": "Diferencia",
       "notViable": "Con tus gastos y deudas actuales, la regla de ahorro no es viable este mes.",
-      "unavailable": "Sin ahorro factible este mes."
+      "unavailable": "Sin ahorro factible este mes.",
+      "surplus": "Te sobra para ahorrar"
     },
     "empty": {
       "donut": "Configura ingresos y distribución para ver este gráfico.",
@@ -135,7 +136,14 @@
       "breakdownTitle": "Cómo se calcula tu puntaje"
     },
     "projection": {
-      "datasetLabel": "Balance acumulado"
+      "datasetLabel": "Balance acumulado",
+      "title": "Saldo proyectado (12 meses)"
+    },
+    "donut": {
+      "title": "Tu regla de presupuesto",
+      "needs": "Necesidades",
+      "wants": "Deseos",
+      "savings": "Ahorros"
     }
   },
   "theme": {

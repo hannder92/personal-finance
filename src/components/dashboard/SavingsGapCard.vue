@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { formatCurrency } from '@/lib/currency/format'
 import { useSavingsFeasibility } from '@/composables/useSavingsFeasibility'
@@ -8,6 +9,9 @@ const { t } = useI18n()
 const settings = useSettingsStore()
 const { objective, feasible, gap, isRuleViable } = useSavingsFeasibility()
 
+// When the feasible saving beats the rule, show the surplus instead of a flat $0 gap.
+const surplus = computed(() => Math.max(0, feasible.value - objective.value))
+
 function fmt(amount: number): string {
   return formatCurrency(amount, settings.state.currency)
 }
@@ -16,15 +20,18 @@ function fmt(amount: number): string {
 <template>
   <section
     data-testid="savings-gap-card"
-    class="rounded-lg border border-slate-200 p-4 dark:border-slate-700"
+    class="card"
   >
-    <h2 class="text-base font-semibold">
+    <h2 class="card-title">
       {{ t('dashboard.savingsGap.title') }}
     </h2>
     <dl class="mt-3 grid gap-2 text-sm">
       <div class="flex justify-between gap-2">
         <dt>{{ t('dashboard.savingsGap.objective') }}</dt>
-        <dd data-testid="savings-gap-objective">
+        <dd
+          data-testid="savings-gap-objective"
+          class="tabular-nums"
+        >
           {{ fmt(objective) }}
         </dd>
       </div>
@@ -45,9 +52,28 @@ function fmt(amount: number): string {
           {{ t('dashboard.savingsGap.unavailable') }}
         </dd>
       </div>
-      <div class="flex justify-between gap-2">
+      <div
+        v-if="surplus > 0"
+        class="flex justify-between gap-2 border-t border-slate-100 pt-2 font-medium dark:border-slate-800"
+      >
+        <dt>{{ t('dashboard.savingsGap.surplus') }}</dt>
+        <dd
+          data-testid="savings-gap-surplus"
+          class="tabular-nums text-emerald-700 dark:text-emerald-400"
+        >
+          +{{ fmt(surplus) }}
+        </dd>
+      </div>
+      <div
+        v-else
+        class="flex justify-between gap-2 border-t border-slate-100 pt-2 font-medium dark:border-slate-800"
+      >
         <dt>{{ t('dashboard.savingsGap.gap') }}</dt>
-        <dd data-testid="savings-gap-gap">
+        <dd
+          data-testid="savings-gap-gap"
+          class="tabular-nums"
+          :class="gap > 0 ? 'text-amber-700 dark:text-amber-400' : ''"
+        >
           {{ fmt(gap) }}
         </dd>
       </div>

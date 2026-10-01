@@ -2,6 +2,7 @@
 import {
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LineElement,
   LinearScale,
@@ -13,7 +14,7 @@ import { Line } from 'vue-chartjs'
 import { formatCurrency } from '@/lib/currency/format'
 import { formatCompactCurrency } from '@/lib/format/locale'
 
-ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend)
+ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, Filler)
 
 const props = withDefaults(
   defineProps<{
@@ -43,7 +44,11 @@ const chartData = computed(() => ({
       label: props.datasetLabel,
       data: props.months.map((m) => m.balance),
       borderColor: '#3b82f6',
-      backgroundColor: 'rgba(59,130,246,0.15)',
+      backgroundColor: 'rgba(59,130,246,0.12)',
+      fill: true,
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      borderWidth: 2,
       tension: 0.3,
     },
   ],
@@ -52,8 +57,10 @@ const chartData = computed(() => ({
 const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
+  interaction: { mode: 'index' as const, intersect: false },
   plugins: {
-    legend: { labels: { color: props.textColor } },
+    // Single series: the card title names it, a legend would only repeat it.
+    legend: { display: false },
     tooltip: {
       callbacks: {
         label: (ctx: { parsed: { y: number | null } }) =>
@@ -63,15 +70,17 @@ const chartOptions = computed(() => ({
   },
   scales: {
     x: {
-      ticks: { color: props.textColor },
-      grid: { color: props.gridColor },
+      ticks: { color: props.textColor, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 },
+      grid: { display: false },
     },
     y: {
       ticks: {
         color: props.textColor,
+        maxTicksLimit: 5,
         callback: (value: number | string) => formatCompactCurrency(Number(value), props.currency),
       },
       grid: { color: props.gridColor },
+      border: { display: false },
     },
   },
 }))
@@ -89,7 +98,7 @@ const showChart = computed(() => !props.emptyMessage)
   >
     <div
       v-if="showChart"
-      class="relative h-72 w-full"
+      class="relative h-56 w-full"
     >
       <Line
         :data="chartData"

@@ -40,7 +40,7 @@ describe('DayPaymentsCard (20260530-mi-dia-cobertura)', () => {
       },
     })
     expect(screen.getAllByTestId('data-payment-item')).toHaveLength(2)
-    expect(container.querySelector('section')?.className).toMatch(/rounded-xl/)
+    expect(container.querySelector('section[data-testid="day-payments-card"]')).toBeTruthy()
     expect(screen.getAllByTestId('day-section-icon').length).toBeGreaterThan(0)
   })
 

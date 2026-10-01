@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed (ajustes de diseño del dashboard)
+
+- **Héroe en móvil** — el disponible y la salud financiera ya no se aplastan en una columna de una palabra; en móvil se apilan.
+- **Mi Día** — las tres tarjetas (cobertura, pagos de hoy, próximos 3 días) pasan a ser un solo bloque compacto; la lista de pagos solo aparece si hay pagos hoy.
+- **Tarjetas** — estilo común (`card` / `card-title`) para todos los bloques del dashboard, también en modo oscuro.
+- **Gráficas** — ejes en moneda compacta ($15 M) en el flujo de caja, sin etiquetas giradas, rejilla más suave, títulos en las gráficas de presupuesto y saldo proyectado, leyenda del donut traducida.
+- **Brecha de ahorro** — cuando el ahorro factible supera la regla muestra "Te sobra para ahorrar +$X" en vez de "Diferencia $0".
+- **Detalles** — fecha del saludo sin "De" en mayúscula, ritmo de gasto en puntos ("↑ 96 pts") en vez de un porcentaje engañoso, gastos en rosa en vez de rojo de alerta.
+
 ### Fixed (benchmark UX + revisión de cálculos)
 
 - **Retención 2026** — UVT y SMMLV por año (2026: $52.374 / $1.750.905), renta exenta 25% con tope 790 UVT/año, límite 40% / 1.340 UVT, Fondo de Solidaridad Pensional y tope IBC 25 SMMLV; constantes Art. 383 = 268 y 770 UVT.

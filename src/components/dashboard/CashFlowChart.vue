@@ -4,6 +4,8 @@ import { computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { useI18n } from 'vue-i18n'
 import type { MonthlyFlowPoint } from '@/lib/calculations/monthly-flow'
+import { formatCurrency } from '@/lib/currency/format'
+import { formatCompactCurrency } from '@/lib/format/locale'
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip)
 
@@ -12,9 +14,11 @@ const props = withDefaults(
     points?: MonthlyFlowPoint[]
     textColor?: string
     gridColor?: string
+    currency?: string
   }>(),
   {
     points: () => [],
+    currency: 'COP',
     textColor: '#1e293b',
     gridColor: '#cbd5e1',
   }
@@ -26,7 +30,7 @@ const { t, locale } = useI18n()
 const showChart = computed(() => props.points.length >= 2)
 
 const INCOME_COLOR = '#10b981' // emerald-500
-const EXPENSES_COLOR = '#ef4444' // red-500
+const EXPENSES_COLOR = '#fb7185' // rose-400: expenses are normal, not an alarm
 
 function monthLabel(month: string): string {
   const [year, m] = month.split('-').map(Number)
@@ -42,13 +46,15 @@ const chartData = computed(() => ({
       label: t('dashboard.flow.income'),
       data: props.points.map((p) => p.income),
       backgroundColor: INCOME_COLOR,
-      borderRadius: 4,
+      borderRadius: 6,
+      maxBarThickness: 28,
     },
     {
       label: t('dashboard.flow.expenses'),
       data: props.points.map((p) => p.expenses),
       backgroundColor: EXPENSES_COLOR,
-      borderRadius: 4,
+      borderRadius: 6,
+      maxBarThickness: 28,
     },
   ],
 }))
@@ -57,15 +63,28 @@ const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
   // Legend is rendered in HTML below (accessible + testable in jsdom).
-  plugins: { legend: { display: false } },
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      callbacks: {
+        label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
+          `${ctx.dataset.label ?? ''}: ${formatCurrency(ctx.parsed.y ?? 0, props.currency)}`,
+      },
+    },
+  },
   scales: {
     x: {
       ticks: { color: props.textColor },
       grid: { display: false },
     },
     y: {
-      ticks: { color: props.textColor },
+      ticks: {
+        color: props.textColor,
+        maxTicksLimit: 5,
+        callback: (value: number | string) => formatCompactCurrency(Number(value), props.currency),
+      },
       grid: { color: props.gridColor },
+      border: { display: false },
     },
   },
 }))
@@ -97,7 +116,7 @@ const chartOptions = computed(() => ({
         </span>
         <span class="inline-flex items-center gap-1.5">
           <span
-            class="size-2.5 rounded-full bg-red-500"
+            class="size-2.5 rounded-full bg-rose-400"
             aria-hidden="true"
           />
           {{ t('dashboard.flow.expenses') }}

@@ -68,7 +68,7 @@ const STATUS_DOT: Record<Status, string> = {
 <template>
   <article
     v-if="!isCompact"
-    class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700"
+    class="card flex flex-col gap-3"
   >
     <button
       type="button"
@@ -78,7 +78,7 @@ const STATUS_DOT: Record<Status, string> = {
     >
       <h2
         v-if="isBreakdownOnly"
-        class="text-base font-semibold"
+        class="card-title"
       >
         {{ t('dashboard.health.breakdownTitle') }}
       </h2>

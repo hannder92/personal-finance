@@ -9,9 +9,9 @@ const { runway } = useFinancialRunway()
 <template>
   <section
     data-testid="runway-card"
-    class="rounded-lg border border-slate-200 p-4 dark:border-slate-700"
+    class="card"
   >
-    <h2 class="text-base font-semibold">
+    <h2 class="card-title">
       {{ t('runway.title') }}
     </h2>
     <p

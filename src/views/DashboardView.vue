@@ -59,7 +59,7 @@ const projectionMonths = computed(() => {
 </script>
 
 <template>
-  <section class="mx-auto flex max-w-4xl flex-col gap-6 p-6">
+  <section class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6">
     <DashboardGreeting />
 
     <DayOverview />
@@ -74,15 +74,20 @@ const projectionMonths = computed(() => {
     >
       <section
         data-testid="dashboard-flow-section"
+        class="card"
         :aria-label="t('dashboard.flow.title')"
       >
-        <h2 class="mb-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+        <h2 class="card-title">
           {{ t('dashboard.flow.title') }}
         </h2>
+        <p class="mb-3 text-xs text-slate-500 dark:text-slate-400">
+          {{ t('dashboard.flow.subtitle') }}
+        </p>
         <CashFlowChart
           :points="monthlyFlowPoints"
           :text-color="chartTheme.color"
           :grid-color="chartTheme.gridColor"
+          :currency="settings.state.currency"
         />
       </section>
       <div data-testid="dashboard-activity-section">
@@ -121,24 +126,34 @@ const projectionMonths = computed(() => {
       />
 
       <div class="grid gap-6 md:grid-cols-2">
-        <BudgetDonut
-          :needs="allocation.state.needs"
-          :wants="allocation.state.wants"
-          :savings="allocation.state.savings"
-          :text-color="chartTheme.color"
-          :background-color="chartTheme.backgroundColor"
-          :insight="donutInsight"
-          :empty-message="hasDonutData ? '' : t('dashboard.empty.donut')"
-        />
-        <ProjectionChart
-          :months="projectionMonths"
-          :text-color="chartTheme.color"
-          :grid-color="chartTheme.gridColor"
-          :insight="projectionInsight"
-          :dataset-label="t('dashboard.projection.datasetLabel')"
-          :currency="settings.state.currency"
-          :empty-message="hasProjectionData ? '' : t('dashboard.empty.projection')"
-        />
+        <section class="card">
+          <h2 class="card-title mb-3">
+            {{ t('dashboard.donut.title') }}
+          </h2>
+          <BudgetDonut
+            :needs="allocation.state.needs"
+            :wants="allocation.state.wants"
+            :savings="allocation.state.savings"
+            :text-color="chartTheme.color"
+            :background-color="chartTheme.backgroundColor"
+            :insight="donutInsight"
+            :empty-message="hasDonutData ? '' : t('dashboard.empty.donut')"
+          />
+        </section>
+        <section class="card">
+          <h2 class="card-title mb-3">
+            {{ t('dashboard.projection.title') }}
+          </h2>
+          <ProjectionChart
+            :months="projectionMonths"
+            :text-color="chartTheme.color"
+            :grid-color="chartTheme.gridColor"
+            :insight="projectionInsight"
+            :dataset-label="t('dashboard.projection.datasetLabel')"
+            :currency="settings.state.currency"
+            :empty-message="hasProjectionData ? '' : t('dashboard.empty.projection')"
+          />
+        </section>
       </div>
 
       <SavingsProjectionChart />

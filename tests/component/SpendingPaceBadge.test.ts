@@ -15,7 +15,7 @@ describe('SpendingPaceBadge (TC-I-003, TC-I-004, TC-I-005)', () => {
     })
     const badge = screen.getByTestId('pace-badge')
     expect(badge.textContent).toContain('↑')
-    expect(badge.textContent).toContain('20%')
+    expect(badge.textContent).toContain('20 pts')
     expect(badge.className).toMatch(/red/)
     const context = screen.getByTestId('pace-context').textContent ?? ''
     expect(context).toContain('Llevas el 70% del gasto del mes pasado y va el 50% del mes')
