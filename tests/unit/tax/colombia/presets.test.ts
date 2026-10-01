@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyColombiaPresets, type DeductionPreset } from '@/lib/tax/colombia/presets'
+import { applyColombiaPresets, FSP_LABEL, type DeductionPreset } from '@/lib/tax/colombia/presets'
 
 describe('lib/tax/colombia/presets', () => {
   it('TC-U-038 (AC-2.2): inserts Salud 4% + Pensión 4% only; no ARL', () => {
@@ -41,5 +41,30 @@ describe('lib/tax/colombia/presets', () => {
     const result = applyColombiaPresets(input, 5_000_000)
     expect(input).toHaveLength(0)
     expect(result).not.toBe(input)
+  })
+})
+
+describe('applyColombiaPresets — Fondo de Solidaridad Pensional', () => {
+  const IN_2026 = new Date(2026, 9, 1)
+
+  it('adds FSP at 1% for a salary of 4 SMMLV or more', () => {
+    const out = applyColombiaPresets([], 8_000_000, IN_2026)
+    const fsp = out.find((d) => d.label === FSP_LABEL)
+    expect(fsp).toMatchObject({ amount: 1, type: 'percent' })
+  })
+
+  it('does not add FSP below 4 SMMLV and removes a stale one', () => {
+    const stale = [{ id: 'x', label: FSP_LABEL, amount: 1, type: 'percent' as const }]
+    const out = applyColombiaPresets(stale, 3_000_000, IN_2026)
+    expect(out.find((d) => d.label === FSP_LABEL)).toBeUndefined()
+  })
+
+  it('updates the FSP rate in place (same id) when the salary changes', () => {
+    const first = applyColombiaPresets([], 8_000_000, IN_2026)
+    const fspId = first.find((d) => d.label === FSP_LABEL)!.id
+    const second = applyColombiaPresets(first, 40_000_000, IN_2026)
+    const fsp = second.filter((d) => d.label === FSP_LABEL)
+    expect(fsp).toHaveLength(1)
+    expect(fsp[0]).toMatchObject({ id: fspId, amount: 2 })
   })
 })

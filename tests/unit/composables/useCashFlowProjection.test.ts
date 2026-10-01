@@ -35,6 +35,7 @@ const baseSettings = {
   payoffMethod: 'avalanche',
   lastMonthSeen: null,
   onboarding: { done: true, currentStep: 0, totalSteps: 3 },
+  deductRetencion: false,
 }
 
 describe('composables/useCashFlowProjection', () => {

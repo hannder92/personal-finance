@@ -39,13 +39,15 @@ test.describe('TC-E-005 — savings projection chart', () => {
     // 2 datasets advertised.
     await expect(chart).toHaveAttribute('data-series-count', '2')
 
-    // Hypothetical month 12: 10M × 20% × 12 = 24M.
+    // Both curves start from the 5M liquid balance and add the monthly saving that fits
+    // the rule: 20% × net (10M − retención 351.399) = 1.929.720.
+    // Contributions only, month 12: 5M + 12 × 1.929.720 = 28.156.640.
     const hypoFinal = await chart.getAttribute('data-hypothetical-final')
-    expect(Number(hypoFinal)).toBe(24_000_000)
+    expect(Number(hypoFinal)).toBe(28_156_640)
 
-    // Compound month 12: ≈ 5M × (1.10)^1 ≈ 5.5M (within 1% tolerance).
+    // With 10% E.A. returns: ≈ 29.699.724 (within 1% tolerance).
     const compoundFinal = Number(await chart.getAttribute('data-compound-final'))
-    expect(compoundFinal).toBeGreaterThan(5_400_000)
-    expect(compoundFinal).toBeLessThan(5_600_000)
+    expect(compoundFinal).toBeGreaterThan(29_400_000)
+    expect(compoundFinal).toBeLessThan(30_000_000)
   })
 })

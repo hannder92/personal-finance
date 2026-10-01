@@ -1,56 +1,55 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import KpiCard from '@/components/dashboard/KpiCard.vue'
+import { useBaseMetrics } from '@/composables/useBaseMetrics'
 import { useDTI } from '@/composables/useDTI'
-import { useNetIncome } from '@/composables/useNetIncome'
-import { useExpensesStore } from '@/stores/expensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const { t } = useI18n()
 const settings = useSettingsStore()
-const expenses = useExpensesStore()
-const { netIncome } = useNetIncome()
+const { monthlyIncome, fixedExpenses, variableMonthly } = useBaseMetrics()
 const { dti: dtiPct, totalDebtObligation } = useDTI()
-
-const fixedExpensesTotal = computed(() =>
-  expenses.state.items.reduce((acc, e) => acc + e.amount, 0)
-)
 </script>
 
 <template>
+  <!-- Grid instead of horizontal scroll: on a phone all KPIs stay visible (2 per row). -->
   <div
     data-testid="kpi-strip"
-    class="flex gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    class="grid grid-cols-2 gap-3 md:grid-cols-5"
   >
     <KpiCard
-      class="min-w-[9rem] shrink-0"
+      class="col-span-2 md:col-span-1"
       :label="t('dashboard.kpi.netIncome')"
-      :value="netIncome"
+      :value="monthlyIncome"
       type="income"
       :currency="settings.state.currency"
+      :hint="t('dashboard.kpi.hint.netIncome')"
     />
     <KpiCard
-      class="min-w-[9rem] shrink-0"
       :label="t('dashboard.kpi.fixedExpenses')"
-      :value="fixedExpensesTotal"
+      :value="fixedExpenses"
       type="expenses"
       :currency="settings.state.currency"
     />
     <KpiCard
-      class="min-w-[9rem] shrink-0"
+      :label="t('dashboard.kpi.variable')"
+      :value="variableMonthly"
+      type="expenses"
+      :currency="settings.state.currency"
+    />
+    <KpiCard
       :label="t('dashboard.kpi.debtPayments')"
       :value="totalDebtObligation"
       type="expenses"
       :currency="settings.state.currency"
     />
     <KpiCard
-      class="min-w-[9rem] shrink-0"
       :label="t('dashboard.kpi.dti')"
       :value="dtiPct"
       type="dti"
       :threshold="36"
       :currency="settings.state.currency"
+      :hint="t('dashboard.kpi.hint.dti')"
     />
   </div>
 </template>

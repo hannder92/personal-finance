@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { formatCurrency } from '@/lib/currency/format'
+import { formatMonthYear } from '@/lib/format/locale'
+import { useGoalStatus } from '@/composables/useGoalStatus'
 import type { Goal } from '@/stores/goalsStore'
 
 const props = withDefaults(
@@ -11,6 +14,9 @@ const props = withDefaults(
   { currency: 'COP' }
 )
 
+const { t, locale } = useI18n()
+const { eta, targetDate, requiredMonthly } = useGoalStatus(() => props.goal)
+
 const completed = computed(() => !!props.goal && props.goal.saved >= props.goal.target)
 
 const progressPct = computed(() => {
@@ -18,11 +24,24 @@ const progressPct = computed(() => {
   return Math.max(0, Math.min(100, Math.round((props.goal.saved / props.goal.target) * 100)))
 })
 
-const etaMonths = computed(() => {
-  if (!props.goal) return 0
-  const remaining = Math.max(0, props.goal.target - props.goal.saved)
-  if (props.goal.monthlyContrib <= 0) return Number.POSITIVE_INFINITY
-  return Math.ceil(remaining / props.goal.monthlyContrib)
+const etaMonths = computed(() => eta.value?.months ?? 0)
+
+function monthYear(date: Date): string {
+  return formatMonthYear(date, locale.value)
+}
+
+// One warning line at most: overdue > behind schedule > no contribution.
+const warning = computed<string | null>(() => {
+  if (completed.value || !eta.value) return null
+  if (eta.value.overdue) return t('goals.card.overdue')
+  if (eta.value.behindSchedule && eta.value.estimatedDate && requiredMonthly.value !== null) {
+    return t('goals.card.behind', {
+      date: monthYear(eta.value.estimatedDate),
+      amount: formatCurrency(Math.ceil(requiredMonthly.value), props.currency),
+    })
+  }
+  if (etaMonths.value === Infinity) return t('goals.card.noContrib')
+  return null
 })
 </script>
 
@@ -39,7 +58,7 @@ const etaMonths = computed(() => {
         v-if="completed"
         class="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
       >
-        ✓ Completada
+        {{ t('goals.card.completed') }}
       </span>
     </header>
 
@@ -59,7 +78,24 @@ const etaMonths = computed(() => {
     <div class="flex justify-between text-xs text-slate-600 dark:text-slate-300">
       <span>{{ formatCurrency(goal.saved, currency) }} /
         {{ formatCurrency(goal.target, currency) }}</span>
-      <span v-if="!completed && etaMonths !== Infinity">{{ etaMonths }} meses</span>
+      <span v-if="!completed && etaMonths !== Infinity">{{
+        t('goals.card.months', { count: etaMonths })
+      }}</span>
     </div>
+
+    <p
+      v-if="targetDate && !completed"
+      data-testid="goal-target-date"
+      class="text-xs text-slate-500 dark:text-slate-400"
+    >
+      {{ t('goals.card.targetDate', { date: monthYear(targetDate) }) }}
+    </p>
+    <p
+      v-if="warning"
+      data-testid="goal-warning"
+      class="text-xs font-medium text-amber-700 dark:text-amber-300"
+    >
+      {{ warning }}
+    </p>
   </article>
 </template>

@@ -5,7 +5,9 @@ const STORAGE_KEY = 'finance_app_data'
 test.describe('Savings gap on dashboard (TC-E-010)', () => {
   test.use({ viewport: { width: 390, height: 844 } })
 
-  test('shows objective 2M and feasible 800k with not viable alert', async ({ page }) => {
+  // Net = 10M − estimated retención 2026 (351.399) = 9.648.601.
+  // Objective = 20% × net = 1.929.720 · feasible = net − 8M − 1.2M = 448.601.
+  test('shows objective and a smaller feasible saving with not viable alert', async ({ page }) => {
     await page.context().addInitScript(
       (args: { key: string; state: string }) => {
         localStorage.setItem(args.key, args.state)
@@ -47,8 +49,8 @@ test.describe('Savings gap on dashboard (TC-E-010)', () => {
     await page.goto('/')
     // Tier-2 is collapsed by default on mobile (20260604-dashboard-progressive-disclosure).
     await page.getByTestId('dashboard-tier2-toggle').click()
-    await expect(page.getByTestId('savings-gap-objective')).toContainText('2')
-    await expect(page.getByTestId('savings-gap-feasible')).toContainText('800')
+    await expect(page.getByTestId('savings-gap-objective')).toContainText('1.929.720')
+    await expect(page.getByTestId('savings-gap-feasible')).toContainText('448.601')
     await expect(page.getByRole('alert')).toBeVisible()
   })
 })

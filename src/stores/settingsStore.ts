@@ -19,6 +19,7 @@ export interface SettingsState {
   projectionAnnualRatePercent: number
   /** Optional display name for the dashboard greeting (≤30 chars, local only). */
   userName: string
+  deductRetencion: boolean
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -30,6 +31,7 @@ export const useSettingsStore = defineStore('settings', () => {
     lastMonthSeen: null,
     projectionAnnualRatePercent: 0,
     userName: '',
+    deductRetencion: true,
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -63,9 +65,14 @@ export const useSettingsStore = defineStore('settings', () => {
     if (trimmed.length > 30) return
     state.userName = trimmed
   }
+  function setDeductRetencion(value: boolean): void {
+    if (typeof value !== 'boolean') return
+    state.deductRetencion = value
+  }
 
   return {
     state,
+    setDeductRetencion,
     setLang,
     setCurrency,
     setTheme,

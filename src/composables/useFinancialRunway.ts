@@ -7,12 +7,13 @@ export interface UseFinancialRunway {
 }
 
 export function useFinancialRunway(): UseFinancialRunway {
-  const { liquidAssets, monthlyLivingExpense } = useLiquidMetrics()
+  const { liquidAssets, monthlyOutflow } = useLiquidMetrics()
 
+  // Runway counts debt payments too: they must be paid while living off savings.
   const runway = computed(() =>
     calcFinancialRunway({
       liquidAssets: liquidAssets.value,
-      monthlyLivingExpense: monthlyLivingExpense.value,
+      monthlyLivingExpense: monthlyOutflow.value,
     })
   )
 

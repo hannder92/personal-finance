@@ -30,6 +30,7 @@ function defaultSettingsState() {
     theme: 'system',
     payoffMethod: 'avalanche',
     lastMonthSeen: null,
+    deductRetencion: false,
     projectionAnnualRatePercent: 0,
   }
 }
@@ -43,7 +44,9 @@ const router = createRouter({
 })
 
 async function expandHealthBreakdown() {
-  const toggle = screen.getByText(/puntaje de salud|health score/i).closest('button')
+  const toggle = screen
+    .getByText(/cómo se calcula tu puntaje|how your score is calculated/i)
+    .closest('button')
   expect(toggle).toBeTruthy()
   await fireEvent.click(toggle!)
 }
@@ -140,16 +143,10 @@ describe('DashboardView — fix-calculos-financieros (reactive wiring)', () => {
     mount({ grossSalary: 5_000_000 })
     await expandHealthBreakdown()
     const expenses = useExpensesStore()
-    const before = screen
-      .queryByText(/vivienda|housing/i)
-      ?.closest('[data-status]')
-      ?.getAttribute('data-status')
+    const before = document.querySelector('[data-component="housing"]')?.getAttribute('data-status')
     expenses.add({ name: 'Arriendo', amount: 1_500_000, category: 'vivienda' })
     await nextTick()
-    const after = screen
-      .queryByText(/vivienda|housing/i)
-      ?.closest('[data-status]')
-      ?.getAttribute('data-status')
+    const after = document.querySelector('[data-component="housing"]')?.getAttribute('data-status')
     expect(after).not.toBe(before)
   })
 

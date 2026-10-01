@@ -18,10 +18,12 @@ const settings = useSettingsStore()
 const income = useIncomeStore()
 const snapshots = useSnapshotsStore()
 const { freeForAllocation } = useNetIncome()
-const { result: healthScoreResult } = useHealthScore()
+const { result: healthScoreResult, labelKey } = useHealthScore()
 const { pace } = useSpendingPace()
 
-const hasIncome = computed(() => income.state.grossSalary > 0)
+const hasIncome = computed(
+  () => income.state.grossSalary > 0 || income.state.otherStreams.some((s) => s.amount > 0)
+)
 
 const sortedSnapshots = computed(() =>
   [...snapshots.state.items].sort((a, b) => b.month.localeCompare(a.month))
@@ -29,12 +31,7 @@ const sortedSnapshots = computed(() =>
 const latestScore = computed(() => healthScoreResult.value.score)
 const previousScore = computed(() => sortedSnapshots.value[0]?.healthScore ?? null)
 
-const healthLabel = computed(() => {
-  const score = latestScore.value
-  if (score >= 70) return t('dashboard.health.labelOk')
-  if (score >= 50) return t('dashboard.health.labelWarn')
-  return t('dashboard.health.labelDanger')
-})
+const healthLabel = computed(() => t(labelKey.value))
 
 const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.value > 0)
 </script>
@@ -62,6 +59,12 @@ const showAllocationCta = computed(() => hasIncome.value && freeForAllocation.va
             :spent-pct="pace.spentPct"
             :elapsed-pct="pace.elapsedPct"
           />
+          <p
+            data-testid="hero-available-hint"
+            class="mt-1 text-xs text-slate-500 dark:text-slate-400"
+          >
+            {{ t('dashboard.hero.availableHint') }}
+          </p>
         </template>
         <template v-else>
           <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">

@@ -293,6 +293,8 @@ const IncomeSchemaV4 = z.object({
 
 const SettingsSchemaV4 = SettingsSchema.extend({
   projectionAnnualRatePercent: Percent01.default(0),
+  // Subtract the estimated retención en la fuente (COP only) from net income.
+  deductRetencion: z.boolean().default(true),
 })
 
 export const AppStateSchemaV4 = z.object({

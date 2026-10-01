@@ -72,7 +72,7 @@ src/
 - **All stores validate inputs** at the action boundary (lightweight guards; formal Zod validation at storage load).
 - **localStorage key:** `finance_app_data`. Hydration runs in `main.ts` before the router guard fires.
 - **Currency:** COP and CLP use 0 decimal places (configured in `getCurrencyConfig()`).
-- **Colombian tax (Art.383 ET):** UVT_2025 = 49,799 · Renta exenta cap: 240 UVT/month · ARL is 100% employer cost.
+- **Colombian tax (Art.383 ET):** UVT by year (2025 = 49,799 · 2026 = 52,374) · Renta exenta cap: 790 UVT/year (Ley 2277/2022) · ARL is 100% employer cost.
 
 ## Specs
 

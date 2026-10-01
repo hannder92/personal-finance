@@ -4,8 +4,8 @@ import App from './App.vue'
 import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
-import { runMonthRollover } from './composables/useMonthRollover'
 import { useStorageError } from './composables/useStorageError'
+import { useMonthClose } from './composables/useMonthClose'
 import type { AppStateV5 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
@@ -35,6 +35,7 @@ function hydrateStores() {
   settings.setTheme(state.settings.theme)
   settings.setPayoffMethod(state.settings.payoffMethod)
   settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
+  settings.setDeductRetencion(state.settings.deductRetencion ?? true)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
   settings.setUserName(state.settings.userName ?? '')
 
@@ -96,6 +97,7 @@ function persistStores(): void {
         onboarding: { done: true, currentStep: 0 },
         projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
         userName: settings.state.userName,
+        deductRetencion: settings.state.deductRetencion,
       },
       income: {
         grossSalary: income.state.grossSalary,
@@ -149,7 +151,11 @@ persistStores()
 app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
-  // ADR-1: run after the hydration flag clears so the persist watcher saves the
-  // closed-month snapshot and the variable-spent reset.
-  runMonthRollover()
+  // Runs after hydration so the snapshot and the variable reset are persisted.
+  const { runMonthClose } = useMonthClose()
+  runMonthClose()
+  // Catch a month change while the tab stays open in the background.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') runMonthClose()
+  })
 })

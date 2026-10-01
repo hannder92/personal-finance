@@ -68,13 +68,20 @@
       "emptyIncomeCta": "Go to income",
       "ctaAllocation": "Assign budget",
       "healthLabel": "Financial health",
-      "vsPrevious": "vs last month"
+      "vsPrevious": "vs last month",
+      "availableHint": "Net income − fixed expenses − variable spending − debt payments."
     },
     "kpi": {
-      "netIncome": "Net income",
+      "netIncome": "Net monthly income",
       "fixedExpenses": "Fixed expenses",
       "debtPayments": "Debt payments",
-      "dti": "DTI"
+      "dti": "DTI",
+      "variable": "Variable spending",
+      "dtiHigh": "High debt risk",
+      "hint": {
+        "netIncome": "Net salary (after withholding) plus other income prorated per month.",
+        "dti": "Debt payments ÷ gross monthly income. Above 36% is risky."
+      }
     },
     "insight": {
       "donut": "You allocate {amount} to savings ({percent}%).",
@@ -106,11 +113,29 @@
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergency",
-        "emergencyHint": "Emergency reserve (cash + savings vs fixed + debt). Distinct from autonomy runway.",
+        "emergencyHint": "Emergency reserve: cash + savings + investments ÷ monthly outflow (fixed + variable + debt). Different from the runway months.",
         "housing": "Housing",
         "savings": "Savings",
-        "noData": "no data"
-      }
+        "noData": "no data",
+        "points": "{value}/100",
+        "ideal": {
+          "dti": "Ideal: debt payments ≤ 20% of gross income",
+          "emergency": "Ideal: 6 or more months of spending covered",
+          "housing": "Ideal: housing ≤ 30% of gross income",
+          "savings": "Ideal: save 20% or more of net income"
+        }
+      },
+      "labels": {
+        "critical": "Critical",
+        "atRisk": "At risk",
+        "regular": "Fair",
+        "good": "Healthy",
+        "excellent": "Excellent"
+      },
+      "breakdownTitle": "How your score is calculated"
+    },
+    "projection": {
+      "datasetLabel": "Cumulative balance"
     }
   },
   "theme": {
@@ -133,18 +158,19 @@
     "projection": {
       "sectionTitle": "Savings projection (12 months)",
       "hypothetical": {
-        "label": "Hypothetical savings"
+        "label": "Contributions only"
       },
       "compound": {
         "label": "Compound growth"
       },
       "compoundGrowth": {
-        "label": "Patrimony growth with rate"
+        "label": "Contributions + returns"
       },
       "rateLabel": "Projection annual rate (EAR %)",
       "rateHint": "Return assumption for the dashboard compound curve.",
       "hintNeedRate": "Enter a rate above 0% to see the compound projection.",
-      "hintNeedAssets": "Add liquid net worth (cash, savings, or investment) to project growth."
+      "hintNeedAssets": "Add liquid net worth (cash, savings, or investment) to project growth.",
+      "assumptions": "Starts from {liquid} in liquid assets and adds {monthly} per month (the saving that fits the rule and your budget)."
     }
   },
   "assets": {
@@ -161,7 +187,11 @@
     "payoff": {
       "summary": {
         "title": "Debt-free",
-        "estimated": "Estimated date: {date}"
+        "estimated": "Estimated date: {date}",
+        "never": "Some debts would never be paid off: the monthly payment does not cover the interest.",
+        "none": "You have no active debts.",
+        "totalBalance": "Total debt: {amount}",
+        "totalInterest": "Interest left to pay at current payments: {amount}"
       },
       "simulator": {
         "title": "Extra payment simulator",
@@ -192,12 +222,13 @@
     }
   },
   "runway": {
-    "title": "Runway (months of autonomy)",
+    "title": "Months of runway",
     "months": "{count} months",
     "unavailable": {
       "no_liquid": "No liquid net worth recorded",
       "no_expense": "No living expenses this month"
-    }
+    },
+    "hint": "How many months your liquid money would cover spending and debt payments if income stopped."
   },
   "flowCoverage": {
     "title": "Flow coverage",
@@ -205,7 +236,8 @@
     "percentLabel": "Coverage",
     "gap": "Monthly gap: {amount}",
     "gapLabel": "Monthly gap",
-    "covered": "Expenses covered by passive and residual income"
+    "covered": "Expenses covered by passive and residual income",
+    "hint": "Share of your living costs paid by passive or residual income (rent, dividends, royalties)."
   },
   "income": {
     "class": {
@@ -219,6 +251,17 @@
       "linear": "Linear",
       "residual": "Residual",
       "passive": "Passive"
+    },
+    "retencion": {
+      "title": "Withholding tax (estimated)",
+      "notApplicable": "Does not apply at this salary level.",
+      "deduct": "Subtract it from net income",
+      "manual": "You already entered a withholding deduction; it is not subtracted twice.",
+      "hint": "Uses the {year} UVT, health, pension and solidarity fund contributions, and the 25% exempt income (capped at 790 UVT per year)."
+    },
+    "presets": {
+      "colombia": "🇨🇴 Load Colombian deductions",
+      "prima": "Load service bonus (prima)"
     }
   },
   "day": {
@@ -260,7 +303,62 @@
       "target": "Patrimony target",
       "horizon": "Estimated horizon",
       "targetReached": "Goal reached!",
-      "noFeasibleSavings": "Without feasible monthly savings, a horizon cannot be estimated."
+      "noFeasibleSavings": "Without feasible monthly savings, a horizon cannot be estimated.",
+      "horizonYears": "{years} years ({date})",
+      "horizonMonths": "{months} months ({date})",
+      "assumptions": "Assumes you save {monthly} per month (your feasible saving), with no returns or inflation. Target = 25 × annual spending (4% rule)."
+    }
+  },
+  "networth": {
+    "title": "Net worth",
+    "banner": {
+      "title": "Net worth",
+      "assets": "Assets",
+      "liabilities": "Liabilities"
+    }
+  },
+  "history": {
+    "title": "History",
+    "empty": "No month closes yet. The first one is saved automatically when next month starts.",
+    "score": "Score {score}",
+    "noScore": "No score",
+    "netWorth": "Net worth {amount}"
+  },
+  "variable": {
+    "title": "Variable spending",
+    "summary": {
+      "budget": "Budget: {amount}",
+      "spent": "Spent: {amount}",
+      "excess": "Over by: {amount}"
+    },
+    "card": {
+      "over": "Over by {amount}",
+      "remaining": "{amount} left",
+      "remove": "Delete {name}"
+    },
+    "form": {
+      "title": "New category",
+      "name": "Name",
+      "budget": "Monthly budget",
+      "submit": "Add category"
+    },
+    "empty": "Create a category (groceries, restaurants, transport…) to log this month's spending.",
+    "resetHint": "Spending resets automatically each month; the closed month is kept in the history.",
+    "quickAdd": {
+      "open": "Log spending",
+      "category": "Category",
+      "amount": "Amount",
+      "save": "Save"
+    }
+  },
+  "goals": {
+    "card": {
+      "completed": "✓ Completed",
+      "months": "{count} months",
+      "targetDate": "Target date: {date}",
+      "behind": "At this pace you finish in {date}, after your target date. You need {amount} per month.",
+      "overdue": "The target date has passed.",
+      "noContrib": "Without a monthly contribution there is no estimate."
     }
   }
 }

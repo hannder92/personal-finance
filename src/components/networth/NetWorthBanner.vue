@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { formatCurrency } from '@/lib/currency/format'
 
 const props = withDefaults(
@@ -11,6 +12,7 @@ const props = withDefaults(
   { totalAssets: 0, totalLiabilities: 0, currency: 'COP' }
 )
 
+const { t } = useI18n()
 const net = computed(() => props.totalAssets - props.totalLiabilities)
 const colorState = computed<'positive' | 'negative' | 'neutral'>(() => {
   if (net.value > 0) return 'positive'
@@ -36,7 +38,7 @@ const stateClass = computed(() => {
     :class="['rounded-lg border border-slate-200 p-4 dark:border-slate-700', stateClass]"
   >
     <h2 class="text-sm font-semibold uppercase tracking-wide">
-      Patrimonio neto
+      {{ t('networth.banner.title') }}
     </h2>
     <p class="mt-1 text-2xl font-bold">
       {{ formatCurrency(net, currency) }}
@@ -44,13 +46,13 @@ const stateClass = computed(() => {
     <dl class="mt-3 grid grid-cols-2 gap-2 text-xs">
       <div>
         <dt class="text-slate-500">
-          Activos
+          {{ t('networth.banner.assets') }}
         </dt>
         <dd>{{ formatCurrency(totalAssets, currency) }}</dd>
       </div>
       <div>
         <dt class="text-slate-500">
-          Pasivos
+          {{ t('networth.banner.liabilities') }}
         </dt>
         <dd>{{ formatCurrency(totalLiabilities, currency) }}</dd>
       </div>

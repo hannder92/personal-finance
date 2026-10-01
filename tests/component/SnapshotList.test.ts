@@ -33,7 +33,7 @@ describe('SnapshotList (AC-13.4 TC-C-029)', () => {
     render(SnapshotList, { props: { snapshots: [], currency: 'COP' } })
     expect(document.querySelectorAll('[data-month]').length).toBe(0)
     const text = document.body.textContent ?? ''
-    expect(/sin\s+snapshots|sin\s+historial|empty|vac/i.test(text)).toBe(true)
+    expect(/sin\s+snapshots|sin\s+historial|a[uú]n no hay cierres|empty|vac/i.test(text)).toBe(true)
   })
 
   it('AC-13.4 TC-C-029: each item shows score and net income', () => {

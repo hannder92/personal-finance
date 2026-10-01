@@ -1,50 +1,39 @@
-// Bridges multiple stores to lib/calculations/health-score.
-// Computes DTI, emergency months, housing ratio, and savings rate from real store data.
+// Bridges the base metrics to lib/calculations/health-score.
+// Bases: DTI and housing on gross monthly income (their thresholds are defined on
+// gross); savings rate on net monthly income; emergency fund = liquid assets /
+// monthly outflow (fixed + variable + debt), the same coverage the runway card shows.
 
 import { computed, type ComputedRef } from 'vue'
 import { calcHealthScore, type HealthScoreResult } from '@/lib/calculations/health-score'
 import { calcHousingRatio } from '@/lib/calculations/housing-ratio'
 import { calcDTI } from '@/lib/calculations/dti'
-import { calcCardObligation } from '@/lib/calculations/installments'
-import { useIncomeStore } from '@/stores/incomeStore'
 import { useExpensesStore } from '@/stores/expensesStore'
 import { useCardsStore } from '@/stores/cardsStore'
 import { useGoalsStore } from '@/stores/goalsStore'
 import { useAssetsStore } from '@/stores/assetsStore'
-import { useNetIncome } from './useNetIncome'
-
-const LIQUID_ASSET_TYPES = new Set(['cash', 'savings'])
+import { useBaseMetrics } from './useBaseMetrics'
 
 export interface UseHealthScore {
   result: ComputedRef<HealthScoreResult>
+  /** i18n key under dashboard.health.labels for the lib's label (same cutoffs everywhere). */
+  labelKey: ComputedRef<string>
+}
+
+const LABEL_KEYS: Record<HealthScoreResult['label'], string> = {
+  critical: 'dashboard.health.labels.critical',
+  'at-risk': 'dashboard.health.labels.atRisk',
+  regular: 'dashboard.health.labels.regular',
+  good: 'dashboard.health.labels.good',
+  excellent: 'dashboard.health.labels.excellent',
 }
 
 export function useHealthScore(): UseHealthScore {
-  const income = useIncomeStore()
   const expenses = useExpensesStore()
   const cards = useCardsStore()
   const goals = useGoalsStore()
   const assets = useAssetsStore()
-  const { netIncome } = useNetIncome()
-
-  const fixedExpensesTotal = computed(() =>
-    expenses.state.items.reduce((acc, e) => acc + e.amount, 0)
-  )
-
-  const debtObligationsTotal = computed(() =>
-    cards.state.items.reduce((acc, c) => {
-      if (c.type === 'card') {
-        return acc + calcCardObligation({ minPayment: c.minPayment, installmentsList: c.installments })
-      }
-      return acc + c.minPayment
-    }, 0)
-  )
-
-  const liquidAssetsTotal = computed(() =>
-    assets.state.items
-      .filter((a) => LIQUID_ASSET_TYPES.has(a.type))
-      .reduce((acc, a) => acc + a.value, 0)
-  )
+  const { monthlyIncome, grossMonthlyIncome, debtObligation, liquidAssets, monthlyOutflow } =
+    useBaseMetrics()
 
   const totalGoalContrib = computed(() =>
     goals.state.items.reduce((acc, g) => acc + g.monthlyContrib, 0)
@@ -53,30 +42,29 @@ export function useHealthScore(): UseHealthScore {
   // AC-3.4: when there is no signal, component is null and weight is renormalized in calcHealthScore.
   const dti = computed<number | null>(() => {
     if (cards.state.items.length === 0) return null
-    if (netIncome.value <= 0) return 0
-    return calcDTI(debtObligationsTotal.value, netIncome.value)
+    if (grossMonthlyIncome.value <= 0) return 0
+    return calcDTI(debtObligation.value, grossMonthlyIncome.value)
   })
 
   const emergencyMonths = computed<number | null>(() => {
     if (assets.state.items.length === 0) return null
-    const denominator = fixedExpensesTotal.value + debtObligationsTotal.value
     // No monthly obligations + positive assets → infinite coverage; max score downstream.
-    if (denominator <= 0) return liquidAssetsTotal.value > 0 ? Number.POSITIVE_INFINITY : 0
-    return liquidAssetsTotal.value / denominator
+    if (monthlyOutflow.value <= 0) return liquidAssets.value > 0 ? Number.POSITIVE_INFINITY : 0
+    return liquidAssets.value / monthlyOutflow.value
   })
 
   const housingRatio = computed<number | null>(() => {
     if (expenses.state.items.length === 0) return null
     return calcHousingRatio(
       expenses.state.items.map((e) => ({ category: e.category, amount: e.amount })),
-      income.state.grossSalary > 0 ? income.state.grossSalary : netIncome.value
+      grossMonthlyIncome.value
     )
   })
 
   const savingsRate = computed<number | null>(() => {
     if (goals.state.items.length === 0) return null
-    if (netIncome.value <= 0) return 0
-    return (totalGoalContrib.value / netIncome.value) * 100
+    if (monthlyIncome.value <= 0) return 0
+    return (totalGoalContrib.value / monthlyIncome.value) * 100
   })
 
   const result = computed<HealthScoreResult>(() =>
@@ -88,5 +76,7 @@ export function useHealthScore(): UseHealthScore {
     })
   )
 
-  return { result }
+  const labelKey = computed(() => LABEL_KEYS[result.value.label])
+
+  return { result, labelKey }
 }

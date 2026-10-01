@@ -13,12 +13,15 @@ export interface SnapshotsState {
 }
 
 const MAX_SNAPSHOTS = 24
+const YEAR_MONTH = /^\d{4}-\d{2}$/
 
 export const useSnapshotsStore = defineStore('snapshots', () => {
   const state = reactive<SnapshotsState>({ items: [] })
 
+  // Replaces any snapshot of the same month (dedupe) and keeps the 24 most recent.
   function append(snapshot: Snapshot): void {
-    const updated = [...state.items, snapshot]
+    if (!YEAR_MONTH.test(snapshot.month)) return
+    const updated = [...state.items.filter((s) => s.month !== snapshot.month), snapshot]
       .sort((a, b) => b.month.localeCompare(a.month))
       .slice(0, MAX_SNAPSHOTS)
     state.items.splice(0, state.items.length, ...updated)

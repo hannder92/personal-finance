@@ -55,8 +55,8 @@ describe('SavingsProjectionChart planning labels', () => {
     })
     const chart = container.querySelector('[data-testid="savings-projection-chart"]')
     const labels = chart?.getAttribute('data-chart-labels') ?? ''
-    expect(labels).toMatch(/Ahorro hipotético|Hypothetical/i)
-    expect(labels).toMatch(/crecimiento del patrimonio|Compound|Interés compuesto/i)
+    expect(labels).toMatch(/Solo aportes|Contributions only/i)
+    expect(labels).toMatch(/Aportes \+ rendimiento|Contributions \+ returns/i)
   })
 
   it('TC-C-045 (AC-3.3): shows rate hint when liquid exists but projection rate is zero', () => {

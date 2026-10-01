@@ -68,13 +68,20 @@
       "emptyIncomeCta": "Ir a ingresos",
       "ctaAllocation": "Asignar presupuesto",
       "healthLabel": "Salud financiera",
-      "vsPrevious": "vs mes anterior"
+      "vsPrevious": "vs mes anterior",
+      "availableHint": "Ingreso neto − gastos fijos − gastos variables − pagos de deuda."
     },
     "kpi": {
-      "netIncome": "Ingreso neto",
+      "netIncome": "Ingreso neto mensual",
       "fixedExpenses": "Gastos fijos",
       "debtPayments": "Pagos deuda",
-      "dti": "DTI"
+      "dti": "DTI",
+      "variable": "Gastos variables",
+      "dtiHigh": "Riesgo de deuda alto",
+      "hint": {
+        "netIncome": "Salario neto (después de retención) más otros ingresos prorrateados al mes.",
+        "dti": "Pagos de deuda ÷ ingreso bruto mensual. Por encima de 36% es riesgoso."
+      }
     },
     "insight": {
       "donut": "Destinas {amount} a ahorros ({percent}%).",
@@ -106,11 +113,29 @@
       "breakdown": {
         "dti": "DTI",
         "emergency": "Emergencia",
-        "emergencyHint": "Reserva de emergencia (efectivo + ahorros vs fijos + deuda). Distinto del runway de autonomía.",
+        "emergencyHint": "Reserva de emergencia: efectivo + ahorros + inversiones ÷ gastos del mes (fijos + variables + deuda). Distinto de los meses de autonomía.",
         "housing": "Vivienda",
         "savings": "Ahorros",
-        "noData": "sin datos"
-      }
+        "noData": "sin datos",
+        "points": "{value}/100",
+        "ideal": {
+          "dti": "Ideal: pagos de deuda ≤ 20% del ingreso bruto",
+          "emergency": "Ideal: 6 meses o más de gastos cubiertos",
+          "housing": "Ideal: vivienda ≤ 30% del ingreso bruto",
+          "savings": "Ideal: ahorrar 20% o más del ingreso neto"
+        }
+      },
+      "labels": {
+        "critical": "Crítico",
+        "atRisk": "En riesgo",
+        "regular": "Regular",
+        "good": "Saludable",
+        "excellent": "Excelente"
+      },
+      "breakdownTitle": "Cómo se calcula tu puntaje"
+    },
+    "projection": {
+      "datasetLabel": "Balance acumulado"
     }
   },
   "theme": {
@@ -133,18 +158,19 @@
     "projection": {
       "sectionTitle": "Proyección de ahorro (12 meses)",
       "hypothetical": {
-        "label": "Ahorro hipotético"
+        "label": "Solo aportes"
       },
       "compound": {
         "label": "Interés compuesto"
       },
       "compoundGrowth": {
-        "label": "Crecimiento del patrimonio con tasa"
+        "label": "Aportes + rendimiento"
       },
       "rateLabel": "Tasa anual de proyección (E.A. %)",
       "rateHint": "Hipótesis de rendimiento para la curva compuesta del dashboard.",
       "hintNeedRate": "Ingresa una tasa mayor a 0% para ver la proyección compuesta.",
-      "hintNeedAssets": "Registra patrimonio líquido (efectivo, ahorros o inversión) para proyectar el crecimiento."
+      "hintNeedAssets": "Registra patrimonio líquido (efectivo, ahorros o inversión) para proyectar el crecimiento.",
+      "assumptions": "Parte de {liquid} líquidos y suma {monthly} al mes (el ahorro que cumple la regla y te alcanza)."
     }
   },
   "assets": {
@@ -161,7 +187,11 @@
     "payoff": {
       "summary": {
         "title": "Libre de deudas",
-        "estimated": "Fecha estimada: {date}"
+        "estimated": "Fecha estimada: {date}",
+        "never": "Hay deudas que nunca se terminarían de pagar: el pago mensual no cubre los intereses.",
+        "none": "No tienes deudas activas.",
+        "totalBalance": "Deuda total: {amount}",
+        "totalInterest": "Intereses por pagar con los pagos actuales: {amount}"
       },
       "simulator": {
         "title": "Simulador de pago extra",
@@ -192,12 +222,13 @@
     }
   },
   "runway": {
-    "title": "Runway (meses de autonomía)",
+    "title": "Meses de autonomía",
     "months": "{count} meses",
     "unavailable": {
       "no_liquid": "Sin patrimonio líquido registrado",
       "no_expense": "Sin gasto de vida este mes"
-    }
+    },
+    "hint": "Cuántos meses cubrirías tus gastos y deudas con tu dinero líquido si dejaras de recibir ingresos."
   },
   "flowCoverage": {
     "title": "Cobertura por flujo",
@@ -205,7 +236,8 @@
     "percentLabel": "Cobertura",
     "gap": "Brecha mensual: {amount}",
     "gapLabel": "Brecha mensual",
-    "covered": "Gastos cubiertos por ingresos pasivos y residuales"
+    "covered": "Gastos cubiertos por ingresos pasivos y residuales",
+    "hint": "Qué parte de tu gasto de vida pagan tus ingresos pasivos o residuales (arriendos, dividendos, regalías)."
   },
   "income": {
     "class": {
@@ -219,6 +251,17 @@
       "linear": "Lineal",
       "residual": "Residual",
       "passive": "Pasivo"
+    },
+    "retencion": {
+      "title": "Retención en la fuente (estimada)",
+      "notApplicable": "No aplica para este nivel salarial.",
+      "deduct": "Descontarla del ingreso neto",
+      "manual": "Ya registraste una deducción de retención; no se descuenta dos veces.",
+      "hint": "Calculada con la UVT de {year}, aportes de salud, pensión y Fondo de Solidaridad, y renta exenta del 25% (tope 790 UVT al año)."
+    },
+    "presets": {
+      "colombia": "🇨🇴 Cargar deducciones Colombia",
+      "prima": "Cargar prima de servicios"
     }
   },
   "day": {
@@ -260,7 +303,62 @@
       "target": "Meta de patrimonio",
       "horizon": "Horizonte estimado",
       "targetReached": "¡Meta alcanzada!",
-      "noFeasibleSavings": "Sin ahorro factible mensual no es posible estimar un horizonte."
+      "noFeasibleSavings": "Sin ahorro factible mensual no es posible estimar un horizonte.",
+      "horizonYears": "{years} años ({date})",
+      "horizonMonths": "{months} meses ({date})",
+      "assumptions": "Supone que ahorras {monthly} al mes (tu ahorro factible), sin rendimientos ni inflación. Meta = 25 × gasto anual (regla del 4%)."
+    }
+  },
+  "networth": {
+    "title": "Patrimonio",
+    "banner": {
+      "title": "Patrimonio neto",
+      "assets": "Activos",
+      "liabilities": "Pasivos"
+    }
+  },
+  "history": {
+    "title": "Historial",
+    "empty": "Aún no hay cierres. El primero se guarda automáticamente al empezar el próximo mes.",
+    "score": "Puntaje {score}",
+    "noScore": "Sin puntaje",
+    "netWorth": "Patrimonio {amount}"
+  },
+  "variable": {
+    "title": "Gastos variables",
+    "summary": {
+      "budget": "Presupuesto: {amount}",
+      "spent": "Gastado: {amount}",
+      "excess": "Exceso: {amount}"
+    },
+    "card": {
+      "over": "Excedido por {amount}",
+      "remaining": "Quedan {amount}",
+      "remove": "Eliminar {name}"
+    },
+    "form": {
+      "title": "Nueva categoría",
+      "name": "Nombre",
+      "budget": "Presupuesto mensual",
+      "submit": "Agregar categoría"
+    },
+    "empty": "Crea una categoría (mercado, restaurantes, transporte…) para registrar tus gastos del mes.",
+    "resetHint": "Los gastos se reinician solos al empezar cada mes; el mes cerrado queda en el historial.",
+    "quickAdd": {
+      "open": "Registrar gasto",
+      "category": "Categoría",
+      "amount": "Monto",
+      "save": "Guardar"
+    }
+  },
+  "goals": {
+    "card": {
+      "completed": "✓ Completada",
+      "months": "{count} meses",
+      "targetDate": "Fecha meta: {date}",
+      "behind": "A este ritmo terminas en {date}, después de tu fecha meta. Necesitas {amount} al mes.",
+      "overdue": "La fecha meta ya pasó.",
+      "noContrib": "Sin aporte mensual no hay fecha estimada."
     }
   }
 }
