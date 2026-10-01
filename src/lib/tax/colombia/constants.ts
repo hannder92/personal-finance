@@ -1,10 +1,32 @@
-// UVT 2025 — Unidad de Valor Tributario, Resolución DIAN 000187 del 28-nov-2024.
-// https://www.dian.gov.co/normatividad/Normatividad/Resoluci%C3%B3n%20000187%20del%2028-11-2024.pdf
+// UVT — Unidad de Valor Tributario, fixed yearly by DIAN (Art. 868 ET).
+// 2025: Resolución DIAN 000187 del 28-nov-2024.
+// 2026: Resolución DIAN 000238 del 15-dic-2025.
 export const UVT_2025 = 49_799
+export const UVT_2026 = 52_374
 
-// Renta exenta cap (Art. 206 numeral 10 ET, monthly equivalent).
-// 240 UVT/month → 2,880 UVT/year. NOT 65.833 UVT/month (which is 790 UVT/year — incorrect for this item).
-export const RENTA_EXENTA_CAP_UVT = 240
+export const UVT_BY_YEAR: Readonly<Record<number, number>> = {
+  2025: UVT_2025,
+  2026: UVT_2026,
+}
+
+const KNOWN_UVT_YEARS = Object.keys(UVT_BY_YEAR)
+  .map(Number)
+  .sort((a, b) => a - b)
+
+// UVT for a given tax year. Years outside the table fall back to the nearest known year
+// (the latest one for future years, until DIAN publishes the new value and it is added above).
+export function uvtForYear(year: number): number {
+  const exact = UVT_BY_YEAR[year]
+  if (exact !== undefined) return exact
+  const first = KNOWN_UVT_YEARS[0]!
+  const last = KNOWN_UVT_YEARS[KNOWN_UVT_YEARS.length - 1]!
+  return UVT_BY_YEAR[year < first ? first : last]!
+}
+
+// Renta exenta cap (Art. 206 numeral 10 ET, as modified by Ley 2277/2022, art. 2):
+// 25% of labor payments, limited to 790 UVT per year. Monthly retención applies 790/12 UVT.
+export const RENTA_EXENTA_CAP_UVT_ANUAL = 790
+export const RENTA_EXENTA_CAP_UVT_MENSUAL = RENTA_EXENTA_CAP_UVT_ANUAL / 12
 
 // Aporte obligatorio del trabajador a salud y pensión: 4% + 4% = 8%.
 // (Art. 204 Ley 100/1993 — salud; Art. 20 Ley 100/1993 — pensión).

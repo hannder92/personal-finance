@@ -1,9 +1,9 @@
 import {
   APORTE_SOCIAL_TOTAL,
   ART_383_BRACKETS,
-  RENTA_EXENTA_CAP_UVT,
+  RENTA_EXENTA_CAP_UVT_MENSUAL,
   RENTA_EXENTA_PCT,
-  UVT_2025,
+  uvtForYear,
 } from './constants'
 
 export interface RetencionResult {
@@ -13,23 +13,30 @@ export interface RetencionResult {
 }
 
 // Monthly retención en la fuente for salaried employees (Art. 383 ET).
-// Formula: base = gross − aporteSocial(8%) − min(25% × ingresoNominal, 240 × UVT).
-// The marginal table is applied to the base expressed in UVT.
-export function calcRetencion(grossSalary: number): RetencionResult {
+// Formula: base = gross − aporteSocial(8%) − min(25% × ingresoNominal, 790/12 × UVT).
+// The marginal table is applied to the base expressed in UVT of the given tax year.
+export function calcRetencion(
+  grossSalary: number,
+  year: number = new Date().getFullYear()
+): RetencionResult {
   if (grossSalary <= 0) {
     return { amount: 0, label: 'estimado', belowThreshold: true }
   }
 
+  const uvt = uvtForYear(year)
   const aporteSocial = grossSalary * APORTE_SOCIAL_TOTAL
   const ingresoNominal = grossSalary - aporteSocial
-  const rentaExenta = Math.min(ingresoNominal * RENTA_EXENTA_PCT, RENTA_EXENTA_CAP_UVT * UVT_2025)
+  const rentaExenta = Math.min(
+    ingresoNominal * RENTA_EXENTA_PCT,
+    RENTA_EXENTA_CAP_UVT_MENSUAL * uvt
+  )
   const baseGravable = ingresoNominal - rentaExenta
-  const baseGravableUVT = baseGravable / UVT_2025
+  const baseGravableUVT = baseGravable / uvt
 
   const bracket = findBracket(baseGravableUVT)
   const lowerUVT = lowerBoundary(bracket)
   const marginalUVT = (baseGravableUVT - lowerUVT) * bracket.rate + bracket.constantUVT
-  const amount = Math.round(marginalUVT * UVT_2025)
+  const amount = Math.round(marginalUVT * uvt)
 
   return {
     amount: Math.max(0, amount),

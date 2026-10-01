@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Retención en la fuente** — tope de renta exenta 25% corregido a 790 UVT anuales (Art. 206 num. 10 ET, Ley 2277/2022) en lugar de 240 UVT/mes; UVT por año (`uvtForYear`) con 2026 = $52.374 (Res. DIAN 000238/2025). Corrige retención subestimada en salarios altos.
+
 ### Added (feature `20260529-metricas-runway-ingresos`)
 
 - **Runway card** — meses de autonomía (líquido ÷ gasto de vida) con estados explícitos sin líquido/gasto.
