@@ -29,7 +29,7 @@ const ordered = computed(() => [...props.snapshots].sort((a, b) => b.month.local
       >
         <div class="flex flex-col">
           <span class="text-sm font-semibold">{{ s.month }}</span>
-          <span class="text-xs text-slate-500">Score {{ s.healthScore }}</span>
+          <span class="text-xs text-slate-500">Score {{ s.healthScore ?? '—' }}</span>
         </div>
         <span class="text-sm">{{ formatCurrency(s.netIncome, currency) }}</span>
       </li>

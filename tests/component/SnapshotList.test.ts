@@ -6,9 +6,11 @@ const baseSnapshot = {
   id: '',
   capturedAt: '2026-04-01T00:00:00.000Z',
   netIncome: 4_000_000,
-  fixedExpenses: 1_000_000,
-  debtPayments: 500_000,
+  totalFixedExpenses: 1_000_000,
+  totalVariableSpent: 300_000,
+  totalDebt: 2_000_000,
   dti: 12,
+  savingsRate: 10,
   netWorth: 5_000_000,
   healthScore: 70,
 }

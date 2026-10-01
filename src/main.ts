@@ -5,6 +5,7 @@ import { router } from './router'
 import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
+import { useMonthRollover } from './composables/useMonthRollover'
 import type { AppStateV4 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
@@ -62,8 +63,7 @@ function hydrateStores() {
   variable.state.items.splice(0, Infinity, ...(state.variableExpenses as any[]))
 
   const snapshots = useSnapshotsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  snapshots.setAll(state.snapshots as any)
+  snapshots.setAll(state.snapshots)
 
   const allocation = useAllocationStore()
   allocation.setAllocation(state.allocation.needs, state.allocation.wants)
@@ -107,8 +107,7 @@ function persistStores(): void {
       goals: goals.state.items,
       assets: assets.state.items,
       variableExpenses: variable.state.items,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      snapshots: snapshots.state.items as any,
+      snapshots: snapshots.state.items,
       allocation: {
         needs: allocation.state.needs,
         wants: allocation.state.wants,
@@ -148,4 +147,11 @@ persistStores()
 app.use(router).use(i18n).mount('#app')
 nextTick(() => {
   isHydrating = false
+  // Month close runs after hydration so the persist watcher saves the snapshot and reset.
+  const { checkRollover } = useMonthRollover()
+  checkRollover()
+  // Catch a month change while the tab stays open in the background.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkRollover()
+  })
 })
