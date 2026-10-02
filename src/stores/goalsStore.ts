@@ -11,6 +11,8 @@ export interface Goal {
   monthlyContrib: number
   targetDate: string | null
   priority: number
+  /** Money is invested at the expected return (20261002-proyecciones-reales). */
+  invested: boolean
 }
 
 export interface GoalsState {
@@ -32,12 +34,17 @@ function isValidAmount(n: number): boolean {
 export const useGoalsStore = defineStore('goals', () => {
   const state = reactive<GoalsState>({ items: [] })
 
-  function add(input: Omit<Goal, 'id' | 'priority'>): void {
+  function add(input: Omit<Goal, 'id' | 'priority' | 'invested'> & { invested?: boolean }): void {
     if (!isValidName(input.name)) return
     if (!isValidAmount(input.target)) return
     if (!isValidAmount(input.saved)) return
     if (!isValidAmount(input.monthlyContrib)) return
-    state.items.push({ ...input, id: newId(), priority: state.items.length })
+    state.items.push({
+      ...input,
+      invested: input.invested === true,
+      id: newId(),
+      priority: state.items.length,
+    })
   }
   function remove(id: string): void {
     const idx = state.items.findIndex((x) => x.id === id)
@@ -50,6 +57,7 @@ export const useGoalsStore = defineStore('goals', () => {
     if (patch.target !== undefined && !isValidAmount(patch.target)) return
     if (patch.saved !== undefined && !isValidAmount(patch.saved)) return
     if (patch.monthlyContrib !== undefined && !isValidAmount(patch.monthlyContrib)) return
+    if (patch.invested !== undefined && typeof patch.invested !== 'boolean') return
     Object.assign(item, patch)
   }
   function reorder(idsInOrder: string[]): void {

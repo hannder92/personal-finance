@@ -3,6 +3,7 @@
 
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
+import { COLOMBIA_REFERENCE } from '@/lib/calculations/assumptions-reference'
 
 const ALLOWED_LANGS = ['es', 'en'] as const
 const ALLOWED_CURRENCIES = ['COP', 'USD', 'CLP', 'MXN', 'ARS', 'BRL', 'PEN'] as const
@@ -20,6 +21,12 @@ export interface SettingsState {
   /** Optional display name for the dashboard greeting (≤30 chars, local only). */
   userName: string
   deductRetencion: boolean
+  /** Expected annual inflation (%), 0–30. The expected return is projectionAnnualRatePercent. */
+  inflationPercent: number
+  /** Safe withdrawal rate (%) for financial freedom, 1–10. */
+  withdrawalRatePercent: number
+  /** Horizon (whole years, 5–40) for the FI required monthly contribution. */
+  fiDesiredYears: number
 }
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -32,6 +39,9 @@ export const useSettingsStore = defineStore('settings', () => {
     projectionAnnualRatePercent: 0,
     userName: '',
     deductRetencion: true,
+    inflationPercent: 0,
+    withdrawalRatePercent: 4,
+    fiDesiredYears: 20,
   })
 
   function setLang(lang: SettingsState['lang']): void {
@@ -70,8 +80,31 @@ export const useSettingsStore = defineStore('settings', () => {
     state.deductRetencion = value
   }
 
+  // Ranges mirror SettingsSchemaV7 so the persisted payload never fails validation.
+  function setInflationPercent(rate: number): void {
+    if (!Number.isFinite(rate) || rate < 0 || rate > 30) return
+    state.inflationPercent = rate
+  }
+  function setWithdrawalRatePercent(rate: number): void {
+    if (!Number.isFinite(rate) || rate < 1 || rate > 10) return
+    state.withdrawalRatePercent = rate
+  }
+  function setFiDesiredYears(years: number): void {
+    if (!Number.isInteger(years) || years < 5 || years > 40) return
+    state.fiDesiredYears = years
+  }
+  function applyColombiaReference(): void {
+    setInflationPercent(COLOMBIA_REFERENCE.inflationPercent)
+    setProjectionAnnualRatePercent(COLOMBIA_REFERENCE.annualReturnPercent)
+    setWithdrawalRatePercent(COLOMBIA_REFERENCE.withdrawalRatePercent)
+  }
+
   return {
     state,
+    setInflationPercent,
+    setWithdrawalRatePercent,
+    setFiDesiredYears,
+    applyColombiaReference,
     setDeductRetencion,
     setLang,
     setCurrency,

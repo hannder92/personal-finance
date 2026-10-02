@@ -21,19 +21,19 @@ ac:
   - { id: "AC-3.7", desc: "P0 por tarjeta en móvil" }
 tc: []
 tasks:
-  - { id: "T-001", status: pending, type: test, size: S, layer: domain, deps: [] }
-  - { id: "T-002", status: pending, type: impl, size: S, layer: domain, risk: M, deps: ["T-001"] }
-  - { id: "T-003", status: pending, type: test, size: S, layer: domain, deps: [] }
-  - { id: "T-004", status: pending, type: impl, size: S, layer: domain, risk: M, deps: ["T-002", "T-003"] }
-  - { id: "T-005", status: pending, type: test, size: S, layer: infra, deps: [] }
-  - { id: "T-006", status: pending, type: impl, size: S, layer: infra, risk: H, deps: ["T-005"] }
-  - { id: "T-007", status: pending, type: test, size: S, layer: app, deps: [] }
-  - { id: "T-008", status: pending, type: impl, size: S, layer: app, risk: L, deps: ["T-006", "T-007"] }
-  - { id: "T-009", status: pending, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
-  - { id: "T-010", status: pending, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
-  - { id: "T-011", status: pending, type: impl, size: S, layer: cross, risk: L, deps: ["T-008"] }
-  - { id: "T-012", status: pending, type: test, size: S, layer: app, deps: [] }
-  - { id: "T-LAST", status: pending, type: test, size: S, layer: cross, deps: ["T-012"] }
+  - { id: "T-001", status: done, type: test, size: S, layer: domain, deps: [] }
+  - { id: "T-002", status: done, type: impl, size: S, layer: domain, risk: M, deps: ["T-001"] }
+  - { id: "T-003", status: done, type: test, size: S, layer: domain, deps: [] }
+  - { id: "T-004", status: done, type: impl, size: S, layer: domain, risk: M, deps: ["T-002", "T-003"] }
+  - { id: "T-005", status: done, type: test, size: S, layer: infra, deps: [] }
+  - { id: "T-006", status: done, type: impl, size: S, layer: infra, risk: H, deps: ["T-005"] }
+  - { id: "T-007", status: done, type: test, size: S, layer: app, deps: [] }
+  - { id: "T-008", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-006", "T-007"] }
+  - { id: "T-009", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
+  - { id: "T-010", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
+  - { id: "T-011", status: done, type: impl, size: S, layer: cross, risk: L, deps: ["T-008"] }
+  - { id: "T-012", status: done, type: test, size: S, layer: app, deps: [] }
+  - { id: "T-LAST", status: done, type: test, size: S, layer: cross, deps: ["T-012"] }
 adr:
   - { id: "ADR-1", desc: "Simulación mes a mes vs forma cerrada" }
   - { id: "ADR-2", desc: "Supuestos en settingsStore" }
@@ -47,6 +47,6 @@ open_questions:
   - { id: "OQ-6", desc: "Plazo deseado libertad financiera: editable, default 20 años", status: resolved }
   - { id: "OQ-7", desc: "Default del interruptor de inversión en metas nuevas", status: resolved }
 assumptions:
-  - { id: "A-001", stated_in: plan, text: "Loop de 1200 iteraciones por meta es imperceptible", impact_if_wrong: L, verify_by: "component tests", status: unverified }
-  - { id: "A-002", stated_in: plan, text: "Redondeo reproduce ejemplos del spec con error <= $1", impact_if_wrong: M, verify_by: "TC-U-001..014", status: unverified }
-  - { id: "A-003", stated_in: plan, text: "Meses a fecha objetivo conservan regla año/mes actual", impact_if_wrong: L, verify_by: "goals tests", status: unverified }
+  - { id: "A-001", stated_in: plan, text: "Loop de 1200 iteraciones por meta es imperceptible", impact_if_wrong: L, verify_by: "component tests", status: verified }
+  - { id: "A-002", stated_in: plan, text: "Redondeo reproduce ejemplos del spec con error <= $1", impact_if_wrong: M, verify_by: "TC-U-001..014", status: verified }
+  - { id: "A-003", stated_in: plan, text: "Meses a fecha objetivo conservan regla año/mes actual", impact_if_wrong: L, verify_by: "goals tests", status: verified }

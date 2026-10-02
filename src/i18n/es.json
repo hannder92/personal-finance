@@ -253,6 +253,22 @@
       "placeholder": "¿Cómo te llamamos?",
       "hint": "Se usa solo para saludarte. Queda guardado en tu dispositivo.",
       "error": "Máximo 30 caracteres"
+    },
+    "assumptions": {
+      "title": "Supuestos de proyección",
+      "subtitle": "Se usan en Libertad financiera, Metas y la proyección de ahorro. Montos en pesos de hoy.",
+      "inflation": "Inflación anual esperada (%)",
+      "return": "Rentabilidad anual esperada (% E.A.)",
+      "returnHint": "Es la misma tasa de la proyección de ahorro del inicio.",
+      "withdrawal": "Tasa de retiro anual (%)",
+      "withdrawalHint": "4% equivale a 25 veces tu gasto anual; 3,5–3,7% es más prudente.",
+      "useReference": "Usar valores de referencia para Colombia",
+      "source": "Referencia: DANE y Banco de la República, consultado {date}.",
+      "realRate": "Rentabilidad real: {rate}",
+      "optimistic": "Supuesto optimista: una rentabilidad real mayor a 7% es difícil de sostener.",
+      "range": "Ingresa un valor entre {min} y {max}.",
+      "suggestion": "Configura tus supuestos para ver plazos y aportes más realistas.",
+      "disclaimer": "Simulación educativa, no es una promesa de rentabilidad ni una recomendación de inversión."
     }
   },
   "runway": {
@@ -331,16 +347,28 @@
     },
     "detail": {
       "title": "Libertad financiera",
-      "subtitle": "Meta de independencia financiera (25× gasto anual de vida)",
+      "subtitle": "¿Cuánto necesitas para vivir de tus inversiones y cuándo llegas?",
       "livingExpense": "Gasto de vida mensual",
       "liquidAssets": "Patrimonio líquido",
-      "target": "Meta de patrimonio",
+      "target": "Capital necesario (pesos de hoy)",
       "horizon": "Horizonte estimado",
       "targetReached": "¡Meta alcanzada!",
       "noFeasibleSavings": "Sin ahorro factible mensual no es posible estimar un horizonte.",
       "horizonYears": "{years} años ({date})",
       "horizonMonths": "{months} meses ({date})",
-      "assumptions": "Supone que ahorras {monthly} al mes (tu ahorro factible), sin rendimientos ni inflación. Meta = 25 × gasto anual (regla del 4%)."
+      "assumptions": "Supone que ahorras {monthly} al mes (tu ahorro factible), sin rendimientos ni inflación. Meta = 25 × gasto anual (regla del 4%).",
+      "heroLabel": "Años para lograrlo",
+      "unreachable": "No alcanzable con tus supuestos actuales",
+      "context": "Con rentabilidad {ret} E.A., inflación {inf} y retiro {wd}. Montos en pesos de hoy.",
+      "desiredYears": "Plazo deseado (años)",
+      "required": "Para lograrlo en {years} años ahorra {amount}/mes (hoy {current})",
+      "sufficient": "Tu ahorro actual alcanza para lograrlo en {years} años",
+      "benefitYears": "Con rentabilidad llegas {years} años antes",
+      "benefitUnreachable": "Sin invertir no lo alcanzarías; invirtiendo lo logras en {when}",
+      "inviteReturn": "Agrega una rentabilidad esperada para ver un plazo más realista.",
+      "inviteLink": "Configurar supuestos",
+      "disclaimer": "Simulación educativa, no es una promesa de rentabilidad.",
+      "yearsValue": "{years} años"
     }
   },
   "networth": {
@@ -387,12 +415,26 @@
   },
   "goals": {
     "card": {
-      "completed": "✓ Completada",
+      "completed": "✓ Lograda",
       "months": "{count} meses",
       "targetDate": "Fecha meta: {date}",
       "behind": "A este ritmo terminas en {date}, después de tu fecha meta. Necesitas {amount} al mes.",
       "overdue": "La fecha meta ya pasó.",
-      "noContrib": "Sin aporte mensual no hay fecha estimada."
+      "noContrib": "Define un aporte mensual para estimar la fecha.",
+      "invested": "Este dinero se invierte",
+      "investedHelp": "Usa tu rentabilidad esperada para proyectar esta meta",
+      "equivalent": "Equivale a {amount} en {date}",
+      "estimated": "Fecha estimada: {date}",
+      "required": "Aporte requerido: {amount}/mes",
+      "onTrack": "En camino",
+      "behindBadge": "Atrasada",
+      "overdueBadge": "Vencida",
+      "earlier": "Llegas {count} meses antes",
+      "onTime": "Llegas justo a tiempo",
+      "catchUp": "Para llegar a tiempo ahorra {amount}/mes (hoy {current})",
+      "benefit": "Invirtiendo llegas {months} meses antes y necesitas {amount} menos al mes",
+      "benefitMonths": "Invirtiendo llegas {months} meses antes",
+      "benefitUnreachable": "Sin invertir no la alcanzarías"
     }
   }
 }

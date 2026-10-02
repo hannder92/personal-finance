@@ -29,4 +29,10 @@ const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  // Deep links such as /settings#assumptions scroll to the section; other navigations
+  // keep the previous behaviour (no automatic scrolling).
+  scrollBehavior(to) {
+    if (to.hash) return { el: to.hash }
+    return false
+  },
 })
