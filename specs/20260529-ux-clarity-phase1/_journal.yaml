@@ -69,3 +69,12 @@ entries:
       build: pass
       lint: "0 errors"
       e2e: "blocked — Playwright no soporta ubuntu26.04-x64 en este entorno"
+  - at: "2026-09-23T09:57:45-05:00"
+    event: constitution_amended
+    phase: 0
+    by: Codex
+  - at: "2026-09-23T10:03:34-05:00"
+    event: phase_signed_off
+    phase: 0
+    by: "Johann Medina"
+    note: "Constitution v6 approved by the user."

@@ -22,4 +22,4 @@
 
 ## Phase 5
 
-- `.cursor/rules/vue-architecture.mdc`, `vue-testing.mdc`, `colombia-payroll.mdc` (si aplica)
+- `.agents/skills/vue-engineering/SKILL.md`, `.agents/skills/colombia-payroll/SKILL.md` when relevant

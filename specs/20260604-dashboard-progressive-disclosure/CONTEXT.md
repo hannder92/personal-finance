@@ -24,5 +24,5 @@
 
 ## Phase 5 — Implement
 
-- `.cursor/rules/vue-architecture.mdc`
+- `.agents/skills/vue-engineering/SKILL.md`
 - Task block only from `4-tasks.md`

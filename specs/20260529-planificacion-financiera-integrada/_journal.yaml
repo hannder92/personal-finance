@@ -140,3 +140,12 @@ entries:
     coverage_global: 86.17
     coverage_calculations: 96.52
     merge_blockers: 0
+  - at: "2026-09-23T09:57:45-05:00"
+    event: constitution_amended
+    phase: 0
+    by: Codex
+  - at: "2026-09-23T10:03:34-05:00"
+    event: phase_signed_off
+    phase: 0
+    by: "Johann Medina"
+    note: "Constitution v6 approved by the user."

@@ -93,16 +93,16 @@
 - **`any` type without justification comment** — Erodes type safety on financial calculations where a wrong numeric type causes silent bugs.
 - **`console.log` / `console.error` in production paths** — `console.*` calls outside `if (import.meta.env.DEV)` blocks are forbidden.
 - **`v-html` with dynamic content** — XSS surface. Use `{{ }}` or DOM-safe bindings.
-- **Skipping Zod validation at storage boundaries** — `loadAppState()` and `importFromFile()` **MUST** call `AppStateSchemaV3.safeParse()` before touching any Pinia store. For UI forms, Zod is **SHOULD** (encouraged); the store action's own boundary guards (`isValidName`, `isValidAmount`) are the minimum acceptable fallback. Raw mutations that bypass both form validation AND store guards are forbidden.
+- **Skipping Zod validation at storage boundaries** — `loadAppState()` and `importFromFile()` **MUST** call `.safeParse()` on the latest `AppStateSchemaVN` in `src/lib/storage/schema.ts` (currently V6) before touching any Pinia store. For UI forms, Zod is **SHOULD** (encouraged); the store action's own boundary guards (`isValidName`, `isValidAmount`) are the minimum acceptable fallback. Raw mutations that bypass both form validation AND store guards are forbidden.
 - **ARL as an employee deduction** — ARL is 100% employer cost (Art. 16 Ley 1562/2012). **MUST NOT** appear in employee-facing deduction presets or default store state.
 - **`lib/calculations/` or `lib/tax/` importing Vue or Pinia** — These are pure function libraries. A Vue/Pinia import makes them untestable in isolation and couples domain logic to the framework.
 - **Charting outside Chart.js** — No D3, no native Canvas API, no Highcharts. Custom canvas drawing requires an ADR with justification.
 - **Adding a persisted field without updating `migrate()`** — Existing users with localStorage data get `undefined` on the new field. Schema change = Zod update + migration step, both mandatory.
-- **Guessing Colombian payroll percentages** — Always follow `.cursor/rules/colombia-payroll.mdc` and cite the legal source (UVT 2026 = $52,374, Art. 383 ET, Art. 16 Ley 1562/2012, etc.).
+- **Guessing Colombian payroll percentages** — Follow `.agents/skills/colombia-payroll/SKILL.md`, verify the applicable tax year against official sources, and cite the legal source. Year-dependent values (UVT, SMMLV) live in `uvtForYear()`/`smmlvForYear()`; add a new year only with its DIAN/decree source.
 
 ## Versioning
 
-- Constitution version: **v5** (this document)
+- Constitution version: **v6** (this document)
 - Amendments: recorded as `v{N+1}` with date + diff summary at the bottom
 
 ---
@@ -113,6 +113,7 @@
 - [x] Author: `Johann Medina` — `2026-05-15` (v3)
 - [x] Author: `Johann Medina` — `2026-05-29` (v4)
 - [ ] Author: `Johann Medina` — `2026-05-29` (v5)
+- [x] Author: `Johann Medina` — `2026-10-02` (v6)
 
 ---
 
@@ -125,3 +126,4 @@
 | v3      | 2026-05-15 | Johann Medina | Post-implementation retrospective corrections: (1) Stack fixed — removed `shadcn-vue`, `@sentry/vue`, `pino` (never installed); added `radix-vue`, `lucide-vue-next`, `vue-chartjs`. (2) Architecture — added mandatory navigation shell rule for `App.vue` and CRUD completeness rule for domain views. (3) Zod rule relaxed from MUST to SHOULD on UI forms.                                          |
 | v4      | 2026-05-29 | Johann Medina | (1) Version header synced to v4; removed stale `pino` references from Security/Forbidden. (2) Storage boundary updated to `AppStateSchemaV3`. (3) Store catalog expanded to all 9 Pinia domains. (4) Onboarding wizard removed — app opens directly on dashboard; legacy `onboarding` field in persisted schema kept for migration compat only. (5) Navigation shell no longer hides during onboarding. |
 | v5      | 2026-05-29 | Johann Medina | Product Principles (moment-first, decision over data, feedback loops, AI proposals in discovery, benchmark gate). UX Experience Standards (card hierarchy, semantic color, empty states, context lines, mobile-first, benefit copy on comparisons). Introduces mandatory `0-discovery.md` for features size M+.                                                                                         |
+| v6      | 2026-10-02 | Johann Medina | (1) Colombian payroll guidance moved from the retired Cursor rule to `.agents/skills/colombia-payroll/`; year-dependent values come from `uvtForYear()`/`smmlvForYear()` and require an official source per year. (2) Storage boundary no longer pins a schema version: always the latest `AppStateSchemaVN` (V6 at amendment time).                                                                    |
