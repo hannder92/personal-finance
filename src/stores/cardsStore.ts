@@ -32,6 +32,8 @@ export interface LoanDebt {
   apr: number
   minPayment: number
   remainingInstallments: number
+  /** Libranza: the cuota is withheld from the payslip by the employer. */
+  payrollDeducted?: boolean
   installments?: Installment[]
 }
 
@@ -71,7 +73,8 @@ export const useCardsStore = defineStore('cards', () => {
     if (!isValidAmount(input.apr)) return
     if (!isValidAmount(input.minPayment)) return
     if (!Number.isInteger(input.remainingInstallments) || input.remainingInstallments < 0) return
-    state.items.push({ ...input, id: newId() })
+    if (input.payrollDeducted !== undefined && typeof input.payrollDeducted !== 'boolean') return
+    state.items.push({ ...input, payrollDeducted: input.payrollDeducted ?? false, id: newId() })
   }
 
   // Validates every patched field; the id and the card/loan type cannot change.
@@ -89,6 +92,9 @@ export const useCardsStore = defineStore('cards', () => {
       (!Number.isInteger(rest.remainingInstallments) || rest.remainingInstallments < 0)
     ) {
       return
+    }
+    if (rest.payrollDeducted !== undefined) {
+      if (typeof rest.payrollDeducted !== 'boolean' || state.items[idx]!.type !== 'loan') return
     }
     Object.assign(state.items[idx]!, rest)
   }

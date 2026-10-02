@@ -158,4 +158,47 @@ describe('cardsStore (T-045)', () => {
     s.updateInstallment(cardId, instId, { paid: 5 })
     expect(card.installments[0]!.paid).toBe(5)
   })
+
+  it('addLoan defaults payrollDeducted to false and keeps an explicit libranza flag', () => {
+    const s = useCardsStore()
+    const base = {
+      type: 'loan' as const,
+      name: 'Crédito',
+      balance: 10_000_000,
+      apr: 17,
+      minPayment: 500_000,
+      remainingInstallments: 24,
+    }
+    s.addLoan(base)
+    s.addLoan({ ...base, payrollDeducted: true })
+    const loans = s.state.items.filter((d) => d.type === 'loan')
+    expect(loans.map((l) => l.payrollDeducted)).toEqual([false, true])
+  })
+
+  it('update toggles payrollDeducted on loans but never on cards', () => {
+    const s = useCardsStore()
+    s.addLoan({
+      type: 'loan',
+      name: 'Libranza',
+      balance: 10_000_000,
+      apr: 17,
+      minPayment: 500_000,
+      remainingInstallments: 24,
+    })
+    s.addCard({
+      type: 'card',
+      name: 'Visa',
+      balance: 1_000_000,
+      limit: 2_000_000,
+      apr: 28,
+      minPayment: 100_000,
+      dueDate: null,
+      installments: [],
+    })
+    const [loan, card] = s.state.items
+    s.update(loan!.id, { payrollDeducted: true })
+    expect(loan!.type === 'loan' && loan!.payrollDeducted).toBe(true)
+    s.update(card!.id, { payrollDeducted: true } as never)
+    expect('payrollDeducted' in card!).toBe(false)
+  })
 })

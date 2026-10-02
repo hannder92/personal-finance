@@ -202,11 +202,31 @@
         "totalInterest": "Intereses por pagar con los pagos actuales: {amount}"
       },
       "simulator": {
-        "title": "Simulador de pago extra",
-        "extraLabel": "Pago extra mensual",
-        "monthsSaved": "Meses ahorrados: {count}",
-        "interestSaved": "Interés ahorrado: {amount}",
-        "cardsOnly": "El simulador aplica a tarjetas de crédito."
+        "title": "Plan de abonos a capital",
+        "context": "Mira cuánto adelantas tu salida de deudas si abonas a capital cada mes y con las primas. Se compara contra pagar solo la cuota.",
+        "extraLabel": "Abono extra mensual",
+        "freeHint": "Hoy te quedan {amount} libres al mes.",
+        "primaLabel": "Abono con cada prima (junio y diciembre)",
+        "cesantiasLabel": "Abono con los intereses de cesantías (enero)",
+        "useEstimates": "Usar primas e intereses estimados",
+        "estimatesNote": "Estimados antes de retención: prima {prima}, intereses de cesantías {cesantias}.",
+        "modeLabel": "Qué pides al banco con cada abono",
+        "modeTerm": "Reducir plazo",
+        "modeTermHint": "Mantienes la cuota y terminas antes. Cuando acabas una deuda, su cuota pasa a la siguiente.",
+        "modePayment": "Reducir cuota",
+        "modePaymentHint": "Mantienes el plazo y pagas menos cada mes.",
+        "heroDate": "Libre de deudas en {date}",
+        "baselineDate": "Pagando solo la cuota: {date}",
+        "monthsSaved": "Terminas {count} mes antes | Terminas {count} meses antes",
+        "interestSaved": "Pagas {amount} menos en intereses",
+        "noSavings": "Agrega un abono para ver cuánto te ahorras.",
+        "interestCompare": "Intereses: {plan} con el plan frente a {baseline} pagando solo la cuota.",
+        "cuotaChange": "Tu cuota total baja de {now} a {later} en 12 meses.",
+        "orderTitle": "Orden de los abonos",
+        "debtRow": "{name}: {plan} (sin abonos: {baseline})",
+        "never": "Con estos pagos hay deudas que nunca se terminan: la cuota no cubre los intereses.",
+        "neverShort": "nunca",
+        "empty": "Registra tus deudas para simular abonos a capital."
       },
       "priority": {
         "title": "Orden de pago sugerido"
@@ -216,6 +236,12 @@
         "avalanche": "Avalancha (mayor tasa primero)",
         "snowball": "Bola de nieve (menor saldo primero)"
       }
+    },
+    "libranza": {
+      "label": "Libranza (se descuenta de la nómina)",
+      "hint": "La cuota no sale de tu cuenta porque ya viene descontada del sueldo. Cuenta en tu nivel de endeudamiento, pero no se resta dos veces del flujo.",
+      "badge": "Libranza",
+      "manualHint": "Tienes una deducción de libranza en tus ingresos. Marca ese préstamo como libranza para que la cuota no se cuente dos veces."
     }
   },
   "common": {

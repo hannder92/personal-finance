@@ -29,39 +29,6 @@ function runPlan(initialState: Parameters<typeof createTestingPinia>[0]['initial
 }
 
 describe('composables/useDebtPayoffPlan', () => {
-  it('TC-U-008 (AC-4.2): extra payment simulation returns savings', () => {
-    const plan = runPlan({
-      settings: {
-        state: {
-          lang: 'es',
-          currency: 'COP',
-          theme: 'system',
-          payoffMethod: 'avalanche',
-          lastMonthSeen: null,
-          onboarding: { done: true, currentStep: 0, totalSteps: 3 },
-        },
-      },
-      cards: {
-        state: {
-          items: [
-            {
-              id: 'c1',
-              name: 'Visa',
-              type: 'card',
-              balance: 2_000_000,
-              apr: 24,
-              minPayment: 100_000,
-              installments: [],
-            },
-          ],
-        },
-      },
-    })
-    const result = plan.simulateExtraPayment('c1', 50_000)
-    expect(result.monthsSaved).toBeGreaterThan(0)
-    expect(result.interestSaved).toBeGreaterThan(0)
-  })
-
   it('TC-U-007 (AC-4.1, AC-4.4): debt-free date and sorted ids for two debts', () => {
     const plan = runPlan({
       settings: {

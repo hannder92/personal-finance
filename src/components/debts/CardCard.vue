@@ -52,6 +52,13 @@ const months = computed(() => {
       <div class="min-w-0 flex-1">
         <h3 class="text-base font-semibold">
           {{ card.name }}
+          <span
+            v-if="card.type === 'loan' && card.payrollDeducted"
+            data-testid="debt-libranza-badge"
+            class="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+          >
+            {{ t('debts.libranza.badge') }}
+          </span>
         </h3>
         <span class="text-sm text-slate-500">{{ formatCurrency(card.balance, currency) }}</span>
       </div>

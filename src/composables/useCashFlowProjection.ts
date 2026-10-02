@@ -13,7 +13,7 @@ export interface UseCashFlowProjection {
 
 export function useCashFlowProjection(): UseCashFlowProjection {
   const income = useIncomeStore()
-  const { netSalary, fixedExpenses, debtObligation, variableMonthly } = useBaseMetrics()
+  const { netSalary, fixedExpenses, cashDebtObligation, variableMonthly } = useBaseMetrics()
   const now = new Date()
   const startCalendarMonth = computed(() => now.getMonth())
   const startYear = computed(() => now.getFullYear())
@@ -30,7 +30,8 @@ export function useCashFlowProjection(): UseCashFlowProjection {
         monthlyIncome: netSalary.value,
         streams,
         fixedExpenses: fixedExpenses.value,
-        debtObligation: debtObligation.value,
+        // netSalary already excludes libranzas, so only cash-paid debt is subtracted.
+        debtObligation: cashDebtObligation.value,
         variableExpenses: variableMonthly.value,
         startCalendarMonth: startCalendarMonth.value,
       },

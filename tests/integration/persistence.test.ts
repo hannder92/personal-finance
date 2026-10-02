@@ -17,10 +17,10 @@ import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import type { AppStateV5 } from '@/lib/storage/schema'
+import type { AppStateV6 } from '@/lib/storage/schema'
 
-// Builds the AppStateV5 payload from current store states (mirrors main.ts persistStores logic).
-function snapshotState(): AppStateV5 {
+// Builds the AppStateV6 payload from current store states (mirrors main.ts persistStores logic).
+function snapshotState(): AppStateV6 {
   const settings = useSettingsStore()
   const income = useIncomeStore()
   const expenses = useExpensesStore()
@@ -31,7 +31,7 @@ function snapshotState(): AppStateV5 {
   const allocation = useAllocationStore()
   const snapshots = useSnapshotsStore()
   return {
-    schemaVersion: 5,
+    schemaVersion: 6,
     settings: {
       lang: settings.state.lang,
       currency: settings.state.currency,
