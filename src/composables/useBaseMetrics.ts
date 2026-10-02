@@ -5,7 +5,7 @@
 import { computed, type ComputedRef } from 'vue'
 import { calcNetSalary } from '@/lib/calculations/net-income'
 import { calcMonthlyEquivalent } from '@/lib/calculations/frequency'
-import { calcTotalDebtObligation } from '@/lib/calculations/installments'
+import { calcPayrollDebtObligation, calcTotalDebtObligation } from '@/lib/calculations/installments'
 import {
   calcLiquidAssetsTotal,
   calcMonthlyLivingExpense,
@@ -27,7 +27,13 @@ export interface UseBaseMetrics {
   retencionApplied: ComputedRef<number>
   /** True when the user already entered a deduction labelled "retención". */
   hasManualRetencion: ComputedRef<boolean>
-  /** Salary after deductions and retención, plus non-salary benefits. */
+  /** True when the user already entered a deduction labelled "libranza". */
+  hasManualLibranza: ComputedRef<boolean>
+  /** Cuotas of loans flagged as libranza (withheld from the payslip). */
+  payrollDebtObligation: ComputedRef<number>
+  /** Libranza actually subtracted from net salary (0 when entered as a manual deduction). */
+  payrollDeductionApplied: ComputedRef<number>
+  /** Salary after deductions, retención and libranzas, plus non-salary benefits. */
   netSalary: ComputedRef<number>
   /** Other income streams expressed per month (prima, freelance, rent…). */
   streamsMonthly: ComputedRef<number>
@@ -37,13 +43,19 @@ export interface UseBaseMetrics {
   grossMonthlyIncome: ComputedRef<number>
   fixedExpenses: ComputedRef<number>
   variableMonthly: ComputedRef<number>
+  /** Every debt cuota, libranzas included: base for DTI, runway and emergency fund. */
   debtObligation: ComputedRef<number>
+  /** Debt paid from the bank account: debtObligation − libranzas. */
+  cashDebtObligation: ComputedRef<number>
   /** fixed + variable (no debt): cost of living used by financial freedom. */
   livingExpense: ComputedRef<number>
-  /** fixed + variable + debt: what must be paid every month. */
+  /**
+   * fixed + variable + all debt: what must be covered every month without a salary
+   * (a libranza is no longer withheld once the payroll stops).
+   */
   monthlyOutflow: ComputedRef<number>
   liquidAssets: ComputedRef<number>
-  /** monthlyIncome − fixed − variable − debt. */
+  /** monthlyIncome − fixed − variable − cash debt (libranzas already left netSalary). */
   freeForAllocation: ComputedRef<number>
 }
 
@@ -67,13 +79,23 @@ export function useBaseMetrics(): UseBaseMetrics {
     settings.state.deductRetencion && !hasManualRetencion.value ? retencionEstimate.value : 0
   )
 
+  const hasManualLibranza = computed(() =>
+    income.state.deductions.some((d) => d.label.toLowerCase().includes('libranz'))
+  )
+  const payrollDebtObligation = computed(() => calcPayrollDebtObligation(cards.state.items))
+  // A libranza typed as a payslip deduction is already in calcNetSalary; subtracting the
+  // flagged loan again would count the cuota twice.
+  const payrollDeductionApplied = computed(() =>
+    hasManualLibranza.value ? 0 : payrollDebtObligation.value
+  )
+
   const netSalary = computed(() => {
     const beforeTax = calcNetSalary({
       grossSalary: income.state.grossSalary,
       deductions: income.state.deductions,
       nonSalaryBenefits: income.state.nonSalaryBenefits,
     })
-    return Math.max(0, beforeTax - retencionApplied.value)
+    return Math.max(0, beforeTax - retencionApplied.value - payrollDeductionApplied.value)
   })
 
   const streamsMonthly = computed(() =>
@@ -92,6 +114,7 @@ export function useBaseMetrics(): UseBaseMetrics {
   const fixedExpenses = computed(() => expenses.state.items.reduce((acc, e) => acc + e.amount, 0))
   const variableMonthly = computed(() => calcVariableMonthly(variable.state.items))
   const debtObligation = computed(() => calcTotalDebtObligation(cards.state.items))
+  const cashDebtObligation = computed(() => debtObligation.value - payrollDebtObligation.value)
   const livingExpense = computed(() =>
     calcMonthlyLivingExpense(fixedExpenses.value, variableMonthly.value)
   )
@@ -99,12 +122,19 @@ export function useBaseMetrics(): UseBaseMetrics {
     calcMonthlyOutflow(fixedExpenses.value, variableMonthly.value, debtObligation.value)
   )
   const liquidAssets = computed(() => calcLiquidAssetsTotal(assets.state.items))
-  const freeForAllocation = computed(() => monthlyIncome.value - monthlyOutflow.value)
+  const freeForAllocation = computed(
+    () =>
+      monthlyIncome.value -
+      calcMonthlyOutflow(fixedExpenses.value, variableMonthly.value, cashDebtObligation.value)
+  )
 
   return {
     retencionEstimate,
     retencionApplied,
     hasManualRetencion,
+    hasManualLibranza,
+    payrollDebtObligation,
+    payrollDeductionApplied,
     netSalary,
     streamsMonthly,
     monthlyIncome,
@@ -112,6 +142,7 @@ export function useBaseMetrics(): UseBaseMetrics {
     fixedExpenses,
     variableMonthly,
     debtObligation,
+    cashDebtObligation,
     livingExpense,
     monthlyOutflow,
     liquidAssets,

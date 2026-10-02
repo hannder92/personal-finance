@@ -46,7 +46,8 @@ export function useMonthClose(): UseMonthClose {
         totalFixedExpenses: base.fixedExpenses.value,
         totalVariableSpent: variable.state.items.reduce((acc, v) => acc + v.spent, 0),
         totalDebt: cards.state.items.reduce((acc, c) => acc + c.balance, 0),
-        debtPayments: base.debtObligation.value,
+        // netIncome is already net of libranzas; the flow chart subtracts debtPayments.
+        debtPayments: base.cashDebtObligation.value,
         dti: Math.min(1000, Math.max(0, dti.value)),
         savingsRate,
         netWorth: calcNetWorth(assets.state.items, cards.state.items),

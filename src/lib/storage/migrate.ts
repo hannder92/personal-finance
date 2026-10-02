@@ -1,7 +1,7 @@
 // v1 → v2 migration per `specs/20260514-project-refactor/2-data-model.md`.
 // Uses a versioned chain (ADR-4): each migrations[N] transforms (N-1) → N in isolation.
 
-import type { AppStateV3, AppStateV4 } from './schema'
+import type { AppStateV3, AppStateV4, AppStateV5 } from './schema'
 
 type V1State = {
   schemaVersion?: number
@@ -285,18 +285,33 @@ function migrateV4toV5(v4: AppStateV4): unknown {
   }
 }
 
+// migrations[6]: v5 → v6. Additive: every loan gains payrollDeducted: false, so existing
+// loans keep counting as a cash outflow exactly as before.
+function migrateV5toV6(v5: AppStateV5): unknown {
+  return {
+    ...v5,
+    schemaVersion: 6,
+    cards: v5.cards.map((c) =>
+      c.type === 'loan'
+        ? { ...c, payrollDeducted: (c as { payrollDeducted?: boolean }).payrollDeducted ?? false }
+        : c
+    ),
+  }
+}
+
 export const migrations: Record<number, (state: unknown) => unknown> = {
   2: (state: unknown) => migrateV1toV2(state as V1State),
   3: (state: unknown) => migrateV2toV3(state as V2Like),
   4: (state: unknown) => migrateV3toV4(state as AppStateV3),
   5: (state: unknown) => migrateV4toV5(state as AppStateV4),
+  6: (state: unknown) => migrateV5toV6(state as AppStateV5),
 }
 
 export function migrate(state: unknown): unknown {
   if (typeof state !== 'object' || state === null) return state
   const current = (state as { schemaVersion?: number }).schemaVersion ?? 1
   let s = state
-  for (let v = current + 1; v <= 5; v++) {
+  for (let v = current + 1; v <= 6; v++) {
     const migrator = migrations[v]
     if (migrator) s = migrator(s)
   }

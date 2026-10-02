@@ -115,23 +115,24 @@ Every action validates at boundary before mutating; invalid input is silently di
 
 All exports are pure functions. Input/output types live in the same file.
 
-| Module                  | Key export(s)                                                                                                                                                           |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `net-income.ts`         | `calcNetSalary({grossSalary, deductions[], nonSalaryBenefits[]})→number`                                                                                                |
-| `amortization.ts`       | `calcDebtTimeline(debt)→{months,totalInterest}` · uses TEA: `(1+TEA)^(1/12)−1`                                                                                          |
-| `dti.ts`                | `calcDTI(obligations, income)→%` · `calcDebtFreeDate(debts[])→Date\|null` · `calcFreeForAllocation(income,fixed,debt)→number`                                           |
-| `health-score.ts`       | `calcHealthScore({dti,emergencyMonths,housingRatio,savingsRate})→{score,label,components,missing[]}`                                                                    |
-| `allocation.ts`         | `calcAllocationAmounts(pct,income)→{needs,wants,savings}` · `calcSavingsRate` · `calcGoalExcess`                                                                        |
-| `savings-projection.ts` | `calcHypotheticalSavings({netIncome,savingsRatePercent,months})→HypotheticalPoint[]` · `calcCompoundGrowth(assets[{balance,annualRatePercent}],months)→CompoundPoint[]` |
-| `projection.ts`         | `calcProjection({monthlyIncome,streams[],fixedExpenses,debtObligation}, months)→{months[],negativeMonths[]}`                                                            |
-| `goals.ts`              | `calcGoalETA(goal)→{months,estimatedDate,overdue}` · `calcRequiredMonthly(goal)→number`                                                                                 |
-| `installments.ts`       | `calcInstallmentMonthly(inst)→number` · `calcCardObligation(card)→number`                                                                                               |
-| `housing-ratio.ts`      | `calcHousingRatio(expenses[],income)→%` — accepts `'housing'` AND `'vivienda'` categories                                                                               |
-| `payoff-strategy.ts`    | `sortByAvalanche(debts[])` · `sortBySnowball(debts[])`                                                                                                                  |
-| `frequency.ts`          | `calcMonthlyEquivalent(stream)→number` · `getProjectionMonthsForStream(stream,start,count)→number[]`                                                                    |
-| `snapshot.ts`           | `buildSnapshot(inputs,now)→Snapshot` · `applySnapshotCap(arr[],max=24)`                                                                                                 |
-| `variable-expenses.ts`  | `calcSpendingStatus(cat)→'green'\|'amber'\|'red'`                                                                                                                       |
-| `net-worth.ts`          | `calcNetWorth(assets[],cards[])→number`                                                                                                                                 |
+| Module                  | Key export(s)                                                                                                                                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `net-income.ts`         | `calcNetSalary({grossSalary, deductions[], nonSalaryBenefits[]})→number`                                                                                                                                  |
+| `amortization.ts`       | `calcDebtTimeline(debt)→{months,totalInterest}` · uses TEA: `(1+TEA)^(1/12)−1`                                                                                                                            |
+| `dti.ts`                | `calcDTI(obligations, income)→%` · `calcDebtFreeDate(debts[])→Date\|null` · `calcFreeForAllocation(income,fixed,debt)→number`                                                                             |
+| `health-score.ts`       | `calcHealthScore({dti,emergencyMonths,housingRatio,savingsRate})→{score,label,components,missing[]}`                                                                                                      |
+| `allocation.ts`         | `calcAllocationAmounts(pct,income)→{needs,wants,savings}` · `calcSavingsRate` · `calcGoalExcess`                                                                                                          |
+| `savings-projection.ts` | `calcHypotheticalSavings({netIncome,savingsRatePercent,months})→HypotheticalPoint[]` · `calcCompoundGrowth(assets[{balance,annualRatePercent}],months)→CompoundPoint[]`                                   |
+| `projection.ts`         | `calcProjection({monthlyIncome,streams[],fixedExpenses,debtObligation}, months)→{months[],negativeMonths[]}`                                                                                              |
+| `goals.ts`              | `calcGoalETA(goal)→{months,estimatedDate,overdue}` · `calcRequiredMonthly(goal)→number`                                                                                                                   |
+| `installments.ts`       | `calcInstallmentMonthly(inst)→number` · `calcCardObligation(card)→number`                                                                                                                                 |
+| `housing-ratio.ts`      | `calcHousingRatio(expenses[],income)→%` — accepts `'housing'` AND `'vivienda'` categories                                                                                                                 |
+| `payoff-strategy.ts`    | `sortByAvalanche(debts[])` · `sortBySnowball(debts[])`                                                                                                                                                    |
+| `frequency.ts`          | `calcMonthlyEquivalent(stream)→number` · `getProjectionMonthsForStream(stream,start,count)→number[]`                                                                                                      |
+| `snapshot.ts`           | `buildSnapshot(inputs,now)→Snapshot` · `applySnapshotCap(arr[],max=24)`                                                                                                                                   |
+| `variable-expenses.ts`  | `calcSpendingStatus(cat)→'green'\|'amber'\|'red'`                                                                                                                                                         |
+| `net-worth.ts`          | `calcNetWorth(assets[],cards[])→number`                                                                                                                                                                   |
+| `prepayment.ts`         | `comparePrepaymentPlan({debts,extraMonthly,lumpSums,order,mode,startCalendarMonth})→{baseline,plan,monthsSaved,interestSaved,order}` · abonos a capital, `term` (rollover) \| `payment` (recalcula cuota) |
 
 ### `src/lib/tax/colombia/`
 
@@ -141,6 +142,7 @@ All exports are pure functions. Input/output types live in the same file.
 | `aportes.ts`   | `calcAportesEmpleado(gross, year)→{salud,pension,fsp,total}` (IBC ≤ 25 SMMLV)                           |
 | `retencion.ts` | `calcRetencion(grossSalary, now)→{amount,label,belowThreshold}`                                         |
 | `prima.ts`     | `calcPrimaServicios(grossSalary)→{amount,frequency:'semiannual'}`                                       |
+| `cesantias.ts` | `calcInteresesCesantias(salary)→number` (12% anual, Ley 52/1975; se pagan en enero)                     |
 | `presets.ts`   | `applyColombiaPresets(deductions[],salary)→deductions[]` (idempotente)                                  |
 
 ---
@@ -249,6 +251,7 @@ Fondo emergencia denominador: `gastos fijos + obligaciones de deuda mínimas` (n
 - **Retención base**: `gross − salud(4%) − pensión(4%) − FSP` (Art. 383 ET); FSP 1% desde 4 SMMLV, hasta 2% desde 20 SMMLV
 - **Renta exenta**: 25%, tope `790 UVT/año` (790/12 por mes, Art. 206 num. 10 ET, Ley 2277/2022); límite global 40% / 1.340 UVT/año (Art. 336)
 - **Neto**: `useBaseMetrics` descuenta la retención estimada salvo `settings.deductRetencion = false` o una deducción manual de retención
+- **Libranza**: préstamo con `payrollDeducted: true` (schema v6) → la cuota se resta del neto (`useBaseMetrics.netSalary`) y no del flujo de caja; sí cuenta en DTI, runway y fondo de emergencia. Si ya hay una deducción manual con "libranza" en el nombre, no se resta otra vez
 - **No-salary benefits**: se suman AL FINAL, nunca entran en base de aportes (Art. 128 CST)
 - **Prima de servicios**: `bruto / 2` semestral (Art. 306 CST, 6 meses completos)
 - **UVT**: 2025 `$49.799` (Res. DIAN 000187/2024) · 2026 `$52.374` (Res. DIAN 000238/2025). SMMLV 2026 `$1.750.905`

@@ -338,11 +338,32 @@ export const AppStateSchemaV5 = z.object({
 })
 
 export type AppStateV5 = z.infer<typeof AppStateSchemaV5>
+
+// V6 — active schema. Additive over V5: loans gain payrollDeducted (libranza: the cuota
+// is withheld from the payslip, so it lowers net salary instead of the cash outflow).
+const CardSchemaV6 = z.discriminatedUnion('type', [
+  CardCommonSchema.extend({
+    type: z.literal('card'),
+    dueDate: ISODateString.nullable().default(null),
+  }),
+  CardCommonSchema.extend({
+    type: z.literal('loan'),
+    remainingInstallments: z.number().int().min(0).max(360),
+    payrollDeducted: z.boolean().default(false),
+  }),
+])
+
+export const AppStateSchemaV6 = AppStateSchemaV5.extend({
+  schemaVersion: z.literal(6),
+  cards: z.array(CardSchemaV6).default([]),
+})
+
+export type AppStateV6 = z.infer<typeof AppStateSchemaV6>
 export type IncomeClass = z.infer<typeof IncomeClassEnum>
 export type Deduction = z.infer<typeof DeductionSchema>
 export type IncomeStream = z.infer<typeof IncomeStreamSchema>
 export type FixedExpense = z.infer<typeof FixedExpenseSchema>
-export type Card = z.infer<typeof CardSchema>
+export type Card = z.infer<typeof CardSchemaV6>
 export type Installment = z.infer<typeof InstallmentSchema>
 export type Goal = z.infer<typeof GoalSchema>
 export type Asset = z.infer<typeof AssetSchema>

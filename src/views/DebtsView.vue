@@ -1,17 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import CardCard from '@/components/debts/CardCard.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import DebtPayoffSummary from '@/components/debts/DebtPayoffSummary.vue'
-import DebtPayoffSimulator from '@/components/debts/DebtPayoffSimulator.vue'
 import DebtPriorityList from '@/components/debts/DebtPriorityList.vue'
 import DueDateAlerts from '@/components/debts/DueDateAlerts.vue'
 import InstallmentList from '@/components/debts/InstallmentList.vue'
+import PrepaymentSimulator from '@/components/debts/PrepaymentSimulator.vue'
+import { useBaseMetrics } from '@/composables/useBaseMetrics'
 import { useCardsStore } from '@/stores/cardsStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
+const { t } = useI18n()
 const cards = useCardsStore()
 const settings = useSettingsStore()
+const { hasManualLibranza } = useBaseMetrics()
+
+// A libranza typed as a payslip deduction plus an unflagged loan counts the cuota twice.
+const showLibranzaHint = computed(
+  () =>
+    hasManualLibranza.value &&
+    cards.state.items.some((d) => d.type === 'loan') &&
+    !cards.state.items.some((d) => d.type === 'loan' && d.payrollDeducted === true)
+)
+
+function setPayrollDeducted(id: string, value: boolean) {
+  cards.update(id, { payrollDeducted: value })
+}
 
 const showForm = ref(false)
 const debtType = ref<'card' | 'loan'>('card')
@@ -24,6 +40,7 @@ const form = ref({
   minPayment: '',
   dueDate: '',
   remainingInstallments: '',
+  payrollDeducted: false,
 })
 
 const confirmOpen = ref(false)
@@ -38,6 +55,7 @@ function resetForm() {
     minPayment: '',
     dueDate: '',
     remainingInstallments: '',
+    payrollDeducted: false,
   }
 }
 
@@ -67,6 +85,7 @@ function onSubmit() {
       apr,
       minPayment,
       remainingInstallments: parseInt(form.value.remainingInstallments) || 0,
+      payrollDeducted: form.value.payrollDeducted,
     })
   }
 
@@ -108,10 +127,20 @@ function cancelDelete() {
 
     <DebtPriorityList />
 
+    <PrepaymentSimulator v-if="cards.state.items.length > 0" />
+
     <DueDateAlerts
       :items="cards.state.items"
       :currency="settings.state.currency"
     />
+
+    <p
+      v-if="showLibranzaHint"
+      data-testid="libranza-double-count-hint"
+      class="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200"
+    >
+      {{ t('debts.libranza.manualHint') }}
+    </p>
 
     <form
       v-if="showForm"
@@ -224,6 +253,24 @@ function cancelDelete() {
         </label>
       </div>
 
+      <label
+        v-if="debtType === 'loan'"
+        class="flex min-h-[44px] items-start gap-2 text-sm"
+      >
+        <input
+          v-model="form.payrollDeducted"
+          type="checkbox"
+          data-testid="loan-payroll-deducted"
+          class="mt-1"
+        >
+        <span>
+          {{ t('debts.libranza.label') }}
+          <span class="block text-xs text-slate-500 dark:text-slate-400">
+            {{ t('debts.libranza.hint') }}
+          </span>
+        </span>
+      </label>
+
       <button
         type="submit"
         class="self-start rounded bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -252,10 +299,18 @@ function cancelDelete() {
           @delete="askDelete(item.id)"
         />
 
-        <DebtPayoffSimulator
-          v-if="item.type === 'card'"
-          :debt-id="item.id"
-        />
+        <label
+          v-if="item.type === 'loan'"
+          class="flex min-h-[44px] items-center gap-2 px-1 text-sm"
+        >
+          <input
+            type="checkbox"
+            :checked="item.payrollDeducted === true"
+            data-testid="debt-payroll-toggle"
+            @change="setPayrollDeducted(item.id, ($event.target as HTMLInputElement).checked)"
+          >
+          {{ t('debts.libranza.label') }}
+        </label>
 
         <div v-if="item.type === 'card' && item.installments && item.installments.length > 0">
           <h2 class="mb-2 text-sm font-semibold">

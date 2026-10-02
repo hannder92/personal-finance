@@ -43,3 +43,18 @@ export function calcTotalDebtObligation(debts: ReadonlyArray<DebtObligationInput
     return acc + d.minPayment
   }, 0)
 }
+
+export interface PayrollDebtInput {
+  type: 'card' | 'loan'
+  minPayment: number
+  payrollDeducted?: boolean
+}
+
+// Libranza cuotas: withheld from the payslip, so they reduce the salary that reaches the
+// account instead of being paid from it. They still count as debt for DTI.
+export function calcPayrollDebtObligation(debts: ReadonlyArray<PayrollDebtInput>): number {
+  return debts.reduce(
+    (acc, d) => (d.type === 'loan' && d.payrollDeducted === true ? acc + d.minPayment : acc),
+    0
+  )
+}

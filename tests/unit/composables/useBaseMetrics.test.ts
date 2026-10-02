@@ -2,6 +2,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useBaseMetrics } from '@/composables/useBaseMetrics'
 import { calcRetencion } from '@/lib/tax/colombia/retencion'
+import { useCardsStore } from '@/stores/cardsStore'
+import { useExpensesStore } from '@/stores/expensesStore'
 import { useIncomeStore } from '@/stores/incomeStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
@@ -45,5 +47,57 @@ describe('composables/useBaseMetrics — retención in net income', () => {
     income.setGrossSalary(5_000_000)
     income.addStream({ label: 'Arriendo', amount: 1_200_000, frequency: 'monthly' })
     expect(useBaseMetrics().grossMonthlyIncome.value).toBe(6_200_000)
+  })
+})
+
+describe('composables/useBaseMetrics — libranza (payroll-deducted loan)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    useSettingsStore().setDeductRetencion(false)
+    useIncomeStore().setGrossSalary(10_000_000)
+    useExpensesStore().add({ name: 'Arriendo', amount: 3_000_000, category: 'vivienda' })
+  })
+
+  function addLoan(payrollDeducted: boolean) {
+    useCardsStore().addLoan({
+      type: 'loan',
+      name: 'Crédito',
+      balance: 50_000_000,
+      apr: 17,
+      minPayment: 2_000_000,
+      remainingInstallments: 36,
+      payrollDeducted,
+    })
+  }
+
+  it('subtracts the libranza from net salary instead of the cash outflow', () => {
+    addLoan(true)
+    const base = useBaseMetrics()
+    expect(base.payrollDebtObligation.value).toBe(2_000_000)
+    expect(base.netSalary.value).toBe(8_000_000)
+    expect(base.cashDebtObligation.value).toBe(0)
+    expect(base.freeForAllocation.value).toBe(5_000_000)
+    // Still debt: DTI base and the no-salary outflow keep it.
+    expect(base.debtObligation.value).toBe(2_000_000)
+    expect(base.monthlyOutflow.value).toBe(5_000_000)
+  })
+
+  it('a normal loan leaves net salary alone and is paid from the account', () => {
+    addLoan(false)
+    const base = useBaseMetrics()
+    expect(base.netSalary.value).toBe(10_000_000)
+    expect(base.cashDebtObligation.value).toBe(2_000_000)
+    expect(base.freeForAllocation.value).toBe(5_000_000)
+  })
+
+  it('does not count the cuota twice when the libranza is also a payslip deduction', () => {
+    useIncomeStore().addDeduction({ label: 'Libranza banco', amount: 2_000_000, type: 'fixed' })
+    addLoan(true)
+    const base = useBaseMetrics()
+    expect(base.hasManualLibranza.value).toBe(true)
+    expect(base.payrollDeductionApplied.value).toBe(0)
+    expect(base.netSalary.value).toBe(8_000_000)
+    expect(base.freeForAllocation.value).toBe(5_000_000)
+    expect(base.debtObligation.value).toBe(2_000_000)
   })
 })

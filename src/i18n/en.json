@@ -202,11 +202,31 @@
         "totalInterest": "Interest left to pay at current payments: {amount}"
       },
       "simulator": {
-        "title": "Extra payment simulator",
-        "extraLabel": "Extra monthly payment",
-        "monthsSaved": "Months saved: {count}",
-        "interestSaved": "Interest saved: {amount}",
-        "cardsOnly": "Simulator applies to credit cards only."
+        "title": "Principal prepayment plan",
+        "context": "See how much sooner you get out of debt by prepaying principal every month and with your bonuses. Compared against paying only the installment.",
+        "extraLabel": "Extra monthly prepayment",
+        "freeHint": "You have {amount} free each month today.",
+        "primaLabel": "Prepayment with each bonus (June and December)",
+        "cesantiasLabel": "Prepayment with severance interest (January)",
+        "useEstimates": "Use estimated bonuses and interest",
+        "estimatesNote": "Estimates before withholding: bonus {prima}, severance interest {cesantias}.",
+        "modeLabel": "What you ask the bank to do with each prepayment",
+        "modeTerm": "Shorten the term",
+        "modeTermHint": "Keep the installment and finish sooner. When a debt ends, its installment moves to the next one.",
+        "modePayment": "Lower the installment",
+        "modePaymentHint": "Keep the term and pay less every month.",
+        "heroDate": "Debt-free by {date}",
+        "baselineDate": "Paying only the installment: {date}",
+        "monthsSaved": "You finish {count} month sooner | You finish {count} months sooner",
+        "interestSaved": "You pay {amount} less in interest",
+        "noSavings": "Add a prepayment to see how much you save.",
+        "interestCompare": "Interest: {plan} with the plan versus {baseline} paying only the installment.",
+        "cuotaChange": "Your total installment drops from {now} to {later} within 12 months.",
+        "orderTitle": "Prepayment order",
+        "debtRow": "{name}: {plan} (without prepayments: {baseline})",
+        "never": "With these payments some debts never end: the installment does not cover the interest.",
+        "neverShort": "never",
+        "empty": "Add your debts to simulate principal prepayments."
       },
       "priority": {
         "title": "Suggested payoff order"
@@ -216,6 +236,12 @@
         "avalanche": "Avalanche (highest rate first)",
         "snowball": "Snowball (smallest balance first)"
       }
+    },
+    "libranza": {
+      "label": "Payroll loan (deducted from your paycheck)",
+      "hint": "The installment never reaches your account because it is withheld from your salary. It counts toward your debt-to-income ratio but is not subtracted twice from your cash flow.",
+      "badge": "Payroll loan",
+      "manualHint": "Your income has a payroll-loan deduction. Mark that loan as a payroll loan so its installment is not counted twice."
     }
   },
   "common": {

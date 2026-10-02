@@ -6,7 +6,7 @@ import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
 import { useMonthClose } from './composables/useMonthClose'
-import type { AppStateV5 } from './lib/storage/schema'
+import type { AppStateV6 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -85,9 +85,9 @@ function persistStores(): void {
 
   const { setError, registerRetrySource } = useStorageError()
 
-  function buildPayload(): AppStateV5 {
+  function buildPayload(): AppStateV6 {
     return {
-      schemaVersion: 5,
+      schemaVersion: 6,
       settings: {
         lang: settings.state.lang,
         currency: settings.state.currency,
