@@ -17,10 +17,10 @@ import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useSnapshotsStore } from '@/stores/snapshotsStore'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import type { AppStateV6 } from '@/lib/storage/schema'
+import type { AppStateV7 } from '@/lib/storage/schema'
 
-// Builds the AppStateV6 payload from current store states (mirrors main.ts persistStores logic).
-function snapshotState(): AppStateV6 {
+// Builds the AppStateV7 payload from current store states (mirrors main.ts persistStores logic).
+function snapshotState(): AppStateV7 {
   const settings = useSettingsStore()
   const income = useIncomeStore()
   const expenses = useExpensesStore()
@@ -31,7 +31,7 @@ function snapshotState(): AppStateV6 {
   const allocation = useAllocationStore()
   const snapshots = useSnapshotsStore()
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     settings: {
       lang: settings.state.lang,
       currency: settings.state.currency,
@@ -41,6 +41,9 @@ function snapshotState(): AppStateV6 {
       onboarding: { done: true, currentStep: 0 },
       projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
       userName: settings.state.userName,
+      inflationPercent: settings.state.inflationPercent,
+      withdrawalRatePercent: settings.state.withdrawalRatePercent,
+      fiDesiredYears: settings.state.fiDesiredYears,
     },
     income: {
       grossSalary: income.state.grossSalary,
@@ -171,5 +174,39 @@ describe('persistence cycle — fix-calculos-financieros', () => {
     expect(load.parseError).toBeNull()
     const prima = load.state!.income.otherStreams.find((s) => s.id === '__prima__')
     expect(prima).toBeUndefined()
+  })
+})
+
+// Feature: 20261002-proyecciones-reales
+describe('persistence cycle — proyecciones reales', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    localStorage.clear()
+  })
+
+  it('TC-I-001 (AC-1.6): assumptions and goal.invested survive save → load', () => {
+    const settings = useSettingsStore()
+    settings.applyColombiaReference()
+    settings.setFiDesiredYears(15)
+    const goals = useGoalsStore()
+    goals.add({
+      name: 'Casa',
+      target: 100_000_000,
+      saved: 0,
+      monthlyContrib: 1_000_000,
+      targetDate: null,
+      invested: true,
+    })
+
+    expect(saveAppState(snapshotState())).toEqual({ ok: true })
+    const { state, parseError } = loadAppState()
+    expect(parseError).toBeNull()
+    expect(state?.settings).toMatchObject({
+      inflationPercent: 5,
+      projectionAnnualRatePercent: 9,
+      withdrawalRatePercent: 4,
+      fiDesiredYears: 15,
+    })
+    expect(state?.goals[0]?.invested).toBe(true)
   })
 })

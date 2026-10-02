@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { migrate } from '@/lib/storage/migrate'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import { AppStateSchemaV4, AppStateSchemaV6 } from '@/lib/storage/schema'
+import { AppStateSchemaV4, AppStateSchemaV7 } from '@/lib/storage/schema'
 import { STORAGE_KEY } from '@/lib/storage/keys'
 
 // Realistic V4 payload as persisted by a pre-redesign build (snapshot without debtPayments).
@@ -55,7 +55,7 @@ describe('migrate V4 → V5 (TC-U-010)', () => {
       settings: { userName: string; currency: string; lastMonthSeen: string }
       snapshots: Array<{ debtPayments: number; netIncome: number; totalVariableSpent: number }>
     }
-    expect(out.schemaVersion).toBe(6)
+    expect(out.schemaVersion).toBe(7)
     expect(out.settings.userName).toBe('')
     expect(out.snapshots[0]?.debtPayments).toBe(0)
   })
@@ -95,7 +95,7 @@ describe('storage boundary V5 (TC-I-014)', () => {
   })
 
   it('saveAppState → loadAppState roundtrip preserves userName and debtPayments', () => {
-    const v5 = AppStateSchemaV6.parse({
+    const v5 = AppStateSchemaV7.parse({
       ...(migrate(v4Payload()) as object),
     })
     v5.settings.userName = 'Johann'
@@ -109,7 +109,7 @@ describe('storage boundary V5 (TC-I-014)', () => {
   })
 
   it('rejects userName longer than 30 chars at the schema boundary (EC-2)', () => {
-    const v5 = AppStateSchemaV6.parse({ ...(migrate(v4Payload()) as object) })
+    const v5 = AppStateSchemaV7.parse({ ...(migrate(v4Payload()) as object) })
     v5.settings.userName = 'x'.repeat(31)
     const saved = saveAppState(v5)
     expect(saved.ok).toBe(false)
@@ -119,7 +119,7 @@ describe('storage boundary V5 (TC-I-014)', () => {
   // payload must fail validation (schemaVersion literal) WITHOUT touching the
   // stored payload — the user recovers via export → rollback → import.
   it('rollback: V4 schema rejects a V5 payload and the stored payload stays intact', () => {
-    const v5 = AppStateSchemaV6.parse({ ...(migrate(v4Payload()) as object) })
+    const v5 = AppStateSchemaV7.parse({ ...(migrate(v4Payload()) as object) })
     expect(saveAppState(v5).ok).toBe(true)
     const storedBefore = localStorage.getItem(STORAGE_KEY)
 

@@ -8,6 +8,7 @@ describe('FinancialFreedomView', () => {
   it('TC-C-050 (AC-5.1–AC-5.4): shows living expense, liquid assets, target and horizon', () => {
     render(FinancialFreedomView, {
       global: {
+        stubs: { RouterLink: { template: '<a><slot /></a>' } },
         plugins: [
           i18n,
           createTestingPinia({

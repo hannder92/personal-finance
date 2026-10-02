@@ -253,6 +253,22 @@
       "placeholder": "What should we call you?",
       "hint": "Used only to greet you. Stored on your device.",
       "error": "Maximum 30 characters"
+    },
+    "assumptions": {
+      "title": "Projection assumptions",
+      "subtitle": "Used in Financial freedom, Goals and the savings projection. Amounts in today's money.",
+      "inflation": "Expected annual inflation (%)",
+      "return": "Expected annual return (% effective)",
+      "returnHint": "Same rate as the savings projection on the home screen.",
+      "withdrawal": "Annual withdrawal rate (%)",
+      "withdrawalHint": "4% equals 25 times your annual spending; 3.5–3.7% is more prudent.",
+      "useReference": "Use Colombia reference values",
+      "source": "Reference: DANE and Banco de la República, consulted {date}.",
+      "realRate": "Real return: {rate}",
+      "optimistic": "Optimistic assumption: a real return above 7% is hard to sustain.",
+      "range": "Enter a value between {min} and {max}.",
+      "suggestion": "Set your assumptions to see more realistic timelines and contributions.",
+      "disclaimer": "Educational simulation, not a promise of returns or investment advice."
     }
   },
   "runway": {
@@ -331,16 +347,28 @@
     },
     "detail": {
       "title": "Financial freedom",
-      "subtitle": "Financial independence target (25× annual living expenses)",
+      "subtitle": "How much do you need to live off your investments, and when do you get there?",
       "livingExpense": "Monthly living expenses",
       "liquidAssets": "Liquid net worth",
-      "target": "Patrimony target",
+      "target": "Capital needed (today's money)",
       "horizon": "Estimated horizon",
       "targetReached": "Goal reached!",
       "noFeasibleSavings": "Without feasible monthly savings, a horizon cannot be estimated.",
       "horizonYears": "{years} years ({date})",
       "horizonMonths": "{months} months ({date})",
-      "assumptions": "Assumes you save {monthly} per month (your feasible saving), with no returns or inflation. Target = 25 × annual spending (4% rule)."
+      "assumptions": "Assumes you save {monthly} per month (your feasible saving), with no returns or inflation. Target = 25 × annual spending (4% rule).",
+      "heroLabel": "Years to get there",
+      "unreachable": "Not reachable with your current assumptions",
+      "context": "With {ret} annual return, {inf} inflation and {wd} withdrawal. Amounts in today's money.",
+      "desiredYears": "Target horizon (years)",
+      "required": "To get there in {years} years save {amount}/month (today {current})",
+      "sufficient": "Your current savings are enough to get there in {years} years",
+      "benefitYears": "With returns you get there {years} years sooner",
+      "benefitUnreachable": "Without investing you would not get there; investing gets you there in {when}",
+      "inviteReturn": "Add an expected return to see a more realistic timeline.",
+      "inviteLink": "Set assumptions",
+      "disclaimer": "Educational simulation, not a promise of returns.",
+      "yearsValue": "{years} years"
     }
   },
   "networth": {
@@ -387,12 +415,26 @@
   },
   "goals": {
     "card": {
-      "completed": "✓ Completed",
+      "completed": "✓ Achieved",
       "months": "{count} months",
       "targetDate": "Target date: {date}",
       "behind": "At this pace you finish in {date}, after your target date. You need {amount} per month.",
       "overdue": "The target date has passed.",
-      "noContrib": "Without a monthly contribution there is no estimate."
+      "noContrib": "Set a monthly contribution to estimate the date.",
+      "invested": "This money is invested",
+      "investedHelp": "Uses your expected return to project this goal",
+      "equivalent": "Equals {amount} in {date}",
+      "estimated": "Estimated date: {date}",
+      "required": "Required: {amount}/month",
+      "onTrack": "On track",
+      "behindBadge": "Behind",
+      "overdueBadge": "Overdue",
+      "earlier": "You arrive {count} months early",
+      "onTime": "You arrive right on time",
+      "catchUp": "To arrive on time save {amount}/month (today {current})",
+      "benefit": "Investing gets you there {months} months sooner and needs {amount} less per month",
+      "benefitMonths": "Investing gets you there {months} months sooner",
+      "benefitUnreachable": "Without investing you would not reach it"
     }
   }
 }

@@ -148,3 +148,27 @@ describe('assetsStore — fix-calculos-financieros (annualRatePercent)', () => {
     expect(s.state.items[0]!.annualRatePercent).toBe(8)
   })
 })
+
+// Feature: 20261002-proyecciones-reales · T-005
+describe('goalsStore — invested flag', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('TC-U-033 (AC-3.1): defaults to false, can be set on add and toggled', () => {
+    const goals = useGoalsStore()
+    goals.add({ name: 'A', target: 100, saved: 0, monthlyContrib: 10, targetDate: null })
+    expect(goals.state.items[0]!.invested).toBe(false)
+    goals.add({
+      name: 'B',
+      target: 100,
+      saved: 0,
+      monthlyContrib: 10,
+      targetDate: null,
+      invested: true,
+    })
+    expect(goals.state.items[1]!.invested).toBe(true)
+    goals.update(goals.state.items[0]!.id, { invested: true })
+    expect(goals.state.items[0]!.invested).toBe(true)
+  })
+})

@@ -1,3 +1,5 @@
+import { monthsToReach, requiredMonthlyFor } from './real-projection'
+
 export interface GoalInput {
   target: number
   saved: number
@@ -20,7 +22,25 @@ export function parseLocalDate(iso: string): Date {
   return new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1)
 }
 
-export function calcGoalETA(goal: GoalInput, now: Date = new Date()): GoalETA {
+/** Return/inflation applied to a goal (20261002-proyecciones-reales). Omitted = neutral. */
+export interface GoalAssumptions {
+  annualReturnPercent: number
+  inflationPercent: number
+}
+
+const NEUTRAL: GoalAssumptions = { annualReturnPercent: 0, inflationPercent: 0 }
+
+/** Calendar months from `now` to the target date's month (negative when past). */
+export function monthsUntil(targetDate: string, now: Date = new Date()): number {
+  const target = parseLocalDate(targetDate)
+  return (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth())
+}
+
+export function calcGoalETA(
+  goal: GoalInput,
+  now: Date = new Date(),
+  assumptions: GoalAssumptions = NEUTRAL
+): GoalETA {
   const shortfall = goal.target - goal.saved
   const target = goal.targetDate ? parseLocalDate(goal.targetDate) : null
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -29,7 +49,13 @@ export function calcGoalETA(goal: GoalInput, now: Date = new Date()): GoalETA {
   if (shortfall <= 0) {
     return { months: 0, estimatedDate: today, overdue: false, behindSchedule: false }
   }
-  if (goal.monthlyContrib <= 0) {
+  const reached = monthsToReach({
+    targetToday: goal.target,
+    balance: goal.saved,
+    monthlyContrib: goal.monthlyContrib,
+    ...assumptions,
+  })
+  if (reached === null) {
     return {
       months: Number.POSITIVE_INFINITY,
       estimatedDate: null,
@@ -37,7 +63,7 @@ export function calcGoalETA(goal: GoalInput, now: Date = new Date()): GoalETA {
       behindSchedule: target !== null,
     }
   }
-  const months = Math.ceil(shortfall / goal.monthlyContrib)
+  const months = reached
   // Day 1 avoids month overflow (e.g. Jan 31 + 1 month → Mar 3).
   const estimatedDate = new Date(now.getFullYear(), now.getMonth() + months, 1)
   const behindSchedule =
@@ -50,12 +76,13 @@ export function calcGoalETA(goal: GoalInput, now: Date = new Date()): GoalETA {
 
 export function calcRequiredMonthly(
   goal: GoalInput & { targetDate: string },
-  now: Date = new Date()
+  now: Date = new Date(),
+  assumptions: GoalAssumptions = NEUTRAL
 ): number {
-  const shortfall = Math.max(0, goal.target - goal.saved)
-  const target = parseLocalDate(goal.targetDate)
-  const months =
-    (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth())
-  if (months <= 0) return shortfall
-  return shortfall / months
+  return requiredMonthlyFor({
+    targetToday: goal.target,
+    balance: goal.saved,
+    months: monthsUntil(goal.targetDate, now),
+    ...assumptions,
+  })
 }

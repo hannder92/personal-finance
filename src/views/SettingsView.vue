@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import AssumptionsPanel from '@/components/settings/AssumptionsPanel.vue'
 import SettingsPanel from '@/components/settings/SettingsPanel.vue'
 import { useImportExport } from '@/composables/useImportExport'
 import { useAssetsStore } from '@/stores/assetsStore'
@@ -54,6 +55,10 @@ function onReset() {
   settings.setCurrency('COP')
   settings.setTheme('system')
   settings.setPayoffMethod('avalanche')
+  settings.setProjectionAnnualRatePercent(0)
+  settings.setInflationPercent(0)
+  settings.setWithdrawalRatePercent(4)
+  settings.setFiDesiredYears(20)
 
   const income = useIncomeStore()
   income.setGrossSalary(0)
@@ -131,6 +136,8 @@ function onReset() {
         {{ $t('settings.userName.hint') }}
       </p>
     </div>
+
+    <AssumptionsPanel />
 
     <SettingsPanel
       @export="onExport"

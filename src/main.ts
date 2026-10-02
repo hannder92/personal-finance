@@ -6,7 +6,7 @@ import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
 import { useMonthClose } from './composables/useMonthClose'
-import type { AppStateV6 } from './lib/storage/schema'
+import type { AppStateV7 } from './lib/storage/schema'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -38,6 +38,9 @@ function hydrateStores() {
   settings.setDeductRetencion(state.settings.deductRetencion ?? true)
   if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
   settings.setUserName(state.settings.userName ?? '')
+  settings.setInflationPercent(state.settings.inflationPercent)
+  settings.setWithdrawalRatePercent(state.settings.withdrawalRatePercent)
+  settings.setFiDesiredYears(state.settings.fiDesiredYears)
 
   const income = useIncomeStore()
   income.setGrossSalary(state.income.grossSalary)
@@ -85,9 +88,9 @@ function persistStores(): void {
 
   const { setError, registerRetrySource } = useStorageError()
 
-  function buildPayload(): AppStateV6 {
+  function buildPayload(): AppStateV7 {
     return {
-      schemaVersion: 6,
+      schemaVersion: 7,
       settings: {
         lang: settings.state.lang,
         currency: settings.state.currency,
@@ -98,6 +101,9 @@ function persistStores(): void {
         projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
         userName: settings.state.userName,
         deductRetencion: settings.state.deductRetencion,
+        inflationPercent: settings.state.inflationPercent,
+        withdrawalRatePercent: settings.state.withdrawalRatePercent,
+        fiDesiredYears: settings.state.fiDesiredYears,
       },
       income: {
         grossSalary: income.state.grossSalary,

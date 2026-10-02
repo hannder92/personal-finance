@@ -1,0 +1,52 @@
+ac:
+  - { id: "AC-1.1", desc: "Valores neutros al actualizar" }
+  - { id: "AC-1.2", desc: "Usar valores de referencia para Colombia" }
+  - { id: "AC-1.3", desc: "Rangos válidos" }
+  - { id: "AC-1.4", desc: "Rentabilidad real y aviso de optimismo" }
+  - { id: "AC-1.5", desc: "Una sola tasa de rentabilidad" }
+  - { id: "AC-1.6", desc: "Los supuestos persisten y viajan en el respaldo" }
+  - { id: "AC-2.1", desc: "Capital necesario según tasa de retiro" }
+  - { id: "AC-2.2", desc: "Años para lograrlo con supuestos" }
+  - { id: "AC-2.3", desc: "Aporte mensual necesario para el plazo deseado" }
+  - { id: "AC-2.4", desc: "Beneficio de invertir" }
+  - { id: "AC-2.5", desc: "Línea de contexto y aviso educativo" }
+  - { id: "AC-2.6", desc: "No alcanzable" }
+  - { id: "AC-2.7", desc: "P0 en móvil" }
+  - { id: "AC-3.1", desc: "Opción "este dinero se invierte"" }
+  - { id: "AC-3.2", desc: "Monto ajustado por inflación" }
+  - { id: "AC-3.3", desc: "Fecha estimada con y sin inversión" }
+  - { id: "AC-3.4", desc: "Aporte requerido para la fecha objetivo" }
+  - { id: "AC-3.5", desc: "Estado en camino / atrasada" }
+  - { id: "AC-3.6", desc: "Beneficio de invertir la meta" }
+  - { id: "AC-3.7", desc: "P0 por tarjeta en móvil" }
+tc: []
+tasks:
+  - { id: "T-001", status: done, type: test, size: S, layer: domain, deps: [] }
+  - { id: "T-002", status: done, type: impl, size: S, layer: domain, risk: M, deps: ["T-001"] }
+  - { id: "T-003", status: done, type: test, size: S, layer: domain, deps: [] }
+  - { id: "T-004", status: done, type: impl, size: S, layer: domain, risk: M, deps: ["T-002", "T-003"] }
+  - { id: "T-005", status: done, type: test, size: S, layer: infra, deps: [] }
+  - { id: "T-006", status: done, type: impl, size: S, layer: infra, risk: H, deps: ["T-005"] }
+  - { id: "T-007", status: done, type: test, size: S, layer: app, deps: [] }
+  - { id: "T-008", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-006", "T-007"] }
+  - { id: "T-009", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
+  - { id: "T-010", status: done, type: impl, size: S, layer: app, risk: L, deps: ["T-004", "T-008"] }
+  - { id: "T-011", status: done, type: impl, size: S, layer: cross, risk: L, deps: ["T-008"] }
+  - { id: "T-012", status: done, type: test, size: S, layer: app, deps: [] }
+  - { id: "T-LAST", status: done, type: test, size: S, layer: cross, deps: ["T-012"] }
+adr:
+  - { id: "ADR-1", desc: "Simulación mes a mes vs forma cerrada" }
+  - { id: "ADR-2", desc: "Supuestos en settingsStore" }
+  - { id: "ADR-3", desc: "Valores de referencia empaquetados" }
+open_questions:
+  - { id: "OQ-1", desc: "¿Metas de corto plazo aplican rentabilidad?", status: resolved }
+  - { id: "OQ-2", desc: "Monto objetivo de meta: pesos de hoy o nominal", status: resolved }
+  - { id: "OQ-3", desc: "Defaults de supuestos para usuarios existentes", status: resolved }
+  - { id: "OQ-4", desc: "¿Unificar rentabilidad esperada con tasa de proyección del dashboard?", status: resolved }
+  - { id: "OQ-5", desc: "Aporte mensual fijo o indexado a inflación", status: resolved }
+  - { id: "OQ-6", desc: "Plazo deseado libertad financiera: editable, default 20 años", status: resolved }
+  - { id: "OQ-7", desc: "Default del interruptor de inversión en metas nuevas", status: resolved }
+assumptions:
+  - { id: "A-001", stated_in: plan, text: "Loop de 1200 iteraciones por meta es imperceptible", impact_if_wrong: L, verify_by: "component tests", status: verified }
+  - { id: "A-002", stated_in: plan, text: "Redondeo reproduce ejemplos del spec con error <= $1", impact_if_wrong: M, verify_by: "TC-U-001..014", status: verified }
+  - { id: "A-003", stated_in: plan, text: "Meses a fecha objetivo conservan regla año/mes actual", impact_if_wrong: L, verify_by: "goals tests", status: verified }

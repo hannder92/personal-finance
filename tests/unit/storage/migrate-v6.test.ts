@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { migrate, migrations } from '@/lib/storage/migrate'
 import { loadAppState, saveAppState } from '@/lib/storage/useAppStorage'
-import { AppStateSchemaV5, AppStateSchemaV6 } from '@/lib/storage/schema'
+import { AppStateSchemaV5, AppStateSchemaV6, AppStateSchemaV7 } from '@/lib/storage/schema'
 import { STORAGE_KEY } from '@/lib/storage/keys'
 
 function v5Payload() {
@@ -83,16 +83,16 @@ describe('storage boundary V6', () => {
     const { state, migrated, parseError } = loadAppState()
     expect(parseError).toBeNull()
     expect(migrated).toBe(true)
-    expect(state?.schemaVersion).toBe(6)
+    expect(state?.schemaVersion).toBe(7)
     const loan = state?.cards.find((c) => c.type === 'loan')
     expect(loan && loan.type === 'loan' ? loan.payrollDeducted : undefined).toBe(false)
   })
 
   it('round-trips a libranza flag', () => {
-    const v6 = AppStateSchemaV6.parse(migrate(v5Payload()))
-    const loan = v6.cards[0]!
+    const v7 = AppStateSchemaV7.parse(migrate(v5Payload()))
+    const loan = v7.cards[0]!
     if (loan.type === 'loan') loan.payrollDeducted = true
-    expect(saveAppState(v6)).toEqual({ ok: true })
+    expect(saveAppState(v7)).toEqual({ ok: true })
     const { state } = loadAppState()
     const reloaded = state?.cards[0]
     expect(reloaded?.type === 'loan' && reloaded.payrollDeducted).toBe(true)

@@ -69,6 +69,6 @@ test.describe('Debt payoff plan UI (TC-E-012)', () => {
           return { version: saved.schemaVersion, flag: saved.cards?.[0]?.payrollDeducted }
         }, STORAGE_KEY)
       )
-      .toEqual({ version: 6, flag: true })
+      .toEqual({ version: 7, flag: true })
   })
 })

@@ -339,7 +339,7 @@ export const AppStateSchemaV5 = z.object({
 
 export type AppStateV5 = z.infer<typeof AppStateSchemaV5>
 
-// V6 — active schema. Additive over V5: loans gain payrollDeducted (libranza: the cuota
+// V6 — superseded by V7. Additive over V5: loans gain payrollDeducted (libranza: the cuota
 // is withheld from the payslip, so it lowers net salary instead of the cash outflow).
 const CardSchemaV6 = z.discriminatedUnion('type', [
   CardCommonSchema.extend({
@@ -359,16 +359,37 @@ export const AppStateSchemaV6 = AppStateSchemaV5.extend({
 })
 
 export type AppStateV6 = z.infer<typeof AppStateSchemaV6>
+
+// V7 — active schema (20261002-proyecciones-reales). Additive over V6: projection
+// assumptions in settings (projectionAnnualRatePercent doubles as the expected return)
+// and goals[].invested (the goal's money compounds at that return).
+const SettingsSchemaV7 = SettingsSchemaV5.extend({
+  inflationPercent: z.number().min(0).max(30).finite().default(0),
+  withdrawalRatePercent: z.number().min(1).max(10).finite().default(4),
+  fiDesiredYears: z.number().int().min(5).max(40).default(20),
+})
+
+const GoalSchemaV7 = GoalSchema.extend({
+  invested: z.boolean().default(false),
+})
+
+export const AppStateSchemaV7 = AppStateSchemaV6.extend({
+  schemaVersion: z.literal(7),
+  settings: SettingsSchemaV7,
+  goals: z.array(GoalSchemaV7).default([]),
+})
+
+export type AppStateV7 = z.infer<typeof AppStateSchemaV7>
 export type IncomeClass = z.infer<typeof IncomeClassEnum>
 export type Deduction = z.infer<typeof DeductionSchema>
 export type IncomeStream = z.infer<typeof IncomeStreamSchema>
 export type FixedExpense = z.infer<typeof FixedExpenseSchema>
 export type Card = z.infer<typeof CardSchemaV6>
 export type Installment = z.infer<typeof InstallmentSchema>
-export type Goal = z.infer<typeof GoalSchema>
+export type Goal = z.infer<typeof GoalSchemaV7>
 export type Asset = z.infer<typeof AssetSchema>
 export type VariableCategory = z.infer<typeof VariableCategorySchema>
 // Single source of truth for the runtime Snapshot shape (ADR-4): always the
 // latest persisted version.
 export type Snapshot = z.infer<typeof SnapshotSchemaV5>
-export type Settings = z.infer<typeof SettingsSchemaV5>
+export type Settings = z.infer<typeof SettingsSchemaV7>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import GoalCard from './GoalCard.vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useSavingsFeasibility } from '@/composables/useSavingsFeasibility'
@@ -13,6 +14,7 @@ const props = withDefaults(
   { savingsBucket: 0, currency: 'COP' }
 )
 
+const { t } = useI18n()
 const goals = useGoalsStore()
 const { objective, feasible, effectiveGoalCap } = useSavingsFeasibility()
 const totalMonthlyContrib = computed(() =>
@@ -36,7 +38,15 @@ function move(idx: number, dir: -1 | 1): void {
 }
 
 const showForm = ref(false)
-const form = ref({ name: '', target: '', saved: '', monthlyContrib: '', targetDate: '' })
+const emptyForm = () => ({
+  name: '',
+  target: '',
+  saved: '',
+  monthlyContrib: '',
+  targetDate: '',
+  invested: false,
+})
+const form = ref(emptyForm())
 
 function onSubmit() {
   const name = form.value.name.trim()
@@ -47,8 +57,9 @@ function onSubmit() {
     saved: Number(form.value.saved) || 0,
     monthlyContrib: Number(form.value.monthlyContrib) || 0,
     targetDate: form.value.targetDate || null,
+    invested: form.value.invested,
   })
-  form.value = { name: '', target: '', saved: '', monthlyContrib: '', targetDate: '' }
+  form.value = emptyForm()
   showForm.value = false
 }
 
@@ -128,6 +139,22 @@ function removeGoal(id: string) {
           >
         </label>
       </div>
+
+      <label class="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
+        <input
+          v-model="form.invested"
+          type="checkbox"
+          role="switch"
+          data-testid="goal-form-invested"
+          class="h-5 w-5 accent-emerald-600"
+        >
+        <span class="flex flex-col">
+          <span>{{ t('goals.card.invested') }}</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">{{
+            t('goals.card.investedHelp')
+          }}</span>
+        </span>
+      </label>
 
       <button
         type="submit"
