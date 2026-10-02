@@ -61,3 +61,12 @@ entries:
       - "npm run typecheck — pass"
       - "npm run lint — 0 errors"
       - "npm run e2e -- day-overview — 1 passed"
+  - at: "2026-09-23T09:57:45-05:00"
+    event: constitution_amended
+    phase: 0
+    by: Codex
+  - at: "2026-09-23T10:03:34-05:00"
+    event: phase_signed_off
+    phase: 0
+    by: "Johann Medina"
+    note: "Constitution v6 approved by the user."

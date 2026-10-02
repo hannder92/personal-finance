@@ -118,3 +118,12 @@ entries:
     phase: 6
     by: "Johann Medina"
     note: "Review aprobado con veredicto YELLOW (sin RED). Feature lista para merge; riesgos anotados quedan para fase 7 feedback"
+  - at: "2026-09-23T09:57:45-05:00"
+    event: constitution_amended
+    phase: 0
+    by: Codex
+  - at: "2026-09-23T10:03:34-05:00"
+    event: phase_signed_off
+    phase: 0
+    by: "Johann Medina"
+    note: "Constitution v6 approved by the user."

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent evaluation run",
+  "type": "object",
+  "required": [
+    "run_id",
+    "task_id",
+    "repository",
+    "commit",
+    "tool",
+    "model",
+    "configuration_id",
+    "started_at",
+    "duration_seconds",
+    "commands",
+    "approval_events",
+    "acceptance",
+    "outcome"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "task_id": { "type": "string" },
+    "repository": { "type": "string" },
+    "commit": { "type": "string" },
+    "tool": { "type": "string" },
+    "model": { "type": "string" },
+    "configuration_id": { "type": "string" },
+    "skill_versions": { "type": "object", "additionalProperties": { "type": "string" } },
+    "started_at": { "type": "string", "format": "date-time" },
+    "duration_seconds": { "type": "number", "minimum": 0 },
+    "commands": { "type": "array", "items": { "type": "object" } },
+    "approval_events": { "type": "array", "items": { "type": "object" } },
+    "acceptance": { "type": "array", "items": { "type": "object" } },
+    "outcome": { "enum": ["pass", "partial", "fail"] },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": false
+}
