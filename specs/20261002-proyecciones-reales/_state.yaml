@@ -1,0 +1,39 @@
+feature:
+  slug: "20261002-proyecciones-reales"
+  name: "Proyecciones reales (inflación, rentabilidad y aporte requerido)"
+  branch: "feature/20261002-proyecciones-reales"
+  created: "2026-10-02"
+  mode: solo
+  size_class: M
+
+phase:
+  current: 5
+  name: implement
+  blocked: false
+
+sign_offs:
+  constitution: { approved: true, by: "Johann Medina", at: "2026-09-23" }
+  discovery: { approved: true, by: "Johann Medina", at: "2026-10-02" }
+  spec: { approved: true, by: "Johann Medina", at: "2026-10-02", spec_score: 100 }
+  plan: { approved: true, by: "Johann Medina", at: "2026-10-02" }
+  test_plan: { approved: true, by: "Johann Medina", at: "2026-10-02" }
+  tasks: { approved: true, by: "Johann Medina", at: "2026-10-02" }
+  review: { approved: false }
+
+artifacts:
+  constitution: constitution.md
+  discovery: specs/20261002-proyecciones-reales/0-discovery.md
+  spec: specs/20261002-proyecciones-reales/1-spec.md  # generated 2026-10-02, 20 ACs
+  plan: specs/20261002-proyecciones-reales/2-plan.md
+  test_plan: specs/20261002-proyecciones-reales/3-test-plan.md
+  tasks: specs/20261002-proyecciones-reales/4-tasks.md
+  review: null
+
+progress:
+  tasks_done: 0
+  tasks_total: 13
+  next_pending: "T-001"
+  last_update: "2026-10-02T00:00:00-05:00"
+  implement_session: null
+
+drift: []
