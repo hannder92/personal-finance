@@ -48,6 +48,21 @@ describe('useHealthScore — fix-calculos-financieros', () => {
     expect(result.value.components.emergency).toBe(50)
   })
 
+  it('savings rate counts goal contributions only up to the real surplus', () => {
+    // Net 10M − fixed 9M = 1M free; a 3M/month goal plan can only save 1M → 10% → 50.
+    useIncomeStore().setGrossSalary(10_000_000)
+    useExpensesStore().add({ name: 'Arriendo', amount: 9_000_000, category: 'vivienda' })
+    useGoalsStore().add({
+      name: 'Casa',
+      target: 100_000_000,
+      saved: 0,
+      monthlyContrib: 3_000_000,
+      targetDate: null,
+    })
+    const { result } = useHealthScore()
+    expect(result.value.components.savings).toBe(50)
+  })
+
   it('TC-U-007 (AC-3.3): savings rate = sum(goal.monthlyContrib) / netIncome', () => {
     // 800K monthly contributions / 10M netIncome = 8% → scoreSavings(8) = 40 (lerp 0-10 → 0-50).
     const income = useIncomeStore()
