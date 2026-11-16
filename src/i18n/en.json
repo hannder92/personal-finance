@@ -465,5 +465,79 @@
     "unknown": "Something went wrong while saving your data.",
     "retry": "Retry",
     "dismiss": "Close"
+  },
+  "forms": {
+    "cancel": "Cancel",
+    "add": "+ Add",
+    "save": "Save",
+    "name": "Name *",
+    "confirm": "Confirm"
+  },
+  "incomeView": {
+    "title": "Income",
+    "gross": "Gross monthly salary",
+    "deductions": "Deductions",
+    "amountOrPct": "Amount / %",
+    "type": "Type",
+    "fixed": "Fixed amount",
+    "percent": "Percentage",
+    "noDeductions": "No deductions. Use the Colombia presets or add them manually.",
+    "streams": "Other income",
+    "amount": "Amount",
+    "frequency": "Frequency",
+    "freq": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "semiannual": "Semiannual",
+      "annual": "Annual"
+    },
+    "noStreams": "No additional income yet.",
+    "benefits": "Non-salary benefits",
+    "monthlyAmount": "Monthly amount",
+    "noBenefits": "No non-salary benefits yet.",
+    "grossAria": "Gross salary",
+    "deleteDeduction": "Delete deduction",
+    "deleteStream": "Delete income",
+    "deleteBenefit": "Delete benefit"
+  },
+  "debtsView": {
+    "title": "Debts",
+    "card": "Credit card",
+    "loan": "Loan",
+    "balance": "Current balance *",
+    "limit": "Credit limit",
+    "remaining": "Remaining installments",
+    "apr": "Effective annual rate %",
+    "minPayment": "Minimum payment *",
+    "dueDate": "Statement date",
+    "empty": "No debts yet. Press “+ Add” to start.",
+    "confirmTitle": "Delete debt",
+    "confirmMessage": "Do you want to delete this debt?",
+    "installmentsOf": "Installments — {name}"
+  },
+  "goalsView": {
+    "name": "Goal name *",
+    "target": "Target amount *",
+    "saved": "Already saved",
+    "monthly": "Monthly contribution",
+    "date": "Target date",
+    "empty": "No goals yet. Press “+ New goal” to start.",
+    "up": "Move up",
+    "down": "Move down",
+    "delete": "Delete goal",
+    "new": "+ New goal",
+    "ruleCap": "Rule budget: {amount}",
+    "feasibleCap": "Feasible cap: {amount}",
+    "overFeasible": "Contributions of {total} exceed the lower of rule ({rule}) and feasible ({feasible}).",
+    "overBudget": "Total monthly contributions ({total}) exceed your savings budget ({budget}).",
+    "title": "Goals"
+  },
+  "allocationView": {
+    "heading": "50/30/20 split",
+    "needs": "Needs",
+    "wants": "Wants",
+    "savings": "Savings",
+    "over": "The total is over 100%. Adjust the values.",
+    "title": "Allocation"
   }
 }

@@ -7,6 +7,11 @@ export interface ProjectionInputs {
   debtObligation: number
   /** Monthly variable spending (budgets); defaults to 0. */
   variableExpenses?: number
+  /**
+   * Debt cuota for projection month i. When given it replaces the flat `debtObligation`,
+   * so loans and deferred purchases stop counting after their last cuota.
+   */
+  debtForMonth?: (monthIndex: number) => number
   /** Calendar month (0 = January) of projection month 0; used by streams with paymentMonths. */
   startCalendarMonth?: number
 }
@@ -31,6 +36,7 @@ export function calcProjection(inputs: ProjectionInputs, monthsAhead: number): P
     debtObligation,
     variableExpenses = 0,
     startCalendarMonth = 0,
+    debtForMonth,
   } = inputs
 
   // Pre-compute which months each non-monthly stream hits.
@@ -48,7 +54,8 @@ export function calcProjection(inputs: ProjectionInputs, monthsAhead: number): P
     for (const { stream, months: hitSet } of streamHits) {
       if (hitSet.has(i)) monthIncome += stream.amount
     }
-    cumulative += monthIncome - fixedExpenses - debtObligation - variableExpenses
+    const debt = debtForMonth ? debtForMonth(i) : debtObligation
+    cumulative += monthIncome - fixedExpenses - debt - variableExpenses
     months.push({ month: i, projectedBalance: cumulative })
     if (cumulative < 0) negativeMonths.push(i)
   }

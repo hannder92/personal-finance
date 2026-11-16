@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 import GoalCard from './GoalCard.vue'
 import { formatCurrency } from '@/lib/currency/format'
@@ -55,6 +56,8 @@ function onSubmit() {
 function removeGoal(id: string) {
   goals.remove(id)
 }
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -65,7 +68,7 @@ function removeGoal(id: string) {
         class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500"
         @click="showForm = !showForm"
       >
-        {{ showForm ? 'Cancelar' : '+ Nueva meta' }}
+        {{ showForm ? t('forms.cancel') : t('goalsView.new') }}
       </button>
     </div>
 
@@ -75,7 +78,7 @@ function removeGoal(id: string) {
       @submit.prevent="onSubmit"
     >
       <label class="flex flex-col gap-1">
-        <span class="text-xs text-slate-600 dark:text-slate-300">Nombre de la meta *</span>
+        <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('goalsView.name') }}</span>
         <input
           v-model="form.name"
           type="text"
@@ -87,7 +90,9 @@ function removeGoal(id: string) {
 
       <div class="grid grid-cols-2 gap-3">
         <label class="flex flex-col gap-1">
-          <span class="text-xs text-slate-600 dark:text-slate-300">Meta total *</span>
+          <span class="text-xs text-slate-600 dark:text-slate-300">{{
+            t('goalsView.target')
+          }}</span>
           <input
             v-model="form.target"
             type="number"
@@ -98,7 +103,7 @@ function removeGoal(id: string) {
         </label>
 
         <label class="flex flex-col gap-1">
-          <span class="text-xs text-slate-600 dark:text-slate-300">Ya ahorrado</span>
+          <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('goalsView.saved') }}</span>
           <input
             v-model="form.saved"
             type="number"
@@ -109,7 +114,9 @@ function removeGoal(id: string) {
         </label>
 
         <label class="flex flex-col gap-1">
-          <span class="text-xs text-slate-600 dark:text-slate-300">Aporte mensual</span>
+          <span class="text-xs text-slate-600 dark:text-slate-300">{{
+            t('goalsView.monthly')
+          }}</span>
           <input
             v-model="form.monthlyContrib"
             type="number"
@@ -120,7 +127,7 @@ function removeGoal(id: string) {
         </label>
 
         <label class="flex flex-col gap-1">
-          <span class="text-xs text-slate-600 dark:text-slate-300">Fecha límite</span>
+          <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('goalsView.date') }}</span>
           <input
             v-model="form.targetDate"
             type="date"
@@ -133,7 +140,7 @@ function removeGoal(id: string) {
         type="submit"
         class="self-start rounded bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500"
       >
-        Guardar
+        {{ t('forms.save') }}
       </button>
     </form>
 
@@ -141,13 +148,13 @@ function removeGoal(id: string) {
       data-testid="goals-rule-cap"
       class="text-sm text-slate-600 dark:text-slate-400"
     >
-      Cupo por regla: {{ formatCurrency(objective, currency) }}
+      {{ t('goalsView.ruleCap', { amount: formatCurrency(objective, currency) }) }}
     </p>
     <p
       data-testid="goals-feasible-cap"
       class="text-sm text-slate-600 dark:text-slate-400"
     >
-      Tope factible: {{ formatCurrency(feasible, currency) }}
+      {{ t('goalsView.feasibleCap', { amount: formatCurrency(feasible, currency) }) }}
     </p>
 
     <div
@@ -156,9 +163,13 @@ function removeGoal(id: string) {
       role="alert"
       class="rounded border-l-4 border-l-amber-500 bg-amber-50 px-3 py-2 text-sm dark:bg-amber-950"
     >
-      Aportes {{ formatCurrency(totalMonthlyContrib, currency) }} superan el mínimo entre regla ({{
-        formatCurrency(objective, currency)
-      }}) y factible ({{ formatCurrency(feasible, currency) }}).
+      {{
+        t('goalsView.overFeasible', {
+          total: formatCurrency(totalMonthlyContrib, currency),
+          rule: formatCurrency(objective, currency),
+          feasible: formatCurrency(feasible, currency),
+        })
+      }}
     </div>
 
     <div
@@ -166,15 +177,19 @@ function removeGoal(id: string) {
       role="alert"
       class="rounded border-l-4 border-l-amber-500 bg-amber-50 px-3 py-2 text-sm dark:bg-amber-950"
     >
-      El total de aportes mensuales ({{ formatCurrency(totalMonthlyContrib, currency) }}) excede tu
-      presupuesto de ahorro ({{ formatCurrency(savingsBucket, currency) }}).
+      {{
+        t('goalsView.overBudget', {
+          total: formatCurrency(totalMonthlyContrib, currency),
+          budget: formatCurrency(savingsBucket, currency),
+        })
+      }}
     </div>
 
     <div
       v-if="goals.state.items.length === 0 && !showForm"
       class="rounded border border-dashed border-slate-300 py-8 text-center text-sm text-slate-500 dark:border-slate-700"
     >
-      Sin metas registradas. Presiona <strong>+ Nueva meta</strong> para comenzar.
+      {{ t('goalsView.empty') }}
     </div>
 
     <div
@@ -190,7 +205,7 @@ function removeGoal(id: string) {
       <div class="flex flex-col gap-1">
         <button
           type="button"
-          aria-label="Subir"
+          :aria-label="t('goalsView.up')"
           class="rounded border px-2 py-1 text-xs"
           @click="move(idx, -1)"
         >
@@ -198,7 +213,7 @@ function removeGoal(id: string) {
         </button>
         <button
           type="button"
-          aria-label="Bajar"
+          :aria-label="t('goalsView.down')"
           class="rounded border px-2 py-1 text-xs"
           @click="move(idx, 1)"
         >
@@ -206,7 +221,7 @@ function removeGoal(id: string) {
         </button>
         <button
           type="button"
-          aria-label="Eliminar meta"
+          :aria-label="t('goalsView.delete')"
           class="rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
           @click="removeGoal(g.id)"
         >
