@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import SettingsPanel from '@/components/settings/SettingsPanel.vue'
 import { useImportExport } from '@/composables/useImportExport'
+import { useStoragePersistence } from '@/composables/useStoragePersistence'
+import { STORAGE_KEY } from '@/lib/storage/keys'
 import { useAssetsStore } from '@/stores/assetsStore'
 import { useCardsStore } from '@/stores/cardsStore'
 import { useExpensesStore } from '@/stores/expensesStore'
@@ -13,7 +16,15 @@ import { useSnapshotsStore } from '@/stores/snapshotsStore'
 import { useVariableExpensesStore } from '@/stores/variableExpensesStore'
 
 const router = useRouter()
-const { exportToFile, importFromFile } = useImportExport()
+const { t, d } = useI18n()
+const { exportToFile, importFromFile, lastExportAt } = useImportExport()
+const { status: persistStatus, request: requestPersist } = useStoragePersistence()
+
+const lastExportLabel = computed(() =>
+  lastExportAt.value
+    ? t('settings.data.lastExport', { date: d(new Date(lastExportAt.value)) })
+    : t('settings.data.neverExported')
+)
 
 const errorMsg = ref('')
 const successMsg = ref('')
@@ -42,10 +53,10 @@ async function onImport(file: File) {
   successMsg.value = ''
   const result = await importFromFile(file)
   if (!result.ok) {
-    errorMsg.value = result.error ?? 'Import failed'
+    errorMsg.value = t('settings.data.importError', { reason: result.error ?? 'invalid_backup' })
     return
   }
-  successMsg.value = 'Importación correcta'
+  successMsg.value = t('settings.data.importSuccess')
 }
 
 function onReset() {
@@ -68,7 +79,7 @@ function onReset() {
   useVariableExpensesStore().state.items.splice(0)
   useSnapshotsStore().state.items.splice(0)
 
-  localStorage.removeItem('personal_finance_v2')
+  localStorage.removeItem(STORAGE_KEY)
   router.push('/')
 }
 </script>
@@ -130,6 +141,43 @@ function onReset() {
       >
         {{ $t('settings.userName.hint') }}
       </p>
+    </div>
+
+    <div
+      class="rounded-xl border border-slate-200 bg-white p-4 text-sm dark:border-slate-700 dark:bg-slate-800"
+      data-testid="settings-data-safety"
+    >
+      <h2 class="font-medium">
+        {{ $t('settings.data.title') }}
+      </h2>
+      <p class="mt-1 text-slate-600 dark:text-slate-300">
+        {{ $t('settings.data.localOnly') }}
+      </p>
+      <p
+        class="mt-2 text-slate-600 dark:text-slate-300"
+        data-testid="settings-last-export"
+      >
+        {{ lastExportLabel }}
+      </p>
+      <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        {{ $t('settings.data.importReplaces') }}
+      </p>
+      <div
+        v-if="persistStatus !== 'unknown' && persistStatus !== 'unsupported'"
+        class="mt-3 flex flex-wrap items-center gap-2"
+      >
+        <span data-testid="settings-persist-status">
+          {{ $t(`settings.data.persist.${persistStatus}`) }}
+        </span>
+        <button
+          v-if="persistStatus === 'best_effort'"
+          type="button"
+          class="rounded bg-slate-200 px-3 py-1 text-xs font-medium dark:bg-slate-700"
+          @click="requestPersist"
+        >
+          {{ $t('settings.data.persist.request') }}
+        </button>
+      </div>
     </div>
 
     <SettingsPanel
