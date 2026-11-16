@@ -1,8 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
+import { useIncomeStore } from '@/stores/incomeStore'
 import FixedExpenseList from '@/components/expenses/FixedExpenseList.vue'
-import { useExpensesStore } from '@/stores/expensesStore'
+import { FIXED_EXPENSE_CATEGORIES, useExpensesStore } from '@/stores/expensesStore'
+import { AppStateSchemaV6 } from '@/lib/storage/schema'
 
 function mount(
   initialItems: Array<{ id: string; name: string; amount: number; category: string }> = []
@@ -99,5 +102,38 @@ describe('FixedExpenseList (AC-4.4 TC-C-013)', () => {
 
     expect(store.state.items.length).toBe(1)
     expect(screen.getByText('Arriendo')).toBeTruthy()
+  })
+})
+
+describe('FixedExpenseList — categories match the persisted schema', () => {
+  it('every category offered by the form validates against AppStateSchemaV6', () => {
+    mount()
+    const select = screen.getByRole('combobox', { name: /categor/i }) as HTMLSelectElement
+    const offered = Array.from(select.options).map((o) => o.value)
+    expect(offered).toEqual([...FIXED_EXPENSE_CATEGORIES])
+    const expenseShape = AppStateSchemaV6.shape.expenses.removeDefault().element
+    for (const category of offered) {
+      const parsed = expenseShape.safeParse({
+        id: '00000000-0000-4000-8000-000000000000',
+        name: 'x',
+        amount: 1,
+        category,
+      })
+      expect(parsed.success, category).toBe(true)
+    }
+  })
+
+  it('remaining uses net monthly income, not gross salary', async () => {
+    mount([{ id: 'e1', name: 'Arriendo', amount: 1_000_000, category: 'vivienda' }])
+    useIncomeStore().state.deductions.push({
+      id: '00000000-0000-4000-8000-000000000001',
+      label: 'Salud y pensión',
+      amount: 8,
+      type: 'percent',
+    })
+    await nextTick()
+    // Net 4.600.000 − fixed 1.000.000; gross − fixed would be 4.000.000.
+    expect(screen.getByText(/3\.600\.000/)).toBeTruthy()
+    expect(screen.queryByText(/4\.000\.000/)).toBeNull()
   })
 })

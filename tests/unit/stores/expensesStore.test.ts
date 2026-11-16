@@ -27,9 +27,18 @@ describe('expensesStore (T-044)', () => {
     expect(s.state.items.length).toBe(0)
   })
 
+  it('add rejects a category outside the persisted schema (it would block every save)', () => {
+    const s = useExpensesStore()
+    s.add({ name: 'Bus', amount: 100, category: 'transporte' })
+    s.add({ name: 'Bus', amount: 100, category: 'transport' })
+    expect(s.state.items.map((e) => e.category)).toEqual(['transport'])
+    s.update(s.state.items[0]!.id, { category: 'alimentacion' })
+    expect(s.state.items[0]!.category).toBe('transport')
+  })
+
   it('remove deletes by id', () => {
     const s = useExpensesStore()
-    s.add({ name: 'A', amount: 100, category: 'otros' })
+    s.add({ name: 'A', amount: 100, category: 'other' })
     const id = s.state.items[0]!.id
     s.remove(id)
     expect(s.state.items.length).toBe(0)
@@ -37,7 +46,7 @@ describe('expensesStore (T-044)', () => {
 
   it('update patches existing entry', () => {
     const s = useExpensesStore()
-    s.add({ name: 'A', amount: 100, category: 'otros' })
+    s.add({ name: 'A', amount: 100, category: 'other' })
     const id = s.state.items[0]!.id
     s.update(id, { amount: 250 })
     expect(s.state.items[0]!.amount).toBe(250)

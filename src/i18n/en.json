@@ -394,5 +394,62 @@
       "overdue": "The target date has passed.",
       "noContrib": "Without a monthly contribution there is no estimate."
     }
+  },
+  "expenses": {
+    "title": "Fixed expenses",
+    "name": "Name",
+    "amount": "Amount",
+    "category": "Category",
+    "add": "Add",
+    "total": "Total: {amount}",
+    "remaining": "Left after fixed: {amount}",
+    "remainingHint": "Net monthly income minus fixed expenses.",
+    "confirmTitle": "Delete expense",
+    "confirmMessage": "Do you want to delete this expense?",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "categories": {
+      "vivienda": "Housing",
+      "housing": "Housing",
+      "utilities": "Utilities",
+      "transport": "Transport",
+      "food": "Food",
+      "health": "Health",
+      "education": "Education",
+      "subscriptions": "Subscriptions",
+      "insurance": "Insurance",
+      "other": "Other"
+    }
+  },
+  "assetsList": {
+    "name": "Name",
+    "value": "Value",
+    "type": "Type",
+    "add": "Add",
+    "total": "Total assets: {amount}",
+    "delete": "Delete {name}",
+    "confirmTitle": "Delete asset",
+    "confirmMessage": "Do you want to delete this asset?",
+    "types": {
+      "cash": "Cash",
+      "savings": "Savings",
+      "investment": "Investment",
+      "property": "Real estate",
+      "vehicle": "Vehicle",
+      "other": "Other"
+    }
+  },
+  "notFound": {
+    "title": "This page does not exist",
+    "body": "The link may be mistyped or the section may have moved.",
+    "cta": "Back to home"
+  },
+  "storageToast": {
+    "title": "Could not save",
+    "quota": "Browser storage is full.",
+    "invalid": "A value cannot be saved. Check the last change you made.",
+    "unknown": "Something went wrong while saving your data.",
+    "retry": "Retry",
+    "dismiss": "Close"
   }
 }

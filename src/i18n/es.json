@@ -394,5 +394,62 @@
       "overdue": "La fecha meta ya pasó.",
       "noContrib": "Sin aporte mensual no hay fecha estimada."
     }
+  },
+  "expenses": {
+    "title": "Gastos fijos",
+    "name": "Nombre",
+    "amount": "Monto",
+    "category": "Categoría",
+    "add": "Agregar",
+    "total": "Total: {amount}",
+    "remaining": "Te queda después de fijos: {amount}",
+    "remainingHint": "Ingreso neto mensual menos gastos fijos.",
+    "confirmTitle": "Eliminar gasto",
+    "confirmMessage": "¿Confirmas que deseas eliminar este gasto?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "categories": {
+      "vivienda": "Vivienda",
+      "housing": "Vivienda",
+      "utilities": "Servicios",
+      "transport": "Transporte",
+      "food": "Alimentación",
+      "health": "Salud",
+      "education": "Educación",
+      "subscriptions": "Suscripciones",
+      "insurance": "Seguros",
+      "other": "Otros"
+    }
+  },
+  "assetsList": {
+    "name": "Nombre",
+    "value": "Valor",
+    "type": "Tipo",
+    "add": "Agregar",
+    "total": "Total activos: {amount}",
+    "delete": "Eliminar {name}",
+    "confirmTitle": "Eliminar activo",
+    "confirmMessage": "¿Confirmas que deseas eliminar este activo?",
+    "types": {
+      "cash": "Efectivo",
+      "savings": "Ahorros",
+      "investment": "Inversión",
+      "property": "Inmueble",
+      "vehicle": "Vehículo",
+      "other": "Otro"
+    }
+  },
+  "notFound": {
+    "title": "Esta página no existe",
+    "body": "Puede que el enlace esté mal escrito o que la sección haya cambiado de lugar.",
+    "cta": "Volver al inicio"
+  },
+  "storageToast": {
+    "title": "No se pudo guardar",
+    "quota": "El almacenamiento del navegador está lleno.",
+    "invalid": "Hay un dato que no se puede guardar. Revisa el último cambio que hiciste.",
+    "unknown": "Ocurrió un error al guardar tus datos.",
+    "retry": "Reintentar",
+    "dismiss": "Cerrar"
   }
 }

@@ -3,6 +3,25 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
+// Must match ExpenseCategoryEnum in lib/storage/schema.ts: a category outside this list
+// makes every later save fail schema validation, so nothing else gets persisted.
+export const FIXED_EXPENSE_CATEGORIES = [
+  'vivienda',
+  'utilities',
+  'transport',
+  'food',
+  'health',
+  'education',
+  'subscriptions',
+  'insurance',
+  'other',
+] as const
+const VALID_CATEGORIES: ReadonlySet<string> = new Set([...FIXED_EXPENSE_CATEGORIES, 'housing'])
+
+function isValidCategory(category: unknown): boolean {
+  return typeof category === 'string' && VALID_CATEGORIES.has(category)
+}
+
 export interface FixedExpense {
   id: string
   name: string
@@ -33,7 +52,7 @@ export const useExpensesStore = defineStore('expenses', () => {
   function add(input: Omit<FixedExpense, 'id'>): void {
     if (!isValidName(input.name)) return
     if (!isValidAmount(input.amount)) return
-    if (typeof input.category !== 'string' || input.category.length === 0) return
+    if (!isValidCategory(input.category)) return
     state.items.push({ ...input, id: newId() })
   }
   function remove(id: string): void {
@@ -45,6 +64,7 @@ export const useExpensesStore = defineStore('expenses', () => {
     if (!item) return
     if (patch.name !== undefined && !isValidName(patch.name)) return
     if (patch.amount !== undefined && !isValidAmount(patch.amount)) return
+    if (patch.category !== undefined && !isValidCategory(patch.category)) return
     Object.assign(item, patch)
   }
 
