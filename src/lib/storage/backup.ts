@@ -10,7 +10,7 @@ export const BackupEnvelopeSchema = z.object({
   appName: z.literal('personal-finances'),
   schemaVersion: z.number().int().min(1).max(CURRENT_BACKUP_VERSION),
   exportedAt: z.string().datetime(),
-  data: z.record(z.unknown()),
+  data: z.record(z.string(), z.unknown()),
 })
 
 export type BackupEnvelope = z.infer<typeof BackupEnvelopeSchema>
