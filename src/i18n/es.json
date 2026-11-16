@@ -451,5 +451,79 @@
     "unknown": "Ocurrió un error al guardar tus datos.",
     "retry": "Reintentar",
     "dismiss": "Cerrar"
+  },
+  "forms": {
+    "cancel": "Cancelar",
+    "add": "+ Agregar",
+    "save": "Guardar",
+    "name": "Nombre *",
+    "confirm": "Confirmar"
+  },
+  "incomeView": {
+    "title": "Ingresos",
+    "gross": "Salario bruto mensual",
+    "deductions": "Deducciones",
+    "amountOrPct": "Monto / %",
+    "type": "Tipo",
+    "fixed": "Valor fijo",
+    "percent": "Porcentaje",
+    "noDeductions": "Sin deducciones. Usa los presets de Colombia o agrega manualmente.",
+    "streams": "Otros ingresos",
+    "amount": "Monto",
+    "frequency": "Frecuencia",
+    "freq": {
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "semiannual": "Semestral",
+      "annual": "Anual"
+    },
+    "noStreams": "Sin ingresos adicionales registrados.",
+    "benefits": "Beneficios extrasalariales",
+    "monthlyAmount": "Monto mensual",
+    "noBenefits": "Sin beneficios extrasalariales registrados.",
+    "grossAria": "Salario bruto",
+    "deleteDeduction": "Eliminar deducción",
+    "deleteStream": "Eliminar ingreso",
+    "deleteBenefit": "Eliminar beneficio"
+  },
+  "debtsView": {
+    "title": "Deudas",
+    "card": "Tarjeta de crédito",
+    "loan": "Préstamo",
+    "balance": "Saldo actual *",
+    "limit": "Cupo total",
+    "remaining": "Cuotas restantes",
+    "apr": "Tasa EA %",
+    "minPayment": "Pago mínimo *",
+    "dueDate": "Fecha de corte",
+    "empty": "Sin deudas registradas. Presiona «+ Agregar» para comenzar.",
+    "confirmTitle": "Eliminar deuda",
+    "confirmMessage": "¿Confirmas que deseas eliminar esta deuda?",
+    "installmentsOf": "Cuotas — {name}"
+  },
+  "goalsView": {
+    "name": "Nombre de la meta *",
+    "target": "Meta total *",
+    "saved": "Ya ahorrado",
+    "monthly": "Aporte mensual",
+    "date": "Fecha límite",
+    "empty": "Sin metas registradas. Presiona «+ Nueva meta» para comenzar.",
+    "up": "Subir",
+    "down": "Bajar",
+    "delete": "Eliminar meta",
+    "new": "+ Nueva meta",
+    "ruleCap": "Cupo por regla: {amount}",
+    "feasibleCap": "Tope factible: {amount}",
+    "overFeasible": "Aportes {total} superan el mínimo entre regla ({rule}) y factible ({feasible}).",
+    "overBudget": "El total de aportes mensuales ({total}) excede tu presupuesto de ahorro ({budget}).",
+    "title": "Metas"
+  },
+  "allocationView": {
+    "heading": "Distribución 50/30/20",
+    "needs": "Necesidades",
+    "wants": "Deseos",
+    "savings": "Ahorros",
+    "over": "La suma excede 100%. Ajusta los valores.",
+    "title": "Distribución"
   }
 }

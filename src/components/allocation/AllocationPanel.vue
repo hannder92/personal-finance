@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useAllocationStore } from '@/stores/allocationStore'
@@ -46,26 +47,28 @@ function onWantsInput(event: Event) {
 function bucketAmount(pct: number): number {
   return Math.round((pct / 100) * props.totalIncome)
 }
+
+const { t } = useI18n()
 </script>
 
 <template>
   <section
     class="flex flex-col gap-3 rounded border border-slate-200 p-4 dark:border-slate-700"
-    aria-label="Allocation"
+    :aria-label="t('allocationView.heading')"
   >
     <h2 class="text-base font-semibold">
-      Distribución 50/30/20
+      {{ t('allocationView.heading') }}
     </h2>
 
     <label class="flex items-center justify-between gap-3">
-      <span>Necesidades</span>
+      <span>{{ t('allocationView.needs') }}</span>
       <input
         :value="needsInput"
         type="number"
         min="0"
         max="100"
         :data-invalid="overage ? 'true' : 'false'"
-        aria-label="Necesidades"
+        :aria-label="t('allocationView.needs')"
         :class="[
           'w-20 rounded border px-2 py-1 text-right',
           overage ? 'border-red-500 text-red-700' : 'border-slate-300 dark:border-slate-700',
@@ -78,14 +81,14 @@ function bucketAmount(pct: number): number {
     </label>
 
     <label class="flex items-center justify-between gap-3">
-      <span>Deseos</span>
+      <span>{{ t('allocationView.wants') }}</span>
       <input
         :value="wantsInput"
         type="number"
         min="0"
         max="100"
         :data-invalid="overage ? 'true' : 'false'"
-        aria-label="Deseos"
+        :aria-label="t('allocationView.wants')"
         :class="[
           'w-20 rounded border px-2 py-1 text-right',
           overage ? 'border-red-500 text-red-700' : 'border-slate-300 dark:border-slate-700',
@@ -98,13 +101,13 @@ function bucketAmount(pct: number): number {
     </label>
 
     <label class="flex items-center justify-between gap-3">
-      <span>Ahorros (savings)</span>
+      <span>{{ t('allocationView.savings') }}</span>
       <input
         :value="savingsValue"
         type="number"
         readonly
         disabled
-        aria-label="Ahorros"
+        :aria-label="t('allocationView.savings')"
         class="w-20 rounded border border-slate-200 bg-slate-50 px-2 py-1 text-right text-slate-500 dark:border-slate-700 dark:bg-slate-800"
       >
       <span class="text-xs text-slate-500">{{
@@ -117,7 +120,7 @@ function bucketAmount(pct: number): number {
       class="text-xs text-red-600"
       role="alert"
     >
-      La suma excede 100%. Ajusta los valores.
+      {{ t('allocationView.over') }}
     </p>
   </section>
 </template>
