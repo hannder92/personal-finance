@@ -2,6 +2,7 @@ import { computed, type ComputedRef } from 'vue'
 import type { Debt as AmortDebt } from '@/lib/calculations/amortization'
 import { calcDebtFreeOutlook, type DebtFreeOutlook } from '@/lib/calculations/dti'
 import { calcDebtTimeline } from '@/lib/calculations/amortization'
+import { calcCardObligation } from '@/lib/calculations/installments'
 import { sortByAvalanche, sortBySnowball } from '@/lib/calculations/payoff-strategy'
 import { useCardsStore, type Debt } from '@/stores/cardsStore'
 import { useSettingsStore } from '@/stores/settingsStore'
@@ -15,7 +16,9 @@ export interface UseDebtPayoffPlan {
   sortedDebtIds: ComputedRef<string[]>
 }
 
-function toAmortDebt(debt: Debt): AmortDebt {
+// Cards pay their minimum plus the active deferred-purchase cuotas, the same payment the
+// prepayment simulator, DTI and "disponible" use, so every debt figure on the page agrees.
+export function toAmortDebt(debt: Debt): AmortDebt {
   if (debt.type === 'loan') {
     return {
       type: 'loan',
@@ -29,8 +32,15 @@ function toAmortDebt(debt: Debt): AmortDebt {
     type: 'card',
     balance: debt.balance,
     apr: debt.apr,
-    minPayment: debt.minPayment,
+    minPayment: calcCardObligation({
+      minPayment: debt.minPayment,
+      installmentsList: debt.installments,
+    }),
   }
+}
+
+export function debtMonthsToPayoff(debt: Debt): number {
+  return calcDebtTimeline(toAmortDebt(debt)).months
 }
 
 export function useDebtPayoffPlan(): UseDebtPayoffPlan {

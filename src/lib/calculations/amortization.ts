@@ -29,25 +29,44 @@ export interface ExtraPaymentImpact {
 
 // Returns months to pay off and total interest using fixed-payment amortization.
 // Cards: simulated month by month so the last (partial) payment is not overcharged.
-// Loans with a known number of remaining installments follow the bank schedule:
-// months = remainingInstallments, interest = cuotas pagadas − saldo.
+// Loans with a known number of remaining installments follow the bank schedule: the
+// term is remainingInstallments and the interest is the French-amortization interest of
+// that term at the loan's rate. Whatever the cuota has above that annuity is a non-interest
+// charge (seguro de vida deudor, cuota de manejo…), so it is not reported as interest.
+// When the cuota does not even reach the annuity, the schedule cannot hold and the loan is
+// simulated with the cuota the user pays.
 export function calcDebtTimeline(debt: Debt): DebtTimeline {
   const { balance, apr, minPayment } = debt
   if (debt.type === 'loan') {
-    const scheduled = debt.remainingInstallments > 0 && minPayment > 0 && balance > 0
-    const months = scheduled ? debt.remainingInstallments : monthsToPayoff(balance, apr, minPayment)
-    const totalInterest = scheduled
-      ? Math.max(0, months * minPayment - balance)
-      : simulateInterest(balance, apr, minPayment)
+    const n = debt.remainingInstallments
+    const scheduled = n > 0 && minPayment > 0 && balance > 0
+    const capitalCuota = scheduled ? scheduleCuota(balance, apr, n) : 0
+    // Half a peso of tolerance absorbs bank rounding of the cuota.
+    if (scheduled && minPayment + 0.5 >= capitalCuota) {
+      return {
+        type: 'loan',
+        months: n,
+        totalInterest: Math.max(0, Math.round(capitalCuota * n - balance)),
+        remainingInstallments: n,
+      }
+    }
     return {
       type: 'loan',
-      months,
-      totalInterest,
-      remainingInstallments: debt.remainingInstallments,
+      months: monthsToPayoff(balance, apr, minPayment),
+      totalInterest: simulateInterest(balance, apr, minPayment),
+      remainingInstallments: n,
     }
   }
   const months = monthsToPayoff(balance, apr, minPayment)
   return { type: 'card', months, totalInterest: simulateInterest(balance, apr, minPayment) }
+}
+
+// Capital + interest part of a loan cuota: French annuity for `n` months at the TEA rate.
+export function scheduleCuota(balance: number, aprPercent: number, n: number): number {
+  if (balance <= 0 || n <= 0) return 0
+  const rate = monthlyRateFromTEA(aprPercent)
+  if (rate === 0) return balance / n
+  return (balance * rate) / (1 - Math.pow(1 + rate, -n))
 }
 
 function monthlyRateFromTEA(aprPercent: number): number {

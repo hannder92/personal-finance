@@ -84,8 +84,11 @@ interface DebtState {
   id: string
   balance: number
   rate: number
+  /** Capital + interest paid each month. */
   cuota: number
   originalCuota: number
+  /** Part of the user's cuota above the loan annuity (insurance, fees): never capital. */
+  charges: number
   termLeft: number
   interest: number
   doneMonth: number
@@ -107,16 +110,26 @@ export function simulatePrepaymentPlan(input: PrepaymentPlanInput): PrepaymentSc
   const order = sortDebtIds(input.debts, input.order)
   const states: DebtState[] = input.debts
     .filter((d) => d.balance > 0)
-    .map((d) => ({
-      id: d.id,
-      balance: d.balance,
-      rate: monthlyRate(sanitize(d.apr)),
-      cuota: sanitize(d.payment),
-      originalCuota: sanitize(d.payment),
-      termLeft: Math.max(0, Math.floor(d.remainingInstallments ?? 0)),
-      interest: 0,
-      doneMonth: 0,
-    }))
+    .map((d) => {
+      const rate = monthlyRate(sanitize(d.apr))
+      const payment = sanitize(d.payment)
+      const termLeft = Math.max(0, Math.floor(d.remainingInstallments ?? 0))
+      // Same rule as calcDebtTimeline: with a bank schedule, only the annuity amortizes;
+      // the rest of the cuota is a charge that stops when the loan ends.
+      const annuityCuota = termLeft > 0 ? annuity(d.balance, rate, termLeft) : payment
+      const cuota = termLeft > 0 && payment + 0.5 >= annuityCuota ? annuityCuota : payment
+      return {
+        id: d.id,
+        balance: d.balance,
+        rate,
+        cuota,
+        originalCuota: cuota,
+        charges: Math.max(0, payment - cuota),
+        termLeft,
+        interest: 0,
+        doneMonth: 0,
+      }
+    })
   const byId = new Map(states.map((s) => [s.id, s]))
   const extraMonthly = sanitize(input.extraMonthly)
   const rollover = input.mode === 'term'
@@ -132,7 +145,7 @@ export function simulatePrepaymentPlan(input: PrepaymentPlanInput): PrepaymentSc
       .filter((l) => l.calendarMonth === calendarMonth)
       .reduce((acc, l) => acc + sanitize(l.amount), 0)
 
-    cuotaByMonth.push(active.reduce((acc, s) => acc + s.cuota, 0))
+    cuotaByMonth.push(active.reduce((acc, s) => acc + s.cuota + s.charges, 0))
 
     let scheduledPaid = 0
     for (const s of active) {

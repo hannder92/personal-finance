@@ -6,6 +6,7 @@ import {
   type PrepaymentDebt,
   type PrepaymentPlanInput,
 } from '@/lib/calculations/prepayment'
+import { calcDebtTimeline } from '@/lib/calculations/amortization'
 
 function monthlyRate(tea: number): number {
   return Math.pow(1 + tea / 100, 1 / 12) - 1
@@ -145,5 +146,30 @@ describe('lib/calculations/prepayment', () => {
     const result = comparePrepaymentPlan(input({ debts: [] }))
     expect(result.plan).toEqual({ months: 0, totalInterest: 0, perDebt: [], cuotaByMonth: [] })
     expect(result.order).toEqual([])
+  })
+
+  it('baseline agrees with calcDebtTimeline when the loan cuota includes insurance', () => {
+    // 18M at 18% E.A. over 36 cuotas: annuity ≈ $640.000; the bank cuota of $720.000
+    // carries ≈ $80.000 of insurance that never amortizes the balance.
+    const loan = {
+      id: 'loan',
+      balance: 18_000_000,
+      apr: 18,
+      payment: 720_000,
+      remainingInstallments: 36,
+    }
+    const result = comparePrepaymentPlan(input({ debts: [loan] }))
+    const timeline = calcDebtTimeline({
+      type: 'loan',
+      balance: 18_000_000,
+      apr: 18,
+      minPayment: 720_000,
+      remainingInstallments: 36,
+    })
+    expect(result.baseline.months).toBe(36)
+    expect(result.baseline.months).toBe(timeline.months)
+    expect(Math.abs(result.baseline.totalInterest - timeline.totalInterest)).toBeLessThanOrEqual(2)
+    // The user still pays the whole bank cuota every month.
+    expect(result.baseline.cuotaByMonth[0]).toBeCloseTo(720_000, 0)
   })
 })

@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import IconButton from '@/components/common/IconButton.vue'
-import { calcDebtTimeline } from '@/lib/calculations/amortization'
+import { debtMonthsToPayoff } from '@/composables/useDebtPayoffPlan'
 import { formatCurrency } from '@/lib/currency/format'
 import type { Debt } from '@/stores/cardsStore'
 
@@ -28,19 +28,9 @@ const utilizationPct = computed(() => {
   return Math.round((props.card.balance / props.card.limit) * 100)
 })
 
-const months = computed(() => {
-  if (!props.card) return 0
-  const timeline = calcDebtTimeline({
-    type: props.card.type,
-    balance: props.card.balance,
-    apr: props.card.apr,
-    minPayment: props.card.minPayment,
-    ...(props.card.type === 'loan'
-      ? { remainingInstallments: props.card.remainingInstallments }
-      : {}),
-  } as Debt)
-  return timeline.months
-})
+// Same payment model as the debt-free summary and the simulator (card minimum plus
+// active deferred cuotas; loan annuity for its remaining installments).
+const months = computed(() => (props.card ? debtMonthsToPayoff(props.card) : 0))
 </script>
 
 <template>
