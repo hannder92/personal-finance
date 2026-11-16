@@ -253,6 +253,20 @@
       "placeholder": "¿Cómo te llamamos?",
       "hint": "Se usa solo para saludarte. Queda guardado en tu dispositivo.",
       "error": "Máximo 30 caracteres"
+    },
+    "data": {
+      "title": "Tus datos",
+      "localOnly": "Todo se guarda solo en este navegador y en este dominio. Nada se envía a un servidor; si cambias de navegador, de dispositivo o borras los datos del sitio, necesitarás un respaldo.",
+      "lastExport": "Último respaldo: {date}",
+      "neverExported": "Aún no has exportado un respaldo.",
+      "importReplaces": "Importar reemplaza todos los datos actuales por los del archivo.",
+      "importSuccess": "Importación correcta: se restauraron todos tus datos.",
+      "importError": "No se pudo importar el archivo ({reason}).",
+      "persist": {
+        "persisted": "El navegador no borrará estos datos por falta de espacio.",
+        "best_effort": "El navegador podría borrar estos datos si se queda sin espacio.",
+        "request": "Proteger datos"
+      }
     }
   },
   "runway": {

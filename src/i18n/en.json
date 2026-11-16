@@ -253,6 +253,20 @@
       "placeholder": "What should we call you?",
       "hint": "Used only to greet you. Stored on your device.",
       "error": "Maximum 30 characters"
+    },
+    "data": {
+      "title": "Your data",
+      "localOnly": "Everything is stored only in this browser, on this domain. Nothing is sent to a server; if you switch browser or device, or clear site data, you will need a backup.",
+      "lastExport": "Last backup: {date}",
+      "neverExported": "You have not exported a backup yet.",
+      "importReplaces": "Importing replaces all current data with the file's content.",
+      "importSuccess": "Import complete: all your data was restored.",
+      "importError": "The file could not be imported ({reason}).",
+      "persist": {
+        "persisted": "The browser will not delete this data when storage runs low.",
+        "best_effort": "The browser may delete this data if storage runs low.",
+        "request": "Protect data"
+      }
     }
   },
   "runway": {

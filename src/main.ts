@@ -6,7 +6,7 @@ import { i18n } from './i18n'
 import { loadAppState, saveAppState } from './lib/storage/useAppStorage'
 import { useStorageError } from './composables/useStorageError'
 import { useMonthClose } from './composables/useMonthClose'
-import type { AppStateV6 } from './lib/storage/schema'
+import { useAppState } from './composables/useAppState'
 import { useAllocationStore } from './stores/allocationStore'
 import { useAssetsStore } from './stores/assetsStore'
 import { useCardsStore } from './stores/cardsStore'
@@ -28,47 +28,7 @@ let isHydrating = true
 function hydrateStores() {
   const { state } = loadAppState()
   if (!state) return
-
-  const settings = useSettingsStore()
-  settings.setLang(state.settings.lang)
-  settings.setCurrency(state.settings.currency)
-  settings.setTheme(state.settings.theme)
-  settings.setPayoffMethod(state.settings.payoffMethod)
-  settings.setProjectionAnnualRatePercent(state.settings.projectionAnnualRatePercent ?? 0)
-  settings.setDeductRetencion(state.settings.deductRetencion ?? true)
-  if (state.settings.lastMonthSeen) settings.setLastMonthSeen(state.settings.lastMonthSeen)
-  settings.setUserName(state.settings.userName ?? '')
-
-  const income = useIncomeStore()
-  income.setGrossSalary(state.income.grossSalary)
-  income.state.deductions.splice(0, Infinity, ...state.income.deductions)
-  income.state.otherStreams.splice(0, Infinity, ...state.income.otherStreams)
-  income.state.nonSalaryBenefits.splice(0, Infinity, ...state.income.nonSalaryBenefits)
-
-  const expenses = useExpensesStore()
-  expenses.state.items.splice(0, Infinity, ...state.expenses)
-
-  const cards = useCardsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  cards.state.items.splice(0, Infinity, ...(state.cards as any[]))
-
-  const goals = useGoalsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  goals.state.items.splice(0, Infinity, ...(state.goals as any[]))
-
-  const assets = useAssetsStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  assets.state.items.splice(0, Infinity, ...(state.assets as any[]))
-
-  const variable = useVariableExpensesStore()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  variable.state.items.splice(0, Infinity, ...(state.variableExpenses as any[]))
-
-  const snapshots = useSnapshotsStore()
-  snapshots.setAll(state.snapshots)
-
-  const allocation = useAllocationStore()
-  allocation.setAllocation(state.allocation.needs, state.allocation.wants)
+  useAppState().applyAppState(state)
 }
 
 // Watches all store states and persists to localStorage on any change.
@@ -82,45 +42,12 @@ function persistStores(): void {
   const variable = useVariableExpensesStore()
   const snapshots = useSnapshotsStore()
   const allocation = useAllocationStore()
+  const { buildAppState } = useAppState()
 
   const { setError, registerRetrySource } = useStorageError()
 
-  function buildPayload(): AppStateV6 {
-    return {
-      schemaVersion: 6,
-      settings: {
-        lang: settings.state.lang,
-        currency: settings.state.currency,
-        theme: settings.state.theme,
-        payoffMethod: settings.state.payoffMethod,
-        lastMonthSeen: settings.state.lastMonthSeen,
-        onboarding: { done: true, currentStep: 0 },
-        projectionAnnualRatePercent: settings.state.projectionAnnualRatePercent,
-        userName: settings.state.userName,
-        deductRetencion: settings.state.deductRetencion,
-      },
-      income: {
-        grossSalary: income.state.grossSalary,
-        deductions: income.state.deductions,
-        otherStreams: income.state.otherStreams,
-        nonSalaryBenefits: income.state.nonSalaryBenefits,
-      },
-      expenses: expenses.state.items,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      cards: cards.state.items as any,
-      goals: goals.state.items,
-      assets: assets.state.items,
-      variableExpenses: variable.state.items,
-      snapshots: snapshots.state.items,
-      allocation: {
-        needs: allocation.state.needs,
-        wants: allocation.state.wants,
-        savings: allocation.state.savings,
-      },
-    }
-  }
   // Register the payload provider so the retry button can re-attempt the save.
-  registerRetrySource(buildPayload)
+  registerRetrySource(buildAppState)
 
   watch(
     () => [
@@ -136,7 +63,7 @@ function persistStores(): void {
     ],
     () => {
       if (isHydrating) return
-      const result = saveAppState(buildPayload())
+      const result = saveAppState(buildAppState())
       if (!result.ok) setError(result.reason)
     },
     { deep: true }
