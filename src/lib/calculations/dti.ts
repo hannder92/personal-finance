@@ -10,7 +10,8 @@ export type DebtFreeOutlook =
   | { kind: 'never' }
   | { kind: 'date'; date: Date; months: number }
 
-// When the last debt is paid off. `never` when at least one debt's payment does not
+// When the last debt is paid off. The current month's cuota is payment #1, so the last
+// payment falls `months − 1` months from now (same convention as the prepayment simulator). `never` when at least one debt's payment does not
 // cover its monthly interest — returning a date would hide that debt.
 export function calcDebtFreeOutlook(
   debts: ReadonlyArray<Debt>,
@@ -24,7 +25,7 @@ export function calcDebtFreeOutlook(
   if (maxMonths <= 0) return { kind: 'none' }
   return {
     kind: 'date',
-    date: new Date(now.getFullYear(), now.getMonth() + maxMonths, 1),
+    date: new Date(now.getFullYear(), now.getMonth() + maxMonths - 1, 1),
     months: maxMonths,
   }
 }

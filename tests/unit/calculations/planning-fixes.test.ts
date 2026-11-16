@@ -110,7 +110,8 @@ describe('debt-free outlook', () => {
       ],
       NOW
     )
-    expect(outlook).toEqual({ kind: 'date', date: new Date(2027, 7, 1), months: 10 })
+    // 10 cuotas starting this month: the last one is paid 9 months from now.
+    expect(outlook).toEqual({ kind: 'date', date: new Date(2027, 6, 1), months: 10 })
   })
 })
 

@@ -30,7 +30,8 @@ describe('lib/calculations/dti', () => {
       const monthsFromNow =
         ((result as Date).getFullYear() - new Date().getFullYear()) * 12 +
         ((result as Date).getMonth() - new Date().getMonth())
-      expect(monthsFromNow).toBe(20)
+      // 20 cuotas counting the current month: the last one is 19 months from now.
+      expect(monthsFromNow).toBe(19)
     })
 
     it('AC-5.6: empty debts returns null', () => {
