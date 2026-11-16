@@ -394,5 +394,136 @@
       "overdue": "La fecha meta ya pasó.",
       "noContrib": "Sin aporte mensual no hay fecha estimada."
     }
+  },
+  "expenses": {
+    "title": "Gastos fijos",
+    "name": "Nombre",
+    "amount": "Monto",
+    "category": "Categoría",
+    "add": "Agregar",
+    "total": "Total: {amount}",
+    "remaining": "Te queda después de fijos: {amount}",
+    "remainingHint": "Ingreso neto mensual menos gastos fijos.",
+    "confirmTitle": "Eliminar gasto",
+    "confirmMessage": "¿Confirmas que deseas eliminar este gasto?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "categories": {
+      "vivienda": "Vivienda",
+      "housing": "Vivienda",
+      "utilities": "Servicios",
+      "transport": "Transporte",
+      "food": "Alimentación",
+      "health": "Salud",
+      "education": "Educación",
+      "subscriptions": "Suscripciones",
+      "insurance": "Seguros",
+      "other": "Otros"
+    }
+  },
+  "assetsList": {
+    "name": "Nombre",
+    "value": "Valor",
+    "type": "Tipo",
+    "add": "Agregar",
+    "total": "Total activos: {amount}",
+    "delete": "Eliminar {name}",
+    "confirmTitle": "Eliminar activo",
+    "confirmMessage": "¿Confirmas que deseas eliminar este activo?",
+    "types": {
+      "cash": "Efectivo",
+      "savings": "Ahorros",
+      "investment": "Inversión",
+      "property": "Inmueble",
+      "vehicle": "Vehículo",
+      "other": "Otro"
+    }
+  },
+  "notFound": {
+    "title": "Esta página no existe",
+    "body": "Puede que el enlace esté mal escrito o que la sección haya cambiado de lugar.",
+    "cta": "Volver al inicio"
+  },
+  "storageToast": {
+    "title": "No se pudo guardar",
+    "quota": "El almacenamiento del navegador está lleno.",
+    "invalid": "Hay un dato que no se puede guardar. Revisa el último cambio que hiciste.",
+    "unknown": "Ocurrió un error al guardar tus datos.",
+    "retry": "Reintentar",
+    "dismiss": "Cerrar"
+  },
+  "forms": {
+    "cancel": "Cancelar",
+    "add": "+ Agregar",
+    "save": "Guardar",
+    "name": "Nombre *",
+    "confirm": "Confirmar"
+  },
+  "incomeView": {
+    "title": "Ingresos",
+    "gross": "Salario bruto mensual",
+    "deductions": "Deducciones",
+    "amountOrPct": "Monto / %",
+    "type": "Tipo",
+    "fixed": "Valor fijo",
+    "percent": "Porcentaje",
+    "noDeductions": "Sin deducciones. Usa los presets de Colombia o agrega manualmente.",
+    "streams": "Otros ingresos",
+    "amount": "Monto",
+    "frequency": "Frecuencia",
+    "freq": {
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "semiannual": "Semestral",
+      "annual": "Anual"
+    },
+    "noStreams": "Sin ingresos adicionales registrados.",
+    "benefits": "Beneficios extrasalariales",
+    "monthlyAmount": "Monto mensual",
+    "noBenefits": "Sin beneficios extrasalariales registrados.",
+    "grossAria": "Salario bruto",
+    "deleteDeduction": "Eliminar deducción",
+    "deleteStream": "Eliminar ingreso",
+    "deleteBenefit": "Eliminar beneficio"
+  },
+  "debtsView": {
+    "title": "Deudas",
+    "card": "Tarjeta de crédito",
+    "loan": "Préstamo",
+    "balance": "Saldo actual *",
+    "limit": "Cupo total",
+    "remaining": "Cuotas restantes",
+    "apr": "Tasa EA %",
+    "minPayment": "Pago mínimo *",
+    "dueDate": "Fecha de corte",
+    "empty": "Sin deudas registradas. Presiona «+ Agregar» para comenzar.",
+    "confirmTitle": "Eliminar deuda",
+    "confirmMessage": "¿Confirmas que deseas eliminar esta deuda?",
+    "installmentsOf": "Cuotas — {name}"
+  },
+  "goalsView": {
+    "name": "Nombre de la meta *",
+    "target": "Meta total *",
+    "saved": "Ya ahorrado",
+    "monthly": "Aporte mensual",
+    "date": "Fecha límite",
+    "empty": "Sin metas registradas. Presiona «+ Nueva meta» para comenzar.",
+    "up": "Subir",
+    "down": "Bajar",
+    "delete": "Eliminar meta",
+    "new": "+ Nueva meta",
+    "ruleCap": "Cupo por regla: {amount}",
+    "feasibleCap": "Tope factible: {amount}",
+    "overFeasible": "Aportes {total} superan el mínimo entre regla ({rule}) y factible ({feasible}).",
+    "overBudget": "El total de aportes mensuales ({total}) excede tu presupuesto de ahorro ({budget}).",
+    "title": "Metas"
+  },
+  "allocationView": {
+    "heading": "Distribución 50/30/20",
+    "needs": "Necesidades",
+    "wants": "Deseos",
+    "savings": "Ahorros",
+    "over": "La suma excede 100%. Ajusta los valores.",
+    "title": "Distribución"
   }
 }

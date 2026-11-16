@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import DesktopNav from '@/components/common/DesktopNav.vue'
 import LanguageToggle from '@/components/common/LanguageToggle.vue'
 import MobileBottomNav from '@/components/common/MobileBottomNav.vue'
+import StorageErrorToast from '@/components/common/StorageErrorToast.vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
 import { useLocale } from '@/composables/useLocale'
 import { useTheme } from '@/composables/useTheme'
@@ -53,16 +54,31 @@ const { locale, setLocale } = useLocale()
     </main>
 
     <MobileBottomNav />
+    <StorageErrorToast />
   </div>
 </template>
 
 <style>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 120ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
-.fade-enter-from,
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
 .fade-leave-to {
   opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: none;
+  }
+  .fade-enter-from {
+    transform: none;
+  }
 }
 </style>

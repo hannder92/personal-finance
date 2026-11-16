@@ -1,6 +1,6 @@
 // Regression tests for the calculation review (notes/revision-calculos.md).
 import { describe, expect, it } from 'vitest'
-import { calcDebtTimeline } from '@/lib/calculations/amortization'
+import { calcDebtTimeline, scheduleCuota } from '@/lib/calculations/amortization'
 import { calcDebtFreeDate, calcDebtFreeOutlook } from '@/lib/calculations/dti'
 import { getProjectionMonthsForStream, PRIMA_PAYMENT_MONTHS } from '@/lib/calculations/frequency'
 import { calcGoalETA, calcRequiredMonthly, parseLocalDate } from '@/lib/calculations/goals'
@@ -50,7 +50,24 @@ describe('amortization — loans and never-ending cards', () => {
       remainingInstallments: 24,
     })
     expect(t.months).toBe(24)
-    expect(t.totalInterest).toBe(24 * 500_000 - 9_000_000)
+    // Interest is the annuity's interest at 20% E.A. (cuota ≈ $450.933); the ≈ $49.000
+    // above it is a non-interest charge (insurance) and is not counted as interest.
+    const capitalCuota = scheduleCuota(9_000_000, 20, 24)
+    expect(capitalCuota).toBeCloseTo(450_933, -1)
+    expect(t.totalInterest).toBe(Math.round(capitalCuota * 24 - 9_000_000))
+    expect(t.totalInterest).toBeLessThan(24 * 500_000 - 9_000_000)
+  })
+
+  it('a loan whose cuota is below the annuity is simulated with the real cuota', () => {
+    const t = calcDebtTimeline({
+      type: 'loan',
+      balance: 9_000_000,
+      apr: 20,
+      minPayment: 400_000,
+      remainingInstallments: 24,
+    })
+    expect(t.months).toBeGreaterThan(24)
+    expect(Number.isFinite(t.totalInterest)).toBe(true)
   })
 
   it('a card whose payment does not cover interest never ends', () => {
@@ -93,7 +110,8 @@ describe('debt-free outlook', () => {
       ],
       NOW
     )
-    expect(outlook).toEqual({ kind: 'date', date: new Date(2027, 7, 1), months: 10 })
+    // 10 cuotas starting this month: the last one is paid 9 months from now.
+    expect(outlook).toEqual({ kind: 'date', date: new Date(2027, 6, 1), months: 10 })
   })
 })
 

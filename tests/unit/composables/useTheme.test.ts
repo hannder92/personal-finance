@@ -29,7 +29,8 @@ describe('useTheme (T-048)', () => {
   })
 
   it('setTheme("system") follows prefers-color-scheme', () => {
-    vi.spyOn(window, 'matchMedia').mockImplementation((q: string) => ({
+    // jsdom has no matchMedia; Vitest 5 no longer lets spyOn create a missing method.
+    vi.stubGlobal('matchMedia', (q: string) => ({
       matches: q.includes('dark'),
       media: q,
       addEventListener: () => {},
@@ -42,6 +43,7 @@ describe('useTheme (T-048)', () => {
     const { setTheme } = useTheme()
     setTheme('system')
     expect(document.documentElement.classList.contains('dark')).toBe(true)
+    vi.unstubAllGlobals()
   })
 
   it('isDark reflects current html class', () => {

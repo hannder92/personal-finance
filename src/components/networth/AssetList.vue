@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useAssetsStore, type AssetType } from '@/stores/assetsStore'
 
@@ -11,6 +13,16 @@ const props = withDefaults(
 )
 
 const assets = useAssetsStore()
+const { t } = useI18n()
+
+const ASSET_TYPES: readonly AssetType[] = [
+  'cash',
+  'savings',
+  'investment',
+  'property',
+  'vehicle',
+  'other',
+]
 const total = computed(() => assets.state.items.reduce((acc, a) => acc + a.value, 0))
 
 const name = ref('')
@@ -24,14 +36,33 @@ const showRateInput = computed(() => type.value === 'savings' || type.value === 
 function onSubmit(event: Event) {
   event.preventDefault()
   const value = Number.parseInt(valueRaw.value.replace(/\D/g, ''), 10) || 0
-  if (!name.value || value <= 0) return
+  if (!name.value.trim() || value <= 0) return
   const rate = showRateInput.value
     ? Math.min(100, Math.max(0, Number.parseFloat(rateRaw.value) || 0))
     : 0
-  assets.add({ name: name.value, value, type: type.value, annualRatePercent: rate })
+  assets.add({ name: name.value.trim(), value, type: type.value, annualRatePercent: rate })
   name.value = ''
   valueRaw.value = ''
   rateRaw.value = ''
+}
+
+const confirmOpen = ref(false)
+const pendingDeleteId = ref<string | null>(null)
+
+function askDelete(id: string) {
+  pendingDeleteId.value = id
+  confirmOpen.value = true
+}
+
+function confirmDelete() {
+  if (pendingDeleteId.value) assets.remove(pendingDeleteId.value)
+  pendingDeleteId.value = null
+  confirmOpen.value = false
+}
+
+function cancelDelete() {
+  pendingDeleteId.value = null
+  confirmOpen.value = false
 }
 </script>
 
@@ -42,59 +73,62 @@ function onSubmit(event: Event) {
       @submit="onSubmit"
     >
       <label class="flex flex-1 flex-col gap-1">
-        <span class="text-xs">Nombre</span>
+        <span class="text-xs">{{ t('assetsList.name') }}</span>
         <input
           v-model="name"
           type="text"
-          aria-label="Nombre"
+          maxlength="60"
+          :aria-label="t('assetsList.name')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
       </label>
       <label class="flex flex-1 flex-col gap-1">
-        <span class="text-xs">Valor</span>
+        <span class="text-xs">{{ t('assetsList.value') }}</span>
         <input
           v-model="valueRaw"
           type="text"
           inputmode="numeric"
-          aria-label="Valor"
+          :aria-label="t('assetsList.value')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
       </label>
       <label class="flex flex-1 flex-col gap-1">
-        <span class="text-xs">Tipo</span>
+        <span class="text-xs">{{ t('assetsList.type') }}</span>
         <select
           v-model="type"
-          aria-label="Tipo"
+          :aria-label="t('assetsList.type')"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
-          <option value="savings">Ahorros</option>
-          <option value="investment">Inversión</option>
-          <option value="property">Inmueble</option>
-          <option value="vehicle">Vehículo</option>
-          <option value="other">Otro</option>
+          <option
+            v-for="at in ASSET_TYPES"
+            :key="at"
+            :value="at"
+          >
+            {{ t(`assetsList.types.${at}`) }}
+          </option>
         </select>
       </label>
       <label
         v-if="showRateInput"
         class="flex flex-1 flex-col gap-1"
       >
-        <span class="text-xs">Tasa anual (E.A. %)</span>
+        <span class="text-xs">{{ t('assets.annualRatePercent.label') }}</span>
         <input
           v-model="rateRaw"
           type="number"
           min="0"
           max="100"
           step="0.01"
-          aria-label="Tasa anual"
+          :aria-label="t('assets.annualRatePercent.label')"
           placeholder="0"
           class="rounded border border-slate-300 px-2 py-1 dark:border-slate-700 dark:bg-slate-900"
         >
       </label>
       <button
         type="submit"
-        class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
+        class="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
       >
-        Agregar
+        {{ t('assetsList.add') }}
       </button>
     </form>
 
@@ -106,15 +140,43 @@ function onSubmit(event: Event) {
       <li
         v-for="a in assets.state.items"
         :key="a.id"
-        class="flex items-center justify-between rounded border border-slate-200 px-3 py-2 dark:border-slate-700"
+        class="flex items-center justify-between gap-3 rounded border border-slate-200 px-3 py-2 dark:border-slate-700"
       >
-        <span class="font-medium">{{ a.name }}</span>
-        <span class="text-sm">{{ formatCurrency(a.value, props.currency) }}</span>
+        <div class="flex min-w-0 flex-col">
+          <span class="truncate font-medium">{{ a.name }}</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
+            {{ t(`assetsList.types.${a.type}`)
+            }}<template v-if="a.annualRatePercent > 0">
+              · {{ a.annualRatePercent }}% E.A.
+            </template>
+          </span>
+        </div>
+        <div class="flex shrink-0 items-center gap-3">
+          <span class="text-sm tabular-nums">{{ formatCurrency(a.value, props.currency) }}</span>
+          <button
+            type="button"
+            :aria-label="t('assetsList.delete', { name: a.name })"
+            class="rounded border border-red-200 px-2 py-1 text-xs text-red-700 transition-colors hover:bg-red-50 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950"
+            @click="askDelete(a.id)"
+          >
+            {{ t('common.delete') }}
+          </button>
+        </div>
       </li>
     </ul>
 
     <footer class="border-t border-slate-200 pt-3 text-sm dark:border-slate-700">
-      Total activos: {{ formatCurrency(total, props.currency) }}
+      {{ t('assetsList.total', { amount: formatCurrency(total, props.currency) }) }}
     </footer>
+
+    <ConfirmDialog
+      v-model:open="confirmOpen"
+      :title="t('assetsList.confirmTitle')"
+      :message="t('assetsList.confirmMessage')"
+      :confirm-label="t('expenses.confirm')"
+      :cancel-label="t('expenses.cancel')"
+      @confirm="confirmDelete"
+      @cancel="cancelDelete"
+    />
   </section>
 </template>

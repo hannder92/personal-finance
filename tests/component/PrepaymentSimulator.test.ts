@@ -104,11 +104,12 @@ describe('PrepaymentSimulator', () => {
     )
   })
 
-  it('"reducir cuota" keeps the date and shows the lower cuota', async () => {
+  it('"reducir cuota" shows the lower cuota and the interest saved', async () => {
     mount(PrepaymentSimulator, [loan])
     await fireEvent.click(screen.getByTestId('prepayment-mode-payment'))
     await type('prepayment-extra', '300000')
-    expect(screen.queryByTestId('prepayment-months-saved')).toBeNull()
+    // The term is kept, but once the recalculated cuota falls below the fixed monthly
+    // extra the last months are paid off early, so a small date gain is expected.
     expect(screen.getByTestId('prepayment-interest-saved')).toBeTruthy()
     expect(screen.getByTestId('prepayment-cuota-change').textContent).toMatch(/baja de/)
   })

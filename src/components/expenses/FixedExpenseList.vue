@@ -1,18 +1,27 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import ExpenseForm from './ExpenseForm.vue'
 import { formatCurrency } from '@/lib/currency/format'
 import { useExpensesStore } from '@/stores/expensesStore'
-import { useIncomeStore } from '@/stores/incomeStore'
+import { useBaseMetrics } from '@/composables/useBaseMetrics'
 import { useSettingsStore } from '@/stores/settingsStore'
 
 const expenses = useExpensesStore()
-const income = useIncomeStore()
+const { monthlyIncome } = useBaseMetrics()
+const { t, te } = useI18n()
 const settings = useSettingsStore()
 
 const total = computed(() => expenses.state.items.reduce((acc, e) => acc + e.amount, 0))
-const remaining = computed(() => income.state.grossSalary - total.value)
+// What is left of the net monthly income (after deductions, retención, libranzas, plus
+// prorated streams) once fixed expenses are paid. Gross salary overstated it.
+const remaining = computed(() => monthlyIncome.value - total.value)
+
+function categoryLabel(category: string): string {
+  const key = `expenses.categories.${category}`
+  return te(key) ? t(key) : category
+}
 const currency = computed(() => settings.state.currency)
 
 const confirmOpen = ref(false)
@@ -55,17 +64,19 @@ function cancelDelete() {
       >
         <div class="flex flex-col">
           <span class="font-medium">{{ item.name }}</span>
-          <span class="text-xs text-slate-500">{{ item.category }}</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">{{
+            categoryLabel(item.category)
+          }}</span>
         </div>
         <div class="flex items-center gap-3">
           <span class="text-sm">{{ formatCurrency(item.amount, currency) }}</span>
           <button
             type="button"
-            aria-label="Eliminar"
-            class="rounded border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50"
+            :aria-label="t('common.delete')"
+            class="rounded border border-red-200 px-2 py-1 text-xs text-red-700 transition-colors hover:bg-red-50 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950"
             @click="askDelete(item.id)"
           >
-            Eliminar
+            {{ t('common.delete') }}
           </button>
         </div>
       </li>
@@ -74,16 +85,21 @@ function cancelDelete() {
     <footer
       class="flex justify-between border-t border-slate-200 pt-3 text-sm dark:border-slate-700"
     >
-      <span>Total: {{ formatCurrency(total, currency) }}</span>
-      <span>Restante: {{ formatCurrency(remaining, currency) }}</span>
+      <span>{{ t('expenses.total', { amount: formatCurrency(total, currency) }) }}</span>
+      <span
+        :title="t('expenses.remainingHint')"
+        :class="remaining < 0 ? 'text-red-600 dark:text-red-400' : ''"
+      >
+        {{ t('expenses.remaining', { amount: formatCurrency(remaining, currency) }) }}
+      </span>
     </footer>
 
     <ConfirmDialog
       v-model:open="confirmOpen"
-      title="Eliminar gasto"
-      message="¿Confirmas que deseas eliminar este gasto?"
-      confirm-label="Confirmar"
-      cancel-label="Cancelar"
+      :title="t('expenses.confirmTitle')"
+      :message="t('expenses.confirmMessage')"
+      :confirm-label="t('expenses.confirm')"
+      :cancel-label="t('expenses.cancel')"
       @confirm="confirmDelete"
       @cancel="cancelDelete"
     />

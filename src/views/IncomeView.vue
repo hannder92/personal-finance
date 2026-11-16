@@ -89,13 +89,13 @@ function addBenefit() {
   <section class="mx-auto flex max-w-2xl flex-col gap-6 p-6">
     <header>
       <h1 class="text-xl font-semibold">
-        Ingresos
+        {{ t('incomeView.title') }}
       </h1>
     </header>
 
     <label class="flex flex-col gap-1">
       <span class="text-sm text-slate-600 dark:text-slate-300">
-        Salario bruto mensual
+        {{ t('incomeView.gross') }}
         <span class="ml-1 text-xs text-slate-500">({{ t('income.class.linear') }})</span>
       </span>
       <input
@@ -103,7 +103,7 @@ function addBenefit() {
         inputmode="numeric"
         :value="grossInputValue"
         class="rounded border border-slate-300 px-3 py-2 dark:border-slate-700 dark:bg-slate-900"
-        aria-label="Salario bruto"
+        :aria-label="t('incomeView.grossAria')"
         @input="onGrossInput"
       >
     </label>
@@ -140,14 +140,14 @@ function addBenefit() {
     <section class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
-          Deducciones
+          {{ t('incomeView.deductions') }}
         </h2>
         <button
           type="button"
           class="text-xs text-blue-600 hover:underline dark:text-blue-400"
           @click="showDeductionForm = !showDeductionForm"
         >
-          {{ showDeductionForm ? 'Cancelar' : '+ Agregar' }}
+          {{ showDeductionForm ? t('forms.cancel') : t('forms.add') }}
         </button>
       </div>
 
@@ -158,7 +158,7 @@ function addBenefit() {
       >
         <div class="grid grid-cols-2 gap-2">
           <label class="flex flex-col gap-1 col-span-2">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Nombre *</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('forms.name') }}</span>
             <input
               v-model="deductionForm.label"
               type="text"
@@ -168,7 +168,9 @@ function addBenefit() {
             >
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Monto / %</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{
+              t('incomeView.amountOrPct')
+            }}</span>
             <input
               v-model="deductionForm.amount"
               type="number"
@@ -179,13 +181,15 @@ function addBenefit() {
             >
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Tipo</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{
+              t('incomeView.type')
+            }}</span>
             <select
               v-model="deductionForm.type"
               class="rounded border border-slate-300 px-2 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
             >
-              <option value="fixed">Valor fijo</option>
-              <option value="percent">Porcentaje</option>
+              <option value="fixed">{{ t('incomeView.fixed') }}</option>
+              <option value="percent">{{ t('incomeView.percent') }}</option>
             </select>
           </label>
         </div>
@@ -193,7 +197,7 @@ function addBenefit() {
           type="submit"
           class="self-start rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700"
         >
-          Guardar
+          {{ t('forms.save') }}
         </button>
       </form>
 
@@ -201,7 +205,7 @@ function addBenefit() {
         v-if="income.state.deductions.length === 0 && !showDeductionForm"
         class="text-xs text-slate-400"
       >
-        Sin deducciones. Usa los presets de Colombia o agrega manualmente.
+        {{ t('incomeView.noDeductions') }}
       </div>
 
       <div
@@ -219,7 +223,7 @@ function addBenefit() {
         />
         <button
           type="button"
-          aria-label="Eliminar deducción"
+          :aria-label="t('incomeView.deleteDeduction')"
           class="rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400"
           @click="income.removeDeduction(d.id)"
         >
@@ -232,14 +236,14 @@ function addBenefit() {
     <section class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
-          Otros ingresos
+          {{ t('incomeView.streams') }}
         </h2>
         <button
           type="button"
           class="text-xs text-blue-600 hover:underline dark:text-blue-400"
           @click="showStreamForm = !showStreamForm"
         >
-          {{ showStreamForm ? 'Cancelar' : '+ Agregar' }}
+          {{ showStreamForm ? t('forms.cancel') : t('forms.add') }}
         </button>
       </div>
 
@@ -250,7 +254,7 @@ function addBenefit() {
       >
         <div class="grid grid-cols-2 gap-2">
           <label class="col-span-2 flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Nombre *</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('forms.name') }}</span>
             <input
               v-model="streamForm.label"
               type="text"
@@ -260,7 +264,9 @@ function addBenefit() {
             >
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Monto</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{
+              t('incomeView.amount')
+            }}</span>
             <input
               v-model="streamForm.amount"
               type="number"
@@ -270,15 +276,17 @@ function addBenefit() {
             >
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Frecuencia</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{
+              t('incomeView.frequency')
+            }}</span>
             <select
               v-model="streamForm.frequency"
               class="rounded border border-slate-300 px-2 py-1.5 text-sm dark:border-slate-700 dark:bg-slate-900"
             >
-              <option value="monthly">Mensual</option>
-              <option value="quarterly">Trimestral</option>
-              <option value="semiannual">Semestral</option>
-              <option value="annual">Anual</option>
+              <option value="monthly">{{ t('incomeView.freq.monthly') }}</option>
+              <option value="quarterly">{{ t('incomeView.freq.quarterly') }}</option>
+              <option value="semiannual">{{ t('incomeView.freq.semiannual') }}</option>
+              <option value="annual">{{ t('incomeView.freq.annual') }}</option>
             </select>
           </label>
           <IncomeClassSelect
@@ -290,7 +298,7 @@ function addBenefit() {
           type="submit"
           class="self-start rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700"
         >
-          Guardar
+          {{ t('forms.save') }}
         </button>
       </form>
 
@@ -298,7 +306,7 @@ function addBenefit() {
         v-if="income.state.otherStreams.length === 0 && !showStreamForm"
         class="text-xs text-slate-400"
       >
-        Sin ingresos adicionales registrados.
+        {{ t('incomeView.noStreams') }}
       </div>
 
       <div
@@ -320,7 +328,7 @@ function addBenefit() {
         />
         <button
           type="button"
-          aria-label="Eliminar ingreso"
+          :aria-label="t('incomeView.deleteStream')"
           class="rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400"
           @click="income.removeStream(s.id)"
         >
@@ -333,14 +341,14 @@ function addBenefit() {
     <section class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
-          Beneficios extrasalariales
+          {{ t('incomeView.benefits') }}
         </h2>
         <button
           type="button"
           class="text-xs text-blue-600 hover:underline dark:text-blue-400"
           @click="showBenefitForm = !showBenefitForm"
         >
-          {{ showBenefitForm ? 'Cancelar' : '+ Agregar' }}
+          {{ showBenefitForm ? t('forms.cancel') : t('forms.add') }}
         </button>
       </div>
 
@@ -351,7 +359,7 @@ function addBenefit() {
       >
         <div class="grid grid-cols-2 gap-2">
           <label class="col-span-2 flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Nombre *</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{ t('forms.name') }}</span>
             <input
               v-model="benefitForm.label"
               type="text"
@@ -361,7 +369,9 @@ function addBenefit() {
             >
           </label>
           <label class="flex flex-col gap-1">
-            <span class="text-xs text-slate-600 dark:text-slate-300">Monto mensual</span>
+            <span class="text-xs text-slate-600 dark:text-slate-300">{{
+              t('incomeView.monthlyAmount')
+            }}</span>
             <input
               v-model="benefitForm.amount"
               type="number"
@@ -375,7 +385,7 @@ function addBenefit() {
           type="submit"
           class="self-start rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700"
         >
-          Guardar
+          {{ t('forms.save') }}
         </button>
       </form>
 
@@ -383,7 +393,7 @@ function addBenefit() {
         v-if="income.state.nonSalaryBenefits.length === 0 && !showBenefitForm"
         class="text-xs text-slate-400"
       >
-        Sin beneficios extrasalariales registrados.
+        {{ t('incomeView.noBenefits') }}
       </div>
 
       <div
@@ -399,7 +409,7 @@ function addBenefit() {
         />
         <button
           type="button"
-          aria-label="Eliminar beneficio"
+          :aria-label="t('incomeView.deleteBenefit')"
           class="rounded border border-red-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400"
           @click="income.removeBenefit(b.id)"
         >

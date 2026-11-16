@@ -46,4 +46,23 @@ describe('AssetList (AC-9.1 TC-C-023)', () => {
     expect(store.state.items[0]!.value).toBe(10_000_000)
     expect(screen.getByText('Savings')).toBeTruthy()
   })
+
+  it('offers cash as an asset type and deletes an asset after confirming', async () => {
+    mount()
+    const store = useAssetsStore()
+    const select = screen.getByRole('combobox', { name: /tipo|type/i }) as HTMLSelectElement
+    expect(Array.from(select.options).map((o) => o.value)).toContain('cash')
+
+    await fireEvent.update(screen.getByRole('textbox', { name: /nombre|name/i }), 'Billetera')
+    await fireEvent.update(screen.getByRole('textbox', { name: /valor|value/i }), '200000')
+    await fireEvent.update(select, 'cash')
+    await fireEvent.click(screen.getByRole('button', { name: /agregar|add/i }))
+    expect(store.state.items[0]!.type).toBe('cash')
+
+    await fireEvent.click(
+      screen.getByRole('button', { name: /eliminar billetera|delete billetera/i })
+    )
+    await fireEvent.click(screen.getByRole('button', { name: /confirmar|confirm/i }))
+    expect(store.state.items.length).toBe(0)
+  })
 })

@@ -1,6 +1,6 @@
 // Bridges the base metrics to lib/calculations/health-score.
 // Bases: DTI and housing on gross monthly income (their thresholds are defined on
-// gross); savings rate on net monthly income; emergency fund = liquid assets /
+// gross); savings rate on net monthly income, capped by the real surplus; emergency fund = liquid assets /
 // monthly outflow (fixed + variable + debt), the same coverage the runway card shows.
 
 import { computed, type ComputedRef } from 'vue'
@@ -32,8 +32,14 @@ export function useHealthScore(): UseHealthScore {
   const cards = useCardsStore()
   const goals = useGoalsStore()
   const assets = useAssetsStore()
-  const { monthlyIncome, grossMonthlyIncome, debtObligation, liquidAssets, monthlyOutflow } =
-    useBaseMetrics()
+  const {
+    monthlyIncome,
+    grossMonthlyIncome,
+    debtObligation,
+    liquidAssets,
+    monthlyOutflow,
+    freeForAllocation,
+  } = useBaseMetrics()
 
   const totalGoalContrib = computed(() =>
     goals.state.items.reduce((acc, g) => acc + g.monthlyContrib, 0)
@@ -64,7 +70,10 @@ export function useHealthScore(): UseHealthScore {
   const savingsRate = computed<number | null>(() => {
     if (goals.state.items.length === 0) return null
     if (monthlyIncome.value <= 0) return 0
-    return (totalGoalContrib.value / monthlyIncome.value) * 100
+    // Planned contributions only count up to the money actually left after expenses and
+    // debt: a goal plan larger than the surplus is not real saving.
+    const saved = Math.min(totalGoalContrib.value, Math.max(0, freeForAllocation.value))
+    return (saved / monthlyIncome.value) * 100
   })
 
   const result = computed<HealthScoreResult>(() =>
